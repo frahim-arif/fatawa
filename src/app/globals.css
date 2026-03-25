@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+@keyframes fade-down {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-down {
+  animation: fade-down .2s ease-in-out;
+}
+
+@import "@fontsource/amiri-quran";
+
+html {
+  direction: rtl;
+}
+
+/* Quran Arabic Text Style */
+.quran-text {
+  font-family: "Amiri Quran", serif;
+  font-size: 1.4rem;
+  line-height: 2.3rem;
+  color: #0a4d2c;
+}
+
+@font-face {
+  font-family: "JameelNoori";
+  src: url("/fonts/JameelNooriNastaleeq.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.urdu {
+  font-family: "JameelNoori", sans-serif;
+  font-size: 28px;
+  direction: rtl;
+}
+
+
+@font-face {
+  font-family: "ArabicFont";
+  src: url("/fonts/Amiri-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.ltr {
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+
