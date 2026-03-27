@@ -13,7 +13,7 @@ export default function HomePage() {
   const [hasMore, setHasMore] = useState(true);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 
-  const backend = "http://localhost:5000/api";
+  const backend = "https://f-backend-vdi1.onrender.com/api";
 
   // Fetch categories
   useEffect(() => {
