@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Search, Mic, X } from "lucide-react";
-// import Head from "next/head";
+import Head from "next/head";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function HomePage() {
@@ -102,6 +102,16 @@ export default function HomePage() {
       </Head> */}
 
       {/* 🔹 Floating Nurani Light Background */}
+      <Head>
+  <link
+    rel="preload"
+    href="/fonts/JameelNooriNastaleeq.woff2"
+    as="font"
+    type="font/woff2"
+    crossOrigin="anonymous"
+  />
+</Head>
+      
       <motion.div
         className="fixed top-1/4 left-1/4 w-72 h-72 rounded-full pointer-events-none"
         style={{

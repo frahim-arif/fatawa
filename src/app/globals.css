@@ -74,3 +74,27 @@ html {
 }
 
 
+
+
+
+/* 🔹 Font-face */
+@font-face {
+  font-family: 'Jameel Noori Nastaleeq';
+  src: url('/fonts/JameelNooriNastaleeq.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 🔹 Global Urdu font */
+html, body {
+  font-family: 'Jameel Noori Nastaleeq', serif;
+  direction: rtl;
+}
+
+/* 🔹 Optional – sirf Urdu text ke liye */
+.urdu {
+  font-family: 'Jameel Noori Nastaleeq', serif;
+  direction: rtl;
+}
+
