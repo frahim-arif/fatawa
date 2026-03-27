@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Search, Mic, X } from "lucide-react";
-import Head from "next/head";
+// import Head from "next/head";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function HomePage() {
@@ -86,7 +86,7 @@ export default function HomePage() {
 
   return (
     <div className="relative space-y-10 overflow-hidden min-h-screen bg-black/5">
-      <Head>
+      {/* <Head>
         <link
           href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap"
           rel="stylesheet"
@@ -99,7 +99,7 @@ export default function HomePage() {
           href="https://fonts.googleapis.com/css2?family=Amiri&display=swap"
           rel="stylesheet"
         />
-      </Head>
+      </Head> */}
 
       {/* 🔹 Floating Nurani Light Background */}
       <motion.div
