@@ -86,7 +86,7 @@ export default function HomePage() {
 
   return (
     <div className="relative space-y-10 overflow-hidden min-h-screen bg-black/5">
-      {/* <Head>
+      <Head>
         <link
           href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap"
           rel="stylesheet"
@@ -99,18 +99,10 @@ export default function HomePage() {
           href="https://fonts.googleapis.com/css2?family=Amiri&display=swap"
           rel="stylesheet"
         />
-      </Head> */}
+      </Head> 
 
-      {/* 🔹 Floating Nurani Light Background */}
-      <Head>
-  <link
-    rel="preload"
-    href="/fonts/JameelNooriNastaleeq.woff2"
-    as="font"
-    type="font/woff2"
-    crossOrigin="anonymous"
-  />
-</Head>
+       {/* 🔹 Floating Nurani Light Background */}
+      
       
       <motion.div
         className="fixed top-1/4 left-1/4 w-72 h-72 rounded-full pointer-events-none"
