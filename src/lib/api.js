@@ -1,4 +1,4 @@
-const API = "http://localhost:5000/api";
+const API = "https://f-backend-vdi1.onrender.com/api";
 
 // ✅ Fetch all courses
 export async function getCourses() {
