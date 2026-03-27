@@ -1,4 +1,3 @@
-// app/layout.js
 import { Geist, Geist_Mono } from "next/font/google";
 import { Noto_Nastaliq_Urdu, Amiri } from "next/font/google";
 import "./globals.css";
@@ -19,6 +18,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ur" dir="rtl" suppressHydrationWarning>
+      <head>
+        {/* Self-hosted Jameel Noori Nastaleeq */}
+        <link
+          rel="stylesheet"
+          href="/fonts/jameelnoori.css"
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${nastaleeq.variable} ${amiri.variable} bg-gray-50 min-h-screen`}
       >
