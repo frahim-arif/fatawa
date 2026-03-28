@@ -157,13 +157,11 @@ export default function HomePage() {
           }}
         >
           <motion.div
-            className="whitespace-nowrap text-yellow-100 text-2xl font-bold arabic"
+            className="whitespace-nowrap text-yellow-100 arabic fixed top-16 w-full z-50"
             animate={{ x: ["-100%", "100%"] }}
             transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
           >
-            اَللّٰهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ، وَعَلَىٰ آلِ سَيِّدِنَا مُحَمَّدٍ، وَبَارِكْ وَسَلِّمْ
-            —
-            ﴿ إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا ﴾
+            ...
           </motion.div>
         </div>
 

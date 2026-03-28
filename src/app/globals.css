@@ -54,7 +54,7 @@ html, body {
   direction: rtl !important;
   unicode-bidi: plaintext;
   font-feature-settings: "liga" 1, "rlig" 1;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   line-height: 2rem;
   color: #0a4d2c; /* adjust color if needed */
   text-align: right;
@@ -65,7 +65,7 @@ html, body {
   font-family: "Amiri Quran", serif !important;
   font-size: 1.4rem;
   line-height: 2.3rem;
-  color: #0a4d2c;
+  color: #072516;
 }
 
 /* 🔹 LTR support (English etc.) */
@@ -92,3 +92,7 @@ p, div, span, h1, h2, h3 {
   font-feature-settings: "liga" 1, "rlig" 1;
 }
 
+.quran-text {
+  font-family: 'Amiri Quran', 'Scheherazade New', serif !important;
+  direction: rtl;
+}
