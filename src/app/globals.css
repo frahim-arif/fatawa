@@ -2,16 +2,30 @@
 @import "@fontsource/amiri-quran";
 
 /* 🔹 Root colors */
+/* Global dark/light colors */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --card-bg: #f9f9f9;        /* light mode card */
+  --card-text: #171717;      /* light mode text */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --card-bg: #111111;        /* dark mode card */
+    --card-text: #ededed;      /* dark mode text */
   }
+}
+
+/* Modal / Answer / Hawala */
+.answer-card {
+  background-color: var(--card-bg);
+  color: var(--card-text);
+  font-family: 'JameelNoori', 'Noto Nastaliq Urdu', serif;
+  line-height: 2;
+  direction: rtl;
 }
 
 /* 🔹 Theme mapping */
