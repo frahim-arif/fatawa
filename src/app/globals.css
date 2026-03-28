@@ -62,7 +62,7 @@ html, body {
 
 /* 🔹 Quran Arabic Text (optional for separate Quran elements) */
 .quran-text {
-  font-family: "Amiri Quran", serif;
+  font-family: "Amiri Quran", serif !important;
   font-size: 1.4rem;
   line-height: 2.3rem;
   color: #0a4d2c;
@@ -91,3 +91,4 @@ p, div, span, h1, h2, h3 {
   unicode-bidi: plaintext;
   font-feature-settings: "liga" 1, "rlig" 1;
 }
+
