@@ -368,6 +368,7 @@ export default function HomePage() {
                 style={{
                   fontFamily: "'Jameel Noori Nastaleeq', serif",
                   lineHeight: "2.2",
+                  color: "#000000", 
                 }}
               >
                 {selectedQuestion.answer}
