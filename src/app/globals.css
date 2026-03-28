@@ -19,10 +19,10 @@
   }
 }
 
-/* Modal / Answer text */
+/* 🔹 Answer card always white bg & black text */
 .answer-card {
-  background-color: var(--card-bg);   /* <-- correct variable */
-  color: var(--card-text);            /* <-- correct variable */
+  background-color: #ffffff !important;  /* white background always */
+  color: #171717 !important;            /* black text always */
   font-family: 'JameelNoori', 'Noto Nastaliq Urdu', serif;
   line-height: 2;
   direction: rtl;
@@ -108,4 +108,9 @@ p, div, span, h1, h2, h3 {
 .quran-text {
   font-family: 'Amiri Quran', 'Scheherazade New', serif !important;
   direction: rtl;
+}
+
+.home-page {
+  background-color: #ffffff !important;
+  color: var(--foreground); /* ya default text color */
 }
