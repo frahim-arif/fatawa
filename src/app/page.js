@@ -375,17 +375,17 @@ export default function HomePage() {
 
               <div className="space-y-2 max-h-72 overflow-y-auto pr-2">
                 {selectedQuestion.hawala1 && (
-                  <p className="arabic p-2 rounded border bg-gray-100 text-green-800">
+                  <p className="answer-card arabic p-2 rounded border">
                     📖 {selectedQuestion.hawala1}
                   </p>
                 )}
                 {selectedQuestion.hawala2 && (
-                  <p className="arabic p-2 rounded border bg-gray-100 text-green-800">
+                  <p className="answer-card arabic p-2 rounded border">
                     📖 {selectedQuestion.hawala2}
                   </p>
                 )}
                 {selectedQuestion.hawala3 && (
-                  <p className="arabic p-2 rounded border bg-gray-100 text-green-800">
+                  <p className="answer-card arabic p-2 rounded border">
                     📖 {selectedQuestion.hawala3}
                   </p>
                 )}
