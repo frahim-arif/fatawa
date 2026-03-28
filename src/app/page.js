@@ -36,8 +36,8 @@ export default function HomePage() {
         selectedCategory === ""
           ? `${backend}/questions?skip=${reset ? 0 : skip}&limit=5`
           : `${backend}/questions/category/${encodeURIComponent(
-              selectedCategory
-            )}?skip=${reset ? 0 : skip}&limit=5`;
+            selectedCategory
+          )}?skip=${reset ? 0 : skip}&limit=5`;
 
       const res = await fetch(url);
       const data = await res.json();
@@ -87,7 +87,7 @@ export default function HomePage() {
   return (
     <div className="relative space-y-10 overflow-hidden min-h-screen bg-black/5">
       <Head>
-  <style>{`
+        <style>{`
     @font-face {
       font-family: 'Jameel Noori Nastaleeq';
       src: url('/fonts/JameelNooriNastaleeq.woff2') format('woff2'),
@@ -103,11 +103,11 @@ export default function HomePage() {
       font-family: 'Jameel Noori Nastaleeq', serif;
     }
   `}</style>
-</Head> 
+      </Head>
 
-       {/* 🔹 Floating Nurani Light Background */}
-      
-      
+      {/* 🔹 Floating Nurani Light Background */}
+
+
       <motion.div
         className="fixed top-1/4 left-1/4 w-72 h-72 rounded-full pointer-events-none"
         style={{
@@ -144,56 +144,56 @@ export default function HomePage() {
           ease: "easeInOut",
         }}
       />
-{/* 🔹 Scrolling Banners (Durūd Sharīf + Namaz Timings) */}
-<div className="w-full relative z-10">
+      {/* 🔹 Scrolling Banners (Durūd Sharīf + Namaz Timings) */}
+      <div className="w-full relative z-10">
 
-  {/* Durūd Sharīf */}
-<div
-  className="w-full overflow-hidden"
-  style={{
-    background: "linear-gradient(to right, #0f5132, #198754, #0f5132)",
-    borderBottom: "2px solid #d4af37",
-    borderTop: "2px solid #d4af37",
-  }}
->
-  <motion.div
-    className="whitespace-nowrap text-yellow-100 text-2xl font-bold"
-    style={{
-      direction: "ltr",
-      fontFamily: "'Scheherazade New', serif",
-      lineHeight: "1.3",
-      letterSpacing: "0.5px",
-    }}
-    animate={{ x: ["-100%", "100%"] }}
-    transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
-  >
-    اَللّٰهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ، وَعَلَىٰ آلِ سَيِّدِنَا مُحَمَّدٍ، وَبَارِكْ وَسَلِّمْ  
-    —  
-    ﴿ إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا ﴾
-  </motion.div>
-</div>
+        {/* Durūd Sharīf */}
+        <div
+          className="w-full overflow-hidden"
+          style={{
+            background: "linear-gradient(to right, #0f5132, #198754, #0f5132)",
+            borderBottom: "2px solid #d4af37",
+            borderTop: "2px solid #d4af37",
+          }}
+        >
+          <motion.div
+            className="whitespace-nowrap text-yellow-100 text-2xl font-bold"
+            style={{
+              direction: "ltr",
+              fontFamily: "'Scheherazade New', serif",
+              lineHeight: "1.3",
+              letterSpacing: "0.5px",
+            }}
+            animate={{ x: ["-100%", "100%"] }}
+            transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+          >
+            اَللّٰهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ، وَعَلَىٰ آلِ سَيِّدِنَا مُحَمَّدٍ، وَبَارِكْ وَسَلِّمْ
+            —
+            ﴿ إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا ﴾
+          </motion.div>
+        </div>
 
-  {/* Namaz Timings */}
-  <div
-    className="w-full overflow-hidden"
-    style={{ background: "#0b3d24", borderBottom: "2px solid #d4af37" }}
-  >
-    <motion.div
-      className="whitespace-nowrap text-yellow-200 text-sm font-semibold"
-      style={{
-        direction: "rtl",
-        fontFamily: "'Jameel Noori Nastaleeq', serif",
-        lineHeight: "1.2",
-        letterSpacing: "0.5px",
-      }}
-      animate={{ x: ["100%", "-100%"] }}
-      transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-    >
-      فجر: 05:12&nbsp;&nbsp;&nbsp;ظہر: 12:34&nbsp;&nbsp;&nbsp;عصر: 16:20&nbsp;&nbsp;&nbsp;مغرب: 18:45&nbsp;&nbsp;&nbsp;عشاء: 20:00
-    </motion.div>
-  </div>
+        {/* Namaz Timings */}
+        <div
+          className="w-full overflow-hidden"
+          style={{ background: "#0b3d24", borderBottom: "2px solid #d4af37" }}
+        >
+          <motion.div
+            className="whitespace-nowrap text-yellow-200 text-sm font-semibold"
+            style={{
+              direction: "rtl",
+              fontFamily: "'Jameel Noori Nastaleeq', serif",
+              lineHeight: "1.2",
+              letterSpacing: "0.5px",
+            }}
+            animate={{ x: ["100%", "-100%"] }}
+            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          >
+            فجر: 05:12&nbsp;&nbsp;&nbsp;ظہر: 12:34&nbsp;&nbsp;&nbsp;عصر: 16:20&nbsp;&nbsp;&nbsp;مغرب: 18:45&nbsp;&nbsp;&nbsp;عشاء: 20:00
+          </motion.div>
+        </div>
 
-</div>
+      </div>
 
 
       {/* Search Box */}
@@ -254,47 +254,47 @@ export default function HomePage() {
         </div>
       </div>
 
-     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-4 mt-6 z-10 relative">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-4 mt-6 z-10 relative">
 
-  {/* All Categories */}
-<div
-  onClick={() => setSelectedCategory("")}
-  className={`
+        {/* All Categories */}
+        <div
+          onClick={() => setSelectedCategory("")}
+          className={`
     p-5 rounded-3xl cursor-pointer text-center select-none
     transition-all duration-500 transform border-blue-500 shadow-xl
     hover:scale-105 hover:shadow-[0_0_30px_rgba(255,223,0,0.8)]
     ${selectedCategory === ""
-      ? "bg-gradient-to-br from-yellow-400 to-yellow-200 border-yellow-500 shadow-[0_0_30px_rgba(255,223,0,0.9)] text-white"
-      : "bg-white/30 border-gray-300 text-black hover:bg-gradient-to-br hover:from-yellow-100 hover:to-yellow-50 hover:text-yellow-800 hover:shadow-[0_0_25px_rgba(255,223,0,0.5)]"
-    }
+              ? "bg-gradient-to-br from-yellow-400 to-yellow-200 border-yellow-500 shadow-[0_0_30px_rgba(255,223,0,0.9)] text-white"
+              : "bg-white/30 border-gray-300 text-black hover:bg-gradient-to-br hover:from-yellow-100 hover:to-yellow-50 hover:text-yellow-800 hover:shadow-[0_0_25px_rgba(255,223,0,0.5)]"
+            }
   `}
-  style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
->
-  تمام کیٹیگریز
-</div>
+          style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
+        >
+          تمام کیٹیگریز
+        </div>
 
-{/* Dynamic Categories */}
-{categories.map((cat) => (
-  <div
-    key={cat._id}
-    onClick={() => setSelectedCategory(cat.name)}
-    className={`
+        {/* Dynamic Categories */}
+        {categories.map((cat) => (
+          <div
+            key={cat._id}
+            onClick={() => setSelectedCategory(cat.name)}
+            className={`
       p-5 rounded-3xl cursor-pointer text-center select-none
       transition-all duration-500 transform border-blue-500 shadow-xl
       hover:scale-105 hover:shadow-[0_0_30px_rgba(255,223,0,0.8)]
       ${selectedCategory === cat.name
-        ? "bg-gradient-to-br from-yellow-400 to-yellow-200 border-yellow-500 shadow-[0_0_30px_rgba(255,223,0,0.9)] text-white"
-        : "bg-white/30 border-gray-300 text-black hover:bg-gradient-to-br hover:from-yellow-100 hover:to-yellow-50 hover:text-yellow-800 hover:shadow-[0_0_25px_rgba(255,223,0,0.5)]"
-      }
+                ? "bg-gradient-to-br from-yellow-400 to-yellow-200 border-yellow-500 shadow-[0_0_30px_rgba(255,223,0,0.9)] text-white"
+                : "bg-white/30 border-gray-300 text-black hover:bg-gradient-to-br hover:from-yellow-100 hover:to-yellow-50 hover:text-yellow-800 hover:shadow-[0_0_25px_rgba(255,223,0,0.5)]"
+              }
     `}
-    style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
-  >
-    {cat.name}
-  </div>
-))}
+            style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
+          >
+            {cat.name}
+          </div>
+        ))}
 
 
-</div>
+      </div>
 
 
       {/* Questions List */}
@@ -332,14 +332,14 @@ export default function HomePage() {
           </div>
         )}
       </section>
-      
-    <div className="hidden">
-  {filteredQuestions.map((q) => (
-    <a key={q._id} href={`/questions/${q.slug}`}>
-      {q.question}
-    </a>
-  ))}
-</div>
+
+      <div className="hidden">
+        {filteredQuestions.map((q) => (
+          <a key={q._id} href={`/questions/${q.slug}`}>
+            {q.question}
+          </a>
+        ))}
+      </div>
       {/* Modal */}
       <AnimatePresence>
         {selectedQuestion && (
@@ -381,26 +381,17 @@ export default function HomePage() {
 
               <div className="space-y-2 max-h-72 overflow-y-auto pr-2">
                 {selectedQuestion.hawala1 && (
-                  <p
-                    className="p-2 rounded border bg-gray-100 text-green-800"
-                    style={{ fontFamily: "Amiri, serif", lineHeight: "2" }}
-                  >
+                  <p className="quran-text p-2 rounded border bg-gray-100 text-green-800">
                     📖 {selectedQuestion.hawala1}
                   </p>
                 )}
                 {selectedQuestion.hawala2 && (
-                  <p
-                    className="p-2 rounded border bg-gray-100 text-green-800"
-                    style={{ fontFamily: "Amiri, serif", lineHeight: "2" }}
-                  >
+                  <p className="quran-text p-2 rounded border bg-gray-100 text-green-800">
                     📖 {selectedQuestion.hawala2}
                   </p>
                 )}
                 {selectedQuestion.hawala3 && (
-                  <p
-                    className="p-2 rounded border bg-gray-100 text-green-800"
-                    style={{ fontFamily: "Amiri, serif", lineHeight: "2" }}
-                  >
+                  <p className="quran-text p-2 rounded border bg-gray-100 text-green-800">
                     📖 {selectedQuestion.hawala3}
                   </p>
                 )}
