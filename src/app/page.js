@@ -87,19 +87,23 @@ export default function HomePage() {
   return (
     <div className="relative space-y-10 overflow-hidden min-h-screen bg-black/5">
       <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://cdn.jsdelivr.net/gh/usmanayubsh/jameel-noori-nastaleeq/font.css"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Amiri&display=swap"
-          rel="stylesheet"
-        />
-      </Head> 
+  <style>{`
+    @font-face {
+      font-family: 'Jameel Noori Nastaleeq';
+      src: url('/fonts/JameelNooriNastaleeq.woff2') format('woff2'),
+           url('/fonts/JameelNooriNastaleeq.woff') format('woff'),
+           url('/fonts/JameelNooriNastaleeq.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* Optional: Default body font */
+    body {
+      font-family: 'Jameel Noori Nastaleeq', serif;
+    }
+  `}</style>
+</Head> 
 
        {/* 🔹 Floating Nurani Light Background */}
       
