@@ -20,28 +20,28 @@
   --color-foreground: var(--foreground);
 }
 
-/* 🔥 Urdu Font (FIXED) */
+/* 🔥 Self-hosted Urdu Font */
 @font-face {
   font-family: 'JameelNoori';
   src: url('/fonts/JameelNooriNastaleeq.woff2') format('woff2'),
-       url('/fonts/JameelNooriNastaleeq.woff') format('woff');
+       url('/fonts/JameelNooriNastaleeq.woff') format('woff'),
+       url('/fonts/JameelNooriNastaleeq.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 /* 🔹 Global styles */
-html {
+html, body {
   direction: rtl;
-}
-
-body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'JameelNoori', serif;
+  font-family: 'JameelNoori', 'Noto Nastaliq Urdu', serif !important;
+  unicode-bidi: plaintext;
+  font-feature-settings: "liga" 1, "rlig" 1;
 }
 
-/* 🔹 Urdu text */
+/* 🔹 Urdu specific */
 .urdu {
   font-family: 'JameelNoori', serif;
   direction: rtl;
@@ -64,22 +64,17 @@ body {
 
 /* 🔹 Animation */
 @keyframes fade-down {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-down {
   animation: fade-down 0.2s ease-in-out;
 }
 
-html, body, p, div, span, h1, h2, h3 {
-  font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', serif !important;
+/* 🔹 Apply Jameel Noori to common elements globally */
+p, div, span, h1, h2, h3 {
+  font-family: 'JameelNoori', 'Noto Nastaliq Urdu', serif !important;
   direction: rtl;
   unicode-bidi: plaintext;
   font-feature-settings: "liga" 1, "rlig" 1;

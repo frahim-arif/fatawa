@@ -18,13 +18,6 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ur" dir="rtl" suppressHydrationWarning>
-      <head>
-        {/* Self-hosted Jameel Noori Nastaleeq */}
-        <link
-          rel="stylesheet"
-          href="/fonts/jameelnoori.css"
-        />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${nastaleeq.variable} ${amiri.variable} bg-gray-50 min-h-screen`}
       >
