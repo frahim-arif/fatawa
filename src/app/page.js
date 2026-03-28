@@ -157,13 +157,7 @@ export default function HomePage() {
           }}
         >
           <motion.div
-            className="whitespace-nowrap text-yellow-100 text-2xl font-bold"
-            style={{
-              direction: "ltr",
-              fontFamily: "'Scheherazade New', serif",
-              lineHeight: "1.3",
-              letterSpacing: "0.5px",
-            }}
+            className="whitespace-nowrap text-yellow-100 text-2xl font-bold arabic"
             animate={{ x: ["-100%", "100%"] }}
             transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
           >

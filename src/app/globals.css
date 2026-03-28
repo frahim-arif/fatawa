@@ -31,7 +31,7 @@
   font-display: swap;
 }
 
-/* 🔹 Global styles */
+/* 🔹 Global styles (Urdu) */
 html, body {
   direction: rtl;
   background: var(--background);
@@ -48,7 +48,19 @@ html, body {
   font-size: 28px;
 }
 
-/* 🔹 Quran Arabic Text */
+/* 🔹 Arabic specific for Durūd Sharīf & Hawalat */
+.arabic {
+  font-family: "Amiri Quran", "Scheherazade New", serif !important;
+  direction: rtl !important;
+  unicode-bidi: plaintext;
+  font-feature-settings: "liga" 1, "rlig" 1;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: #0a4d2c; /* adjust color if needed */
+  text-align: right;
+}
+
+/* 🔹 Quran Arabic Text (optional for separate Quran elements) */
 .quran-text {
   font-family: "Amiri Quran", serif;
   font-size: 1.4rem;
@@ -72,7 +84,7 @@ html, body {
   animation: fade-down 0.2s ease-in-out;
 }
 
-/* 🔹 Apply Jameel Noori to common elements globally */
+/* 🔹 Apply Jameel Noori to common elements globally (Urdu) */
 p, div, span, h1, h2, h3 {
   font-family: 'JameelNoori', 'Noto Nastaliq Urdu', serif !important;
   direction: rtl;
