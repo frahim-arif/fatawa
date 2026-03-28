@@ -1,15 +1,10 @@
 @import "tailwindcss";
+@import "@fontsource/amiri-quran";
 
+/* 🔹 Root colors */
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,27 +14,41 @@
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
-@keyframes fade-down {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* 🔹 Theme mapping */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
 }
 
-.animate-fade-down {
-  animation: fade-down .2s ease-in-out;
+/* 🔥 Urdu Font (FIXED) */
+@font-face {
+  font-family: 'JameelNoori';
+  src: url('/fonts/JameelNooriNastaleeq.woff2') format('woff2'),
+       url('/fonts/JameelNooriNastaleeq.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
-@import "@fontsource/amiri-quran";
-
+/* 🔹 Global styles */
 html {
   direction: rtl;
 }
 
-/* Quran Arabic Text Style */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'JameelNoori', serif;
+}
+
+/* 🔹 Urdu text */
+.urdu {
+  font-family: 'JameelNoori', serif;
+  direction: rtl;
+  font-size: 28px;
+}
+
+/* 🔹 Quran Arabic Text */
 .quran-text {
   font-family: "Amiri Quran", serif;
   font-size: 1.4rem;
@@ -47,54 +56,24 @@ html {
   color: #0a4d2c;
 }
 
-@font-face {
-  font-family: "JameelNoori";
-  src: url("/fonts/JameelNooriNastaleeq.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-.urdu {
-  font-family: "JameelNoori", sans-serif;
-  font-size: 28px;
-  direction: rtl;
-}
-
-
-@font-face {
-  font-family: "ArabicFont";
-  src: url("/fonts/Amiri-Regular.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
+/* 🔹 LTR support (English etc.) */
 .ltr {
   direction: ltr !important;
   text-align: left !important;
 }
 
-
-
-
-
-/* 🔹 Font-face */
-@font-face {
-  font-family: 'Jameel Noori Nastaleeq';
-  src: url('/fonts/JameelNooriNastaleeq.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+/* 🔹 Animation */
+@keyframes fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* 🔹 Global Urdu font */
-html, body {
-  font-family: 'Jameel Noori Nastaleeq', serif;
-  direction: rtl;
+.animate-fade-down {
+  animation: fade-down 0.2s ease-in-out;
 }
-
-/* 🔹 Optional – sirf Urdu text ke liye */
-.urdu {
-  font-family: 'Jameel Noori Nastaleeq', serif;
-  direction: rtl;
-}
-
