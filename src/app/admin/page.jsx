@@ -1,6 +1,3 @@
-
-
-
 "use client";
 import { useState } from "react";
 import axios from "axios";
@@ -67,8 +64,6 @@ export default function AdminPage() {
         hawala2,
         hawala3,
         slug,
-
-        // SEO fields send to backend
         metaTitle,
         metaDescription,
         keywords,
@@ -76,18 +71,15 @@ export default function AdminPage() {
 
       if (res.status === 200 && res.data.success) {
         setMessage("✅ سوال کامیابی سے شامل کر دیا گیا ہے!");
-
         setCategory("");
         setQuestion("");
         setAnswer("");
         setHawala1("");
         setHawala2("");
         setHawala3("");
-
         setMetaTitle("");
         setMetaDescription("");
         setKeywords("");
-
         router.push("/");
       } else {
         setMessage("❌ کچھ غلط ہو گیا، دوبارہ کوشش کریں۔");
@@ -126,7 +118,7 @@ export default function AdminPage() {
             </select>
           </div>
 
-          {/* Question */}
+          {/* Question (Urdu) */}
           <div>
             <label className="block mb-2 font-semibold text-gray-700">سوال</label>
             <textarea
@@ -137,11 +129,11 @@ export default function AdminPage() {
               }}
               rows={3}
               required
-              className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500"
+              className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500 font-jameel"
             ></textarea>
           </div>
 
-          {/* Answer */}
+          {/* Answer (Urdu) */}
           <div>
             <label className="block mb-2 font-semibold text-gray-700">جواب</label>
             <textarea
@@ -152,11 +144,11 @@ export default function AdminPage() {
               }}
               rows={4}
               required
-              className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500"
+              className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500 font-jameel"
             ></textarea>
           </div>
 
-          {/* Hawala 1 */}
+          {/* Hawala 1 (Arabic Font) */}
           <div>
             <label className="block mb-2 font-semibold text-gray-700">حوالہ 1</label>
             <textarea
@@ -166,11 +158,11 @@ export default function AdminPage() {
                 autoGenerateSEO();
               }}
               rows={3}
-              className="w-full border rounded-lg p-2 h-24 focus:ring-2 focus:ring-green-500"
+              className="w-full border rounded-lg p-2 h-24 focus:ring-2 focus:ring-green-500 quran-text"
             ></textarea>
           </div>
 
-          {/* Hawala 2 */}
+          {/* Hawala 2 (Arabic Font) */}
           <div>
             <label className="block mb-2 font-semibold text-gray-700">حوالہ 2</label>
             <textarea
@@ -180,11 +172,11 @@ export default function AdminPage() {
                 autoGenerateSEO();
               }}
               rows={3}
-              className="w-full border rounded-lg p-2 h-24 focus:ring-2 focus:ring-green-500"
+              className="w-full border rounded-lg p-2 h-24 focus:ring-2 focus:ring-green-500 quran-text"
             ></textarea>
           </div>
 
-          {/* Hawala 3 */}
+          {/* Hawala 3 (Arabic Font) */}
           <div>
             <label className="block mb-2 font-semibold text-gray-700">حوالہ ۳</label>
             <textarea
@@ -194,7 +186,7 @@ export default function AdminPage() {
                 autoGenerateSEO();
               }}
               rows={3}
-              className="w-full border rounded-lg p-2 h-24 focus:ring-2 focus:ring-green-500"
+              className="w-full border rounded-lg p-2 h-24 focus:ring-2 focus:ring-green-500 quran-text"
             ></textarea>
           </div>
 
@@ -244,4 +236,3 @@ export default function AdminPage() {
     </div>
   );
 }
-
