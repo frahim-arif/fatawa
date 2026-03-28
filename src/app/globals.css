@@ -19,15 +19,14 @@
   }
 }
 
-/* Modal / Answer / Hawala */
+/* Modal / Answer text */
 .answer-card {
-  background-color: var(--card-bg);
-  color: var(--card-text);
+  background-color: var(--card-bg);   /* <-- correct variable */
+  color: var(--card-text);            /* <-- correct variable */
   font-family: 'JameelNoori', 'Noto Nastaliq Urdu', serif;
   line-height: 2;
   direction: rtl;
 }
-
 /* 🔹 Theme mapping */
 @theme inline {
   --color-background: var(--background);

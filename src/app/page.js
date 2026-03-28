@@ -85,7 +85,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative space-y-10 overflow-hidden min-h-screen bg-black/5">
+    <div className="relative space-y-10 overflow-hidden min-h-screen bg-white">
       <Head>
         <style>{`
     @font-face {
