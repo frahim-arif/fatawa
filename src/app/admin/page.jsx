@@ -80,7 +80,7 @@ export default function AdminPage() {
         setMetaTitle("");
         setMetaDescription("");
         setKeywords("");
-        router.push("/");
+        router.push(`/questions/${slug}`);
       } else {
         setMessage("❌ کچھ غلط ہو گیا، دوبارہ کوشش کریں۔");
       }

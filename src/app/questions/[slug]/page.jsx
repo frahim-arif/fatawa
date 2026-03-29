@@ -10,7 +10,7 @@ export default function SingleQuestion() {
   const router = useRouter();
   const { slug } = router.query;
 
-  const backend = "http://localhost:5000/api"; // ✅ Change to production URL
+ const backend = "https://f-backend-vdi1.onrender.com/api"; // ✅ Change to production URL
 
   const [question, setQuestion] = useState(null);
   const [loading, setLoading] = useState(true);
