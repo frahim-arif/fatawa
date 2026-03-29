@@ -72,7 +72,7 @@ export default function ShariahWeightCalculator() {
       </div>
 
       {/* Input Fields */}
-      <label className="block mb-2 font-medium text-black dark:text-gray-200">وزن درج کریں (گرام یا کلو)</label>
+      <label className="block mb-2 font-medium text-black dark:text-gray-900">وزن درج کریں (گرام یا کلو)</label>
       <input
         type="number"
         value={weight}
@@ -81,7 +81,7 @@ export default function ShariahWeightCalculator() {
         placeholder="مثال: 100"
       />
 
-      <label className="block mb-2 font-medium text-black dark:text-gray-200">قسم منتخب کریں</label>
+      <label className="block mb-2 font-medium text-black dark:text-gray-900">قسم منتخب کریں</label>
       <select
         value={type}
         onChange={(e) => setType(e.target.value)}
