@@ -258,9 +258,9 @@ export default function FortyHadithFree() {
 
       <div className="space-y-6">
         {hadithList.map((h) => (
-          <article key={h.number} className="bg-white p-4 rounded-lg shadow-sm">
+          <article key={h.number} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
             <header className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-green-700">Hadith #{h.number}</h2>
+              <h2 className="text-lg font-semibold text-pink-700">Hadith #{h.number}</h2>
             </header>
 
             <p className="mt-3 text-right font-serif text-2xl leading-relaxed">
