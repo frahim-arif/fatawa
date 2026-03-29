@@ -82,7 +82,7 @@ export default function AdminPage() {
         keywords,
       });
 
-      const res = await axios.post(`${backend}/add-question`, {
+      const res = await axios.post(`${backend}/questions/add-question`, {
         category,
         question,
         answer,
