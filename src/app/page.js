@@ -168,7 +168,7 @@ export default function HomePage() {
 
         {/* Durūd Sharīf */}
         <div
-          className="w-full overflow-hidden"
+          className="w-full overflow-hidden mt-0"
           style={{
             background: "linear-gradient(to right, #0f5132, #198754, #0f5132)",
             borderBottom: "2px solid #d4af37",
@@ -176,7 +176,7 @@ export default function HomePage() {
           }}
         >
           <motion.div
-            className="whitespace-nowrap text-yellow-100 arabic  top-2 w-full z-50"
+            className="whitespace-nowrap text-yellow-100 arabic  top-0 w-full z-50"
             animate={{ x: ["-100%", "100%"] }}
             transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
           >
