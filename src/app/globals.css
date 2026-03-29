@@ -18,7 +18,13 @@
     --card-text: #ededed;      /* dark mode text */
   }
 }
-
+html, body {
+  overflow-x: hidden;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
 /* 🔹 Answer card always white bg & black text */
 .answer-card {
   background-color: #ffffff !important;  /* white background always */

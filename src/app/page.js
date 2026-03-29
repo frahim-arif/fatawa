@@ -109,7 +109,7 @@ export default function HomePage() {
 
 
       <motion.div
-        className="fixed top-1/4 left-1/4 w-72 h-72 rounded-full pointer-events-none"
+        className="fixed top-1/4 left-1/2 w-72 h-72 rounded-full pointer-events-none"
         style={{
           background:
             "radial-gradient(circle, rgba(255,223,0,0.15), transparent 70%)",
@@ -127,7 +127,7 @@ export default function HomePage() {
         }}
       />
       <motion.div
-        className="fixed top-1/3 right-1/4 w-64 h-64 rounded-full pointer-events-none"
+        className="fixed top-1/3 right-1/2 w-64 h-64 rounded-full pointer-events-none"
         style={{
           background:
             "radial-gradient(circle, rgba(255,223,0,0.12), transparent 70%)",
@@ -248,7 +248,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-4 mt-6 z-10 relative">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 px-1 mt-6 w-full">
 
         {/* All Categories */}
         <div
