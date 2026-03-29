@@ -94,18 +94,18 @@ export default function AdminPage() {
         keywords: keywordsToSend,
       });
 
-      const res = await axios.post(`${backend}/`, {
-        category,
-        question,
-        answer,
-        hawala1,
-        hawala2,
-        hawala3,
-        slug,
-        metaTitle: titleToSend,
-        metaDescription: descriptionToSend,
-        keywords: keywordsToSend,
-      });
+      // const res = await axios.post(`${backend}/`, {
+      //   category,
+      //   question,
+      //   answer,
+      //   hawala1,
+      //   hawala2,
+      //   hawala3,
+      //   slug,
+      //   metaTitle: titleToSend,
+      //   metaDescription: descriptionToSend,
+      //   keywords: keywordsToSend,
+      // });
 
       if (res.status === 200 && res.data.success) {
         setMessage("✅ سوال کامیابی سے شامل کر دیا گیا ہے!");
