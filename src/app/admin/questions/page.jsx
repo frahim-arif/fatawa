@@ -3,57 +3,41 @@ import { useEffect, useState } from "react";
 
 export default function AdminQuestions() {
   const [questions, setQuestions] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const backend = "https://f-backend-vdi1.onrender.com/api/admin/questions";
 
   // Fetch all questions
   const fetchQuestions = async () => {
-    try {
-      const res = await fetch(backend);
-      const data = await res.json();
-      if (data.success) setQuestions(data.data || []);
-      else alert("سوالات لوڈ کرنے میں مسئلہ ہوا!");
-    } catch (err) {
-      console.error("Error fetching questions:", err);
-      alert("سوالات لوڈ کرنے میں نیٹ ورک مسئلہ!");
-    }
+    const res = await fetch("http://localhost:5000/api/admin/questions");
+    const data = await res.json();
+    setQuestions(data.data || []);
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      await fetchQuestions();
-      setLoading(false);
-    };
-    fetchData();
+    fetchQuestions();
   }, []);
 
   // Delete Question
   const deleteQuestion = async (id) => {
     if (!confirm("کیا آپ واقعی اس سوال کو ڈیلیٹ کرنا چاہتے ہیں؟")) return;
 
-    try {
-      const res = await fetch(`${backend}/${id}`, { method: "DELETE" });
-      const data = await res.json();
+    const res = await fetch(`http://localhost:5000/api/admin/questions/${id}`, {
+      method: "DELETE",
+    });
 
-      if (data.success) {
-        alert("سوال کامیابی سے ڈیلیٹ کر دیا گیا!");
-        setQuestions(questions.filter((q) => q._id !== id));
-      } else {
-        alert("ڈیلیٹ کرتے وقت مسئلہ ہوا!");
-      }
-    } catch (err) {
-      console.error("Error deleting question:", err);
-      alert("ڈیلیٹ کرتے وقت نیٹ ورک مسئلہ!");
+    const data = await res.json();
+
+    if (data.success) {
+      alert("سوال کامیابی سے ڈیلیٹ کر دیا گیا!");
+      setQuestions(questions.filter((q) => q._id !== id)); // UI update
+    } else {
+      alert("ڈیلیٹ کرتے وقت مسئلہ ہوا!");
     }
   };
 
-  if (loading) return <h2 className="text-center mt-10">⏳ سوالات لوڈ ہو رہے ہیں...</h2>;
-
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold mb-4 text-green-700">⚙️ Admin: تمام سوالات</h1>
+      <h1 className="text-2xl font-bold mb-4 text-green-700">
+        ⚙️ Admin: تمام سوالات
+      </h1>
 
       <div className="space-y-4">
         {questions.map((q) => (
