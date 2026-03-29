@@ -1,9 +1,12 @@
 "use client";
+
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
 export default function AdminPage() {
+  const router = useRouter();
+
   const [category, setCategory] = useState("");
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
@@ -11,13 +14,13 @@ export default function AdminPage() {
   const [hawala2, setHawala2] = useState("");
   const [hawala3, setHawala3] = useState("");
 
-  // SEO Fields
   const [metaTitle, setMetaTitle] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
   const [keywords, setKeywords] = useState("");
 
   const [message, setMessage] = useState("");
-  const router = useRouter();
+
+  const backend = "https://f-backend-vdi1.onrender.com/api/admin";
 
   const categories = [
     "جدید مسائل",
@@ -32,30 +35,35 @@ export default function AdminPage() {
     "بیوع",
   ];
 
-  // Improved slug generator (supports Urdu/Arabic)
+  // ✅ Urdu + English slug support
   const generateSlug = (text) => {
     return text
       .toString()
       .normalize("NFKD")
-      .replace(/[\u064B-\u0652]/g, "") // remove tashkeel
-      .replace(/[\u0600-\u06FF]/g, "") // remove Arabic chars
+      .replace(/[\u064B-\u0652]/g, "")
       .toLowerCase()
-      .replace(/ /g, "-")
-      .replace(/[^\w-]+/g, "");
+      .replace(/\s+/g, "-")
+      .replace(/[^\w\u0600-\u06FF-]+/g, "");
   };
 
-  const autoGenerateSEO = () => {
-    if (question) setMetaTitle(question);
-    if (answer) setMetaDescription(answer.substring(0, 150) + "...");
-    setKeywords(`${question}, ${category}, ${hawala1}, ${hawala2}, ${hawala3}`);
+  // ✅ Auto SEO
+  const autoGenerateSEO = (q, a) => {
+    if (q) setMetaTitle(q);
+    if (a) setMetaDescription(a.substring(0, 150));
+    setKeywords(`${q}, ${category}`);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const backend = "https://f-backend-vdi1.onrender.com/api/admin";
-      const slug = generateSlug(question);
 
+    const slug = generateSlug(question);
+
+    if (!slug) {
+      setMessage("❌ slug generate nahi ho raha");
+      return;
+    }
+
+    try {
       const res = await axios.post(`${backend}/add-question`, {
         category,
         question,
@@ -70,7 +78,9 @@ export default function AdminPage() {
       });
 
       if (res.status === 200 && res.data.success) {
-        setMessage("✅ سوال کامیابی سے شامل کر دیا گیا ہے!");
+        setMessage("✅ سوال کامیابی سے شامل ہو گیا");
+
+        // reset form
         setCategory("");
         setQuestion("");
         setAnswer("");
@@ -80,157 +90,148 @@ export default function AdminPage() {
         setMetaTitle("");
         setMetaDescription("");
         setKeywords("");
-        router.push("/");
-      } else {
-        setMessage("❌ کچھ غلط ہو گیا، دوبارہ کوشش کریں۔");
+
+        // ✅ redirect to new page
+        router.push(`/questions/${slug}`);
       }
     } catch (err) {
       console.error(err);
-      setMessage("❌ کچھ غلط ہو گیا، دوبارہ کوشش کریں۔");
+
+      if (err.response) {
+        setMessage(err.response.data.message || "❌ Bad Request");
+      } else {
+        setMessage("❌ Network Error");
+      }
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-10 flex flex-col items-center">
-      <div className="bg-white shadow-lg rounded-2xl p-8 max-w-2xl w-full">
+    <div className="min-h-screen bg-gray-50 dark:bg-black px-4 py-10 flex justify-center">
+      <div className="bg-white dark:bg-gray-900 shadow-xl rounded-2xl p-6 w-full max-w-2xl">
+
         <h1 className="text-3xl font-bold text-center text-green-700 mb-6">
           سوال شامل کریں
         </h1>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Category Dropdown */}
+        <form onSubmit={handleSubmit} className="space-y-5">
+
+          {/* Category */}
           <div>
-            <label className="block mb-2 font-semibold text-gray-700">
-              زمرہ منتخب کریں
+            <label className="block mb-1 font-semibold text-gray-700 dark:text-gray-200">
+              زمرہ
             </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               required
-              className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500"
+              className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:text-white"
             >
-              <option value="">زمرہ منتخب کریں</option>
-              {categories.map((cat, index) => (
-                <option key={index} value={cat}>
-                  {cat}
-                </option>
+              <option value="">منتخب کریں</option>
+              {categories.map((cat, i) => (
+                <option key={i}>{cat}</option>
               ))}
             </select>
           </div>
 
-          {/* Question (Urdu) */}
+          {/* Question */}
           <div>
-            <label className="block mb-2 font-semibold text-gray-700">سوال</label>
+            <label className="block mb-1 font-semibold text-gray-700 dark:text-gray-200">
+              سوال
+            </label>
             <textarea
               value={question}
               onChange={(e) => {
                 setQuestion(e.target.value);
-                autoGenerateSEO();
+                autoGenerateSEO(e.target.value, answer);
               }}
-              rows={3}
               required
-              className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500 font-jameel"
-            ></textarea>
+              rows={3}
+              className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:text-white font-jameel"
+            />
           </div>
 
-          {/* Answer (Urdu) */}
+          {/* Answer */}
           <div>
-            <label className="block mb-2 font-semibold text-gray-700">جواب</label>
+            <label className="block mb-1 font-semibold text-gray-700 dark:text-gray-200">
+              جواب
+            </label>
             <textarea
               value={answer}
               onChange={(e) => {
                 setAnswer(e.target.value);
-                autoGenerateSEO();
+                autoGenerateSEO(question, e.target.value);
               }}
-              rows={4}
               required
-              className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500 font-jameel"
-            ></textarea>
+              rows={4}
+              className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:text-white font-jameel"
+            />
           </div>
 
-          {/* Hawala 1 (Arabic Font) */}
-          <div>
-            <label className="block mb-2 font-semibold text-gray-700">حوالہ 1</label>
-            <textarea
-              value={hawala1}
-              onChange={(e) => {
-                setHawala1(e.target.value);
-                autoGenerateSEO();
-              }}
-              rows={3}
-              className="w-full border rounded-lg p-2 h-24 focus:ring-2 focus:ring-green-500 quran-text"
-            ></textarea>
-          </div>
+          {/* Hawala Fields */}
+          {[hawala1, hawala2, hawala3].map((h, i) => (
+            <div key={i}>
+              <label className="block mb-1 font-semibold text-gray-700 dark:text-gray-200">
+                حوالہ {i + 1}
+              </label>
+              <textarea
+                value={h}
+                onChange={(e) => {
+                  if (i === 0) setHawala1(e.target.value);
+                  if (i === 1) setHawala2(e.target.value);
+                  if (i === 2) setHawala3(e.target.value);
+                }}
+                rows={2}
+                className="w-full p-2 border rounded-lg dark:bg-gray-800 dark:text-white"
+                style={{
+                  direction: "rtl",
+                  fontFamily: "Amiri, serif",
+                }}
+              />
+            </div>
+          ))}
 
-          {/* Hawala 2 (Arabic Font) */}
-          <div>
-            <label className="block mb-2 font-semibold text-gray-700">حوالہ 2</label>
-            <textarea
-              value={hawala2}
-              onChange={(e) => {
-                setHawala2(e.target.value);
-                autoGenerateSEO();
-              }}
-              rows={3}
-              className="w-full border rounded-lg p-2 h-24 focus:ring-2 focus:ring-green-500 quran-text"
-            ></textarea>
-          </div>
+          {/* SEO */}
+          <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+            <h2 className="font-bold mb-2 text-green-700">🔍 SEO</h2>
 
-          {/* Hawala 3 (Arabic Font) */}
-          <div>
-            <label className="block mb-2 font-semibold text-gray-700">حوالہ ۳</label>
-            <textarea
-              value={hawala3}
-              onChange={(e) => {
-                setHawala3(e.target.value);
-                autoGenerateSEO();
-              }}
-              rows={3}
-              className="w-full border rounded-lg p-2 h-24 focus:ring-2 focus:ring-green-500 quran-text"
-            ></textarea>
-          </div>
-
-          {/* SEO SECTION */}
-          <div className="bg-gray-100 p-4 rounded-lg border">
-            <h2 className="text-xl font-semibold mb-3 text-green-800">
-              🔍 SEO Settings
-            </h2>
-
-            <label className="block font-semibold mb-1">Meta Title</label>
             <input
               type="text"
+              placeholder="Meta Title"
               value={metaTitle}
               onChange={(e) => setMetaTitle(e.target.value)}
-              className="w-full border rounded-lg p-2 mb-3"
+              className="w-full mb-2 p-2 border rounded dark:bg-gray-700 dark:text-white"
             />
 
-            <label className="block font-semibold mb-1">Meta Description</label>
             <textarea
+              placeholder="Meta Description"
               value={metaDescription}
               onChange={(e) => setMetaDescription(e.target.value)}
-              rows={3}
-              className="w-full border rounded-lg p-2 mb-3"
-            ></textarea>
+              className="w-full mb-2 p-2 border rounded dark:bg-gray-700 dark:text-white"
+            />
 
-            <label className="block font-semibold mb-1">Keywords</label>
             <input
               type="text"
+              placeholder="Keywords"
               value={keywords}
               onChange={(e) => setKeywords(e.target.value)}
-              className="w-full border rounded-lg p-2"
+              className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white"
             />
           </div>
 
+          {/* Button */}
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition-all"
+            className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition"
           >
             سوال جمع کریں
           </button>
         </form>
 
+        {/* Message */}
         {message && (
-          <p className="mt-4 text-center font-medium text-green-600">{message}</p>
+          <p className="mt-4 text-center text-green-600 dark:text-green-400">
+            {message}
+          </p>
         )}
       </div>
     </div>
