@@ -183,7 +183,17 @@ export default function HomePage() {
             animate={{ x: ["100%", "-100%"] }}
             transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
           >
-            فجر: 05:12&nbsp;&nbsp;&nbsp;ظہر: 12:34&nbsp;&nbsp;&nbsp;عصر: 16:20&nbsp;&nbsp;&nbsp;مغرب: 18:45&nbsp;&nbsp;&nbsp;عشاء: 20:00
+            {prayerTimes ? (
+              <>
+                فجر: {prayerTimes.Fajr.split(" ")[0]}&nbsp;&nbsp;&nbsp;
+                ظہر: {prayerTimes.Dhuhr.split(" ")[0]}&nbsp;&nbsp;&nbsp;
+                عصر: {prayerTimes.Asr.split(" ")[0]}&nbsp;&nbsp;&nbsp;
+                مغرب: {prayerTimes.Maghrib.split(" ")[0]}&nbsp;&nbsp;&nbsp;
+                عشاء: {prayerTimes.Isha.split(" ")[0]}
+              </>
+            ) : (
+              "نماز کے اوقات لوڈ ہو رہے ہیں..."
+            )}
           </motion.div>
         </div>
 
