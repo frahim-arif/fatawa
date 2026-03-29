@@ -169,11 +169,11 @@ export default function HomePage() {
 
         {/* Namaz Timings */}
         <div
-          className="w-full overflow-hidden"
+          className="w-full overflow-hidden px-0"
           style={{ background: "#0b3d24", borderBottom: "2px solid #d4af37" }}
         >
           <motion.div
-            className="whitespace-nowrap text-yellow-200 text-sm font-semibold"
+            className="whitespace-nowrap w-full text-yellow-200 text-sm font-semibold"
             style={{
               direction: "rtl",
               fontFamily: "'Jameel Noori Nastaleeq', serif",
