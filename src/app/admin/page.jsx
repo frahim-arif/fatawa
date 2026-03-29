@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
@@ -18,6 +18,7 @@ export default function AdminPage() {
   const [message, setMessage] = useState("");
 
   const router = useRouter();
+
   const categories = [
     "جدید مسائل",
     "نماز",
@@ -34,7 +35,6 @@ export default function AdminPage() {
   // ✅ Safe slug generator for Urdu/Arabic
   const generateSlug = (text) => {
     if (!text) return "no-slug";
-    // Replace spaces with dash, encode URI
     return encodeURIComponent(
       text
         .trim()
@@ -44,11 +44,16 @@ export default function AdminPage() {
     );
   };
 
+  // ✅ Auto-generate keywords & metaTitle
   const autoGenerateSEO = () => {
     if (question) setMetaTitle(question);
-    if (answer) setMetaDescription(answer.substring(0, 150) + "...");
     setKeywords(`${question}, ${category}, ${hawala1}, ${hawala2}, ${hawala3}`);
   };
+
+  // ✅ MetaDescription auto-update when answer changes
+  useEffect(() => {
+    if (answer) setMetaDescription(answer.substring(0, 150) + "...");
+  }, [answer]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,7 +65,7 @@ export default function AdminPage() {
     }
 
     try {
-      const backend = "https://f-backend-vdi1.onrender.com/api/admin"; // Render URL
+      const backend = "https://f-backend-vdi1.onrender.com/api/admin"; // Render backend URL
       const slug = generateSlug(question);
 
       // ✅ Log payload for debugging
@@ -92,6 +97,7 @@ export default function AdminPage() {
 
       if (res.status === 200 && res.data.success) {
         setMessage("✅ سوال کامیابی سے شامل کر دیا گیا ہے!");
+        // Clear all fields
         setCategory("");
         setQuestion("");
         setAnswer("");
@@ -106,8 +112,20 @@ export default function AdminPage() {
         setMessage("❌ کچھ غلط ہو گیا، دوبارہ کوشش کریں۔");
       }
     } catch (err) {
-      console.error("Axios Error:", err.response || err.message);
-      setMessage("❌ کچھ غلط ہو گیا، دوبارہ کوشش کریں۔");
+      // ✅ Safe Axios error handling
+      if (err.response) {
+        console.error("Axios Response Error:", err.response.data);
+        setMessage(
+          "❌ Backend error: " +
+            (err.response.data?.message || "Try again later")
+        );
+      } else if (err.request) {
+        console.error("Axios Request Error:", err.request);
+        setMessage("❌ Backend request failed. Check network.");
+      } else {
+        console.error("Axios General Error:", err.message);
+        setMessage("❌ کچھ غلط ہو گیا، دوبارہ کوشش کریں۔");
+      }
     }
   };
 
@@ -126,7 +144,10 @@ export default function AdminPage() {
             </label>
             <select
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => {
+                setCategory(e.target.value);
+                autoGenerateSEO();
+              }}
               required
               className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500"
             >
@@ -159,10 +180,7 @@ export default function AdminPage() {
             <label className="block mb-2 font-semibold text-gray-700">جواب</label>
             <textarea
               value={answer}
-              onChange={(e) => {
-                setAnswer(e.target.value);
-                autoGenerateSEO();
-              }}
+              onChange={(e) => setAnswer(e.target.value)}
               rows={4}
               required
               className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500 font-jameel"
