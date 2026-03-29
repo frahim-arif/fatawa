@@ -250,7 +250,7 @@ const hadithList = [
 
 export default function FortyHadithFree() {
   return (
-    <div className="py-8 px-4 max-w-4xl mx-auto">
+    <div className="py-8 px-4 max-w-4xl mx-auto bg-white dark:bg-gray-900 text-black dark:text-white">
       <h1 className="text-3xl font-bold text-green-700 mb-4">40 Ahadith (Free)</h1>
       <p className="mb-6 text-gray-700">
         Complete 40 Ahadith with Urdu translation and short explanation.
