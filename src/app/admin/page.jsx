@@ -32,33 +32,12 @@ export default function AdminPage() {
     "بیوع",
   ];
 
-  // ✅ Safe slug generator for Urdu/Arabic
-  const generateSlug = (text) => {
-    if (!text) return "no-slug";
-    return encodeURIComponent(
-      text
-        .trim()
-        .replace(/\s+/g, "-")
-        .replace(/[^\w\-]+/g, "")
-        .toLowerCase()
-    );
-  };
-
-  // ✅ Auto-generate keywords & metaTitle
+  // Auto-generate keywords & metaTitle
   const autoGenerateSEO = () => {
-    if (question && !metaTitle) setMetaTitle(question);
-    setKeywords(
-      `${question || ""}, ${category || ""}, ${hawala1 || ""}, ${hawala2 || ""}, ${
-        hawala3 || ""
-      }`
-    );
+    if (question) setMetaTitle(question);
+    setKeywords(`${question}, ${category}, ${hawala1}, ${hawala2}, ${hawala3}`);
+    if (answer) setMetaDescription(answer.substring(0, 150) + "...");
   };
-
-  // ✅ MetaDescription auto-update when answer changes
-  useEffect(() => {
-    if (answer && !metaDescription)
-      setMetaDescription(answer.substring(0, 150) + "...");
-  }, [answer]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,17 +49,15 @@ export default function AdminPage() {
     }
 
     try {
-      const backend = "https://f-backend-vdi1.onrender.com/api/admin/questions"; // Render backend URL
-      const slug = generateSlug(question);
+      const backend = "https://f-backend-vdi1.onrender.com/api/admin/questions";
 
-      // ✅ Fallbacks for SEO fields to avoid server errors
-      const titleToSend = metaTitle || question || "No Title";
+      // Fallback if user did not enter metaTitle/metaDescription
+      const titleToSend = metaTitle || question;
       const descriptionToSend =
-        metaDescription || answer.substring(0, 150) || "No description";
-      const keywordsToSend =
-        keywords || `${question}, ${category}, ${hawala1}, ${hawala2}, ${hawala3}`;
+        metaDescription || answer.substring(0, 150) + "...";
+      const keywordsToSend = keywords || `${question}, ${category}`;
 
-      // ✅ Log payload for debugging
+      // Log payload for debugging
       console.log({
         category,
         question,
@@ -88,24 +65,23 @@ export default function AdminPage() {
         hawala1,
         hawala2,
         hawala3,
-        slug,
         metaTitle: titleToSend,
         metaDescription: descriptionToSend,
         keywords: keywordsToSend,
       });
 
-      // const res = await axios.post(`${backend}/`, {
-      //   category,
-      //   question,
-      //   answer,
-      //   hawala1,
-      //   hawala2,
-      //   hawala3,
-      //   slug,
-      //   metaTitle: titleToSend,
-      //   metaDescription: descriptionToSend,
-      //   keywords: keywordsToSend,
-      // });
+      // ✅ POST to backend
+      const res = await axios.post(`${backend}/`, {
+        category,
+        question,
+        answer,
+        hawala1,
+        hawala2,
+        hawala3,
+        metaTitle: titleToSend,
+        metaDescription: descriptionToSend,
+        keywords: keywordsToSend,
+      });
 
       if (res.status === 200 && res.data.success) {
         setMessage("✅ سوال کامیابی سے شامل کر دیا گیا ہے!");
@@ -127,8 +103,7 @@ export default function AdminPage() {
       if (err.response) {
         console.error("Axios Response Error:", err.response.data);
         setMessage(
-          "❌ Backend error: " +
-            (err.response.data?.message || "Try again later")
+          "❌ Backend error: " + (err.response.data?.message || "Try again later")
         );
       } else if (err.request) {
         console.error("Axios Request Error:", err.request);
@@ -191,7 +166,10 @@ export default function AdminPage() {
             <label className="block mb-2 font-semibold text-gray-700">جواب</label>
             <textarea
               value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
+              onChange={(e) => {
+                setAnswer(e.target.value);
+                autoGenerateSEO();
+              }}
               rows={4}
               required
               className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500 font-jameel"
@@ -219,7 +197,7 @@ export default function AdminPage() {
             </div>
           ))}
 
-          {/* SEO */}
+          {/* SEO Fields */}
           <div className="bg-gray-100 p-4 rounded-lg border">
             <h2 className="text-xl font-semibold mb-3 text-green-800">
               🔍 SEO Settings
