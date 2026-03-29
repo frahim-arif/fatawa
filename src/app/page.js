@@ -191,7 +191,7 @@ export default function HomePage() {
 
 
       {/* Search Box */}
-      <div className="relative w-11/12 md:w-1/2 mx-auto mt-6 z-10">
+      <div className="relative w-11/12 md:w-full mx-auto mt-6 z-10">
         <div
           className="
             flex items-center 
@@ -248,7 +248,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 px-1 mt-6 w-full">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 px-2 mt-6 w-full">
 
         {/* All Categories */}
         <div
@@ -292,7 +292,7 @@ export default function HomePage() {
 
 
       {/* Questions List */}
-      <section className="space-y-4 px-4 z-10 relative">
+      <section className="space-y-4 px-0 z-10 relative">
         {filteredQuestions.length > 0 ? (
           filteredQuestions.map((q) => (
             <div
