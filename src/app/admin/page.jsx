@@ -53,7 +53,7 @@ export default function AdminPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-     const backend = "https://f-backend-vdi1.onrender.com/api/admin";
+      const backend = "https://f-backend-vdi1.onrender.com/api/admin";
       const slug = generateSlug(question);
 
       const res = await axios.post(`${backend}/add-question`, {
@@ -80,7 +80,7 @@ export default function AdminPage() {
         setMetaTitle("");
         setMetaDescription("");
         setKeywords("");
-        router.push(`/questions/${slug}`);
+        router.push("/");
       } else {
         setMessage("❌ کچھ غلط ہو گیا، دوبارہ کوشش کریں۔");
       }
