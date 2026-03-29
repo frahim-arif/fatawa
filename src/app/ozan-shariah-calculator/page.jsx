@@ -72,20 +72,20 @@ export default function ShariahWeightCalculator() {
       </div>
 
       {/* Input Fields */}
-      <label className="block mb-2 font-medium">وزن درج کریں (گرام یا کلو)</label>
+      <label className="block mb-2 font-medium text-black dark:text-gray-200">وزن درج کریں (گرام یا کلو)</label>
       <input
         type="number"
         value={weight}
         onChange={(e) => setWeight(e.target.value)}
-        className="w-full p-2 border rounded mb-4"
+        className="w-full p-2 border rounded mb-4 bg-white text-black dark:bg-gray-800 dark:text-white dark:border-gray-600"
         placeholder="مثال: 100"
       />
 
-      <label className="block mb-2 font-medium">قسم منتخب کریں</label>
+      <label className="block mb-2 font-medium text-black dark:text-gray-200">قسم منتخب کریں</label>
       <select
         value={type}
         onChange={(e) => setType(e.target.value)}
-        className="w-full p-2 border rounded mb-4"
+        className="w-full p-2 border rounded mb-4 bg-white text-black dark:bg-gray-800 dark:text-white dark:border-gray-600"
       >
         <option value="gold">سونا</option>
         <option value="silver">چاندی</option>
@@ -102,7 +102,7 @@ export default function ShariahWeightCalculator() {
 
       {/* Result Box */}
       {result !== null && (
-        <div className="mt-4 p-3 border rounded bg-gray-100 text-center">
+        <div className="mt-4 p-3 border rounded text-center bg-gray-100 text-black dark:bg-gray-800 dark:text-white dark:border-gray-600">
           <strong>نتیجہ: </strong>{" "}
           {type === "meat" ? `${result} جانور` : `${result} گرام`}
         </div>
