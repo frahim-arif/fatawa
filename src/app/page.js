@@ -171,8 +171,8 @@ export default function HomePage() {
           className="w-full overflow-hidden"
           style={{
             background: "linear-gradient(to right, #0f5132, #198754, #0f5132)",
-            borderBottom: "2px solid #d4af37",
-            borderTop: "2px solid #d4af37",
+            borderBottom: "1px solid #d4af37",
+            borderTop: "1px solid #d4af37",
           }}
         >
           <motion.div
