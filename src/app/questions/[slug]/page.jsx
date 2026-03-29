@@ -6,7 +6,7 @@ import Head from "next/head";
 export default function SingleQuestion() {
   const router = useRouter();
   const { slug } = router.query;
-  const backend = "https://f-backend-vdi1.onrender.com/api"; // ✅ Change to production URL
+  const backend = "https://f-backend-vdi1.onrender.com/api/admin/questions" // ✅ Change to production URL
 
   const [question, setQuestion] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -16,7 +16,7 @@ export default function SingleQuestion() {
 
     const fetchQuestion = async () => {
       try {
-        const res = await fetch(`${backend}/questions/slug/${slug}`);
+        const res = await fetch(`${backend}/slug/${slug}`);
         const data = await res.json();
 
         if (data.success) {

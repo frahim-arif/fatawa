@@ -65,7 +65,7 @@ export default function AdminPage() {
     }
 
     try {
-      const backend = "https://f-backend-vdi1.onrender.com/api/admin"; // Render backend URL
+      const backend = "https://f-backend-vdi1.onrender.com/api/admin/questions";// Render backend URL
       const slug = generateSlug(question);
 
       // ✅ Log payload for debugging
@@ -82,7 +82,7 @@ export default function AdminPage() {
         keywords,
       });
 
-      const res = await axios.post(`${backend}/questions/add-question`, {
+      const res = await axios.post(`${backend}/`, {
         category,
         question,
         answer,
