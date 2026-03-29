@@ -46,13 +46,18 @@ export default function AdminPage() {
 
   // ✅ Auto-generate keywords & metaTitle
   const autoGenerateSEO = () => {
-    if (question) setMetaTitle(question);
-    setKeywords(`${question}, ${category}, ${hawala1}, ${hawala2}, ${hawala3}`);
+    if (question && !metaTitle) setMetaTitle(question);
+    setKeywords(
+      `${question || ""}, ${category || ""}, ${hawala1 || ""}, ${hawala2 || ""}, ${
+        hawala3 || ""
+      }`
+    );
   };
 
   // ✅ MetaDescription auto-update when answer changes
   useEffect(() => {
-    if (answer) setMetaDescription(answer.substring(0, 150) + "...");
+    if (answer && !metaDescription)
+      setMetaDescription(answer.substring(0, 150) + "...");
   }, [answer]);
 
   const handleSubmit = async (e) => {
@@ -65,8 +70,15 @@ export default function AdminPage() {
     }
 
     try {
-      const backend = "https://f-backend-vdi1.onrender.com/api/admin/questions";// Render backend URL
+      const backend = "https://f-backend-vdi1.onrender.com/api/admin/questions"; // Render backend URL
       const slug = generateSlug(question);
+
+      // ✅ Fallbacks for SEO fields to avoid server errors
+      const titleToSend = metaTitle || question || "No Title";
+      const descriptionToSend =
+        metaDescription || answer.substring(0, 150) || "No description";
+      const keywordsToSend =
+        keywords || `${question}, ${category}, ${hawala1}, ${hawala2}, ${hawala3}`;
 
       // ✅ Log payload for debugging
       console.log({
@@ -77,9 +89,9 @@ export default function AdminPage() {
         hawala2,
         hawala3,
         slug,
-        metaTitle,
-        metaDescription,
-        keywords,
+        metaTitle: titleToSend,
+        metaDescription: descriptionToSend,
+        keywords: keywordsToSend,
       });
 
       const res = await axios.post(`${backend}/`, {
@@ -90,9 +102,9 @@ export default function AdminPage() {
         hawala2,
         hawala3,
         slug,
-        metaTitle,
-        metaDescription,
-        keywords,
+        metaTitle: titleToSend,
+        metaDescription: descriptionToSend,
+        keywords: keywordsToSend,
       });
 
       if (res.status === 200 && res.data.success) {
@@ -112,7 +124,6 @@ export default function AdminPage() {
         setMessage("❌ کچھ غلط ہو گیا، دوبارہ کوشش کریں۔");
       }
     } catch (err) {
-      // ✅ Safe Axios error handling
       if (err.response) {
         console.error("Axios Response Error:", err.response.data);
         setMessage(
