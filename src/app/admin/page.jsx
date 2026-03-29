@@ -55,7 +55,7 @@ export default function AdminPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const backend = "https://f-backend-vdi1.onrender.com/api/admin";
+      const backend = "http://localhost:5000/api/admin";
       const slug = generateSlug(question);
 
       const res = await axios.post(`${backend}/add-question`, {
