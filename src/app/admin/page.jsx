@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter } from "navigation";
 
 export default function AdminPage() {
   const router = useRouter();
