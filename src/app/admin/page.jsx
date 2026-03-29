@@ -33,7 +33,7 @@ export default function AdminPage() {
     "بیوع",
   ];
 
-  // ✅ FIXED SLUG (Urdu supported)
+  // ✅ FIXED SLUG (Urdu support)
   const generateSlug = (text) => {
     return text
       .toString()
@@ -74,8 +74,6 @@ export default function AdminPage() {
         keywords,
       });
 
-      console.log("RESPONSE:", res.data);
-
       if (res.status === 200 && res.data.success) {
         setMessage("✅ سوال کامیابی سے شامل ہو گیا");
 
@@ -86,15 +84,17 @@ export default function AdminPage() {
         setHawala1("");
         setHawala2("");
         setHawala3("");
+        setMetaTitle("");
+        setMetaDescription("");
+        setKeywords("");
 
-        // ✅ redirect FIXED
+        // ✅ redirect to new page
         router.push(`/questions/${slug}`);
       }
     } catch (err) {
-      console.error("❌ ERROR:", err);
+      console.error(err);
 
       if (err.response) {
-        console.log("🔥 BACKEND:", err.response.data);
         setMessage(err.response.data.message || "❌ Bad Request");
       } else {
         setMessage("❌ Network Error");
@@ -103,51 +103,114 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-10 flex flex-col items-center">
-      <div className="bg-white shadow-lg rounded-2xl p-8 max-w-2xl w-full">
-        <h1 className="text-3xl font-bold text-center text-green-700 mb-6">
+    <div className="min-h-screen bg-gray-100 dark:bg-black px-4 md:px-6 py-10 flex justify-center">
+      <div className="bg-white dark:bg-gray-900 shadow-xl rounded-2xl p-6 md:p-8 w-full max-w-2xl">
+
+        <h1 className="text-2xl md:text-3xl font-bold text-center text-green-700 mb-6">
           سوال شامل کریں
         </h1>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
+
+          {/* Category */}
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             required
-            className="w-full border p-2 rounded"
+            className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:text-white"
           >
             <option value="">زمرہ منتخب کریں</option>
             {categories.map((cat, i) => (
-              <option key={i}>{cat}</option>
+              <option key={i} value={cat}>{cat}</option>
             ))}
           </select>
 
+          {/* Question */}
           <textarea
             value={question}
             onChange={(e) => {
               setQuestion(e.target.value);
               autoGenerateSEO();
             }}
-            placeholder="سوال"
-            className="w-full border p-2 rounded"
+            placeholder="سوال لکھیں..."
+            rows={3}
+            className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:text-white"
+            required
           />
 
+          {/* Answer */}
           <textarea
             value={answer}
             onChange={(e) => {
               setAnswer(e.target.value);
               autoGenerateSEO();
             }}
-            placeholder="جواب"
-            className="w-full border p-2 rounded"
+            placeholder="جواب لکھیں..."
+            rows={4}
+            className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:text-white"
+            required
           />
 
-          <button className="w-full bg-green-600 text-white p-2 rounded">
-            جمع کریں
+          {/* Hawala */}
+          <textarea
+            value={hawala1}
+            onChange={(e) => setHawala1(e.target.value)}
+            placeholder="حوالہ 1"
+            className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:text-white"
+          />
+
+          <textarea
+            value={hawala2}
+            onChange={(e) => setHawala2(e.target.value)}
+            placeholder="حوالہ 2"
+            className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:text-white"
+          />
+
+          <textarea
+            value={hawala3}
+            onChange={(e) => setHawala3(e.target.value)}
+            placeholder="حوالہ 3"
+            className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:text-white"
+          />
+
+          {/* SEO */}
+          <div className="bg-gray-200 dark:bg-gray-800 p-4 rounded-lg">
+            <input
+              type="text"
+              value={metaTitle}
+              onChange={(e) => setMetaTitle(e.target.value)}
+              placeholder="Meta Title"
+              className="w-full p-2 mb-2 border rounded dark:bg-gray-900 dark:text-white"
+            />
+
+            <textarea
+              value={metaDescription}
+              onChange={(e) => setMetaDescription(e.target.value)}
+              placeholder="Meta Description"
+              className="w-full p-2 mb-2 border rounded dark:bg-gray-900 dark:text-white"
+            />
+
+            <input
+              type="text"
+              value={keywords}
+              onChange={(e) => setKeywords(e.target.value)}
+              placeholder="Keywords"
+              className="w-full p-2 border rounded dark:bg-gray-900 dark:text-white"
+            />
+          </div>
+
+          {/* Button */}
+          <button className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition">
+            سوال جمع کریں
           </button>
+
         </form>
 
-        {message && <p className="mt-4 text-center">{message}</p>}
+        {message && (
+          <p className="mt-4 text-center text-green-600 dark:text-green-400">
+            {message}
+          </p>
+        )}
       </div>
     </div>
   );
