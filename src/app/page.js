@@ -85,7 +85,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative space-y-10 overflow-hidden min-h-screen" style={{ backgroundColor: "#ffffff" }}>
+    <div className="relative space-y-10 overflow-hidden min-h-screen" style={{ backgroundColor: "#ddeee9" }}>
       <Head>
         <style>{`
     @font-face {
