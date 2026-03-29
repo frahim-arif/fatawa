@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-export default function AdminPage() {
+export default function AdminAddQuestion() {
   const [category, setCategory] = useState("");
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
@@ -15,7 +15,9 @@ export default function AdminPage() {
   const [metaTitle, setMetaTitle] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
   const [keywords, setKeywords] = useState("");
+
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -32,12 +34,24 @@ export default function AdminPage() {
     "بیوع",
   ];
 
-  // Auto-generate keywords & metaTitle
-  const autoGenerateSEO = () => {
-    if (question) setMetaTitle(question);
-    setKeywords(`${question}, ${category}, ${hawala1}, ${hawala2}, ${hawala3}`);
-    if (answer) setMetaDescription(answer.substring(0, 150) + "...");
+  // ✅ Safe slug generator for Urdu/Arabic
+  const generateSlug = (text) => {
+    if (!text) return "no-slug";
+    return encodeURIComponent(
+      text
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/[^\w\-]+/g, "")
+        .toLowerCase()
+    );
   };
+
+  // ✅ Auto-generate SEO fields
+  useEffect(() => {
+    if (question) setMetaTitle(question);
+    if (answer) setMetaDescription(answer.substring(0, 150) + "...");
+    setKeywords(`${question}, ${category}, ${hawala1}, ${hawala2}, ${hawala3}`);
+  }, [question, answer, category, hawala1, hawala2, hawala3]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,43 +62,33 @@ export default function AdminPage() {
       return;
     }
 
+    setLoading(true);
+    setMessage("");
+
     try {
-      const backend = "https://f-backend-vdi1.onrender.com/api/admin/questions";
+      const backend = "https://f-backend-vdi1.onrender.com/api/admin/questions"; // Production URL
+      const slug = generateSlug(question);
 
-      // Fallback if user did not enter metaTitle/metaDescription
-      const titleToSend = metaTitle || question;
-      const descriptionToSend =
-        metaDescription || answer.substring(0, 150) + "...";
-      const keywordsToSend = keywords || `${question}, ${category}`;
-
-      // Log payload for debugging
-      console.log({
+      const payload = {
         category,
         question,
         answer,
         hawala1,
         hawala2,
         hawala3,
-        metaTitle: titleToSend,
-        metaDescription: descriptionToSend,
-        keywords: keywordsToSend,
-      });
+        slug,
+        metaTitle,
+        metaDescription,
+        keywords,
+      };
 
-      // ✅ POST to backend
-      const res = await axios.post(`${backend}/`, {
-        category,
-        question,
-        answer,
-        hawala1,
-        hawala2,
-        hawala3,
-        metaTitle: titleToSend,
-        metaDescription: descriptionToSend,
-        keywords: keywordsToSend,
-      });
+      console.log("Submitting payload:", payload); // ✅ Debug
+
+      const res = await axios.post(`${backend}/`, payload);
 
       if (res.status === 200 && res.data.success) {
         setMessage("✅ سوال کامیابی سے شامل کر دیا گیا ہے!");
+
         // Clear all fields
         setCategory("");
         setQuestion("");
@@ -95,7 +99,8 @@ export default function AdminPage() {
         setMetaTitle("");
         setMetaDescription("");
         setKeywords("");
-        router.push("/"); // redirect after submit
+
+        router.push("/admin/questions"); // Redirect to questions list
       } else {
         setMessage("❌ کچھ غلط ہو گیا، دوبارہ کوشش کریں۔");
       }
@@ -109,9 +114,11 @@ export default function AdminPage() {
         console.error("Axios Request Error:", err.request);
         setMessage("❌ Backend request failed. Check network.");
       } else {
-        console.error("Axios General Error:", err.message);
+        console.error("Axios Error:", err.message);
         setMessage("❌ کچھ غلط ہو گیا، دوبارہ کوشش کریں۔");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -130,16 +137,13 @@ export default function AdminPage() {
             </label>
             <select
               value={category}
-              onChange={(e) => {
-                setCategory(e.target.value);
-                autoGenerateSEO();
-              }}
+              onChange={(e) => setCategory(e.target.value)}
               required
               className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500"
             >
               <option value="">زمرہ منتخب کریں</option>
-              {categories.map((cat, index) => (
-                <option key={index} value={cat}>
+              {categories.map((cat, idx) => (
+                <option key={idx} value={cat}>
                   {cat}
                 </option>
               ))}
@@ -151,10 +155,7 @@ export default function AdminPage() {
             <label className="block mb-2 font-semibold text-gray-700">سوال</label>
             <textarea
               value={question}
-              onChange={(e) => {
-                setQuestion(e.target.value);
-                autoGenerateSEO();
-              }}
+              onChange={(e) => setQuestion(e.target.value)}
               rows={3}
               required
               className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500 font-jameel"
@@ -166,10 +167,7 @@ export default function AdminPage() {
             <label className="block mb-2 font-semibold text-gray-700">جواب</label>
             <textarea
               value={answer}
-              onChange={(e) => {
-                setAnswer(e.target.value);
-                autoGenerateSEO();
-              }}
+              onChange={(e) => setAnswer(e.target.value)}
               rows={4}
               required
               className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-green-500 font-jameel"
@@ -179,9 +177,7 @@ export default function AdminPage() {
           {/* Hawala fields */}
           {[1, 2, 3].map((i) => (
             <div key={i}>
-              <label className="block mb-2 font-semibold text-gray-700">
-                حوالہ {i}
-              </label>
+              <label className="block mb-2 font-semibold text-gray-700">حوالہ {i}</label>
               <textarea
                 value={i === 1 ? hawala1 : i === 2 ? hawala2 : hawala3}
                 onChange={(e) =>
@@ -197,11 +193,10 @@ export default function AdminPage() {
             </div>
           ))}
 
-          {/* SEO Fields */}
+          {/* SEO */}
           <div className="bg-gray-100 p-4 rounded-lg border">
-            <h2 className="text-xl font-semibold mb-3 text-green-800">
-              🔍 SEO Settings
-            </h2>
+            <h2 className="text-xl font-semibold mb-3 text-green-800">🔍 SEO Settings</h2>
+
             <label className="block font-semibold mb-1">Meta Title</label>
             <input
               type="text"
@@ -229,9 +224,10 @@ export default function AdminPage() {
 
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition-all"
+            disabled={loading}
+            className="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition-all disabled:opacity-50"
           >
-            سوال جمع کریں
+            {loading ? "⏳ جمع کر رہے ہیں..." : "سوال جمع کریں"}
           </button>
         </form>
 
