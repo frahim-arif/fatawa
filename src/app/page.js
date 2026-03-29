@@ -273,15 +273,14 @@ export default function HomePage() {
             key={cat._id}
             onClick={() => setSelectedCategory(cat.name)}
             className={`
-      p-5 rounded-3xl cursor-pointer text-center select-none
-      transition-all duration-500 transform border-blue-500 shadow-xl
-      hover:scale-105 hover:shadow-[0_0_30px_rgba(255,223,0,0.8)]
-      ${selectedCategory === cat.name
-                ? "bg-gradient-to-br from-yellow-400 to-yellow-200 border-yellow-500 shadow-[0_0_30px_rgba(255,223,0,0.9)] text-white"
-                : "bg-white/30 border-gray-300 text-black hover:bg-gradient-to-br hover:from-yellow-100 hover:to-yellow-50 hover:text-yellow-800 hover:shadow-[0_0_25px_rgba(255,223,0,0.5)]"
+    p-5 rounded-3xl cursor-pointer text-center select-none
+    transition-all duration-300 transform border shadow-md
+    hover:scale-105
+    ${selectedCategory === cat.name
+                ? "bg-white border-yellow-500 text-black shadow-[0_0_20px_rgba(255,223,0,0.6)]"
+                : "bg-white border-gray-300 text-black hover:bg-gray-100"
               }
-    `}
-            style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
+  `}
           >
             {cat.name}
           </div>
@@ -368,7 +367,7 @@ export default function HomePage() {
                 style={{
                   fontFamily: "'Jameel Noori Nastaleeq', serif",
                   lineHeight: "2.2",
-                  color: "#000000", 
+                  color: "#000000",
                 }}
               >
                 {selectedQuestion.answer}
