@@ -12,6 +12,7 @@ export default function HomePage() {
   const [skip, setSkip] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [prayerTimes, setPrayerTimes] = useState(null);
 
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
@@ -29,6 +30,24 @@ export default function HomePage() {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+  const fetchPrayerTimes = async () => {
+    try {
+      const res = await fetch(
+        "https://api.aladhan.com/v1/timingsByCity?city=Guwahati&country=India&method=1"
+      );
+      const data = await res.json();
+
+      if (data.code === 200) {
+        setPrayerTimes(data.data.timings);
+      }
+    } catch (err) {
+      console.error("Namaz timing error:", err);
+    }
+  };
+
+  fetchPrayerTimes();
+}, []);
   // Fetch questions
   const fetchQuestions = async (reset = false) => {
     try {
