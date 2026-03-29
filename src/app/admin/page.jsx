@@ -32,9 +32,9 @@ export default function AdminPage() {
     "بیوع",
   ];
 
-  // Improved slug generator (supports Urdu/Arabic)
+  // Improved slug generator (never empty)
   const generateSlug = (text) => {
-    return text
+    let slug = text
       .toString()
       .normalize("NFKD")
       .replace(/[\u064B-\u0652]/g, "") // remove tashkeel
@@ -42,6 +42,8 @@ export default function AdminPage() {
       .toLowerCase()
       .replace(/ /g, "-")
       .replace(/[^\w-]+/g, "");
+    if (!slug) slug = "question-" + Date.now();
+    return slug;
   };
 
   const autoGenerateSEO = () => {
