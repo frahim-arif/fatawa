@@ -70,7 +70,7 @@ export default function HomePage() {
           setSkip(5);
         } else {
           setAllQuestions((prev) => [...prev, ...sorted]);
-          setSkip((prev) => prev + 5);
+          setSkip(skip + 5);
         }
 
         setHasMore(sorted.length === 5);
