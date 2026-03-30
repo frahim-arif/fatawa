@@ -100,7 +100,7 @@ export default function AdminAddQuestion() {
         setMetaDescription("");
         setKeywords("");
 
-        router.push("/admin/questions"); // Redirect to questions list
+        router.push("/"); // Redirect to questions list
       } else {
         setMessage("❌ کچھ غلط ہو گیا، دوبارہ کوشش کریں۔");
       }
