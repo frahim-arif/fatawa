@@ -31,30 +31,30 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-  const fetchPrayerTimes = async () => {
-    try {
-      const res = await fetch(
-        "https://api.aladhan.com/v1/timingsByCity?city=Guwahati&country=India&method=1"
-      );
-      const data = await res.json();
+    const fetchPrayerTimes = async () => {
+      try {
+        const res = await fetch(
+          "https://api.aladhan.com/v1/timingsByCity?city=Guwahati&country=India&method=1"
+        );
+        const data = await res.json();
 
-      if (data.code === 200) {
-        setPrayerTimes(data.data.timings);
+        if (data.code === 200) {
+          setPrayerTimes(data.data.timings);
+        }
+      } catch (err) {
+        console.error("Namaz timing error:", err);
       }
-    } catch (err) {
-      console.error("Namaz timing error:", err);
-    }
-  };
+    };
 
-  fetchPrayerTimes();
-}, []);
+    fetchPrayerTimes();
+  }, []);
   // Fetch questions
   const fetchQuestions = async (reset = false) => {
     try {
       let url =
         selectedCategory === ""
-          ? `${backend}/questions?skip=${reset ? 0 : skip}&limit=5`
-          : `${backend}/questions/category/${encodeURIComponent(
+          ? `${backend}/admin/questions?skip=${reset ? 0 : skip}&limit=5`
+          : `${backend}/admin/questions/category/${encodeURIComponent(
             selectedCategory
           )}?skip=${reset ? 0 : skip}&limit=5`;
 
@@ -70,7 +70,7 @@ export default function HomePage() {
           setSkip(5);
         } else {
           setAllQuestions((prev) => [...prev, ...sorted]);
-          setSkip(skip + 5);
+          setSkip((prev) => prev + 5);
         }
 
         setHasMore(sorted.length === 5);
