@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { MoreVertical, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Header() {
@@ -105,7 +105,7 @@ export default function Header() {
             onClick={() => setOpen(!open)}
             className="md:hidden text-yellow-200 hover:text-white transition-all duration-300"
           >
-            {open ? <X size={28} /> : <MoreVertical size={28} />}
+            {open ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
       </div>
