@@ -363,6 +363,29 @@ export default function HomePage() {
       </p>
     </div>
   </Link>
+<div className="grid grid-cols-2 gap-3 px-2 mt-6">
+
+  {/* 📿 مسنون دعائیں */}
+  <Link href="/masnoon-duaye">
+    <div
+      className="
+        h-20 flex items-center justify-center
+        cursor-pointer
+        border border-yellow-400
+        shadow-md
+        hover:shadow-[0_0_20px_rgba(255,223,0,0.7)]
+        transition-all duration-300
+      "
+      style={{
+        background: "linear-gradient(135deg, #0f5132, #198754)",
+        fontFamily: "'Jameel Noori Nastaleeq', serif",
+      }}
+    >
+      <p className="text-lg text-yellow-200 font-bold">
+        📿 مسنون دعائیں
+      </p>
+    </div>
+  </Link>
 
   {/* 👶 اسلامی نام */}
   <Link href="/islami-naam">
@@ -385,6 +408,8 @@ export default function HomePage() {
       </p>
     </div>
   </Link>
+
+</div>
       {/* Questions List */}
       <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
         {filteredQuestions.length > 0 ? (
