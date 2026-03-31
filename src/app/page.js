@@ -5,7 +5,7 @@ import Head from "next/head";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
-import Link from "next/link";
+
 
 
 export default function HomePage() {
@@ -347,7 +347,7 @@ export default function HomePage() {
 <div className="grid grid-cols-2 gap-2 px-2 mt-4">
 
   {/* 📿 مسنون دعائیں */}
-  <Link href="/masnoon-duaye">
+  <Link href="/masnoon-duayee">
     <div
       className="
         h-10 flex items-center justify-center
