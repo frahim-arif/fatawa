@@ -13,6 +13,9 @@ export const metadata = {
   title: "Maslakedeoband",
   description: "Islamic Q&A Platform",
   icons: { icon: [{ url: "/favicon.ico", type: "image/x-icon" }] },
+  verification: {
+    google: "3fty9OBokUbw9CvP3IvulB5srEIpqdVaAfOWbvu1t_M",
+  },
 };
 
 export default function RootLayout({ children }) {
