@@ -340,7 +340,9 @@ export default function HomePage() {
 
       </div>
 
-      <div className="grid grid-cols-2 gap-3 px-2 mt-6">
+    
+
+<div className="grid grid-cols-2 gap-3 px-2 mt-6">
 
   {/* 📿 مسنون دعائیں */}
   <Link href="/masnoon-duaye">
@@ -385,6 +387,8 @@ export default function HomePage() {
       </p>
     </div>
   </Link>
+
+</div>
       {/* Questions List */}
       <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
         {filteredQuestions.length > 0 ? (
@@ -485,14 +489,14 @@ export default function HomePage() {
                   </p>
                 )}
               </div>
+              
 
-
-
+  
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
-
+    
   );
 }
