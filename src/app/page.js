@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Search, Mic, X } from "lucide-react";
 import Head from "next/head";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRef } from "react";
 
 export default function HomePage() {
   const [query, setQuery] = useState("");
@@ -13,6 +14,7 @@ export default function HomePage() {
   const [hasMore, setHasMore] = useState(true);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [prayerTimes, setPrayerTimes] = useState(null);
+  const questionsRef = useRef(null);
 
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
@@ -281,7 +283,16 @@ export default function HomePage() {
 
         {/* All Categories */}
         <div
-          onClick={() => setSelectedCategory("")}
+          onClick={() => {
+            setSelectedCategory("");
+
+            setTimeout(() => {
+              questionsRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }, 300);
+          }}
           className={`
     p-5 rounded-3xl cursor-pointer text-center select-none
     transition-all duration-500 transform border-blue-500 shadow-xl
@@ -300,7 +311,16 @@ export default function HomePage() {
         {categories.map((cat) => (
           <div
             key={cat._id}
-            onClick={() => setSelectedCategory(cat.name)}
+            onClick={() => {
+              setSelectedCategory(cat.name);
+
+              setTimeout(() => {
+                questionsRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }, 300);
+            }}
             className={`
     p-5 rounded-3xl cursor-pointer text-center select-none
     transition-all duration-300 transform border shadow-md
@@ -320,7 +340,7 @@ export default function HomePage() {
 
 
       {/* Questions List */}
-      <section className="space-y-4 px-0 z-10 relative">
+      <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
         {filteredQuestions.length > 0 ? (
           filteredQuestions.map((q) => (
             <div
