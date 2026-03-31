@@ -17,7 +17,7 @@ export default function SingleQuestion() {
 
     const fetchQuestion = async () => {
       try {
-        const res = await fetch(`${backend}/slug/${slug}`);
+        const res = await fetch(`${backend}/slug/${encodeURIComponent(slug)}`);
         const data = await res.json();
 
         if (data.success) {
