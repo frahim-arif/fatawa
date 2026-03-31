@@ -4,6 +4,7 @@ import { Search, Mic, X } from "lucide-react";
 import Head from "next/head";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
+import Link from "next/link";
 
 export default function HomePage() {
   const [query, setQuery] = useState("");
@@ -439,11 +440,33 @@ export default function HomePage() {
                   </p>
                 )}
               </div>
+              <div className="grid grid-cols-2 gap-4 px-3 mt-6">
+
+  {/* Masnoon Duaye */}
+  <Link href="/masnoon-duaye">
+    <div className="p-6 bg-white rounded-2xl shadow-lg text-center cursor-pointer hover:scale-105 transition">
+      <p className="text-xl font-bold text-green-700">
+        📿 مسنون دعائیں
+      </p>
+    </div>
+  </Link>
+
+  {/* Islami Naam */}
+  <Link href="/islami-naam">
+    <div className="p-6 bg-white rounded-2xl shadow-lg text-center cursor-pointer hover:scale-105 transition">
+      <p className="text-xl font-bold text-yellow-700">
+        👶 اسلامی نام
+      </p>
+    </div>
+  </Link>
+
+</div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
+    
   );
 }
 
