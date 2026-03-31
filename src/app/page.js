@@ -342,17 +342,18 @@ export default function HomePage() {
 
     
 
-<div className="grid grid-cols-2 gap-3 px-2 mt-6">
+
+<div className="grid grid-cols-2 gap-2 px-2 mt-4">
 
   {/* 📿 مسنون دعائیں */}
   <Link href="/masnoon-duaye">
     <div
       className="
-        h-20 flex items-center justify-center
+        h-10 flex items-center justify-center
         cursor-pointer
         border border-yellow-400
-        shadow-md
-        hover:shadow-[0_0_20px_rgba(255,223,0,0.7)]
+        shadow-sm
+        hover:shadow-[0_0_10px_rgba(255,223,0,0.6)]
         transition-all duration-300
       "
       style={{
@@ -360,7 +361,7 @@ export default function HomePage() {
         fontFamily: "'Jameel Noori Nastaleeq', serif",
       }}
     >
-      <p className="text-lg text-yellow-200 font-bold">
+      <p className="text-sm text-yellow-200 font-bold">
         📿 مسنون دعائیں
       </p>
     </div>
@@ -370,11 +371,11 @@ export default function HomePage() {
   <Link href="/islami-naam">
     <div
       className="
-        h-20 flex items-center justify-center
+        h-10 flex items-center justify-center
         cursor-pointer
         border border-yellow-400
-        shadow-md
-        hover:shadow-[0_0_20px_rgba(255,223,0,0.7)]
+        shadow-sm
+        hover:shadow-[0_0_10px_rgba(255,223,0,0.6)]
         transition-all duration-300
       "
       style={{
@@ -382,7 +383,7 @@ export default function HomePage() {
         fontFamily: "'Jameel Noori Nastaleeq', serif",
       }}
     >
-      <p className="text-lg text-black font-bold">
+      <p className="text-sm text-black font-bold">
         👶 اسلامی نام
       </p>
     </div>
