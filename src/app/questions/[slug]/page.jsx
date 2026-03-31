@@ -3,7 +3,7 @@
 
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 import Head from "next/head";
 
 export default function SingleQuestion() {
