@@ -340,21 +340,51 @@ export default function HomePage() {
 
       </div>
 
-      <div className="grid grid-cols-2 gap-4 px-3 mt-6">
+      <div className="grid grid-cols-2 gap-3 px-2 mt-6">
 
-        {/* 📿 مسنون دعائیں */}
-        <Link href="/masnoon-duaye">
-          <div className="p-5 rounded-2xl bg-white shadow-md text-center cursor-pointer hover:scale-105 transition">
-            <p
-              className="text-xl text-green-700 font-bold"
-              style={{ fontFamily: "'Jameel Noori Nastaleeq', serif" }}
-            >
-              📿 مسنون دعائیں
-            </p>
-          </div>
-        </Link>
+  {/* 📿 مسنون دعائیں */}
+  <Link href="/masnoon-duaye">
+    <div
+      className="
+        h-20 flex items-center justify-center
+        cursor-pointer
+        border border-yellow-400
+        shadow-md
+        hover:shadow-[0_0_20px_rgba(255,223,0,0.7)]
+        transition-all duration-300
+      "
+      style={{
+        background: "linear-gradient(135deg, #0f5132, #198754)",
+        fontFamily: "'Jameel Noori Nastaleeq', serif",
+      }}
+    >
+      <p className="text-lg text-yellow-200 font-bold">
+        📿 مسنون دعائیں
+      </p>
+    </div>
+  </Link>
 
-      </div>
+  {/* 👶 اسلامی نام */}
+  <Link href="/islami-naam">
+    <div
+      className="
+        h-20 flex items-center justify-center
+        cursor-pointer
+        border border-yellow-400
+        shadow-md
+        hover:shadow-[0_0_20px_rgba(255,223,0,0.7)]
+        transition-all duration-300
+      "
+      style={{
+        background: "linear-gradient(135deg, #664d03, #ffc107)",
+        fontFamily: "'Jameel Noori Nastaleeq', serif",
+      }}
+    >
+      <p className="text-lg text-black font-bold">
+        👶 اسلامی نام
+      </p>
+    </div>
+  </Link>
       {/* Questions List */}
       <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
         {filteredQuestions.length > 0 ? (
