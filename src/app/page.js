@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
 
+
 export default function HomePage() {
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -339,7 +340,21 @@ export default function HomePage() {
 
       </div>
 
+      <div className="grid grid-cols-2 gap-4 px-3 mt-6">
 
+        {/* 📿 مسنون دعائیں */}
+        <Link href="/masnoon-duaye">
+          <div className="p-5 rounded-2xl bg-white shadow-md text-center cursor-pointer hover:scale-105 transition">
+            <p
+              className="text-xl text-green-700 font-bold"
+              style={{ fontFamily: "'Jameel Noori Nastaleeq', serif" }}
+            >
+              📿 مسنون دعائیں
+            </p>
+          </div>
+        </Link>
+
+      </div>
       {/* Questions List */}
       <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
         {filteredQuestions.length > 0 ? (
@@ -440,33 +455,14 @@ export default function HomePage() {
                   </p>
                 )}
               </div>
-              <div className="grid grid-cols-2 gap-4 px-3 mt-6">
 
-  {/* Masnoon Duaye */}
-  <Link href="/masnoon-duaye">
-    <div className="p-6 bg-white rounded-2xl shadow-lg text-center cursor-pointer hover:scale-105 transition">
-      <p className="text-xl font-bold text-green-700">
-        📿 مسنون دعائیں
-      </p>
-    </div>
-  </Link>
 
-  {/* Islami Naam */}
-  <Link href="/islami-naam">
-    <div className="p-6 bg-white rounded-2xl shadow-lg text-center cursor-pointer hover:scale-105 transition">
-      <p className="text-xl font-bold text-yellow-700">
-        👶 اسلامی نام
-      </p>
-    </div>
-  </Link>
 
-</div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
-    
+
   );
 }
-
