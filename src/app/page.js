@@ -5,6 +5,7 @@ import Head from "next/head";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
+import Link from "next/link";
 
 
 export default function HomePage() {
