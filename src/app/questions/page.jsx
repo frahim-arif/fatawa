@@ -48,9 +48,9 @@ export default function QuestionsPage() {
         ) : (
           questions.map((q) => (
             <div key={q._id} className="border-b pb-3">
-              
-              {/* ✅ CLICKABLE LINK */}
-              <Link href={`/questions/${q._id}`}>
+
+              {/* ✅ FIXED LINK (slug use karo) */}
+              <Link href={`/questions/${q.slug}`}>
                 <h2 className="text-lg font-semibold text-green-900 hover:text-yellow-600 cursor-pointer">
                   {q.question}
                 </h2>
