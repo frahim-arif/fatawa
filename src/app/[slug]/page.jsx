@@ -21,7 +21,7 @@ export async function generateMetadata({ params }) {
     title: q.metaTitle || q.question,
     description: q.metaDescription || q.answer?.slice(0, 160),
     alternates: {
-      canonical: `https://maslakedeoband.in/${params.slug}`,
+      canonical: `https://maslakedeoband.in/questions/${params.slug}`,
     },
   };
 }
