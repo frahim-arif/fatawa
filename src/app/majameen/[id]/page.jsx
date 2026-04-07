@@ -1,20 +1,27 @@
 async function getMajmoon(id) {
   try {
+    if (!id) return null; // 🔥 safety check
+
     const res = await fetch(
       `https://f-backend-vdi1.onrender.com/api/majameen/${id}`,
       { cache: 'no-store' }
     );
 
+    if (!res.ok) return null;
+
     const data = await res.json();
 
     return data.item || null;
   } catch (err) {
+    console.error(err);
     return null;
   }
 }
 
 export default async function Detail({ params }) {
-  const id = params?.id; // 🔥 IMPORTANT FIX
+
+  // 🔥 IMPORTANT FIX (force string)
+  const id = params.id?.toString();
 
   const item = await getMajmoon(id);
 
@@ -22,6 +29,10 @@ export default async function Detail({ params }) {
     return (
       <div className="p-6 text-red-600 text-center">
         مضمون نہیں ملا ❌
+        <br />
+        <span className="text-sm text-gray-500">
+          (ID: {id})
+        </span>
       </div>
     );
   }
