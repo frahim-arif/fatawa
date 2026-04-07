@@ -11,7 +11,7 @@ export default function AdminMajameen() {
   const submit = async (e) => {
     e.preventDefault();
 
-    await fetch('http://localhost:5000/api/admin/majameen', {
+    await fetch('https://f-backend-vdi1.onrender.com/api/admin/majameen', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form)
