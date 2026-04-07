@@ -1,5 +1,5 @@
 async function getMajameen() {
-  const res = await fetch('http://localhost:5000/api/majameen', {
+  const res = await fetch('https://f-backend-vdi1.onrender.com/api/admin/majameen', {
     cache: 'no-store'
   });
 
