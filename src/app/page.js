@@ -314,28 +314,30 @@ export default function HomePage() {
 
         {/* تمام کیٹیگریز button at the end */}
         <div
-          onClick={() => {
-            setSelectedCategory("");
-            setTimeout(() => {
-              questionsRef.current?.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              });
-            }, 300);
-          }}
-          className={`
-      p-5 rounded-3xl cursor-pointer text-center select-none
-      transition-all duration-500 transform border-blue-500 shadow-xl
-      hover:scale-105 hover:shadow-[0_0_30px_rgba(255,223,0,0.8)]
-      ${selectedCategory === ""
-              ? "bg-gradient-to-br from-yellow-400 to-yellow-200 border-yellow-500 shadow-[0_0_30px_rgba(255,223,0,0.9)] text-white"
-              : "bg-white/30 border-gray-300 text-black hover:bg-gradient-to-br hover:from-yellow-100 hover:to-yellow-50 hover:text-yellow-800 hover:shadow-[0_0_25px_rgba(255,223,0,0.5)]"
-            }
-    `}
-          style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
-        >
-          تمام کیٹیگریز
-        </div>
+  onClick={() => {
+    setSelectedCategory("");
+    setTimeout(() => {
+      questionsRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 300);
+  }}
+  className={`
+    p-5 rounded-3xl cursor-pointer text-center select-none
+    transition-all duration-500 transform border-blue-500 shadow-xl
+    hover:scale-105 hover:shadow-[0_0_30px_rgba(255,223,0,0.8)]
+    col-span-2 md:col-auto
+    mx-auto
+    ${selectedCategory === ""
+      ? "bg-gradient-to-br from-yellow-400 to-yellow-200 border-yellow-500 shadow-[0_0_30px_rgba(255,223,0,0.9)] text-white"
+      : "bg-white/30 border-gray-300 text-black hover:bg-gradient-to-br hover:from-yellow-100 hover:to-yellow-50 hover:text-yellow-800 hover:shadow-[0_0_25px_rgba(255,223,0,0.5)]"
+    }
+  `}
+  style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
+>
+  تمام کیٹیگریز
+</div>
 
       </div>
 
