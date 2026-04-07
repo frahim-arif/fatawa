@@ -417,6 +417,34 @@ export default function HomePage() {
     </p>
   </div>
 </Link>
+<Link href="/majameen">
+  <div
+    className="
+      relative overflow-hidden
+      h-12 flex items-center justify-center
+      cursor-pointer
+      rounded-xl
+      border border-yellow-400/50
+      bg-gradient-to-br from-green-900/80 to-green-600/70
+      backdrop-blur-md
+      shadow-lg
+      hover:shadow-[0_0_25px_rgba(34,197,94,0.8)]
+      hover:scale-105
+      transition-all duration-300
+    "
+    style={{
+      fontFamily: "'Jameel Noori Nastaleeq', serif",
+    }}
+  >
+    {/* ✨ Glow Effect */}
+    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+
+    {/* 📄 Content */}
+    <p className="relative text-base text-white font-bold tracking-wide">
+      📄 مضامین
+    </p>
+  </div>
+</Link>
 
 </div>
       {/* Questions List */}
