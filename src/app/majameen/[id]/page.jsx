@@ -1,6 +1,6 @@
 async function getMajmoon(id) {
   try {
-    if (!id) return null; // 🔥 safety check
+    if (!id) return null;
 
     const res = await fetch(
       `https://f-backend-vdi1.onrender.com/api/majameen/${id}`,
@@ -18,10 +18,11 @@ async function getMajmoon(id) {
   }
 }
 
-export default async function Detail({ params }) {
+export default async function Detail(props) {
+  // 🔥 IMPORTANT FIX
+  const id = props?.params?.id;
 
-  // 🔥 IMPORTANT FIX (force string)
-  const id = params.id?.toString();
+  console.log("ID:", id); // debug
 
   const item = await getMajmoon(id);
 
