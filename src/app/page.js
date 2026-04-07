@@ -392,19 +392,27 @@ export default function HomePage() {
   <Link href="/books">
   <div
     className="
-      h-10 flex items-center justify-center
+      relative overflow-hidden
+      h-12 flex items-center justify-center
       cursor-pointer
-      border border-yellow-400
-      shadow-sm
-      hover:shadow-[0_0_10px_rgba(255,223,0,0.6)]
+      rounded-xl
+      border border-yellow-400/50
+      bg-gradient-to-br from-blue-900/80 to-blue-600/70
+      backdrop-blur-md
+      shadow-lg
+      hover:shadow-[0_0_25px_rgba(59,130,246,0.8)]
+      hover:scale-105
       transition-all duration-300
     "
     style={{
-      background: "linear-gradient(135deg, #1e3a8a, #3b82f6)",
       fontFamily: "'Jameel Noori Nastaleeq', serif",
     }}
   >
-    <p className="text-sm text-white font-bold">
+    {/* ✨ Glow Effect */}
+    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+
+    {/* 📚 Content */}
+    <p className="relative text-base text-white font-bold tracking-wide">
       📚 اسلامی کتابیں
     </p>
   </div>
