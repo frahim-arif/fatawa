@@ -341,15 +341,15 @@ export default function HomePage() {
 
       </div>
 
+    
 
 
+<div className="grid grid-cols-2 gap-2 px-2 mt-4">
 
-      <div className="grid grid-cols-2 gap-2 px-2 mt-4">
-
-        {/* 📿 مسنون دعائیں */}
-        <Link href="/masnoon-duayee">
-          <div
-            className="
+  {/* 📿 مسنون دعائیں */}
+  <Link href="/masnoon-duayee">
+    <div
+      className="
         h-10 flex items-center justify-center
         cursor-pointer
         border border-yellow-400
@@ -357,21 +357,21 @@ export default function HomePage() {
         hover:shadow-[0_0_10px_rgba(255,223,0,0.6)]
         transition-all duration-300
       "
-            style={{
-              background: "linear-gradient(135deg, #0f5132, #198754)",
-              fontFamily: "'Jameel Noori Nastaleeq', serif",
-            }}
-          >
-            <p className="text-sm text-yellow-200 font-bold">
-              📿 مسنون دعائیں
-            </p>
-          </div>
-        </Link>
+      style={{
+        background: "linear-gradient(135deg, #0f5132, #198754)",
+        fontFamily: "'Jameel Noori Nastaleeq', serif",
+      }}
+    >
+      <p className="text-sm text-yellow-200 font-bold">
+        📿 مسنون دعائیں
+      </p>
+    </div>
+  </Link>
 
-        {/* 👶 اسلامی نام */}
-        <Link href="/islami-naam">
-          <div
-            className="
+  {/* 👶 اسلامی نام */}
+  <Link href="/islami-naam">
+    <div
+      className="
         h-10 flex items-center justify-center
         cursor-pointer
         border border-yellow-400
@@ -379,19 +379,19 @@ export default function HomePage() {
         hover:shadow-[0_0_10px_rgba(255,223,0,0.6)]
         transition-all duration-300
       "
-            style={{
-              background: "linear-gradient(135deg, #664d03, #ffc107)",
-              fontFamily: "'Jameel Noori Nastaleeq', serif",
-            }}
-          >
-            <p className="text-sm text-black font-bold">
-              👶 اسلامی نام
-            </p>
-          </div>
-        </Link>
-        <Link href="/books">
-          <div
-            className="
+      style={{
+        background: "linear-gradient(135deg, #664d03, #ffc107)",
+        fontFamily: "'Jameel Noori Nastaleeq', serif",
+      }}
+    >
+      <p className="text-sm text-black font-bold">
+        👶 اسلامی نام
+      </p>
+    </div>
+  </Link>
+  <Link href="/books">
+  <div
+    className="
       relative overflow-hidden
       h-12 flex items-center justify-center
       cursor-pointer
@@ -404,49 +404,49 @@ export default function HomePage() {
       hover:scale-105
       transition-all duration-300
     "
-            style={{
-              fontFamily: "'Jameel Noori Nastaleeq', serif",
-            }}
-          >
-            {/* ✨ Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-300/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+    style={{
+      fontFamily: "'Jameel Noori Nastaleeq', serif",
+    }}
+  >
+    {/* ✨ Glow Effect */}
+    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-300/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
-            {/* 📚 Content */}
-            <p className="relative text-base text-white font-bold tracking-wide">
-              📚 اسلامی کتابیں
-            </p>
-          </div>
-        </Link>
+    {/* 📚 Content */}
+    <p className="relative text-base text-white font-bold tracking-wide">
+      📚 اسلامی کتابیں
+    </p>
+  </div>
+</Link>
 
-        <Link href="/majameen">
-          <div
-            className="
+<Link href="/majameen">
+  <div
+    className="
       relative overflow-hidden
       h-12 flex items-center justify-center
       cursor-pointer
       rounded-xl
-      border border-purple-400/40
-      bg-gradient-to-br from-purple-700/90 via-fuchsia-500/70 to-pink-400/70
+      border border-[#8C6C53]/40
+      bg-gradient-to-br from-[#4F3A27]/90 via-[#7A5A3F]/70 to-[#A6805C]/70
       backdrop-blur-md
       shadow-lg
-      hover:shadow-[0_0_25px_rgba(236,72,182,0.8)]
+      hover:shadow-[0_0_25px_rgba(159,121,89,0.8)]
       hover:scale-105
       transition-all duration-300
     "
-            style={{
-              fontFamily: "'Jameel Noori Nastaleeq', serif",
-            }}
-          >
-            {/* ✨ Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-300/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+    style={{
+      fontFamily: "'Jameel Noori Nastaleeq', serif",
+    }}
+  >
+    {/* ✨ Glow Effect */}
+    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#8C6C53]/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
-            {/* 📄 Content */}
-            <p className="relative text-base text-amber-100 font-bold tracking-wide">
-              📄 مضامین
-            </p>
-          </div>
-        </Link>
-      </div>
+    {/* 📄 Content */}
+    <p className="relative text-base text-amber-100 font-bold tracking-wide">
+      📄 مضامین
+    </p>
+  </div>
+</Link>
+</div>
       {/* Questions List */}
       <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
         {filteredQuestions.length > 0 ? (
@@ -547,14 +547,14 @@ export default function HomePage() {
                   </p>
                 )}
               </div>
+              
 
-
-
+  
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
-
+    
   );
 }
