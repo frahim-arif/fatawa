@@ -392,18 +392,18 @@ export default function HomePage() {
   <Link href="/books">
   <div
     className="
-  relative overflow-hidden
-  h-12 flex items-center justify-center
-  cursor-pointer
-  rounded-xl
-  border border-pink-400/50
-  bg-gradient-to-br from-pink-200/80 to-pink-400/70
-  backdrop-blur-md
-  shadow-lg
-  hover:shadow-[0_0_25px_rgba(236,72,153,0.8)]
-  hover:scale-105
-  transition-all duration-300
-"
+      relative overflow-hidden
+      h-12 flex items-center justify-center
+      cursor-pointer
+      rounded-xl
+      border border-yellow-400/50
+      bg-gradient-to-br from-blue-900/80 to-blue-600/70
+      backdrop-blur-md
+      shadow-lg
+      hover:shadow-[0_0_25px_rgba(59,130,246,0.8)]
+      hover:scale-105
+      transition-all duration-300
+    "
     style={{
       fontFamily: "'Jameel Noori Nastaleeq', serif",
     }}
@@ -425,7 +425,7 @@ export default function HomePage() {
     }}
   >
     {/* ✨ Glow Effect */}
-    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-300/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
     {/* 📄 Content */}
     <p className="relative text-base text-white font-bold tracking-wide">
