@@ -284,39 +284,12 @@ export default function HomePage() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 px-2 mt-6 w-full">
 
-        {/* All Categories */}
-        <div
-          onClick={() => {
-            setSelectedCategory("");
-
-            setTimeout(() => {
-              questionsRef.current?.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              });
-            }, 300);
-          }}
-          className={`
-    p-5 rounded-3xl cursor-pointer text-center select-none
-    transition-all duration-500 transform border-blue-500 shadow-xl
-    hover:scale-105 hover:shadow-[0_0_30px_rgba(255,223,0,0.8)]
-    ${selectedCategory === ""
-              ? "bg-gradient-to-br from-yellow-400 to-yellow-200 border-yellow-500 shadow-[0_0_30px_rgba(255,223,0,0.9)] text-white"
-              : "bg-white/30 border-gray-300 text-black hover:bg-gradient-to-br hover:from-yellow-100 hover:to-yellow-50 hover:text-yellow-800 hover:shadow-[0_0_25px_rgba(255,223,0,0.5)]"
-            }
-  `}
-          style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
-        >
-          تمام کیٹیگریز
-        </div>
-
         {/* Dynamic Categories */}
         {categories.map((cat) => (
           <div
             key={cat._id}
             onClick={() => {
               setSelectedCategory(cat.name);
-
               setTimeout(() => {
                 questionsRef.current?.scrollIntoView({
                   behavior: "smooth",
@@ -325,31 +298,54 @@ export default function HomePage() {
               }, 300);
             }}
             className={`
-    p-5 rounded-3xl cursor-pointer text-center select-none
-    transition-all duration-300 transform border shadow-md
-    hover:scale-105
-    ${selectedCategory === cat.name
+        p-5 rounded-3xl cursor-pointer text-center select-none
+        transition-all duration-300 transform border shadow-md
+        hover:scale-105
+        ${selectedCategory === cat.name
                 ? "bg-white border-yellow-500 text-black shadow-[0_0_20px_rgba(255,223,0,0.6)]"
                 : "bg-white border-gray-300 text-black hover:bg-gray-100"
               }
-  `}
+      `}
+            style={{ fontFamily: "'Jameel Noori Nastaleeq', serif" }}
           >
             {cat.name}
           </div>
         ))}
 
+        {/* تمام کیٹیگریز button at the end */}
+        <div
+          onClick={() => {
+            setSelectedCategory("");
+            setTimeout(() => {
+              questionsRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }, 300);
+          }}
+          className={`
+      p-5 rounded-3xl cursor-pointer text-center select-none
+      transition-all duration-500 transform border-blue-500 shadow-xl
+      hover:scale-105 hover:shadow-[0_0_30px_rgba(255,223,0,0.8)]
+      ${selectedCategory === ""
+              ? "bg-gradient-to-br from-yellow-400 to-yellow-200 border-yellow-500 shadow-[0_0_30px_rgba(255,223,0,0.9)] text-white"
+              : "bg-white/30 border-gray-300 text-black hover:bg-gradient-to-br hover:from-yellow-100 hover:to-yellow-50 hover:text-yellow-800 hover:shadow-[0_0_25px_rgba(255,223,0,0.5)]"
+            }
+    `}
+          style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
+        >
+          تمام کیٹیگریز
+        </div>
 
       </div>
 
-    
 
+      <div className="grid grid-cols-2 gap-2 px-2 mt-4">
 
-<div className="grid grid-cols-2 gap-2 px-2 mt-4">
-
-  {/* 📿 مسنون دعائیں */}
-  <Link href="/masnoon-duayee">
-    <div
-      className="
+        {/* 📿 مسنون دعائیں */}
+        <Link href="/masnoon-duayee">
+          <div
+            className="
         h-10 flex items-center justify-center
         cursor-pointer
         border border-yellow-400
@@ -357,21 +353,21 @@ export default function HomePage() {
         hover:shadow-[0_0_10px_rgba(255,223,0,0.6)]
         transition-all duration-300
       "
-      style={{
-        background: "linear-gradient(135deg, #0f5132, #198754)",
-        fontFamily: "'Jameel Noori Nastaleeq', serif",
-      }}
-    >
-      <p className="text-sm text-yellow-200 font-bold">
-        📿 مسنون دعائیں
-      </p>
-    </div>
-  </Link>
+            style={{
+              background: "linear-gradient(135deg, #0f5132, #198754)",
+              fontFamily: "'Jameel Noori Nastaleeq', serif",
+            }}
+          >
+            <p className="text-sm text-yellow-200 font-bold">
+              📿 مسنون دعائیں
+            </p>
+          </div>
+        </Link>
 
-  {/* 👶 اسلامی نام */}
-  <Link href="/islami-naam">
-    <div
-      className="
+        {/* 👶 اسلامی نام */}
+        <Link href="/islami-naam">
+          <div
+            className="
         h-10 flex items-center justify-center
         cursor-pointer
         border border-yellow-400
@@ -379,19 +375,19 @@ export default function HomePage() {
         hover:shadow-[0_0_10px_rgba(255,223,0,0.6)]
         transition-all duration-300
       "
-      style={{
-        background: "linear-gradient(135deg, #664d03, #ffc107)",
-        fontFamily: "'Jameel Noori Nastaleeq', serif",
-      }}
-    >
-      <p className="text-sm text-black font-bold">
-        👶 اسلامی نام
-      </p>
-    </div>
-  </Link>
-  <Link href="/books">
-  <div
-    className="
+            style={{
+              background: "linear-gradient(135deg, #664d03, #ffc107)",
+              fontFamily: "'Jameel Noori Nastaleeq', serif",
+            }}
+          >
+            <p className="text-sm text-black font-bold">
+              👶 اسلامی نام
+            </p>
+          </div>
+        </Link>
+        <Link href="/books">
+          <div
+            className="
       relative overflow-hidden
       h-10 flex items-center justify-center
       w-full
@@ -405,23 +401,23 @@ export default function HomePage() {
       hover:scale-105
       transition-all duration-300
     "
-    style={{
-      fontFamily: "'Jameel Noori Nastaleeq', serif",
-    }}
-  >
-    {/* ✨ Glow Effect */}
-    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#7EC8E3]/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+            style={{
+              fontFamily: "'Jameel Noori Nastaleeq', serif",
+            }}
+          >
+            {/* ✨ Glow Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#7EC8E3]/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
-    {/* 📚 Content */}
-    <p className="relative text-base text-black font-bold tracking-wide">
-      📚 اسلامی کتابیں
-    </p>
-  </div>
-</Link>
+            {/* 📚 Content */}
+            <p className="relative text-base text-black font-bold tracking-wide">
+              📚 اسلامی کتابیں
+            </p>
+          </div>
+        </Link>
 
-<Link href="/majameen">
-  <div
-    className="
+        <Link href="/majameen">
+          <div
+            className="
       relative overflow-hidden
       h-10 flex items-center justify-center
       w-full
@@ -435,23 +431,23 @@ export default function HomePage() {
       hover:scale-105
       transition-all duration-300
     "
-    style={{
-      fontFamily: "'Jameel Noori Nastaleeq', serif",
-    }}
-  >
-    {/* ✨ Glow Effect */}
-    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#8C6C53]/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+            style={{
+              fontFamily: "'Jameel Noori Nastaleeq', serif",
+            }}
+          >
+            {/* ✨ Glow Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#8C6C53]/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
-    {/* 📄 Content */}
-    <p className="relative text-base text-black font-bold tracking-wide">
-      📄 مضامین
-    </p>
-  </div>
-</Link>
-{/* 🧮 شرعیہ کیلکولیٹر */}
-<Link href="https://www.maslakedeoband.in/ozan-shariah-calculator">
-  <div
-    className="
+            {/* 📄 Content */}
+            <p className="relative text-base text-black font-bold tracking-wide">
+              📄 مضامین
+            </p>
+          </div>
+        </Link>
+        {/* 🧮 شرعیہ کیلکولیٹر */}
+        <Link href="https://www.maslakedeoband.in/ozan-shariah-calculator">
+          <div
+            className="
       h-10 flex items-center justify-center
       cursor-pointer
       border border-cyan-400
@@ -459,21 +455,21 @@ export default function HomePage() {
       hover:shadow-[0_0_10px_rgba(52,211,153,0.6)]
       transition-all duration-300
     "
-    style={{
-      background: "linear-gradient(135deg, #0d9488, #22d3ee)",
-      fontFamily: "'Jameel Noori Nastaleeq', serif",
-    }}
-  >
-    <p className="text-sm text-white font-bold">
-      🧮 شرعیہ کیلکولیٹر
-    </p>
-  </div>
-</Link>
-{/* 📖 40 Hadith Free */}
-{/* 📖 40 Hadith Free */}
-<Link href="https://www.maslakedeoband.in/40-hadith-free">
-  <div
-    className="
+            style={{
+              background: "linear-gradient(135deg, #0d9488, #22d3ee)",
+              fontFamily: "'Jameel Noori Nastaleeq', serif",
+            }}
+          >
+            <p className="text-sm text-white font-bold">
+              🧮 شرعیہ کیلکولیٹر
+            </p>
+          </div>
+        </Link>
+        {/* 📖 40 Hadith Free */}
+        {/* 📖 40 Hadith Free */}
+        <Link href="https://www.maslakedeoband.in/40-hadith-free">
+          <div
+            className="
       h-10 flex items-center justify-center
       cursor-pointer
       border border-gray-400
@@ -481,17 +477,17 @@ export default function HomePage() {
       hover:shadow-[0_0_10px_rgba(156,163,175,0.6)]
       transition-all duration-300
     "
-    style={{
-      background: "linear-gradient(135deg, #4B5563, #9CA3AF)",
-      fontFamily: "'Jameel Noori Nastaleeq', serif",
-    }}
-  >
-    <p className="text-sm text-white font-bold">
-      📖 40 احادیث مفت
-    </p>
-  </div>
-</Link>
-</div>
+            style={{
+              background: "linear-gradient(135deg, #4B5563, #9CA3AF)",
+              fontFamily: "'Jameel Noori Nastaleeq', serif",
+            }}
+          >
+            <p className="text-sm text-white font-bold">
+              📖 40 احادیث مفت
+            </p>
+          </div>
+        </Link>
+      </div>
       {/* Questions List */}
       <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
         {filteredQuestions.length > 0 ? (
@@ -592,14 +588,14 @@ export default function HomePage() {
                   </p>
                 )}
               </div>
-              
 
-  
+
+
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
-    
+
   );
 }
