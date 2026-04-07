@@ -419,7 +419,19 @@ export default function HomePage() {
 </Link>
 <Link href="/majameen">
   <div
-     
+    className="
+      relative overflow-hidden
+      h-12 flex items-center justify-center
+      cursor-pointer
+      rounded-xl
+      border border-yellow-400/50
+      bg-gradient-to-br from-green-900/80 to-green-600/70
+      backdrop-blur-md
+      shadow-lg
+      hover:shadow-[0_0_25px_rgba(34,197,94,0.8)]
+      hover:scale-105
+      transition-all duration-300
+    "
     style={{
       fontFamily: "'Jameel Noori Nastaleeq', serif",
     }}
