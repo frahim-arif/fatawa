@@ -446,30 +446,23 @@ export default function HomePage() {
     </p>
   </div>
 </Link>
+{/* 🧮 شرعیہ کیلکولیٹر */}
 <Link href="/shariah-calculator">
   <div
     className="
-      relative overflow-hidden
-      h-12 flex items-center justify-center
+      h-10 flex items-center justify-center
       cursor-pointer
-      rounded-xl
-      border border-[#4F3A27]/40
-      bg-gradient-to-br from-[#7A5A3F]/90 via-[#A6805C]/70 to-[#C1A27D]/70
-      backdrop-blur-md
-      shadow-lg
-      hover:shadow-[0_0_25px_rgba(193,148,116,0.8)]
-      hover:scale-105
+      border border-cyan-400
+      shadow-sm
+      hover:shadow-[0_0_10px_rgba(52,211,153,0.6)]
       transition-all duration-300
     "
     style={{
+      background: "linear-gradient(135deg, #0d9488, #22d3ee)",
       fontFamily: "'Jameel Noori Nastaleeq', serif",
     }}
   >
-    {/* ✨ Glow Effect */}
-    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#A6805C]/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
-
-    {/* 🧮 Content */}
-    <p className="relative text-base text-amber-100 font-bold tracking-wide">
+    <p className="text-sm text-white font-bold">
       🧮 شرعیہ کیلکولیٹر
     </p>
   </div>
