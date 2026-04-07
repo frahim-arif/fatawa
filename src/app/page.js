@@ -393,7 +393,8 @@ export default function HomePage() {
   <div
     className="
       relative overflow-hidden
-      h-12 flex items-center justify-center
+      h-10 flex items-center justify-center
+      w-full
       cursor-pointer
       rounded-xl
       border border-blue-300/40
@@ -422,7 +423,8 @@ export default function HomePage() {
   <div
     className="
       relative overflow-hidden
-      h-12 flex items-center justify-center
+      h-10 flex items-center justify-center
+      w-full
       cursor-pointer
       rounded-xl
       border border-[#8C6C53]/40
@@ -468,23 +470,24 @@ export default function HomePage() {
   </div>
 </Link>
 {/* 📖 40 Hadith Free */}
+{/* 📖 40 Hadith Free */}
 <Link href="https://www.maslakedeoband.in/40-hadith-free">
   <div
     className="
       h-10 flex items-center justify-center
       cursor-pointer
-      border border-indigo-400
+      border border-gray-400
       shadow-sm
-      hover:shadow-[0_0_10px_rgba(129,140,248,0.6)]
+      hover:shadow-[0_0_10px_rgba(156,163,175,0.6)]
       transition-all duration-300
     "
     style={{
-      background: "linear-gradient(135deg, #4f46e5, #818cf8)",
+      background: "linear-gradient(135deg, #4B5563, #9CA3AF)",
       fontFamily: "'Jameel Noori Nastaleeq', serif",
     }}
   >
     <p className="text-sm text-white font-bold">
-      📖 احادیث 
+      📖 40 احادیث مفت
     </p>
   </div>
 </Link>
