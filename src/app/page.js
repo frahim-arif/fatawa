@@ -447,7 +447,7 @@ export default function HomePage() {
   </div>
 </Link>
 {/* 🧮 شرعیہ کیلکولیٹر */}
-<Link href="/shariah-calculator">
+<Link href="https://www.maslakedeoband.in/ozan-shariah-calculator">
   <div
     className="
       h-10 flex items-center justify-center
