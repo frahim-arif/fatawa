@@ -396,11 +396,11 @@ export default function HomePage() {
       h-12 flex items-center justify-center
       cursor-pointer
       rounded-xl
-      border border-emerald-500/40
-      bg-gradient-to-br from-emerald-800/90 via-emerald-600/70 to-emerald-500/70
+      border border-amber-600/40
+      bg-gradient-to-br from-amber-900/90 via-amber-700/70 to-amber-500/70
       backdrop-blur-md
       shadow-lg
-      hover:shadow-[0_0_25px_rgba(16,185,129,0.8)]
+      hover:shadow-[0_0_25px_rgba(181,136,99,0.8)]
       hover:scale-105
       transition-all duration-300
     "
@@ -409,10 +409,10 @@ export default function HomePage() {
     }}
   >
     {/* ✨ Glow Effect */}
-    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-300/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-300/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
     {/* 📚 Content */}
-    <p className="relative text-base text-amber-100 font-bold tracking-wide">
+    <p className="relative text-base text-white font-bold tracking-wide">
       📚 اسلامی کتابیں
     </p>
   </div>
@@ -426,7 +426,7 @@ export default function HomePage() {
       cursor-pointer
       rounded-xl
       border border-rose-400/40
-      bg-gradient-to-br from-rose-100/80 via-rose-200/70 to-rose-500/70
+      bg-gradient-to-br from-rose-100/80 via-rose-200/70 to-rose-400/70
       backdrop-blur-md
       shadow-lg
       hover:shadow-[0_0_25px_rgba(244,114,182,0.8)]
@@ -441,7 +441,7 @@ export default function HomePage() {
     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-rose-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
     {/* 📄 Content */}
-    <p className="relative text-base text-amber-100 font-bold tracking-wide">
+    <p className="relative text-base text-white font-bold tracking-wide">
       📄 مضامین
     </p>
   </div>
