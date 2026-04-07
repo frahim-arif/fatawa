@@ -389,6 +389,26 @@ export default function HomePage() {
       </p>
     </div>
   </Link>
+  <Link href="/books">
+  <div
+    className="
+      h-10 flex items-center justify-center
+      cursor-pointer
+      border border-yellow-400
+      shadow-sm
+      hover:shadow-[0_0_10px_rgba(255,223,0,0.6)]
+      transition-all duration-300
+    "
+    style={{
+      background: "linear-gradient(135deg, #1e3a8a, #3b82f6)",
+      fontFamily: "'Jameel Noori Nastaleeq', serif",
+    }}
+  >
+    <p className="text-sm text-white font-bold">
+      📚 اسلامی کتابیں
+    </p>
+  </div>
+</Link>
 
 </div>
       {/* Questions List */}
