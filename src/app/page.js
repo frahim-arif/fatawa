@@ -467,6 +467,27 @@ export default function HomePage() {
     </p>
   </div>
 </Link>
+{/* 📖 40 Hadith Free */}
+<Link href="https://www.maslakedeoband.in/40-hadith-free">
+  <div
+    className="
+      h-10 flex items-center justify-center
+      cursor-pointer
+      border border-indigo-400
+      shadow-sm
+      hover:shadow-[0_0_10px_rgba(129,140,248,0.6)]
+      transition-all duration-300
+    "
+    style={{
+      background: "linear-gradient(135deg, #4f46e5, #818cf8)",
+      fontFamily: "'Jameel Noori Nastaleeq', serif",
+    }}
+  >
+    <p className="text-sm text-white font-bold">
+      📖 احادیث 
+    </p>
+  </div>
+</Link>
 </div>
       {/* Questions List */}
       <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
