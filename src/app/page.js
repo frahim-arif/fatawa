@@ -336,7 +336,7 @@ export default function HomePage() {
   `}
   style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
 >
-  تمام کیٹیگریز
+  تمام سوالات
 </div>
 
       </div>
