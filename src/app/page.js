@@ -424,11 +424,11 @@ export default function HomePage() {
       h-12 flex items-center justify-center
       cursor-pointer
       rounded-xl
-      border border-yellow-400/50
-      bg-gradient-to-br from-green-900/80 to-green-600/70
+      border border-pink-400/50
+      bg-gradient-to-br from-pink-200/80 to-pink-400/70
       backdrop-blur-md
       shadow-lg
-      hover:shadow-[0_0_25px_rgba(34,197,94,0.8)]
+      hover:shadow-[0_0_25px_rgba(236,72,153,0.8)]
       hover:scale-105
       transition-all duration-300
     "
