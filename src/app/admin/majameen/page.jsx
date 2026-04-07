@@ -1,7 +1,10 @@
 'use client'
 import { useState } from 'react';
+import { useRouter } from 'next/navigation'; // ✅ import router
 
 export default function AdminMajameen() {
+  const router = useRouter(); // ✅ initialize router
+
   const [form, setForm] = useState({
     title: '',
     author: '',
@@ -13,7 +16,6 @@ export default function AdminMajameen() {
   const submit = async (e) => {
     e.preventDefault();
 
-    // ✅ Validation
     if (!form.title || !form.content) {
       alert("Title aur Content zaroori hai ❗");
       return;
@@ -33,12 +35,14 @@ export default function AdminMajameen() {
       if (data.success) {
         alert('Majmoon Added ✅');
 
-        // ✅ Form reset
         setForm({
           title: '',
           author: '',
           content: ''
         });
+
+        // ✅ Redirect to Home Page
+        router.push('/');  
       } else {
         alert('Error: ' + data.error);
       }
