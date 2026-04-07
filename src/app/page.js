@@ -396,11 +396,11 @@ export default function HomePage() {
       h-12 flex items-center justify-center
       cursor-pointer
       rounded-xl
-      border border-yellow-400/50
-      bg-gradient-to-br from-blue-900/80 to-blue-600/70
+      border border-emerald-500/40
+      bg-gradient-to-br from-emerald-800/90 via-emerald-600/70 to-emerald-500/70
       backdrop-blur-md
       shadow-lg
-      hover:shadow-[0_0_25px_rgba(59,130,246,0.8)]
+      hover:shadow-[0_0_25px_rgba(16,185,129,0.8)]
       hover:scale-105
       transition-all duration-300
     "
@@ -409,14 +409,15 @@ export default function HomePage() {
     }}
   >
     {/* ✨ Glow Effect */}
-    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-300/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-300/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
     {/* 📚 Content */}
-    <p className="relative text-base text-white font-bold tracking-wide">
+    <p className="relative text-base text-amber-100 font-bold tracking-wide">
       📚 اسلامی کتابیں
     </p>
   </div>
 </Link>
+
 <Link href="/majameen">
   <div
     className="
@@ -424,11 +425,11 @@ export default function HomePage() {
       h-12 flex items-center justify-center
       cursor-pointer
       rounded-xl
-      border border-pink-400/50
-      bg-gradient-to-br from-pink-200/80 to-pink-400/70
+      border border-rose-400/40
+      bg-gradient-to-br from-rose-100/80 via-rose-200/70 to-rose-500/70
       backdrop-blur-md
       shadow-lg
-      hover:shadow-[0_0_25px_rgba(236,72,153,0.8)]
+      hover:shadow-[0_0_25px_rgba(244,114,182,0.8)]
       hover:scale-105
       transition-all duration-300
     "
@@ -437,15 +438,14 @@ export default function HomePage() {
     }}
   >
     {/* ✨ Glow Effect */}
-    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-300/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-rose-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
     {/* 📄 Content */}
-    <p className="relative text-base text-white font-bold tracking-wide">
+    <p className="relative text-base text-amber-100 font-bold tracking-wide">
       📄 مضامین
     </p>
   </div>
 </Link>
-
 </div>
       {/* Questions List */}
       <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
