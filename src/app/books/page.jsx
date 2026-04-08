@@ -13,19 +13,43 @@ export default async function BooksPage() {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
       {books.map((book) => (
         <div key={book._id} className="border p-4 rounded shadow-sm">
-          <img
-            src={book.image}
-            alt={book.title}
-            className="w-full h-40 object-cover rounded"
-          />
-          <h2 className="font-bold mt-2">{book.title}</h2>
-          <p className="text-sm">{book.author}</p>
 
-          <a href={`/books/${book._id}`}>
-            <button className="bg-blue-600 text-white px-3 py-1 mt-2 rounded">
-              Read Book
-            </button>
-          </a>
+          {/* ✅ Image safe check */}
+          {book.image ? (
+            <img
+              src={book.image}
+              alt={book.title || 'Book'}
+              className="w-full h-40 object-cover rounded"
+            />
+          ) : (
+            <div className="w-full h-40 bg-gray-200 flex items-center justify-center rounded">
+              <span>No Image</span>
+            </div>
+          )}
+
+          {/* ✅ Title safe */}
+          <h2 className="font-bold mt-2">
+            {book.title || 'No Title'}
+          </h2>
+
+          {/* ✅ Author safe */}
+          {book.author && (
+            <p className="text-sm">{book.author}</p>
+          )}
+
+          {/* ✅ Only show button if PDF exists */}
+          {book.pdf ? (
+            <a href={`/books/${book._id}`}>
+              <button className="bg-blue-600 text-white px-3 py-1 mt-2 rounded">
+                Read Book
+              </button>
+            </a>
+          ) : (
+            <p className="text-red-500 mt-2 text-sm">
+              No PDF Available
+            </p>
+          )}
+
         </div>
       ))}
     </div>
