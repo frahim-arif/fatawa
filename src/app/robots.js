@@ -5,6 +5,6 @@ export default function robots() {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://maslakedeoband.in/sitemap.xml",
+    sitemap: "https://www.maslakedeoband.in/sitemap.xml",
   };
 }

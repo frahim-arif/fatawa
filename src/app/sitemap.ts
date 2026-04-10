@@ -1,7 +1,7 @@
 // app/sitemap.ts
 
 export default async function sitemap() {
-  const baseUrl = "https://maslakedeoband.in";
+  const baseUrl = "https://www.maslakedeoband.in";
 
   // 🔹 Static pages
   const staticPages = [
