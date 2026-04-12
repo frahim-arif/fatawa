@@ -34,17 +34,7 @@ export default function AdminAddQuestion() {
     "بیوع",
   ];
 
- const generateSlug = (text) => {
-  if (!text) return "no-slug";
-
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, "") // remove special chars
-    .replace(/\s+/g, "-") // spaces → hyphen
-    .split("-")
-    .slice(0, 6) // only 5–6 words
-    .join("-");
-};
+ 
 
   // ✅ Auto-generate SEO fields
   useEffect(() => {
@@ -67,7 +57,7 @@ export default function AdminAddQuestion() {
 
     try {
       const backend = "https://f-backend-vdi1.onrender.com/api/admin/questions"; // Production URL
-      const slug = generateSlug(question);
+      
 
       const payload = {
         category,
@@ -76,7 +66,6 @@ export default function AdminAddQuestion() {
         hawala1,
         hawala2,
         hawala3,
-        slug,
         metaTitle,
         metaDescription,
         keywords,
