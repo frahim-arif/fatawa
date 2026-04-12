@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import Head from "next/head";
 
 export default function SingleQuestion() {
-  const { slug } = useParams(); // ✅ FIXED
+  const { slug } = useParams();
 
   const backend = "https://f-backend-vdi1.onrender.com/api/admin/questions";
 
@@ -17,7 +17,8 @@ export default function SingleQuestion() {
 
     const fetchQuestion = async () => {
       try {
-        const res = await fetch(`${backend}/slug/${encodeURIComponent(slug)}`);
+        // ✅ FIX: encodeURIComponent hata diya
+        const res = await fetch(`${backend}/slug/${slug}`);
         const data = await res.json();
 
         if (data.success) {
@@ -36,32 +37,56 @@ export default function SingleQuestion() {
     fetchQuestion();
   }, [slug]);
 
-  if (loading) return <h1 className="text-center mt-10">⏳ لوڈ ہو رہا ہے...</h1>;
-  if (!question) return <h1 className="text-center mt-10">❌ سوال نہیں ملا</h1>;
+  if (loading)
+    return <h1 className="text-center mt-10">⏳ لوڈ ہو رہا ہے...</h1>;
+
+  if (!question)
+    return <h1 className="text-center mt-10">❌ سوال نہیں ملا</h1>;
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6 text-right">
-      
-      {/* SEO */}
+
+      {/* ✅ SEO IMPROVED */}
       <Head>
-        <title>{question.question} | اسلامی فتاویٰ</title>
-        <meta name="description" content={question.answer?.slice(0, 150)} />
-        <meta name="keywords" content="Islamic fatwa, سوال جواب, فتوی" />
+        <title>
+          {question.metaTitle || question.question} | اسلامی فتاویٰ
+        </title>
+
+        <meta
+          name="description"
+          content={
+            question.metaDescription ||
+            question.answer?.slice(0, 150)
+          }
+        />
+
+        <meta
+          name="keywords"
+          content={
+            question.keywords ||
+            "Islamic fatwa, سوال جواب, فتوی"
+          }
+        />
       </Head>
 
+      {/* Question */}
       <div className="p-5 rounded-xl border bg-yellow-50">
         <h1 className="text-3xl font-bold text-green-800">
           {question.question}
         </h1>
       </div>
 
-      <div className="p-5 rounded-xl border bg-green-50">
+      {/* Answer */}
+      <div className="p-5 rounded-xl border bg-green-50 leading-8">
         <p>{question.answer}</p>
       </div>
 
-      {question.hawala1 && <p>📖 {question.hawala1}</p>}
-      {question.hawala2 && <p>📖 {question.hawala2}</p>}
-      {question.hawala3 && <p>📖 {question.hawala3}</p>}
+      {/* Hawala */}
+      <div className="space-y-3 text-gray-800">
+        {question.hawala1 && <p>📖 {question.hawala1}</p>}
+        {question.hawala2 && <p>📖 {question.hawala2}</p>}
+        {question.hawala3 && <p>📖 {question.hawala3}</p>}
+      </div>
     </div>
   );
 }
