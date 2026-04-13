@@ -125,15 +125,16 @@ export default function SingleQuestion() {
 
       {/* Question */}
       <div className="p-5 rounded-xl border bg-yellow-50">
-        <h1 className="text-3xl font-bold text-green-800">
+        <h1 className="text-xl md:text-2xl font-bold text-green-800">
           {question.question}
         </h1>
       </div>
 
       {/* ✅ AUTO LINK ANSWER */}
-      <div className="p-5 rounded-xl border bg-green-50 leading-8">
+      <div className="p-5 rounded-xl border bg-green-50 dark:bg-gray-800 leading-8">
         {question?.answer && (
           <p
+            className="text-gray-900 dark:text-gray-100"
             dangerouslySetInnerHTML={{
               __html: autoLink(question.answer, related),
             }}
