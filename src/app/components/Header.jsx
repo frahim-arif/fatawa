@@ -19,7 +19,7 @@ export default function Header() {
       <div
         className="absolute inset-0 opacity-10"
         style={{
-          backgroundImage: "url('/images/header-pattern.png')",
+          backgroundImage: "url('/images/1943.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
