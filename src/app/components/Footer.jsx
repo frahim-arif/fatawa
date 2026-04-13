@@ -1,42 +1,53 @@
-<footer className="relative mt-10">
+"use client";
 
-  {/* 🔥 Base Color */}
-  <div className="absolute inset-0 bg-[#3b2f2f]" />
+export default function Footer() {
+  return (
+    <footer className="relative mt-10">
 
-  {/* 🔥 Pattern Overlay */}
-  <div
-    className="absolute inset-0 opacity-10"
-    style={{
-      backgroundImage: "url('/images/1943.jpg')",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-    }}
-  />
+      {/* 🔥 Background Wrapper */}
+      <div className="absolute inset-0 -z-10">
 
-  {/* 🔥 Content */}
-  <div className="relative max-w-6xl mx-auto px-4 py-8 text-yellow-200 text-center space-y-4">
+        {/* Base Color */}
+        <div className="absolute inset-0 bg-[#3b2f2f]" />
 
-    {/* Title */}
-    <h2 className="text-xl md:text-2xl font-bold text-yellow-300">
-      مسلک دیوبند
-    </h2>
+        {/* Pattern Image */}
+        <div
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: "url('/images/1943.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
 
-    {/* Links */}
-    <div className="flex flex-wrap justify-center gap-4 text-sm md:text-base">
-      <a href="/" className="hover:text-yellow-400">ہوم</a>
-      <a href="/about" className="hover:text-yellow-400">About</a>
-      <a href="/contact" className="hover:text-yellow-400">Contact</a>
-      <a href="/privacy" className="hover:text-yellow-400">Privacy</a>
-      <a href="/terms" className="hover:text-yellow-400">Terms</a>
-    </div>
+      </div>
 
-    {/* Divider */}
-    <div className="border-t border-yellow-700 my-4"></div>
+      {/* 🔥 Content */}
+      <div className="max-w-6xl mx-auto px-4 py-8 text-yellow-200 text-center space-y-4">
 
-    {/* Copyright */}
-    <p className="text-xs md:text-sm text-yellow-300">
-      © {new Date().getFullYear()} Maslak e Deoband. All rights reserved.
-    </p>
+        {/* Title */}
+        <h2 className="text-xl md:text-2xl font-bold text-yellow-300">
+          مسلک دیوبند
+        </h2>
 
-  </div>
-</footer>
+        {/* Links */}
+        <div className="flex flex-wrap justify-center gap-4 text-sm md:text-base">
+          <a href="/" className="hover:text-yellow-400 transition">ہوم</a>
+          <a href="/about" className="hover:text-yellow-400 transition">About</a>
+          <a href="/contact" className="hover:text-yellow-400 transition">Contact</a>
+          <a href="/privacy" className="hover:text-yellow-400 transition">Privacy</a>
+          <a href="/terms" className="hover:text-yellow-400 transition">Terms</a>
+        </div>
+
+        {/* Divider */}
+        <div className="border-t border-yellow-700 my-4"></div>
+
+        {/* Copyright */}
+        <p className="text-xs md:text-sm text-yellow-300">
+          © {new Date().getFullYear()} Maslak e Deoband. All rights reserved.
+        </p>
+
+      </div>
+    </footer>
+  );
+}
