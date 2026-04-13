@@ -81,7 +81,7 @@ export default function HomePage() {
   setSkip((prev) => prev + 5);
 }
 
-        setHasMore(sorted.length === 5);
+        setHasMore(data.data.length === 5);
       }
     } catch (err) {
       console.error("❌ Error fetching questions:", err);
