@@ -109,7 +109,7 @@ export default function HomePage() {
   };
 
   return (
-<div className="relative w-full min-h-screen overflow-hidden px-4 md:px-6 lg:px-8 pb-6 md:pb-8 space-y-10 bg-gradient-to-b from-[#e6f4f1] to-[#d4ebe4]">      <Head>
+<div className="relative w-full min-h-screen overflow-hidden pb-6 md:pb-8 space-y-10 bg-gradient-to-b from-[#e6f4f1] to-[#d4ebe4]">      <Head>
         <style>{`
     @font-face {
       font-family: 'Jameel Noori Nastaleeq';
@@ -192,7 +192,7 @@ export default function HomePage() {
 
         {/* Namaz Timings */}
         <div
-          className="w-full overflow-hidden px-0 sticky top-[60px] md:top-[64px] z-40"
+          className="w-full overflow-hidden px-0 sticky top-16 md:top-16 z-40"
           style={{ background: "#0b3d24", borderBottom: "2px solid #d4af37" }}
         >
           <motion.div
