@@ -181,7 +181,7 @@ export default function HomePage() {
           }}
         >
           <motion.div
-            className="whitespace-nowrap text-yellow-100 arabic fixed top-16 w-full z-50"
+            className="whitespace-nowrap text-yellow-100 arabic sticky top-0 w-full z-50 bg-black"
             animate={{ x: ["-100%", "100%"] }}
             transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
           >
