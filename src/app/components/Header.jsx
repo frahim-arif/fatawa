@@ -10,49 +10,48 @@ export default function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
-    <header className="bg-gradient-to-r from-emerald-800 via-lime-600 to-yellow-400 shadow-2xl sticky top-0 z-50">
-      <style>{`
-        @keyframes blink-cta {
-          0% { opacity: 1; transform: translateY(0); }
-          50% { opacity: 0.4; transform: translateY(-2px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        .blink-cta {
-          animation: blink-cta 1.2s infinite;
-        }
-      `}</style>
+    <header className="relative sticky top-0 z-50 shadow-md">
 
-      <div className="max-w-6xl mx-auto p-4 flex justify-between items-center">
+      {/* 🔥 Base Color */}
+      <div className="absolute inset-0 bg-[#3b2f2f]" />
+
+      {/* 🔥 Pattern Overlay */}
+      <div
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage: "url('/images/header-pattern.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
+
+      {/* 🔥 Content */}
+      <div className="relative max-w-6xl mx-auto p-4 flex justify-between items-center">
 
         {/* Logo + Title */}
         <div className="flex items-center gap-3">
           <img
             src="/images/logo.png"
             alt="Maslak e Deoband Logo"
-            className="w-12 h-12 object-contain rounded-full border-2 border-yellow-300 shadow-lg"
+            className="w-12 h-12 object-contain rounded-full border border-yellow-400"
           />
+
           <Link
             href="/"
-            className="text-2xl font-bold text-yellow-200 hover:text-white transition"
+            className="text-xl md:text-2xl font-bold text-yellow-300 hover:text-yellow-400 transition"
           >
             مسلک دیوبند
           </Link>
         </div>
 
         {/* Desktop Menu */}
-        <nav className="hidden md:flex gap-6 items-center text-base font-semibold text-white">
+        <nav className="hidden md:flex gap-6 items-center text-base font-semibold text-yellow-100">
 
-          <Link
-            href="/ozan-shariah-calculator"
-            className="hover:text-yellow-300 transition-all duration-300 hover:scale-110"
-          >
+          <Link href="/ozan-shariah-calculator" className="hover:text-yellow-400 transition">
             اوزان شرعیہ کیلکولیٹر
           </Link>
 
-          <Link
-            href="/"
-            className="hover:text-yellow-300 transition-all duration-300 hover:scale-110"
-          >
+          <Link href="/" className="hover:text-yellow-400 transition">
             ہوم پیج
           </Link>
 
@@ -60,7 +59,7 @@ export default function Header() {
           <div className="relative">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="flex items-center gap-1 hover:text-yellow-300 transition-all duration-300"
+              className="flex items-center gap-1 hover:text-yellow-400 transition"
             >
               More <ChevronDown size={18} />
             </button>
@@ -72,42 +71,38 @@ export default function Header() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-8 right-0 bg-white text-emerald-700 shadow-2xl rounded-md w-48 py-2 z-50"
+                  className="absolute top-8 right-0 bg-[#2f2626] text-yellow-200 shadow-xl rounded-md w-48 py-2 z-50"
                   onMouseLeave={() => setDropdownOpen(false)}
                 >
-                  <Link href="/courses" className="block px-4 py-2 hover:bg-emerald-100">
-                    Courses
-                  </Link>
-                  <Link href="/about" className="block px-4 py-2 hover:bg-emerald-100">About</Link>
-                  <Link href="/privacy" className="block px-4 py-2 hover:bg-emerald-100">Privacy Policy</Link>
-                  <Link href="/contact" className="block px-4 py-2 hover:bg-emerald-100">Contact</Link>
-                  <Link href="/terms" className="block px-4 py-2 hover:bg-emerald-100">Terms</Link>
-                  <Link href="/disclaimer" className="block px-4 py-2 hover:bg-emerald-100">Disclaimer</Link>
+                  <Link href="/courses" className="block px-4 py-2 hover:bg-[#3a2f2f]">Courses</Link>
+                  <Link href="/about" className="block px-4 py-2 hover:bg-[#3a2f2f]">About</Link>
+                  <Link href="/privacy" className="block px-4 py-2 hover:bg-[#3a2f2f]">Privacy Policy</Link>
+                  <Link href="/contact" className="block px-4 py-2 hover:bg-[#3a2f2f]">Contact</Link>
+                  <Link href="/terms" className="block px-4 py-2 hover:bg-[#3a2f2f]">Terms</Link>
+                  <Link href="/disclaimer" className="block px-4 py-2 hover:bg-[#3a2f2f]">Disclaimer</Link>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
+          {/* CTA */}
           <Link
             href="/40-hadith-free"
-            className="ml-3 px-4 py-2 rounded-md font-semibold text-white"
-            style={{ background: "linear-gradient(90deg,#22c55e,#84cc16)" }}
+            className="ml-3 px-4 py-2 rounded-md font-semibold text-black"
+            style={{ background: "linear-gradient(90deg,#d4af37,#facc15)" }}
           >
-            <span className="blink-cta">Free 40 Ahadith</span>
+            40 احادیث
           </Link>
+
         </nav>
 
-        {/* Mobile Header Buttons */}
-        <div className="flex items-center gap-2">
-
-          {/* 3 Dot Menu Button */}
-          <button
-            onClick={() => setOpen(!open)}
-            className="md:hidden text-yellow-200 hover:text-white transition-all duration-300"
-          >
-            {open ? <X size={28} /> : <Menu size={28} />}
-          </button>
-        </div>
+        {/* Mobile Button */}
+        <button
+          onClick={() => setOpen(!open)}
+          className="md:hidden text-yellow-200"
+        >
+          {open ? <X size={28} /> : <Menu size={28} />}
+        </button>
       </div>
 
       {/* Mobile Menu */}
@@ -118,9 +113,9 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.25 }}
-            className="md:hidden bg-gradient-to-b from-emerald-700 to-lime-600 border-t shadow-2xl py-4"
+            className="relative md:hidden px-4 pb-4"
           >
-            <div className="flex flex-col items-center gap-4 text-lg font-semibold text-white px-4">
+            <div className="bg-[#2f2626] text-yellow-100 rounded-xl flex flex-col items-center gap-4 py-4 shadow-lg">
 
               <Link href="/ozan-shariah-calculator" onClick={() => setOpen(false)}>
                 اوزان شرعیہ کیلکولیٹر
@@ -140,15 +135,17 @@ export default function Header() {
               <Link
                 href="/40-hadith-free"
                 onClick={() => setOpen(false)}
-                className="mt-2 px-4 py-2 rounded-md font-semibold text-white"
-                style={{ background: "linear-gradient(90deg,#22c55e,#84cc16)" }}
+                className="mt-2 px-4 py-2 rounded-md font-semibold text-black"
+                style={{ background: "linear-gradient(90deg,#d4af37,#facc15)" }}
               >
-                <span className="blink-cta">Free 40 Ahadith</span>
+                40 احادیث
               </Link>
+
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
     </header>
   );
 }
