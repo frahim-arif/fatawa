@@ -132,15 +132,14 @@ export default function SingleQuestion() {
       </div>
 
       {/* Answer */}
-      <div className="p-5 md:p-6 rounded-2xl border border-green-200 dark:border-gray-700 bg-green-50 dark:bg-gray-900 shadow-sm leading-9">
-        {question?.answer && (
-          <p
-            className="text-gray-900 dark:text-gray-100 text-[18px] md:text-[20px]"
-            dangerouslySetInnerHTML={{
-              __html: autoLink(question.answer, related),
-            }}
-          />
-        )}
+      <div className="p-5 md:p-6 rounded-2xl border border-gray-300 bg-white shadow-sm leading-9">        {question?.answer && (
+        <p
+          className="text-black text-[18px] md:text-[20px]"
+          dangerouslySetInnerHTML={{
+            __html: autoLink(question.answer, related),
+          }}
+        />
+      )}
       </div>
 
       {/* Divider */}
@@ -149,7 +148,7 @@ export default function SingleQuestion() {
       {/* Hawala */}
       <div className="p-5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 shadow-sm space-y-4">
 
-        
+
 
         <div className="space-y-3 text-[17px] md:text-[19px] leading-9 text-gray-900 dark:text-gray-200">
 
