@@ -51,7 +51,7 @@ export default function SingleQuestion() {
     fetchRelated();
   }, [slug]);
 
-  // ✅ SAFE AUTOLINK FUNCTION
+  // ✅ KEYWORD-BASED AUTOLINK (BEST VERSION)
   const autoLink = (text, related) => {
     try {
       if (!text || !Array.isArray(related)) return text;
@@ -65,22 +65,24 @@ export default function SingleQuestion() {
 
       related.forEach((item) => {
         if (linkCount >= MAX_LINKS) return;
-        if (!item?.question || !item?.slug) return;
+        if (!item?.keywords?.length || !item?.slug) return;
         if (item.slug === slug) return;
 
-        const keyword = item.question.split(" ").slice(0, 2).join(" ");
-        if (!keyword) return;
+        item.keywords.forEach((word) => {
+          if (linkCount >= MAX_LINKS) return;
+          if (!word) return;
 
-        const safeKeyword = escapeRegExp(keyword);
-        const regex = new RegExp(`(${safeKeyword})`, "i");
+          const safeKeyword = escapeRegExp(word);
+          const regex = new RegExp(`(${safeKeyword})`, "i");
 
-        if (regex.test(updatedText)) {
-          updatedText = updatedText.replace(
-            regex,
-            `<a href="/questions/${item.slug}" class="text-blue-600 font-semibold underline">$1</a>`
-          );
-          linkCount++;
-        }
+          if (regex.test(updatedText)) {
+            updatedText = updatedText.replace(
+              regex,
+              `<a href="/questions/${item.slug}" class="text-blue-600 font-semibold underline">$1</a>`
+            );
+            linkCount++;
+          }
+        });
       });
 
       return updatedText;
@@ -115,7 +117,7 @@ export default function SingleQuestion() {
         <meta
           name="keywords"
           content={
-            question.keywords ||
+            question.keywords?.join(", ") ||
             "Islamic fatwa, سوال جواب, فتوی"
           }
         />
@@ -128,7 +130,7 @@ export default function SingleQuestion() {
         </h1>
       </div>
 
-      {/* ✅ AUTO LINK ENABLED ANSWER */}
+      {/* ✅ AUTO LINK ANSWER */}
       <div className="p-5 rounded-xl border bg-green-50 leading-8">
         {question?.answer && (
           <p
