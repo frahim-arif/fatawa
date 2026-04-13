@@ -10,7 +10,7 @@ export default function SingleQuestion() {
   const backend = "https://f-backend-vdi1.onrender.com/api/admin/questions";
 
   const [question, setQuestion] = useState(null);
-  const [related, setRelated] = useState([]); // ✅ added
+  const [related, setRelated] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -51,34 +51,43 @@ export default function SingleQuestion() {
     fetchRelated();
   }, [slug]);
 
-  // ✅ IMPROVED autoLink (safe + limited)
+  // ✅ SAFE AUTOLINK FUNCTION
   const autoLink = (text, related) => {
-    if (!text || !related.length) return text;
+    try {
+      if (!text || !Array.isArray(related)) return text;
 
-    let updatedText = text;
-    let linkCount = 0;
-    const MAX_LINKS = 5; // 🔥 control
+      let updatedText = text;
+      let linkCount = 0;
+      const MAX_LINKS = 5;
 
-    related.forEach((item) => {
-      if (linkCount >= MAX_LINKS) return;
-      if (!item.question || !item.slug) return;
-      if (item.slug === slug) return; // ❌ same page skip
+      const escapeRegExp = (string) =>
+        string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-      const keyword = item.question.split(" ").slice(0, 3).join(" ");
-      if (!keyword) return;
+      related.forEach((item) => {
+        if (linkCount >= MAX_LINKS) return;
+        if (!item?.question || !item?.slug) return;
+        if (item.slug === slug) return;
 
-      const regex = new RegExp(`(${keyword})`, "i");
+        const keyword = item.question.split(" ").slice(0, 3).join(" ");
+        if (!keyword) return;
 
-      if (regex.test(updatedText)) {
-        updatedText = updatedText.replace(
-          regex,
-          `<a href="/questions/${item.slug}" class="text-blue-600 font-semibold underline">$1</a>`
-        );
-        linkCount++;
-      }
-    });
+        const safeKeyword = escapeRegExp(keyword);
+        const regex = new RegExp(`(${safeKeyword})`, "i");
 
-    return updatedText;
+        if (regex.test(updatedText)) {
+          updatedText = updatedText.replace(
+            regex,
+            `<a href="/questions/${item.slug}" class="text-blue-600 font-semibold underline">$1</a>`
+          );
+          linkCount++;
+        }
+      });
+
+      return updatedText;
+    } catch (err) {
+      console.error("❌ autoLink error:", err);
+      return text;
+    }
   };
 
   if (loading)
@@ -119,13 +128,15 @@ export default function SingleQuestion() {
         </h1>
       </div>
 
-      {/* ✅ UPDATED Answer */}
+      {/* ✅ AUTO LINK ENABLED ANSWER */}
       <div className="p-5 rounded-xl border bg-green-50 leading-8">
-        <p
-          dangerouslySetInnerHTML={{
-            __html: autoLink(question.answer, related),
-          }}
-        />
+        {question?.answer && (
+          <p
+            dangerouslySetInnerHTML={{
+              __html: autoLink(question.answer, related),
+            }}
+          />
+        )}
       </div>
 
       {/* Hawala */}
