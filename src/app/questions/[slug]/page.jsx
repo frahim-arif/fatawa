@@ -51,7 +51,7 @@ export default function SingleQuestion() {
     fetchRelated();
   }, [slug]);
 
-  // ✅ KEYWORD-BASED AUTOLINK (BEST VERSION)
+  // ✅ AUTO LINK FUNCTION (KEYWORDS BASED)
   const autoLink = (text, related) => {
     try {
       if (!text || !Array.isArray(related)) return text;
@@ -78,7 +78,7 @@ export default function SingleQuestion() {
           if (regex.test(updatedText)) {
             updatedText = updatedText.replace(
               regex,
-              `<a href="/questions/${item.slug}" class="text-blue-600 font-semibold underline">$1</a>`
+              `<a href="/questions/${item.slug}" class="text-blue-600 dark:text-blue-400 font-semibold underline">$1</a>`
             );
             linkCount++;
           }
@@ -99,8 +99,9 @@ export default function SingleQuestion() {
     return <h1 className="text-center mt-10">❌ سوال نہیں ملا</h1>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6 space-y-6 text-right">
+    <div className="max-w-3xl mx-auto px-4 md:px-6 py-6 space-y-6 text-right">
 
+      {/* SEO */}
       <Head>
         <title>
           {question.metaTitle || question.question} | اسلامی فتاویٰ
@@ -124,17 +125,17 @@ export default function SingleQuestion() {
       </Head>
 
       {/* Question */}
-      <div className="p-5 rounded-xl border bg-yellow-50">
-        <h1 className="text-xl md:text-2xl font-bold text-green-800">
+      <div className="p-5 rounded-2xl border border-yellow-200 dark:border-gray-700 bg-yellow-50 dark:bg-gray-800 shadow-sm">
+        <h1 className="text-lg md:text-2xl font-bold text-green-800 dark:text-green-400 leading-8">
           {question.question}
         </h1>
       </div>
 
-      {/* ✅ AUTO LINK ANSWER */}
-      <div className="p-5 rounded-xl border bg-green-50 dark:bg-gray-800 leading-8">
+      {/* Answer */}
+      <div className="p-5 md:p-6 rounded-2xl border border-green-200 dark:border-gray-700 bg-green-50 dark:bg-gray-900 shadow-sm leading-9">
         {question?.answer && (
           <p
-            className="text-gray-900 dark:text-gray-100"
+            className="text-gray-900 dark:text-gray-100 text-[18px] md:text-[20px]"
             dangerouslySetInnerHTML={{
               __html: autoLink(question.answer, related),
             }}
@@ -142,34 +143,37 @@ export default function SingleQuestion() {
         )}
       </div>
 
+      {/* Divider */}
+      <hr className="border-gray-200 dark:border-gray-700" />
+
       {/* Hawala */}
+      <div className="p-5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 shadow-sm space-y-4">
 
+        
 
-      {/* Hawala */}
-      <div className="mt-6 p-5 rounded-2xl border bg-gray-50 dark:bg-[#111111] space-y-4">
-
-        <div className="space-y-3 text-lg md:text-xl leading-9 text-gray-900 dark:text-gray-200">
+        <div className="space-y-3 text-[17px] md:text-[19px] leading-9 text-gray-900 dark:text-gray-200">
 
           {question.hawala1 && (
-            <p className="border-r-4 border-emerald-500 pr-4 arabic">
-               {question.hawala1}
+            <p className="border-r-4 border-emerald-500 pr-4 arabic hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition">
+              {question.hawala1}
             </p>
           )}
 
           {question.hawala2 && (
-            <p className="border-r-4 border-emerald-500 pr-4 arabic">
+            <p className="border-r-4 border-emerald-500 pr-4 arabic hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition">
               {question.hawala2}
             </p>
           )}
 
           {question.hawala3 && (
-            <p className="border-r-4 border-emerald-500 pr-4 arabic">
-               {question.hawala3}
+            <p className="border-r-4 border-emerald-500 pr-4 arabic hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition">
+              {question.hawala3}
             </p>
           )}
 
         </div>
       </div>
-      </div>
-      );
+
+    </div>
+  );
 }
