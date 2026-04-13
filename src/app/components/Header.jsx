@@ -26,7 +26,7 @@ export default function Header() {
       />
 
       {/* 🔥 Content */}
-      <div className="relative max-w-6xl mx-auto p-4 flex justify-between items-center">
+      <div className="relative max-w-6xl mx-auto py-2 px-4 flex justify-between items-center">
 
         {/* Logo + Title */}
         <div className="flex items-center gap-3">
