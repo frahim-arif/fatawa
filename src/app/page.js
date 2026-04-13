@@ -172,7 +172,7 @@ export default function HomePage() {
       <div className="w-full relative z-10">
 
         {/* Durūd Sharīf */}
-        <div
+        {/* <div
           className="w-full overflow-hidden"
           style={{
             background: "linear-gradient(to right, #0f5132, #198754, #0f5132)",
@@ -189,7 +189,7 @@ export default function HomePage() {
             —
             ﴿ إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا ﴾
           </motion.div>
-        </div>
+        </div> */}
 
         {/* Namaz Timings */}
         <div
