@@ -1,47 +1,42 @@
-"use client";
+<footer className="relative mt-10">
 
-import React from "react";
-import Link from "next/link";
-import { Facebook, Youtube, Mail } from "lucide-react";
+  {/* 🔥 Base Color */}
+  <div className="absolute inset-0 bg-[#3b2f2f]" />
 
-export default function Footer() {
-  return (
-    <footer className="mt-10 bg-gradient-to-r from-emerald-800 via-lime-600 to-yellow-400 text-green-900 rounded-t-3xl shadow-2xl py-6">
-      <div className="flex flex-col items-center gap-4 px-4">
-        {/* Social Icons */}
-        <div className="flex items-center gap-5">
-          {/* Facebook */}
-          <Link
-            href="https://www.facebook.com/share/1KgXVbfgXS/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-3 bg-white/10 rounded-full hover:bg-yellow-300 hover:text-green-900 transition-transform duration-300 hover:scale-110 backdrop-blur-md shadow-md"
-          >
-            <Facebook size={20} />
-          </Link>
+  {/* 🔥 Pattern Overlay */}
+  <div
+    className="absolute inset-0 opacity-10"
+    style={{
+      backgroundImage: "url('/images/1943.jpg')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    }}
+  />
 
-          {/* YouTube */}
-          <Link
-            href="#"
-            className="p-3 bg-white/10 rounded-full hover:bg-yellow-300 hover:text-green-900 transition-transform duration-300 hover:scale-110 backdrop-blur-md shadow-md"
-          >
-            <Youtube size={20} />
-          </Link>
+  {/* 🔥 Content */}
+  <div className="relative max-w-6xl mx-auto px-4 py-8 text-yellow-200 text-center space-y-4">
 
-          {/* Email */}
-          <Link
-            href="mailto:frahimm46@gmail.com"
-            className="p-3 bg-white/10 rounded-full hover:bg-yellow-300 hover:text-green-900 transition-transform duration-300 hover:scale-110 backdrop-blur-md shadow-md"
-          >
-            <Mail size={20} />
-          </Link>
-        </div>
+    {/* Title */}
+    <h2 className="text-xl md:text-2xl font-bold text-yellow-300">
+      مسلک دیوبند
+    </h2>
 
-        {/* Bottom Text */}
-        <p className="text-sm font-medium opacity-90 text-white">
-          © {new Date().getFullYear()} Maslak e Deoband — تمام حقوق محفوظ ہیں۔
-        </p>
-      </div>
-    </footer>
-  );
-}
+    {/* Links */}
+    <div className="flex flex-wrap justify-center gap-4 text-sm md:text-base">
+      <a href="/" className="hover:text-yellow-400">ہوم</a>
+      <a href="/about" className="hover:text-yellow-400">About</a>
+      <a href="/contact" className="hover:text-yellow-400">Contact</a>
+      <a href="/privacy" className="hover:text-yellow-400">Privacy</a>
+      <a href="/terms" className="hover:text-yellow-400">Terms</a>
+    </div>
+
+    {/* Divider */}
+    <div className="border-t border-yellow-700 my-4"></div>
+
+    {/* Copyright */}
+    <p className="text-xs md:text-sm text-yellow-300">
+      © {new Date().getFullYear()} Maslak e Deoband. All rights reserved.
+    </p>
+
+  </div>
+</footer>
