@@ -143,11 +143,31 @@ export default function SingleQuestion() {
       </div>
 
       {/* Hawala */}
-      <div className="space-y-3 text-gray-800">
-        {question.hawala1 && <p>📖 {question.hawala1}</p>}
-        {question.hawala2 && <p>📖 {question.hawala2}</p>}
-        {question.hawala3 && <p>📖 {question.hawala3}</p>}
-      </div>
-    </div>
-  );
-}
+<div className="mt-6 p-5 rounded-xl border bg-gray-50 dark:bg-gray-800 space-y-4">
+
+  <h2 className="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 text-right">
+    📚 حوالہ جات
+  </h2>
+
+  <div className="space-y-3 text-right font-noori text-lg md:text-xl leading-9 text-gray-900 dark:text-gray-200">
+
+    {question.hawala1 && (
+      <p className="border-r-4 border-green-500 pr-3">
+        📖 {question.hawala1}
+      </p>
+    )}
+
+    {question.hawala2 && (
+      <p className="border-r-4 border-green-500 pr-3">
+        📖 {question.hawala2}
+      </p>
+    )}
+
+    {question.hawala3 && (
+      <p className="border-r-4 border-green-500 pr-3">
+        📖 {question.hawala3}
+      </p>
+    )}
+
+  </div>
+</div>
