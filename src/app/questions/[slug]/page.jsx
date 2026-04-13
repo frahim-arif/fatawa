@@ -10,6 +10,7 @@ export default function SingleQuestion() {
   const backend = "https://f-backend-vdi1.onrender.com/api/admin/questions";
 
   const [question, setQuestion] = useState(null);
+  const [related, setRelated] = useState([]); // ✅ added
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,7 +18,6 @@ export default function SingleQuestion() {
 
     const fetchQuestion = async () => {
       try {
-        // ✅ FIX: encodeURIComponent hata diya
         const res = await fetch(`${backend}/slug/${slug}`);
         const data = await res.json();
 
@@ -34,8 +34,52 @@ export default function SingleQuestion() {
       }
     };
 
+    const fetchRelated = async () => {
+      try {
+        const res = await fetch(`${backend}`);
+        const data = await res.json();
+
+        if (data.success) {
+          setRelated(data.data);
+        }
+      } catch (err) {
+        console.error("❌ Error fetching related:", err);
+      }
+    };
+
     fetchQuestion();
+    fetchRelated();
   }, [slug]);
+
+  // ✅ IMPROVED autoLink (safe + limited)
+  const autoLink = (text, related) => {
+    if (!text || !related.length) return text;
+
+    let updatedText = text;
+    let linkCount = 0;
+    const MAX_LINKS = 5; // 🔥 control
+
+    related.forEach((item) => {
+      if (linkCount >= MAX_LINKS) return;
+      if (!item.question || !item.slug) return;
+      if (item.slug === slug) return; // ❌ same page skip
+
+      const keyword = item.question.split(" ").slice(0, 3).join(" ");
+      if (!keyword) return;
+
+      const regex = new RegExp(`(${keyword})`, "i");
+
+      if (regex.test(updatedText)) {
+        updatedText = updatedText.replace(
+          regex,
+          `<a href="/questions/${item.slug}" class="text-blue-600 font-semibold underline">$1</a>`
+        );
+        linkCount++;
+      }
+    });
+
+    return updatedText;
+  };
 
   if (loading)
     return <h1 className="text-center mt-10">⏳ لوڈ ہو رہا ہے...</h1>;
@@ -46,7 +90,6 @@ export default function SingleQuestion() {
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6 text-right">
 
-      {/* ✅ SEO IMPROVED */}
       <Head>
         <title>
           {question.metaTitle || question.question} | اسلامی فتاویٰ
@@ -76,9 +119,13 @@ export default function SingleQuestion() {
         </h1>
       </div>
 
-      {/* Answer */}
+      {/* ✅ UPDATED Answer */}
       <div className="p-5 rounded-xl border bg-green-50 leading-8">
-        <p>{question.answer}</p>
+        <p
+          dangerouslySetInnerHTML={{
+            __html: autoLink(question.answer, related),
+          }}
+        />
       </div>
 
       {/* Hawala */}
