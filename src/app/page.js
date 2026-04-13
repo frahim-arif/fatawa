@@ -72,14 +72,14 @@ export default function HomePage() {
         );
 
         if (reset) {
-  setAllQuestions(sorted);
-  setVisibleQuestions(sorted.slice(0, 5)); // ✅ sirf 5 show
-  setSkip(5);
-} else {
-  setAllQuestions((prev) => [...prev, ...sorted]);
-  setVisibleQuestions((prev) => [...prev, ...sorted]); // ✅ next load add
-  setSkip((prev) => prev + 5);
-}
+          setAllQuestions(sorted);
+          setVisibleQuestions(sorted.slice(0, 5)); // ✅ sirf 5 show
+          setSkip(5);
+        } else {
+          setAllQuestions((prev) => [...prev, ...sorted]);
+          setVisibleQuestions((prev) => [...prev, ...sorted]); // ✅ next load add
+          setSkip((prev) => prev + 5);
+        }
 
         setHasMore(data.data.length === 5);
       }
@@ -112,8 +112,8 @@ export default function HomePage() {
   };
 
   return (
-<div className="relative w-full min-h-screen overflow-hidden pb-6 md:pb-8 space-y-10 bg-gradient-to-b from-[#e6f4f1] to-[#d4ebe4]">      <Head>
-        <style>{`
+    <div className="relative w-full min-h-screen overflow-hidden pb-6 md:pb-8 space-y-10 bg-gradient-to-b from-[#e6f4f1] to-[#d4ebe4]">      <Head>
+      <style>{`
     @font-face {
       font-family: 'Jameel Noori Nastaleeq';
       src: url('/fonts/JameelNooriNastaleeq.woff2') format('woff2'),
@@ -129,19 +129,19 @@ export default function HomePage() {
       font-family: 'Jameel Noori Nastaleeq', serif;
     }
   `}</style>
-      </Head>
+    </Head>
 
       {/* 🔹 Floating Nurani Light Background */}
 
 
       <motion.div
-  className="absolute top-1/4 left-1/2 w-72 h-72 rounded-full pointer-events-none"
-  style={{
-    background:
-      "radial-gradient(circle, rgba(255,223,0,0.12), transparent 70%)",
-    filter: "blur(80px)",
-    zIndex: -1,
-  }}
+        className="absolute top-1/4 left-1/2 w-72 h-72 rounded-full pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(255,223,0,0.12), transparent 70%)",
+          filter: "blur(80px)",
+          zIndex: -1,
+        }}
         animate={{
           x: ["0%", "20%", "-20%", "0%"],
           y: ["0%", "10%", "-10%", "0%"],
@@ -316,30 +316,30 @@ export default function HomePage() {
 
         {/* تمام کیٹیگریز button at the end */}
         <div
-  onClick={() => {
-    setSelectedCategory("");
-    setTimeout(() => {
-      questionsRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 300);
-  }}
-  className={`
+          onClick={() => {
+            setSelectedCategory("");
+            setTimeout(() => {
+              questionsRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }, 300);
+          }}
+          className={`
     p-5 rounded-3xl cursor-pointer text-center select-none
     transition-all duration-500 transform border-blue-500 shadow-xl
     hover:scale-105 hover:shadow-[0_0_30px_rgba(255,223,0,0.8)]
     col-span-2 md:col-auto
     mx-auto
     ${selectedCategory === ""
-      ? "bg-gradient-to-br from-yellow-400 to-yellow-200 border-yellow-500 shadow-[0_0_30px_rgba(255,223,0,0.9)] text-white"
-      : "bg-white/30 border-gray-300 text-black hover:bg-gradient-to-br hover:from-yellow-100 hover:to-yellow-50 hover:text-yellow-800 hover:shadow-[0_0_25px_rgba(255,223,0,0.5)]"
-    }
+              ? "bg-gradient-to-br from-yellow-400 to-yellow-200 border-yellow-500 shadow-[0_0_30px_rgba(255,223,0,0.9)] text-white"
+              : "bg-white/30 border-gray-300 text-black hover:bg-gradient-to-br hover:from-yellow-100 hover:to-yellow-50 hover:text-yellow-800 hover:shadow-[0_0_25px_rgba(255,223,0,0.5)]"
+            }
   `}
-  style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
->
-  تمام سوالات
-</div>
+          style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
+        >
+          تمام سوالات
+        </div>
 
       </div>
 
@@ -516,7 +516,7 @@ export default function HomePage() {
           </p>
         )}
 
-        {hasMore && filteredQuestions.length > 0 && (
+        {hasMore && (
           <div className="text-center mt-6">
             <button
               onClick={() => fetchQuestions()}
