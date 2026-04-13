@@ -193,7 +193,7 @@ export default function HomePage() {
         {/* Namaz Timings */}
         <div
           className="w-full overflow-hidden px-0 sticky top-16 md:top-16 z-40"
-          style={{ background: "#0b3d24", borderBottom: "2px solid #d4af37" }}
+          style={{ background: "#010302", borderBottom: "2px solid #d4af37" }}
         >
           <motion.div
             className="whitespace-nowrap w-full text-yellow-200 text-sm font-semibold"
