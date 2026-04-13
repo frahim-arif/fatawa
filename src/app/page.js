@@ -109,8 +109,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative space-y-10 w-full px-0 overflow-hidden min-h-screen" style={{ backgroundColor: "#ddeee9" }}>
-      <Head>
+<div className="relative w-full min-h-screen overflow-hidden px-4 md:px-6 lg:px-8 py-6 md:py-8 space-y-10 bg-gradient-to-b from-[#e6f4f1] to-[#d4ebe4]">      <Head>
         <style>{`
     @font-face {
       font-family: 'Jameel Noori Nastaleeq';
