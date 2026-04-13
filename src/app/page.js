@@ -109,7 +109,7 @@ export default function HomePage() {
   };
 
   return (
-<div className="relative w-full min-h-screen overflow-hidden px-4 md:px-6 lg:px-8 py-6 md:py-8 space-y-10 bg-gradient-to-b from-[#e6f4f1] to-[#d4ebe4]">      <Head>
+<div className="relative w-full min-h-screen overflow-hidden px-4 md:px-6 lg:px-8 pb-6 md:pb-8 space-y-10 bg-gradient-to-b from-[#e6f4f1] to-[#d4ebe4]">      <Head>
         <style>{`
     @font-face {
       font-family: 'Jameel Noori Nastaleeq';
@@ -132,13 +132,13 @@ export default function HomePage() {
 
 
       <motion.div
-        className="fixed top-1/4 left-1/2 w-72 h-72 rounded-full pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(255,223,0,0.15), transparent 70%)",
-          filter: "blur(80px)",
-          zIndex: 0,
-        }}
+  className="absolute top-1/4 left-1/2 w-72 h-72 rounded-full pointer-events-none"
+  style={{
+    background:
+      "radial-gradient(circle, rgba(255,223,0,0.12), transparent 70%)",
+    filter: "blur(80px)",
+    zIndex: -1,
+  }}
         animate={{
           x: ["0%", "20%", "-20%", "0%"],
           y: ["0%", "10%", "-10%", "0%"],
