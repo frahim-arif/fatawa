@@ -30,11 +30,7 @@ export default function Header() {
 
         {/* Logo + Title */}
         <div className="flex items-center gap-3">
-          <img
-            src="/images/logo.png"
-            alt="Maslak e Deoband Logo"
-            className="w-12 h-12 object-contain rounded-full border border-yellow-400"
-          />
+          
 
           <Link
             href="/"
