@@ -73,7 +73,7 @@ export default function HomePage() {
 
         if (reset) {
           setAllQuestions(sorted);
-          setVisibleQuestions(sorted.slice(0, 5)); // ✅ sirf 5 show
+          setVisibleQuestions(sorted);// ✅ sirf 5 show
           setSkip(5);
         } else {
           setAllQuestions((prev) => [...prev, ...sorted]);
@@ -81,7 +81,7 @@ export default function HomePage() {
           setSkip((prev) => prev + 5);
         }
 
-        setHasMore(data.data.length === 5);
+        setHasMore(data.data.length > 0);
       }
     } catch (err) {
       console.error("❌ Error fetching questions:", err);
