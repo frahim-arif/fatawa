@@ -68,7 +68,7 @@ export default function SingleQuestion() {
         if (!item?.question || !item?.slug) return;
         if (item.slug === slug) return;
 
-        const keyword = item.question.split(" ").slice(0, 3).join(" ");
+        const keyword = item.question.split(" ").slice(0, 2).join(" ");
         if (!keyword) return;
 
         const safeKeyword = escapeRegExp(keyword);
