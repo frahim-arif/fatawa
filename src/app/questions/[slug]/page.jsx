@@ -142,37 +142,32 @@ export default function SingleQuestion() {
       )}
       </div>
 
-      {/* Divider */}
-      <hr className="border-gray-200 dark:border-gray-700" />
-
       {/* Hawala */}
-      <div className="p-5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 shadow-sm space-y-4">
+<div className="p-5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#121212] shadow-sm space-y-4">
 
 
+  <div className="space-y-3 text-[17px] md:text-[19px] leading-9 text-gray-900 dark:text-gray-200">
 
-        <div className="space-y-3 text-[17px] md:text-[19px] leading-9 text-gray-900 dark:text-gray-200">
+    {question.hawala1 && (
+      <p className="px-4 py-3 rounded-lg bg-white dark:bg-[#1a1a1a] hover:bg-gray-100 dark:hover:bg-[#222] transition arabic">
+        {question.hawala1}
+      </p>
+    )}
 
-          {question.hawala1 && (
-            <p className="border-r-4 border-emerald-500 pr-4 arabic hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition">
-              {question.hawala1}
-            </p>
-          )}
+    {question.hawala2 && (
+      <p className="px-4 py-3 rounded-lg bg-white dark:bg-[#1a1a1a] hover:bg-gray-100 dark:hover:bg-[#222] transition arabic">
+        {question.hawala2}
+      </p>
+    )}
 
-          {question.hawala2 && (
-            <p className="border-r-4 border-emerald-500 pr-4 arabic hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition">
-              {question.hawala2}
-            </p>
-          )}
+    {question.hawala3 && (
+      <p className="px-4 py-3 rounded-lg bg-white dark:bg-[#1a1a1a] hover:bg-gray-100 dark:hover:bg-[#222] transition arabic">
+        {question.hawala3}
+      </p>
+    )}
 
-          {question.hawala3 && (
-            <p className="border-r-4 border-emerald-500 pr-4 arabic hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition">
-              {question.hawala3}
-            </p>
-          )}
-
-        </div>
-      </div>
-
-    </div>
+  </div>
+</div>
+</div>
   );
 }
