@@ -99,7 +99,7 @@ export default function SingleQuestion() {
     return <h1 className="text-center mt-10">❌ سوال نہیں ملا</h1>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6 space-y-6 text-right">
+   <div className="mt-6 p-5 rounded-2xl border bg-gray-50 dark:bg-[#111111] space-y-4">
 
       <Head>
         <title>
@@ -143,31 +143,33 @@ export default function SingleQuestion() {
       </div>
 
       {/* Hawala */}
-<div className="mt-6 p-5 rounded-xl border bg-gray-50 dark:bg-gray-800 space-y-4">
+      
 
-  <h2 className="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 text-right">
-    📚 حوالہ جات
-  </h2>
+        <h2 className="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100">
+          📚 حوالہ جات
+        </h2>
 
-  <div className="space-y-3 text-right font-noori text-lg md:text-xl leading-9 text-gray-900 dark:text-gray-200">
+        <div className="space-y-3 text-lg md:text-xl leading-9 text-gray-900 dark:text-gray-200">
 
-    {question.hawala1 && (
-      <p className="border-r-4 border-green-500 pr-3">
-        📖 {question.hawala1}
-      </p>
-    )}
+          {question.hawala1 && (
+            <p className="border-r-4 border-emerald-500 pr-4">
+              📖 {question.hawala1}
+            </p>
+          )}
 
-    {question.hawala2 && (
-      <p className="border-r-4 border-green-500 pr-3">
-        📖 {question.hawala2}
-      </p>
-    )}
+          {question.hawala2 && (
+            <p className="border-r-4 border-emerald-500 pr-4">
+              📖 {question.hawala2}
+            </p>
+          )}
 
-    {question.hawala3 && (
-      <p className="border-r-4 border-green-500 pr-3">
-        📖 {question.hawala3}
-      </p>
-    )}
+          {question.hawala3 && (
+            <p className="border-r-4 border-emerald-500 pr-4">
+              📖 {question.hawala3}
+            </p>
+          )}
 
-  </div>
-</div>
+        </div>
+      </div>
+      );
+}
