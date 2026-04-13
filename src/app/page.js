@@ -18,6 +18,7 @@ export default function HomePage() {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [prayerTimes, setPrayerTimes] = useState(null);
   const questionsRef = useRef(null);
+  const [visibleQuestions, setVisibleQuestions] = useState([]);
 
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
@@ -71,12 +72,14 @@ export default function HomePage() {
         );
 
         if (reset) {
-          setAllQuestions(sorted);
-          setSkip(5);
-        } else {
-          setAllQuestions((prev) => [...prev, ...sorted]);
-          setSkip((prev) => prev + 5);
-        }
+  setAllQuestions(sorted);
+  setVisibleQuestions(sorted.slice(0, 5)); // ✅ sirf 5 show
+  setSkip(5);
+} else {
+  setAllQuestions((prev) => [...prev, ...sorted]);
+  setVisibleQuestions((prev) => [...prev, ...sorted]); // ✅ next load add
+  setSkip((prev) => prev + 5);
+}
 
         setHasMore(sorted.length === 5);
       }
@@ -90,7 +93,7 @@ export default function HomePage() {
     fetchQuestions(true);
   }, [selectedCategory]);
 
-  const filteredQuestions = allQuestions.filter((q) =>
+  const filteredQuestions = visibleQuestions.filter((q) =>
     q.question.toLowerCase().includes(query.toLowerCase())
   );
 
