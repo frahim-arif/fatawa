@@ -188,7 +188,10 @@ export default function HomePage() {
         >
           <motion.div
             className="whitespace-nowrap text-yellow-100 text-xs arabic sticky top-16 w-full z-50"
-            animate={{ x: ["-100%", "100%"] }}
+            style={{
+      paddingLeft: "100%", // 👈 IMPORTANT FIX
+    }}
+            animate={{ x: ["0%", "100%"] }}
             transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
           >
             اَللّٰهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ، وَعَلَىٰ آلِ سَيِّدِنَا مُحَمَّدٍ، وَبَارِكْ وَسَلِّمْ
