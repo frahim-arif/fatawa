@@ -189,7 +189,7 @@ export default function HomePage() {
           <motion.div
             className="whitespace-nowrap text-yellow-100 text-xs arabic sticky top-16 w-full z-50"
             style={{
-      paddingLeft: "100%", // 👈 IMPORTANT FIX
+      paddingLeft: "100%", // 👈 IMPORTANT
     }}
             animate={{ x: ["0%", "100%"] }}
             transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
