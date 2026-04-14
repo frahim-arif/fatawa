@@ -109,12 +109,15 @@ export default function HomePage() {
   };
 
   return (
-    <div
-  className="relative space-y-10 w-full px-0 overflow-hidden min-h-screen bg-repeat md:bg-cover bg-contain md:bg-center bg-top md:bg-fixed"
+ <div
+  className="relative space-y-10 w-full px-0 overflow-hidden min-h-screen bg-repeat md:bg-no-repeat md:bg-cover md:bg-center md:bg-fixed"
   style={{
     backgroundImage: "url('/images/b_2.jpg')",
-    backgroundSize: "200px 200px",
+    backgroundSize: "120px 120px",   // 👈 IMPORTANT FIX
+    backgroundRepeat: "repeat",
+    backgroundPosition: "0 0",
   }}
+
 >
       <Head>
         <style>{`
