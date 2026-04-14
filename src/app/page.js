@@ -110,12 +110,12 @@ export default function HomePage() {
 
   return (
     <div
-  className="relative space-y-10 w-full px-0 overflow-hidden min-h-screen bg-repeat md:bg-cover bg-contain md:bg-center bg-top md:bg-fixed"
-  style={{
-    backgroundImage: "url('/images/ramadan_15_03_2022_1.jpg')",
-    
-  }}
->
+      className="relative space-y-10 w-full px-0 overflow-hidden min-h-screen bg-repeat md:bg-cover bg-contain md:bg-center bg-top md:bg-fixed"
+      style={{
+        backgroundImage: "url('/images/ramadan_15_03_2022_1.jpg')",
+
+      }}
+    >
       <Head>
         <style>{`
     @font-face {
@@ -175,32 +175,32 @@ export default function HomePage() {
         }}
       />
       {/* 🔹 Scrolling Banners (Durūd Sharīf + Namaz Timings) */}
-      <div className="w-full relative z-10">
+      <div className="w-full relative z-0 -mt-[1px]">
 
         {/* Durūd Sharīf */}
         <div
-  className="w-full overflow-hidden"
-  style={{
-    background: "#000",
-    borderTop: "0.5px solid #d4af37",
-    borderBottom: "0.5px solid #d4af37",
-  }}
->
-  <div className="relative w-full">
-    <motion.div
-      className="whitespace-nowrap text-yellow-100 text-xs arabic inline-block"
-      style={{
-        position: "relative",
-        left: "100%", // 👈 start just outside right edge
-      }}
-      animate={{ x: ["0%", "-200%"] }}
-      transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-    >
-      اَللّٰهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ، وَعَلَىٰ آلِ سَيِّدِنَا مُحَمَّدٍ، وَبَارِكْ وَسَلِّمْ —
-      ﴿ إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا ﴾
-    </motion.div>
-  </div>
-</div>
+          className="w-full overflow-hidden"
+          style={{
+            background: "#000",
+            borderTop: "0.5px solid #d4af37",
+            borderBottom: "0.5px solid #d4af37",
+          }}
+        >
+          <div className="relative w-full">
+            <motion.div
+              className="whitespace-nowrap text-yellow-100 text-xs arabic inline-block"
+              style={{
+                position: "relative",
+                left: "100%", // 👈 start just outside right edge
+              }}
+              animate={{ x: ["-100%", "100%"] }}
+              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            >
+              اَللّٰهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ، وَعَلَىٰ آلِ سَيِّدِنَا مُحَمَّدٍ، وَبَارِكْ وَسَلِّمْ —
+              ﴿ إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا ﴾
+            </motion.div>
+          </div>
+        </div>
 
         {/* Namaz Timings */}
         <div
@@ -325,30 +325,30 @@ export default function HomePage() {
 
         {/* تمام کیٹیگریز button at the end */}
         <div
-  onClick={() => {
-    setSelectedCategory("");
-    setTimeout(() => {
-      questionsRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 300);
-  }}
-  className={`
+          onClick={() => {
+            setSelectedCategory("");
+            setTimeout(() => {
+              questionsRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }, 300);
+          }}
+          className={`
     p-5 rounded-3xl cursor-pointer text-center select-none
     transition-all duration-500 transform border-blue-500 shadow-xl
     hover:scale-105 hover:shadow-[0_0_30px_rgba(255,223,0,0.8)]
     col-span-2 md:col-auto
     mx-auto
     ${selectedCategory === ""
-      ? "bg-gradient-to-br from-yellow-400 to-yellow-200 border-yellow-500 shadow-[0_0_30px_rgba(255,223,0,0.9)] text-white"
-      : "bg-white/30 border-gray-300 text-black hover:bg-gradient-to-br hover:from-yellow-100 hover:to-yellow-50 hover:text-yellow-800 hover:shadow-[0_0_25px_rgba(255,223,0,0.5)]"
-    }
+              ? "bg-gradient-to-br from-yellow-400 to-yellow-200 border-yellow-500 shadow-[0_0_30px_rgba(255,223,0,0.9)] text-white"
+              : "bg-white/30 border-gray-300 text-black hover:bg-gradient-to-br hover:from-yellow-100 hover:to-yellow-50 hover:text-yellow-800 hover:shadow-[0_0_25px_rgba(255,223,0,0.5)]"
+            }
   `}
-  style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
->
-  تمام سوالات
-</div>
+          style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
+        >
+          تمام سوالات
+        </div>
 
       </div>
 

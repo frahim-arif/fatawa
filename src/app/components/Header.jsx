@@ -10,7 +10,7 @@ export default function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
-    <header className="relative sticky top-0 z-50 shadow-md">
+    <header className="sticky top-0 z-[100] shadow-md">
 
       {/* 🔥 Base Color */}
       <div className="absolute inset-0 bg-[#3b2f2f]" />
