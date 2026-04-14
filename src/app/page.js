@@ -109,7 +109,10 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative space-y-10 w-full px-0 overflow-hidden min-h-screen" style={{ backgroundImage: "url('/images/b_2.jpg')" }}>
+    <div className="relative space-y-10 w-full  px-0 overflow-hidden min-h-screen" style={{ backgroundImage: "url('/images/b_2.jpg')",
+      backgroundSize: "cover",
+  backgroundPosition: "center",
+     }}>
       <Head>
         <style>{`
     @font-face {
