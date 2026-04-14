@@ -175,9 +175,9 @@ export default function HomePage() {
         }}
       />
       {/* 🔹 Scrolling Banners (Durūd Sharīf + Namaz Timings) */}
-      <div className="w-full relative z-0 -mt-[1px]">
+      <div className="w-full relative z-0 -mt-[0.2px]">
 
-        {/* Durūd Sharīf */}
+        {/* Durūd Sharīf
         <div
           className="w-full overflow-hidden"
           style={{
@@ -200,7 +200,7 @@ export default function HomePage() {
               ﴿ إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا ﴾
             </motion.div>
           </div>
-        </div>
+        </div> */}
 
         {/* Namaz Timings */}
         <div
