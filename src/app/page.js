@@ -109,9 +109,8 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative space-y-10 w-full  px-0 overflow-hidden min-h-screen" style={{ backgroundImage: "url('/images/b_2.jpg')",
-      backgroundSize: "cover",
-  backgroundPosition: "center",
+    <div className="relative min-h-screen w-full overflow-hidden bg-center bg-cover bg-no-repeat" style={{ backgroundImage: "url('/images/b_2.jpg')",
+      
      }}>
       <Head>
         <style>{`
