@@ -110,18 +110,11 @@ export default function HomePage() {
 
   return (
     <div
-  className="relative space-y-10 w-full px-0 overflow-hidden min-h-screen bg-center bg-cover bg-no-repeat"
+  className="relative space-y-10 w-full px-0 overflow-hidden min-h-screen bg-no-repeat md:bg-cover bg-contain md:bg-center bg-top md:bg-fixed"
   style={{
     backgroundImage: "url('/images/b_2.jpg')",
   }}
 >
-  {/* Dark overlay (important for mobile readability) */}
-  <div className="absolute inset-0 bg-black/50"></div>
-
-  {/* Content */}
-  <div className="relative z-10 w-full min-h-screen">
-    {/* your content here */}
-  </div>
       <Head>
         <style>{`
     @font-face {
