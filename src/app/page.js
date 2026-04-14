@@ -171,7 +171,7 @@ export default function HomePage() {
       {/* 🔹 Scrolling Banners (Durūd Sharīf + Namaz Timings) */}
       <div className="w-full relative z-10">
 
-        {/* Durūd Sharīf */}
+        {/* Durūd Sharīf
         <div
           className="w-full overflow-hidden"
           style={{
@@ -189,12 +189,12 @@ export default function HomePage() {
             —
             ﴿ إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا ﴾
           </motion.div>
-        </div>
+        </div> */}
 
         {/* Namaz Timings */}
         <div
           className="w-full overflow-hidden px-0"
-          style={{ background: "#0b3d24", borderBottom: "2px solid #d4af37" }}
+          style={{ background: "#000000", borderBottom: "2px solid #d4af37" }}
         >
           <motion.div
             className="whitespace-nowrap w-full text-yellow-200 text-sm font-semibold"
