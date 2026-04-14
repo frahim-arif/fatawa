@@ -177,7 +177,7 @@ export default function HomePage() {
       {/* 🔹 Scrolling Banners (Durūd Sharīf + Namaz Timings) */}
       <div className="w-full relative z-10">
 
-        Durūd Sharīf
+        {/* Durūd Sharīf */}
         <div
           className="w-full overflow-hidden"
           style={{
