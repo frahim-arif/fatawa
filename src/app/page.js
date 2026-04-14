@@ -110,7 +110,7 @@ export default function HomePage() {
 
   return (
     <div
-  className="relative space-y-10 w-full px-0 overflow-hidden min-h-screen bg-no-repeat md:bg-cover bg-contain md:bg-center bg-top md:bg-fixed"
+  className="relative space-y-10 w-full px-0 overflow-hidden min-h-screen bg-repeat md:bg-cover bg-contain md:bg-center bg-top md:bg-fixed"
   style={{
     backgroundImage: "url('/images/b_2.jpg')",
   }}
