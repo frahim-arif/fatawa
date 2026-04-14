@@ -112,7 +112,7 @@ export default function HomePage() {
     <div
   className="relative space-y-10 w-full px-0 overflow-hidden min-h-screen bg-repeat md:bg-cover bg-contain md:bg-center bg-top md:bg-fixed"
   style={{
-    backgroundImage: "url('/images/b_2.jpg')",
+    backgroundImage: "url('/images/background_2.jpg')",
     
   }}
 >
