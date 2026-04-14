@@ -66,7 +66,9 @@ export default function HomePage() {
       const res = await fetch(url);
       const data = await res.json();
       if (data.success) {
-        const sorted = data.data;
+        const sorted = data.data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
 
         if (reset) {
           setAllQuestions(sorted);
