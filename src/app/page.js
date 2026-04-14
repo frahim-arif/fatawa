@@ -18,7 +18,6 @@ export default function HomePage() {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [prayerTimes, setPrayerTimes] = useState(null);
   const questionsRef = useRef(null);
-  const [visibleQuestions, setVisibleQuestions] = useState([]);
 
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
@@ -67,21 +66,17 @@ export default function HomePage() {
       const res = await fetch(url);
       const data = await res.json();
       if (data.success) {
-        const sorted = data.data.sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        );
+        const sorted = data.data;
 
         if (reset) {
           setAllQuestions(sorted);
-          setVisibleQuestions(sorted);// ✅ sirf 5 show
           setSkip(5);
         } else {
           setAllQuestions((prev) => [...prev, ...sorted]);
-          setVisibleQuestions((prev) => [...prev, ...sorted]); // ✅ next load add
           setSkip((prev) => prev + 5);
         }
 
-        setHasMore(data.data.length > 0);
+        setHasMore(sorted.length === 5);
       }
     } catch (err) {
       console.error("❌ Error fetching questions:", err);
@@ -90,10 +85,11 @@ export default function HomePage() {
 
   useEffect(() => {
     setSkip(0);
+    setAllQuestions([]);
     fetchQuestions(true);
   }, [selectedCategory]);
 
-  const filteredQuestions = visibleQuestions.filter((q) =>
+  const filteredQuestions = allQuestions.filter((q) =>
     q.question.toLowerCase().includes(query.toLowerCase())
   );
 
@@ -112,8 +108,9 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden pb-6 md:pb-8 space-y-10 bg-gradient-to-b from-[#e6f4f1] to-[#d4ebe4]">      <Head>
-      <style>{`
+    <div className="relative space-y-10 w-full px-0 overflow-hidden min-h-screen" style={{ backgroundColor: "#ddeee9" }}>
+      <Head>
+        <style>{`
     @font-face {
       font-family: 'Jameel Noori Nastaleeq';
       src: url('/fonts/JameelNooriNastaleeq.woff2') format('woff2'),
@@ -129,18 +126,18 @@ export default function HomePage() {
       font-family: 'Jameel Noori Nastaleeq', serif;
     }
   `}</style>
-    </Head>
+      </Head>
 
       {/* 🔹 Floating Nurani Light Background */}
 
 
       <motion.div
-        className="absolute top-1/4 left-1/2 w-72 h-72 rounded-full pointer-events-none"
+        className="fixed top-1/4 left-1/2 w-72 h-72 rounded-full pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle, rgba(255,223,0,0.12), transparent 70%)",
+            "radial-gradient(circle, rgba(255,223,0,0.15), transparent 70%)",
           filter: "blur(80px)",
-          zIndex: -1,
+          zIndex: 0,
         }}
         animate={{
           x: ["0%", "20%", "-20%", "0%"],
@@ -174,7 +171,7 @@ export default function HomePage() {
       <div className="w-full relative z-10">
 
         {/* Durūd Sharīf */}
-        {/* <div
+        <div
           className="w-full overflow-hidden"
           style={{
             background: "linear-gradient(to right, #0f5132, #198754, #0f5132)",
@@ -183,7 +180,7 @@ export default function HomePage() {
           }}
         >
           <motion.div
-            className="whitespace-nowrap text-yellow-100 arabic sticky top-0 w-full z-50 bg-black"
+            className="whitespace-nowrap text-yellow-100 arabic fixed top-16 w-full z-50"
             animate={{ x: ["-100%", "100%"] }}
             transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
           >
@@ -191,12 +188,12 @@ export default function HomePage() {
             —
             ﴿ إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا ﴾
           </motion.div>
-        </div> */}
+        </div>
 
         {/* Namaz Timings */}
         <div
-          className="w-full overflow-hidden px-0 sticky top-16 md:top-16 z-40"
-          style={{ background: "#010302", borderBottom: "2px solid #d4af37" }}
+          className="w-full overflow-hidden px-0"
+          style={{ background: "#0b3d24", borderBottom: "2px solid #d4af37" }}
         >
           <motion.div
             className="whitespace-nowrap w-full text-yellow-200 text-sm font-semibold"
@@ -316,30 +313,30 @@ export default function HomePage() {
 
         {/* تمام کیٹیگریز button at the end */}
         <div
-          onClick={() => {
-            setSelectedCategory("");
-            setTimeout(() => {
-              questionsRef.current?.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              });
-            }, 300);
-          }}
-          className={`
+  onClick={() => {
+    setSelectedCategory("");
+    setTimeout(() => {
+      questionsRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 300);
+  }}
+  className={`
     p-5 rounded-3xl cursor-pointer text-center select-none
     transition-all duration-500 transform border-blue-500 shadow-xl
     hover:scale-105 hover:shadow-[0_0_30px_rgba(255,223,0,0.8)]
     col-span-2 md:col-auto
     mx-auto
     ${selectedCategory === ""
-              ? "bg-gradient-to-br from-yellow-400 to-yellow-200 border-yellow-500 shadow-[0_0_30px_rgba(255,223,0,0.9)] text-white"
-              : "bg-white/30 border-gray-300 text-black hover:bg-gradient-to-br hover:from-yellow-100 hover:to-yellow-50 hover:text-yellow-800 hover:shadow-[0_0_25px_rgba(255,223,0,0.5)]"
-            }
+      ? "bg-gradient-to-br from-yellow-400 to-yellow-200 border-yellow-500 shadow-[0_0_30px_rgba(255,223,0,0.9)] text-white"
+      : "bg-white/30 border-gray-300 text-black hover:bg-gradient-to-br hover:from-yellow-100 hover:to-yellow-50 hover:text-yellow-800 hover:shadow-[0_0_25px_rgba(255,223,0,0.5)]"
+    }
   `}
-          style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
-        >
-          تمام سوالات
-        </div>
+  style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
+>
+  تمام سوالات
+</div>
 
       </div>
 
@@ -516,7 +513,7 @@ export default function HomePage() {
           </p>
         )}
 
-        {hasMore && (
+        {hasMore && filteredQuestions.length > 0 && (
           <div className="text-center mt-6">
             <button
               onClick={() => fetchQuestions()}
