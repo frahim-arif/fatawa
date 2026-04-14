@@ -177,25 +177,25 @@ export default function HomePage() {
       {/* 🔹 Scrolling Banners (Durūd Sharīf + Namaz Timings) */}
       <div className="w-full relative z-10">
 
-        {/* Durūd Sharīf
+        Durūd Sharīf
         <div
           className="w-full overflow-hidden"
           style={{
-            background: "linear-gradient(to right, #0f5132, #198754, #0f5132)",
-            borderBottom: "1px solid #d4af37",
-            borderTop: "1px solid #d4af37",
+            background: "linear-gradient(to right, #000000, #000000, #000000)",
+            borderBottom: "0.2px solid #d4af37",
+            borderTop: "0.2px solid #d4af37",
           }}
         >
           <motion.div
-            className="whitespace-nowrap text-yellow-100 arabic fixed top-16 w-full z-50"
+            className="whitespace-nowrap text-yellow-100 text-xs arabic sticky top-16 w-full z-50"
             animate={{ x: ["-100%", "100%"] }}
-            transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
           >
             اَللّٰهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ، وَعَلَىٰ آلِ سَيِّدِنَا مُحَمَّدٍ، وَبَارِكْ وَسَلِّمْ
             —
             ﴿ إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا ﴾
           </motion.div>
-        </div> */}
+        </div>
 
         {/* Namaz Timings */}
         <div
