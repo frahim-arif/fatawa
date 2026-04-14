@@ -87,7 +87,6 @@ export default function HomePage() {
 
   useEffect(() => {
     setSkip(0);
-    setAllQuestions([]);
     fetchQuestions(true);
   }, [selectedCategory]);
 
