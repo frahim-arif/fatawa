@@ -179,26 +179,28 @@ export default function HomePage() {
 
         {/* Durūd Sharīf */}
         <div
-          className="w-full overflow-hidden"
-          style={{
-            background: "linear-gradient(to right, #000000, #000000, #000000)",
-            borderBottom: "0.2px solid #d4af37",
-            borderTop: "0.2px solid #d4af37",
-          }}
-        >
-          <motion.div
-            className="whitespace-nowrap text-yellow-100 text-xs arabic sticky top-16 w-full z-50"
-            style={{
-      paddingLeft: "100%", // 👈 IMPORTANT
-    }}
-            animate={{ x: ["0%", "100%"] }}
-            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          >
-            اَللّٰهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ، وَعَلَىٰ آلِ سَيِّدِنَا مُحَمَّدٍ، وَبَارِكْ وَسَلِّمْ
-            —
-            ﴿ إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا ﴾
-          </motion.div>
-        </div>
+  className="w-full overflow-hidden"
+  style={{
+    background: "#000",
+    borderTop: "0.5px solid #d4af37",
+    borderBottom: "0.5px solid #d4af37",
+  }}
+>
+  <div className="relative w-full">
+    <motion.div
+      className="whitespace-nowrap text-yellow-100 text-xs arabic inline-block"
+      style={{
+        position: "relative",
+        left: "100%", // 👈 start just outside right edge
+      }}
+      animate={{ x: ["0%", "-200%"] }}
+      transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+    >
+      اَللّٰهُمَّ صَلِّ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ، وَعَلَىٰ آلِ سَيِّدِنَا مُحَمَّدٍ، وَبَارِكْ وَسَلِّمْ —
+      ﴿ إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ ۚ يَا أَيُّهَا الَّذِينَ آمَنُوا صَلُّوا عَلَيْهِ وَسَلِّمُوا تَسْلِيمًا ﴾
+    </motion.div>
+  </div>
+</div>
 
         {/* Namaz Timings */}
         <div
