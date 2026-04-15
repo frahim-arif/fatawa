@@ -56,43 +56,41 @@ export default function HomePage() {
   // Fetch questions
   const fetchQuestions = async (reset = false) => {
     try {
+      const currentSkip = reset ? 0 : skip;
+
       let url =
         selectedCategory === ""
-          ? `${backend}/admin/questions?skip=${reset ? 0 : skip}&limit=5`
+          ? `${backend}/admin/questions?skip=${currentSkip}&limit=5`
           : `${backend}/admin/questions/category/${encodeURIComponent(
             selectedCategory
-          )}?skip=${reset ? 0 : skip}&limit=5`;
+          )}?skip=${currentSkip}&limit=5`;
 
       const res = await fetch(url);
       const data = await res.json();
-      if (data.success) {
-        const sorted = data.data.sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        );
 
+      if (data.success) {
         if (reset) {
-          setAllQuestions(sorted);
+          setAllQuestions(data.data);   // 🔥 fresh load
           setSkip(5);
         } else {
-          setAllQuestions((prev) => [...prev, ...sorted]);
+          setAllQuestions((prev) => [...prev, ...data.data]); // 🔥 next 5 add
           setSkip((prev) => prev + 5);
         }
 
-        setHasMore(sorted.length === 5);
+        setHasMore(data.data.length === 5);
       }
     } catch (err) {
       console.error("❌ Error fetching questions:", err);
     }
   };
-
   useEffect(() => {
-    setSkip(0);
     fetchQuestions(true);
   }, [selectedCategory]);
-
-  const filteredQuestions = allQuestions.filter((q) =>
-    q.question.toLowerCase().includes(query.toLowerCase())
-  );
+  const displayQuestions = query
+  ? allQuestions.filter((q) =>
+      q.question.toLowerCase().includes(query.toLowerCase())
+    )
+  : allQuestions;
 
   // Voice Search
   const startListening = () => {
@@ -503,8 +501,8 @@ export default function HomePage() {
       </div>
       {/* Questions List */}
       <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
-        {filteredQuestions.length > 0 ? (
-          filteredQuestions.map((q) => (
+        {displayQuestions.length > 0 ? (
+          displayQuestions.map((q) => (
             <div
               key={q._id}
               onClick={() => setSelectedQuestion(q)}
@@ -525,7 +523,7 @@ export default function HomePage() {
           </p>
         )}
 
-        {hasMore && filteredQuestions.length > 0 && (
+        {hasMore && allQuestions.length > 0 && (
           <div className="text-center mt-6">
             <button
               onClick={() => fetchQuestions()}
@@ -538,7 +536,7 @@ export default function HomePage() {
       </section>
 
       <div className="hidden">
-        {filteredQuestions.map((q) => (
+        {displayQuestions.map((q) => (
           <a key={q._id} href={`/questions/${q.slug}`}>
             {q.question}
           </a>
