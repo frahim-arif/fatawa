@@ -19,14 +19,6 @@ export default function HomePage() {
   const [prayerTimes, setPrayerTimes] = useState(null);
   const questionsRef = useRef(null);
 
-
-
-  const filteredQuestions = allQuestions.filter((q) =>
-  q.question.toLowerCase().includes(query.toLowerCase())
-);
-
-const displayQuestions = query ? filteredQuestions : allQuestions;
-
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
   // Fetch categories
@@ -98,7 +90,9 @@ const displayQuestions = query ? filteredQuestions : allQuestions;
     fetchQuestions(true);
   }, [selectedCategory]);
 
-  
+  const filteredQuestions = allQuestions.filter((q) =>
+    q.question.toLowerCase().includes(query.toLowerCase())
+  );
 
   // Voice Search
   const startListening = () => {
@@ -509,8 +503,9 @@ const displayQuestions = query ? filteredQuestions : allQuestions;
       </div>
       {/* Questions List */}
       <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
-       {displayQuestions.length > 0 ? (
-            displayQuestions.map((q) => (            <div
+        {filteredQuestions.length > 0 ? (
+          filteredQuestions.map((q) => (
+            <div
               key={q._id}
               onClick={() => setSelectedQuestion(q)}
               className="p-5 rounded-xl border bg-yellow-50 border-yellow-300 shadow-md w-full cursor-pointer hover:bg-yellow-100 transition hover:shadow-[0_0_20px_rgba(255,223,0,0.6)]"
@@ -530,7 +525,7 @@ const displayQuestions = query ? filteredQuestions : allQuestions;
           </p>
         )}
 
-        {hasMore && allQuestions.length > 0 && (
+        {hasMore && filteredQuestions.length > 0 && (
           <div className="text-center mt-6">
             <button
               onClick={() => fetchQuestions()}
@@ -543,7 +538,7 @@ const displayQuestions = query ? filteredQuestions : allQuestions;
       </section>
 
       <div className="hidden">
-        {displayQuestions.map((q) => (
+        {filteredQuestions.map((q) => (
           <a key={q._id} href={`/questions/${q.slug}`}>
             {q.question}
           </a>
