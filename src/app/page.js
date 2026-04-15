@@ -54,51 +54,45 @@ export default function HomePage() {
     fetchPrayerTimes();
   }, []);
   // Fetch questions
-  
-const fetchQuestions = async (reset = false) => {
-  try {
-    const newSkip = reset ? 0 : skip;
-
-    let url =
-      selectedCategory === ""
-        ? `${backend}/admin/questions?skip=${newSkip}&limit=5`
-        : `${backend}/admin/questions/category/${encodeURIComponent(
+  const fetchQuestions = async (reset = false) => {
+    try {
+      let url =
+        selectedCategory === ""
+          ? `${backend}/admin/questions?skip=${reset ? 0 : skip}&limit=5`
+          : `${backend}/admin/questions/category/${encodeURIComponent(
             selectedCategory
-          )}?skip=${newSkip}&limit=5`;
+          )}?skip=${reset ? 0 : skip}&limit=5`;
 
-    const res = await fetch(url);
-    const data = await res.json();
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data.success) {
+        const sorted = data.data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
 
-    if (data.success) {
-      if (reset) {
-        setAllQuestions(data.data);   // ✅ fresh 5
-        setSkip(5);
-      } else {
-        setAllQuestions((prev) => [...prev, ...data.data]); // ✅ next 5 add
-        setSkip(newSkip + 5); // 🔥 FIX
+        if (reset) {
+          setAllQuestions(sorted);
+          setSkip(5);
+        } else {
+          setAllQuestions((prev) => [...prev, ...sorted]);
+          setSkip((prev) => prev + 5);
+        }
+
+        setHasMore(sorted.length === 5);
       }
-
-      setHasMore(data.data.length === 5);
+    } catch (err) {
+      console.error("❌ Error fetching questions:", err);
     }
-  } catch (err) {
-    console.error("❌ Error fetching questions:", err);
-  }
-};
+  };
 
-// 🔥 CATEGORY CHANGE RESET
-useEffect(() => {
-  setAllQuestions([]);   // reset old data
-  setSkip(0);            // reset skip
-  setHasMore(true);      // reset button
-  fetchQuestions(true);  // fetch fresh 5
-}, [selectedCategory]);
+  useEffect(() => {
+    setSkip(0);
+    fetchQuestions(true);
+  }, [selectedCategory]);
 
-// 🔍 Search filter
-const displayQuestions = query
-  ? allQuestions.filter((q) =>
-      q.question.toLowerCase().includes(query.toLowerCase())
-    )
-  : allQuestions;
+  const filteredQuestions = allQuestions.filter((q) =>
+    q.question.toLowerCase().includes(query.toLowerCase())
+  );
 
   // Voice Search
   const startListening = () => {
@@ -509,8 +503,8 @@ const displayQuestions = query
       </div>
       {/* Questions List */}
       <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
-        {displayQuestions.length > 0 ? (
-          displayQuestions.map((q) => (
+        {filteredQuestions.length > 0 ? (
+          filteredQuestions.map((q) => (
             <div
               key={q._id}
               onClick={() => setSelectedQuestion(q)}
@@ -531,7 +525,7 @@ const displayQuestions = query
           </p>
         )}
 
-        {hasMore && allQuestions.length > 0 && (
+        {hasMore && filteredQuestions.length > 0 && (
           <div className="text-center mt-6">
             <button
               onClick={() => fetchQuestions()}
@@ -544,7 +538,7 @@ const displayQuestions = query
       </section>
 
       <div className="hidden">
-        {displayQuestions.map((q) => (
+        {filteredQuestions.map((q) => (
           <a key={q._id} href={`/questions/${q.slug}`}>
             {q.question}
           </a>
