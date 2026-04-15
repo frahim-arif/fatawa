@@ -54,39 +54,47 @@ export default function HomePage() {
     fetchPrayerTimes();
   }, []);
   // Fetch questions
-  const fetchQuestions = async (reset = false) => {
-    try {
-      const currentSkip = reset ? 0 : skip;
+  
+const fetchQuestions = async (reset = false) => {
+  try {
+    const newSkip = reset ? 0 : skip;
 
-      let url =
-        selectedCategory === ""
-          ? `${backend}/admin/questions?skip=${currentSkip}&limit=5`
-          : `${backend}/admin/questions/category/${encodeURIComponent(
+    let url =
+      selectedCategory === ""
+        ? `${backend}/admin/questions?skip=${newSkip}&limit=5`
+        : `${backend}/admin/questions/category/${encodeURIComponent(
             selectedCategory
-          )}?skip=${currentSkip}&limit=5`;
+          )}?skip=${newSkip}&limit=5`;
 
-      const res = await fetch(url);
-      const data = await res.json();
+    const res = await fetch(url);
+    const data = await res.json();
 
-      if (data.success) {
-        if (reset) {
-          setAllQuestions(data.data);   // 🔥 fresh load
-          setSkip(5);
-        } else {
-          setAllQuestions((prev) => [...prev, ...data.data]); // 🔥 next 5 add
-          setSkip((prev) => prev + 5);
-        }
-
-        setHasMore(data.data.length === 5);
+    if (data.success) {
+      if (reset) {
+        setAllQuestions(data.data);   // ✅ fresh 5
+        setSkip(5);
+      } else {
+        setAllQuestions((prev) => [...prev, ...data.data]); // ✅ next 5 add
+        setSkip(newSkip + 5); // 🔥 FIX
       }
-    } catch (err) {
-      console.error("❌ Error fetching questions:", err);
+
+      setHasMore(data.data.length === 5);
     }
-  };
-  useEffect(() => {
-    fetchQuestions(true);
-  }, [selectedCategory]);
-  const displayQuestions = query
+  } catch (err) {
+    console.error("❌ Error fetching questions:", err);
+  }
+};
+
+// 🔥 CATEGORY CHANGE RESET
+useEffect(() => {
+  setAllQuestions([]);   // reset old data
+  setSkip(0);            // reset skip
+  setHasMore(true);      // reset button
+  fetchQuestions(true);  // fetch fresh 5
+}, [selectedCategory]);
+
+// 🔍 Search filter
+const displayQuestions = query
   ? allQuestions.filter((q) =>
       q.question.toLowerCase().includes(query.toLowerCase())
     )
