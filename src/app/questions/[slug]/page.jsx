@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Head from "next/head";
+
 export default function SingleQuestion() {
   const { slug } = useParams();
 
@@ -50,7 +51,7 @@ export default function SingleQuestion() {
     fetchRelated();
   }, [slug]);
 
-  // ✅ AUTO LINK FUNCTION (KEYWORDS BASED)
+  // ✅ AUTO LINK
   const autoLink = (text, related) => {
     try {
       if (!text || !Array.isArray(related)) return text;
@@ -77,7 +78,7 @@ export default function SingleQuestion() {
           if (regex.test(updatedText)) {
             updatedText = updatedText.replace(
               regex,
-              `<a href="/questions/${item.slug}" class="text-blue-600 dark:text-blue-400 font-semibold underline">$1</a>`
+              `<a href="/questions/${item.slug}" class="text-blue-600 underline">$1</a>`
             );
             linkCount++;
           }
@@ -97,23 +98,21 @@ export default function SingleQuestion() {
   if (!question)
     return <h1 className="text-center mt-10">❌ سوال نہیں ملا</h1>;
 
+  const title = `${question.metaTitle || question.question} | اسلامی فتاویٰ`;
+  const description =
+    question.metaDescription ||
+    question.answer?.slice(0, 150) ||
+    "اسلامی سوال و جواب";
+
+  const url = `https://www.maslakedeoband.in/questions/${slug}`;
+
   return (
-    <div className="max-w-3xl mx-auto px-4 md:px-6 py-6 space-y-6 text-right">
-
-      {/* SEO */}
+    <>
+      {/* 🔥 SEO IMPROVED */}
       <Head>
-        <title>
-          {question.metaTitle || question.question} | اسلامی فتاویٰ
-        </title>
+        <title>{title}</title>
 
-        <meta
-          name="description"
-          content={
-            question.metaDescription ||
-            question.answer?.slice(0, 150)
-          }
-        />
-
+        <meta name="description" content={description} />
         <meta
           name="keywords"
           content={
@@ -121,53 +120,48 @@ export default function SingleQuestion() {
             "Islamic fatwa, سوال جواب, فتوی"
           }
         />
+
+        {/* Canonical */}
+        <link rel="canonical" href={url} />
+
+        {/* Open Graph (Facebook, WhatsApp) */}
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={url} />
+        <meta property="og:type" content="article" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
       </Head>
 
-      {/* Question */}
-      <div className="p-5 rounded-2xl border border-yellow-200 dark:border-gray-700 bg-yellow-50 dark:bg-gray-800 shadow-sm">
-        <h1 className="text-lg md:text-2xl font-bold text-green-800 dark:text-green-400 leading-8">
-          {question.question}
-        </h1>
+      <div className="max-w-3xl mx-auto px-4 md:px-6 py-6 space-y-6 text-right">
+
+        {/* Question */}
+        <div className="p-5 rounded-2xl border bg-yellow-50">
+          <h1 className="text-lg md:text-2xl font-bold text-green-800 leading-8">
+            {question.question}
+          </h1>
+        </div>
+
+        {/* Answer */}
+        <div className="p-5 md:p-6 rounded-2xl border bg-white shadow-sm leading-9">
+          <p
+            className="text-black text-[18px] md:text-[20px]"
+            dangerouslySetInnerHTML={{
+              __html: autoLink(question.answer, related),
+            }}
+          />
+        </div>
+
+        {/* Hawala */}
+        <div className="p-5 rounded-2xl border bg-gray-50 space-y-4">
+          {question.hawala1 && <p>{question.hawala1}</p>}
+          {question.hawala2 && <p>{question.hawala2}</p>}
+          {question.hawala3 && <p>{question.hawala3}</p>}
+        </div>
       </div>
-
-      {/* Answer */}
-      <div className="p-5 md:p-6 rounded-2xl border border-gray-300 bg-white shadow-sm leading-9">        {question?.answer && (
-        <p
-          className="text-black text-[18px] md:text-[20px]"
-          dangerouslySetInnerHTML={{
-            __html: autoLink(question.answer, related),
-          }}
-        />
-      )}
-      </div>
-
-      {/* Hawala */}
-<div className="p-5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#121212] shadow-sm space-y-4">
-
-
-  <div className="space-y-3 text-[17px] md:text-[19px] leading-9 text-gray-900 dark:text-gray-200">
-
-    {question.hawala1 && (
-      <p className="px-4 py-3 rounded-lg bg-white dark:bg-[#1a1a1a] hover:bg-gray-100 dark:hover:bg-[#222] transition arabic">
-        {question.hawala1}
-      </p>
-    )}
-
-    {question.hawala2 && (
-      <p className="px-4 py-3 rounded-lg bg-white dark:bg-[#1a1a1a] hover:bg-gray-100 dark:hover:bg-[#222] transition arabic">
-        {question.hawala2}
-      </p>
-    )}
-
-    {question.hawala3 && (
-      <p className="px-4 py-3 rounded-lg bg-white dark:bg-[#1a1a1a] hover:bg-gray-100 dark:hover:bg-[#222] transition arabic">
-        {question.hawala3}
-      </p>
-    )}
-
-  </div>
-</div>
-</div>
+    </>
   );
 }
-
