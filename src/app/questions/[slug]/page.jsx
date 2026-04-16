@@ -1,49 +1,55 @@
-import { notFound } from "next/navigation";
+"use client";
 
-// 🔥 Fetch question
-async function getQuestion(slug) {
-  try {
-    const res = await fetch(
-      `https://f-backend-vdi1.onrender.com/api/admin/questions/slug/${slug}`,
-      { cache: "no-store" }
-    );
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import Head from "next/head";
 
-    const data = await res.json();
-    return data.success ? data.data : null;
-  } catch {
-    return null;
-  }
-}
+export default function SingleQuestion() {
+  const { slug } = useParams();
 
-// 🔥 SEO Metadata
-export async function generateMetadata({ params }) {
-  const question = await getQuestion(params.slug);
+  const backend = "https://f-backend-vdi1.onrender.com/api/admin/questions";
 
-  if (!question) {
-    return { title: "Question Not Found" };
-  }
+  const [question, setQuestion] = useState(null);
+  const [related, setRelated] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  return {
-    title: `${question.metaTitle || question.question} | اسلامی فتاویٰ`,
-    description:
-      question.metaDescription ||
-      question.answer?.slice(0, 150),
-    keywords:
-      question.keywords?.join(", ") ||
-      "Islamic fatwa, سوال جواب",
+  useEffect(() => {
+    if (!slug) return;
 
-    alternates: {
-      canonical: `https://www.maslakedeoband.in/questions/${params.slug}`,
-    },
-  };
-}
+    const fetchQuestion = async () => {
+      try {
+        const res = await fetch(`${backend}/slug/${slug}`);
+        const data = await res.json();
 
-// 🔥 Page (SSR)
-export default async function SingleQuestion({ params }) {
-  const question = await getQuestion(params.slug);
+        if (data.success) {
+          setQuestion(data.data);
+        } else {
+          setQuestion(null);
+        }
+      } catch (err) {
+        console.error("❌ Error fetching question:", err);
+        setQuestion(null);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!question) notFound();
+    const fetchRelated = async () => {
+      try {
+        const res = await fetch(`${backend}`);
+        const data = await res.json();
 
+        if (data.success) {
+          setRelated(data.data);
+        }
+      } catch (err) {
+        console.error("❌ Error fetching related:", err);
+      }
+    };
+
+    fetchQuestion();
+    fetchRelated();
+  }, [slug]);
 
   // ✅ AUTO LINK FUNCTION (KEYWORDS BASED)
   const autoLink = (text, related) => {
