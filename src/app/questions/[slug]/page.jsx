@@ -43,6 +43,8 @@ export default async function Page({ params }) {
     return (
       <div className="text-center mt-10">
         ❌ سوال نہیں ملا
+        <br />
+      <small>{params.slug}</small>
       </div>
     );
   }
