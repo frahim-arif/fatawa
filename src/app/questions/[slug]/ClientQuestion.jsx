@@ -186,12 +186,12 @@ export default function ClientQuestion({ question, slug }) {
   const backend = "https://f-backend-vdi1.onrender.com/api/admin/questions";
 
   const [related, setRelated] = useState([]);
-  const [loading, setLoading] = useState(false);
+  
 
   useEffect(() => {
     const fetchRelated = async () => {
       try {
-        const res = await fetch(`${backend}`);
+       const keyword = word || item.question?.slice(0, 20);
         const data = await res.json();
 
         if (data.success) {
@@ -232,7 +232,7 @@ export default function ClientQuestion({ question, slug }) {
           if (regex.test(updatedText)) {
             updatedText = updatedText.replace(
               regex,
-              `<a href="/questions/${item.slug}" class="text-blue-600 underline">$1</a>`
+              `<Link href="/questions/${item.slug}" class="text-blue-600 underline">$1</Link>`
             );
             linkCount++;
           }
