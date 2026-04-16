@@ -1,43 +1,30 @@
+export const dynamic = "force-dynamic";
+
 import ClientQuestion from "./ClientQuestion";
 
-// 🔥 Fetch function (FIXED + STABLE)
+// Fetch
 async function getQuestion(slug) {
   try {
     const res = await fetch(
       `https://f-backend-vdi1.onrender.com/api/admin/questions/slug/${slug}`,
       {
-        next: { revalidate: 10 }, // 🔥 important (cache + stability)
+        cache: "no-store",
       }
     );
 
-    // ❌ remove res.ok check (Render issue)
-    const text = await res.text();
-
-    try {
-      const data = JSON.parse(text);
-      return data.success ? data.data : null;
-    } catch (err) {
-      console.log("❌ JSON error:", text);
-      return null;
-    }
-
-  } catch (err) {
-    console.log("❌ Fetch error:", err);
+    const data = await res.json();
+    return data.success ? data.data : null;
+  } catch {
     return null;
   }
 }
 
-// 🔥 Metadata (SEO)
+// Metadata
 export async function generateMetadata({ params }) {
   const question = await getQuestion(params.slug);
 
   if (!question) {
-    return {
-      title: "Question Not Found",
-      robots: {
-        index: false, // ❌ Google ko bol do index na kare
-      },
-    };
+    return { title: "Question Not Found" };
   }
 
   return {
@@ -45,30 +32,20 @@ export async function generateMetadata({ params }) {
     description:
       question.metaDescription ||
       question.answer?.slice(0, 150),
-
-    alternates: {
-      canonical: `https://www.maslakedeoband.in/questions/${params.slug}`,
-    },
   };
 }
 
-// 🔥 Page (SSR)
+// Page
 export default async function Page({ params }) {
   const question = await getQuestion(params.slug);
 
   if (!question) {
     return (
       <div className="text-center mt-10">
-        ❌ سوال نہیں ملا <br />
-        <small>{params.slug}</small>
+        ❌ سوال نہیں ملا
       </div>
     );
   }
 
-  return (
-    <ClientQuestion
-      question={question}
-      slug={params.slug}
-    />
-  );
+  return <ClientQuestion question={question} slug={params.slug} />;
 }
