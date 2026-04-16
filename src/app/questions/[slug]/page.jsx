@@ -179,8 +179,6 @@ export default function SingleQuestion() {
 }
 
 // "use client";
-// import { useParams } from "next/navigation";
-// import Head from "next/head";
 
 // import { useEffect, useState } from "react";
 
