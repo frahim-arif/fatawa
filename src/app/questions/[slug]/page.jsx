@@ -7,7 +7,6 @@ async function getQuestion(slug) {
       `https://f-backend-vdi1.onrender.com/api/admin/questions/slug/${slug}`,
       {
         cache: "no-store",
-        next: { revalidate: 10 }, // 🔥 important (stability)
       }
     );
 
@@ -20,7 +19,7 @@ async function getQuestion(slug) {
   }
 }
 
-// 🔥 Metadata
+// 🔥 Metadata (SEO)
 export async function generateMetadata({ params }) {
   const question = await getQuestion(params.slug);
 
@@ -40,16 +39,14 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// 🔥 Page
+// 🔥 Page (SSR)
 export default async function Page({ params }) {
   const question = await getQuestion(params.slug);
-
-  // ❌ REMOVE notFound()
 
   if (!question) {
     return (
       <div className="text-center mt-10">
-        ⏳ لوڈ ہو رہا ہے یا سوال نہیں ملا...
+        ❌ سوال نہیں ملا
       </div>
     );
   }

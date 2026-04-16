@@ -186,12 +186,11 @@ export default function ClientQuestion({ question, slug }) {
   const backend = "https://f-backend-vdi1.onrender.com/api/admin/questions";
 
   const [related, setRelated] = useState([]);
-  
 
   useEffect(() => {
     const fetchRelated = async () => {
       try {
-       const keyword = word || item.question?.slice(0, 20);
+        const res = await fetch(`${backend}`);
         const data = await res.json();
 
         if (data.success) {
@@ -205,7 +204,7 @@ export default function ClientQuestion({ question, slug }) {
     fetchRelated();
   }, []);
 
-  // ✅ AUTO LINK (same)
+  // ✅ AUTO LINK
   const autoLink = (text, related) => {
     try {
       if (!text || !Array.isArray(related)) return text;
@@ -232,7 +231,7 @@ export default function ClientQuestion({ question, slug }) {
           if (regex.test(updatedText)) {
             updatedText = updatedText.replace(
               regex,
-              `<Link href="/questions/${item.slug}" class="text-blue-600 underline">$1</Link>`
+              `<a href="/questions/${item.slug}" class="text-blue-600 underline">$1</a>`
             );
             linkCount++;
           }
@@ -268,12 +267,11 @@ export default function ClientQuestion({ question, slug }) {
 
       {/* Hawala */}
       <div className="p-5 rounded-2xl border bg-gray-50 space-y-4">
-
         {question.hawala1 && <p>{question.hawala1}</p>}
         {question.hawala2 && <p>{question.hawala2}</p>}
         {question.hawala3 && <p>{question.hawala3}</p>}
-
       </div>
+
     </div>
   );
 }
