@@ -2,41 +2,34 @@ export const dynamic = "force-dynamic";
 
 import ClientQuestion from "./ClientQuestion";
 
-// Fetch
+// 🔥 Fetch ONCE (stable)
 async function getQuestion(slug) {
-  try {
-    const res = await fetch(
-      `https://f-backend-vdi1.onrender.com/api/admin/questions/slug/${slug}`,
-      {
-        cache: "no-store",
-      }
-    );
+  const url = `https://f-backend-vdi1.onrender.com/api/admin/questions/slug/${slug}`;
 
-    const data = await res.json();
-    return data.success ? data.data : null;
-  } catch {
-    return null;
+  for (let i = 0; i < 3; i++) {
+    try {
+      const res = await fetch(url, { cache: "no-store" });
+      const data = await res.json();
+
+      if (data.success) return data.data;
+    } catch (err) {
+      console.log("Retry:", i);
+    }
+
+    await new Promise((r) => setTimeout(r, 700));
   }
+
+  return null;
 }
 
-// Metadata
+// 🔥 Metadata (light version)
 export async function generateMetadata({ params }) {
-  const question = await getQuestion(params.slug);
-
-  if (!question) {
-    return { title: "Question Not Found" };
-  }
-
   return {
-    title: `${question.metaTitle || question.question} | اسلامی فتاویٰ`,
-    description:
-      question.metaDescription ||
-      question.answer?.slice(0, 150),
+    title: "اسلامی فتاویٰ",
   };
 }
 
-
-// Page
+// 🔥 Page (MAIN SSR)
 export default async function Page({ params }) {
   const question = await getQuestion(params.slug);
 
@@ -45,10 +38,29 @@ export default async function Page({ params }) {
       <div className="text-center mt-10">
         ❌ سوال نہیں ملا
         <br />
-      <small>{params.slug}</small>
+        <small>{params.slug}</small>
       </div>
     );
   }
 
-  return <ClientQuestion question={question} slug={params.slug} />;
+  return (
+    <>
+      {/* ✅ SEO here (server side) */}
+      <head>
+        <title>
+          {question.metaTitle || question.question} | اسلامی فتاویٰ
+        </title>
+
+        <meta
+          name="description"
+          content={
+            question.metaDescription ||
+            question.answer?.slice(0, 150)
+          }
+        />
+      </head>
+
+      <ClientQuestion question={question} slug={params.slug} />
+    </>
+  );
 }
