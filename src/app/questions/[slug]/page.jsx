@@ -34,6 +34,28 @@ export async function generateMetadata({ params }) {
       question.answer?.slice(0, 150),
   };
 }
+async function getQuestion(slug) {
+  try {
+    const res = await fetch(
+      `https://f-backend-vdi1.onrender.com/api/admin/questions/slug/${slug}`,
+      {
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!res) return null;
+
+    const data = await res.json();
+
+    return data?.success ? data.data : null;
+  } catch (err) {
+    console.log("❌ SSR fetch error:", err);
+    return null;
+  }
+}
 
 // Page
 export default async function Page({ params }) {
