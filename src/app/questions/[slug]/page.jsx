@@ -1,20 +1,28 @@
 import ClientQuestion from "./ClientQuestion";
 
-// 🔥 Fetch function
+// 🔥 Fetch function (FIXED + STABLE)
 async function getQuestion(slug) {
   try {
     const res = await fetch(
       `https://f-backend-vdi1.onrender.com/api/admin/questions/slug/${slug}`,
       {
-        cache: "no-store",
+        next: { revalidate: 10 }, // 🔥 important (cache + stability)
       }
     );
 
-    if (!res.ok) return null;
+    // ❌ remove res.ok check (Render issue)
+    const text = await res.text();
 
-    const data = await res.json();
-    return data.success ? data.data : null;
-  } catch {
+    try {
+      const data = JSON.parse(text);
+      return data.success ? data.data : null;
+    } catch (err) {
+      console.log("❌ JSON error:", text);
+      return null;
+    }
+
+  } catch (err) {
+    console.log("❌ Fetch error:", err);
     return null;
   }
 }
@@ -24,7 +32,12 @@ export async function generateMetadata({ params }) {
   const question = await getQuestion(params.slug);
 
   if (!question) {
-    return { title: "Question Not Found" };
+    return {
+      title: "Question Not Found",
+      robots: {
+        index: false, // ❌ Google ko bol do index na kare
+      },
+    };
   }
 
   return {
@@ -46,7 +59,8 @@ export default async function Page({ params }) {
   if (!question) {
     return (
       <div className="text-center mt-10">
-        ❌ سوال نہیں ملا
+        ❌ سوال نہیں ملا <br />
+        <small>{params.slug}</small>
       </div>
     );
   }
