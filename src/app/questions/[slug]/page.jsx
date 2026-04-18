@@ -175,7 +175,6 @@ export default function SingleQuestion() {
             }}
           />
         </div>
-
         {/* ✅ RELATED QUESTIONS YAHAN ADD KARO */}
         {related.length > 0 && (
           <div className="mt-6 p-4 bg-gray-50 rounded-xl">
