@@ -47,26 +47,26 @@ export default function AdminAddQuestion() {
   };
 
   // ✅ AUTO SEO GENERATION
- useEffect(() => {
-  if (question && !metaTitle) {
-    setMetaTitle(`${question} | Maslak e Deoband`);
-  }
+  useEffect(() => {
+    if (question && !metaTitle) {
+      setMetaTitle(`${question} | Maslak e Deoband`);
+    }
 
-  // 🔥 slug sirf tab auto banega jab empty ho
-  if (!slug && (metaTitle || question)) {
-    setSlug(generateSlug(metaTitle || question));
-  }
+    // 🔥 slug sirf tab auto banega jab empty ho
+    if (!slug && (metaTitle || question)) {
+      setSlug(generateSlug(metaTitle || question));
+    }
 
-  if (answer) {
-    setMetaDescription(answer.substring(0, 155));
-  }
+    if (answer) {
+      setMetaDescription(answer.substring(0, 155));
+    }
 
-  if (question && category) {
-    setKeywords(
-      `${question}, ${category}, اسلامی سوال جواب, فتوی, islamic fatwa`
-    );
-  }
-}, [question, metaTitle, answer, category]); // ✅ metaTitle add
+    if (question && category) {
+      setKeywords(
+        `${question}, ${category}, اسلامی سوال جواب, فتوی, islamic fatwa`
+      );
+    }
+  }, [question, answer, category]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
