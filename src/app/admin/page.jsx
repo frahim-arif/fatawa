@@ -183,12 +183,7 @@ export default function AdminAddQuestion() {
                     ? setHawala2(e.target.value)
                     : setHawala3(e.target.value)
               }
-              className="w-full border p-2 rounded quran-text"
-              style={{
-                fontFamily: '"Amiri Quran", serif',
-                direction: "rtl",
-                textAlign: "right"
-              }}
+              className="w-full border p-2 mb-2 rounded font-amiri quran-text"
             />
           ))}
 

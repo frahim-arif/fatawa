@@ -2,12 +2,14 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Noto_Nastaliq_Urdu, Amiri } from "next/font/google";
 import "./globals.css";
 import HeaderWrapper from "./components/HeaderWrapper";
+
 import Footer from "./components/Footer";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 const nastaleeq = Noto_Nastaliq_Urdu({ subsets: ["arabic"], weight: ["400","700"], variable: "--font-nastaleeq" });
 const amiri = Amiri({ subsets: ["arabic"], weight: ["400","700"], variable: "--font-amiri" });
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap" rel="stylesheet"></link>
 
 export const metadata = {
   title: "Maslakedeoband",
