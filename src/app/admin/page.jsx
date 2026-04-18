@@ -183,7 +183,7 @@ export default function AdminAddQuestion() {
                     ? setHawala2(e.target.value)
                     : setHawala3(e.target.value)
               }
-              className="w-full border p-2 rounded"
+              className="w-full border p-2 rounded font-arabic"
             />
           ))}
 
