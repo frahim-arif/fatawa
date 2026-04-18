@@ -175,6 +175,15 @@ export default function SingleQuestion() {
             }}
           />
         </div>
+        
+
+        {/* Hawala */}
+        <div className="p-5 rounded-2xl border bg-gray-50 space-y-4">
+          {question.hawala1 && <p>{question.hawala1}</p>}
+          {question.hawala2 && <p>{question.hawala2}</p>}
+          {question.hawala3 && <p>{question.hawala3}</p>}
+        </div>
+
         {/* ✅ RELATED QUESTIONS YAHAN ADD KARO */}
         {related.length > 0 && (
           <div className="mt-6 p-4 bg-gray-50 rounded-xl">
@@ -193,13 +202,6 @@ export default function SingleQuestion() {
             </ul>
           </div>
         )}
-
-        {/* Hawala */}
-        <div className="p-5 rounded-2xl border bg-gray-50 space-y-4">
-          {question.hawala1 && <p>{question.hawala1}</p>}
-          {question.hawala2 && <p>{question.hawala2}</p>}
-          {question.hawala3 && <p>{question.hawala3}</p>}
-        </div>
       </div>
     </>
   );
