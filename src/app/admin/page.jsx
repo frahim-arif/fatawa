@@ -47,22 +47,26 @@ export default function AdminAddQuestion() {
   };
 
   // ✅ AUTO SEO GENERATION
-  useEffect(() => {
-    if (question) {
-      setMetaTitle(`${question} | Maslak e Deoband`);
-      setSlug(generateSlug(question));
-    }
+ useEffect(() => {
+  if (question && !metaTitle) {
+    setMetaTitle(`${question} | Maslak e Deoband`);
+  }
 
-    if (answer) {
-      setMetaDescription(answer.substring(0, 155));
-    }
+  // 🔥 slug sirf tab auto banega jab empty ho
+  if (!slug && (metaTitle || question)) {
+    setSlug(generateSlug(metaTitle || question));
+  }
 
-    if (question && category) {
-      setKeywords(
-        `${question}, ${category}, اسلامی سوال جواب, فتوی, islamic fatwa`
-      );
-    }
-  }, [question, answer, category]);
+  if (answer) {
+    setMetaDescription(answer.substring(0, 155));
+  }
+
+  if (question && category) {
+    setKeywords(
+      `${question}, ${category}, اسلامی سوال جواب, فتوی, islamic fatwa`
+    );
+  }
+}, [question, metaTitle, answer, category]); // ✅ metaTitle add
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -176,8 +180,8 @@ export default function AdminAddQuestion() {
                 i === 1
                   ? setHawala1(e.target.value)
                   : i === 2
-                  ? setHawala2(e.target.value)
-                  : setHawala3(e.target.value)
+                    ? setHawala2(e.target.value)
+                    : setHawala3(e.target.value)
               }
               className="w-full border p-2 rounded"
             />
@@ -214,8 +218,8 @@ export default function AdminAddQuestion() {
             <label className="font-semibold">Slug (URL)</label>
             <input
               value={slug}
-              readOnly
-              className="w-full border p-2 bg-gray-100"
+              onChange={(e) => setSlug(e.target.value)}
+              className="w-full border p-2"
             />
           </div>
 
