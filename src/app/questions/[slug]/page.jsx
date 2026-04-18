@@ -36,7 +36,7 @@ export default function SingleQuestion() {
 
     const fetchRelated = async () => {
       try {
-        const res = await fetch(`${backend}`);
+        const res = await fetch(`${backend}?limit=10`);
         const data = await res.json();
 
         if (data.success) {
@@ -58,7 +58,7 @@ export default function SingleQuestion() {
 
       let updatedText = text;
       let linkCount = 0;
-      const MAX_LINKS = 5;
+      const MAX_LINKS = 3;
 
       const escapeRegExp = (string) =>
         string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -98,7 +98,7 @@ export default function SingleQuestion() {
   if (!question)
     return <h1 className="text-center mt-10">❌ سوال نہیں ملا</h1>;
 
-  const title = `${question.metaTitle || question.question} | اسلامی فتاویٰ`;
+  const title = question.metaTitle || `${question.question} | Maslak e Deoband`;
   const description =
     question.metaDescription ||
     question.answer?.slice(0, 150) ||
@@ -110,14 +110,31 @@ export default function SingleQuestion() {
     <>
       {/* 🔥 SEO IMPROVED */}
       <Head>
+        <meta property="og:image" content="https://www.maslakedeoband.in/og-image.jpg" />
+        <meta name="twitter:image" content="https://www.maslakedeoband.in/og-image.jpg" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "QAPage",
+            "mainEntity": {
+              "@type": "Question",
+              "name": question.question,
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": question.answer,
+              },
+            },
+          })}
+        </script>
         <title>{title}</title>
 
         <meta name="description" content={description} />
         <meta
           name="keywords"
           content={
-            question.keywords?.join(", ") ||
-            "Islamic fatwa, سوال جواب, فتوی"
+            Array.isArray(question.keywords)
+              ? question.keywords.join(", ")
+              : question.keywords || "Islamic fatwa, سوال جواب"
           }
         />
 
@@ -137,11 +154,15 @@ export default function SingleQuestion() {
       </Head>
 
       <div className="max-w-3xl mx-auto px-4 md:px-6 py-6 space-y-6 text-right">
-
+        <nav className="text-sm text-gray-500 mb-2">
+          <a href="/">Home</a> /{" "}
+          <a href={`/category/${question.category}`}>{question.category}</a> /{" "}
+          <span>{question.question}</span>
+        </nav>
         {/* Question */}
         <div className="p-5 rounded-2xl border bg-yellow-50">
           <h1 className="text-lg md:text-2xl font-bold text-green-800 leading-8">
-            {question.question}
+            {question.metaTitle || question.question}
           </h1>
         </div>
 
@@ -154,6 +175,25 @@ export default function SingleQuestion() {
             }}
           />
         </div>
+
+        {/* ✅ RELATED QUESTIONS YAHAN ADD KARO */}
+        {related.length > 0 && (
+          <div className="mt-6 p-4 bg-gray-50 rounded-xl">
+            <h3 className="font-bold mb-2">مزید متعلقہ سوالات</h3>
+            <ul className="space-y-2">
+              {related.slice(0, 5).map((item) => (
+                <li key={item._id}>
+                  <a
+                    href={`/questions/${item.slug}`}
+                    className="text-blue-600 underline"
+                  >
+                    {item.question}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Hawala */}
         <div className="p-5 rounded-2xl border bg-gray-50 space-y-4">
