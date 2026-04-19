@@ -91,7 +91,6 @@ export default function SingleQuestion() {
       return text;
     }
   };
-
   if (loading)
     return <h1 className="text-center mt-10">⏳ لوڈ ہو رہا ہے...</h1>;
 
@@ -178,7 +177,7 @@ export default function SingleQuestion() {
         
 
         {/* Hawala */}
-        <div className="p-5 rounded-2xl border bg-gray-50 space-y-4">
+        <div className="p-5 rounded-2xl border bg-black space-y-4">
           {question.hawala1 && <p>{question.hawala1}</p>}
           {question.hawala2 && <p>{question.hawala2}</p>}
           {question.hawala3 && <p>{question.hawala3}</p>}
