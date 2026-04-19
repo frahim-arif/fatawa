@@ -24,7 +24,6 @@ export default function QuestionsPage() {
         setLoading(false);
       }
     }
-
     fetchQuestions();
   }, []);
 
