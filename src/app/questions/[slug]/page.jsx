@@ -136,7 +136,6 @@ export default function SingleQuestion() {
               : question.keywords || "Islamic fatwa, سوال جواب"
           }
         />
-
         {/* Canonical */}
         <link rel="canonical" href={url} />
 
