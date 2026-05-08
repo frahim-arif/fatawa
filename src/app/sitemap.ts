@@ -46,15 +46,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   );
 
   // 🔹 Map to sitemap format
-  const questionPages: MetadataRoute.Sitemap = uniqueQuestions.map((q) => ({
-    url: `${baseUrl}/questions/${q.slug}`,
-    lastModified: q.createdAt ? new Date(q.createdAt) : new Date(),
-    changeFrequency: "weekly",
-    priority: 0.6,
-  }));
+const questionPages: MetadataRoute.Sitemap = uniqueQuestions.map((q) => ({
+  url: `${baseUrl}/questions/${q.slug}`,
+  lastModified: q.createdAt ? new Date(q.createdAt) : new Date(),
+  changeFrequency: "weekly",
+  priority: 0.6,
+}));
 
-  // 🔹 Limit for SEO (important)
-  const limitedQuestions = questionPages.slice(0, 150);
-
-  return [...staticPages, ...limitedQuestions];
+return [...staticPages, ...questionPages];
 }
