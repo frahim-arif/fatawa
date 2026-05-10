@@ -351,3 +351,4 @@ export default function MasnoonDuayePage() {
     </div>
   </div>
 );
+}
