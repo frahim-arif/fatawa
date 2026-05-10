@@ -605,70 +605,7 @@ useEffect(() => {
     </div>
   </div>
 </div>
-      {/* Modal */}
-      <AnimatePresence>
-        {selectedQuestion && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 flex justify-center items-start pt-20 z-50 overflow-auto"
-          >
-            <motion.div
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 50, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 100, damping: 20 }}
-              className="bg-white rounded-xl p-6 max-w-3xl w-full shadow-lg"
-              style={{ direction: "rtl" }}
-            >
-              <div className="flex justify-between items-start mb-4">
-                <h2
-                  className="text-2xl font-bold text-green-800"
-                  style={{ fontFamily: "'Jameel Noori Nastaleeq', serif" }}
-                >
-                  {selectedQuestion.question}
-                </h2>
-                <button onClick={() => setSelectedQuestion(null)}>
-                  <X className="w-6 h-6 text-red-500" />
-                </button>
-              </div>
-
-              <div
-                className="mb-4"
-                style={{
-                  fontFamily: "'Jameel Noori Nastaleeq', serif",
-                  lineHeight: "2.2",
-                  color: "#000000",
-                }}
-              >
-                {selectedQuestion.answer}
-              </div>
-
-              <div className="space-y-2 max-h-72 overflow-y-auto pr-2">
-                {selectedQuestion.hawala1 && (
-                  <p className="answer-card arabic p-2 rounded border">
-                    📖 {selectedQuestion.hawala1}
-                  </p>
-                )}
-                {selectedQuestion.hawala2 && (
-                  <p className="answer-card arabic p-2 rounded border">
-                    📖 {selectedQuestion.hawala2}
-                  </p>
-                )}
-                {selectedQuestion.hawala3 && (
-                  <p className="answer-card arabic p-2 rounded border">
-                    📖 {selectedQuestion.hawala3}
-                  </p>
-                )}
-              </div>
-
-
-
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      
     </div>
 
   );
