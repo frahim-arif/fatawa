@@ -98,6 +98,7 @@ export default function HomePage() {
     }
   };
 
+  
   useEffect(() => {
     setSkip(0);
     fetchQuestions(true);
