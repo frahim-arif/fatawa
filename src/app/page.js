@@ -599,7 +599,7 @@ useEffect(() => {
     </h2>
 
     <div className="space-y-3">
-      {latestQuestions.map((item) => (
+      {latestQuestions.slice(0, 5).map((item) => (
         <Link
           key={item._id}
           href={`/questions/${item.slug}`}
