@@ -469,11 +469,11 @@ useEffect(() => {
       w-full
       cursor-pointer
       rounded-xl
-      border border-[#8C6C53]/40
-      bg-gradient-to-br from-[#4F3A27]/90 via-[#7A5A3F]/70 to-[#A6805C]/70
+      border border-blue-300/40
+      bg-gradient-to-br from-[#A8DADC]/90 via-[#7EC8E3]/70 to-[#4DB8E2]/70
       backdrop-blur-md
       shadow-lg
-      hover:shadow-[0_0_25px_rgba(159,121,89,0.8)]
+      hover:shadow-[0_0_25px_rgba(78,184,226,0.8)]
       hover:scale-105
       transition-all duration-300
     "
@@ -482,7 +482,7 @@ useEffect(() => {
             }}
           >
             {/* ✨ Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#8C6C53]/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#7EC8E3]/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
             {/* 📄 Content */}
             <p className="relative text-base text-black font-bold tracking-wide">
