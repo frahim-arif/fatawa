@@ -18,6 +18,7 @@ export default function HomePage() {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [prayerTimes, setPrayerTimes] = useState(null);
   const questionsRef = useRef(null);
+  const [latestQuestions, setLatestQuestions] = useState([]);
 
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
