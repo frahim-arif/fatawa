@@ -168,7 +168,7 @@ export default function SingleQuestion() {
         </div> */}
 
         {/* Answer */}
-        <div className="p-5 md:p-6 rounded-2xl border bg-gray-500 shadow-sm leading-9">
+        <div className="p-5 md:p-6 rounded-2xl border bg-gray-100 shadow-sm leading-9">
           <p
             className="text-black text-[18px] md:text-[20px]"
             dangerouslySetInnerHTML={{
@@ -178,9 +178,9 @@ export default function SingleQuestion() {
         </div>
 
 
-    <div className="p-5 rounded-2xl border bg-gray-500 space-y-4 text-black">
+    <div className="p-5 rounded-2xl border bg-gray-100 space-y-4 text-black">
   {hawalas.map((h, index) => (
-    <p key={index} className="arabic text-right leading-8">
+    <p key={index} className="arabic text-black leading-8">
       📖 {h}
     </p>
   ))}
