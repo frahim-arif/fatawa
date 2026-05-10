@@ -534,32 +534,7 @@ useEffect(() => {
         </Link>
       </div>
 
-      {/* 🔥 Latest Questions Links */}
-<div className="mt-10 px-3">
-  <div
-    className="bg-white/80 rounded-2xl p-4 border border-yellow-400 shadow-lg"
-    style={{
-      fontFamily: "'Jameel Noori Nastaleeq', serif",
-      direction: "rtl",
-    }}
-  >
-    <h2 className="text-2xl text-green-800 font-bold mb-4 text-center">
-      نئے سوالات
-    </h2>
-
-    <div className="space-y-3">
-      {latestQuestions.map((item) => (
-        <Link
-          key={item._id}
-          href={`/questions/${item.slug}`}
-          className="block text-blue-700 hover:text-green-700 hover:underline text-lg leading-8"
-        >
-          ➜ {item.question}
-        </Link>
-      ))}
-    </div>
-  </div>
-</div>
+      
 
       {/* Questions List */}
       <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
@@ -608,6 +583,33 @@ useEffect(() => {
           </a>
         ))}
       </div>
+
+      {/* 🔥 Latest Questions Links */}
+<div className="mt-10 px-3">
+  <div
+    className="bg-white/80 rounded-2xl p-4 border border-yellow-400 shadow-lg"
+    style={{
+      fontFamily: "'Jameel Noori Nastaleeq', serif",
+      direction: "rtl",
+    }}
+  >
+    <h2 className="text-2xl text-green-800 font-bold mb-4 text-center">
+      نئے سوالات
+    </h2>
+
+    <div className="space-y-3">
+      {latestQuestions.map((item) => (
+        <Link
+          key={item._id}
+          href={`/questions/${item.slug}`}
+          className="block text-blue-700 hover:text-green-700 hover:underline text-lg leading-8"
+        >
+          ➜ {item.question}
+        </Link>
+      ))}
+    </div>
+  </div>
+</div>
       {/* Modal */}
       <AnimatePresence>
         {selectedQuestion && (
