@@ -263,7 +263,7 @@ export default function FortyHadithFree() {
               <h2 className="text-lg font-semibold text-pink-700">Hadith #{h.number}</h2>
             </header>
 
-            <p className="mt-3 text-right font-serif text-2xl leading-relaxed">
+            <p className="mt-3 text-right text-2xl leading-relaxed arabic">
               {h.arabic}
             </p>
 
