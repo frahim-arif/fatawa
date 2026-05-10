@@ -408,7 +408,7 @@ export default function HomePage() {
           ))
         ) : (
           <p className="text-center text-black text-lg font-medium">
-            سوالات دیکھنے کے لیے کوئی کیٹیگری منتخب کریں۔
+            اوپر دیے گئے بٹن پر کلک کر کے سوال و جواب دیکھیں
           </p>
         )}
 
