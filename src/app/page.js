@@ -22,12 +22,44 @@ export default function HomePage() {
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
   // Fetch categories
- const fetchQuestions = async (reset = false, customSkip = null) => {
-  try {
-    const currentSkip =
-      customSkip !== null ? customSkip : reset ? 0 : skip;
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch(`${backend}/categories`);
+        const data = await res.json();
+        if (data.success) setCategories(data.data);
+      } catch (err) {
+        console.error("❌ Error fetching categories:", err);
+      }
+    };
+    fetchCategories();
+  }, []);
 
-    console.log("SKIP:", currentSkip);
+  useEffect(() => {
+    const fetchPrayerTimes = async () => {
+      try {
+        const res = await fetch(
+          "https://api.aladhan.com/v1/timingsByCity?city=Guwahati&country=India&method=1"
+        );
+        const data = await res.json();
+
+        if (data.code === 200) {
+          setPrayerTimes(data.data.timings);
+        }
+      } catch (err) {
+        console.error("Namaz timing error:", err);
+      }
+    };
+
+    fetchPrayerTimes();
+  }, []);
+
+
+  
+  // Fetch questions
+  const fetchQuestions = async (reset = false) => {
+  try {
+    const currentSkip = reset ? 0 : skip;
 
     let url =
       selectedCategory === ""
@@ -45,21 +77,16 @@ export default function HomePage() {
       );
 
       if (reset) {
+        // category change pe old remove
         setAllQuestions(sorted);
         setSkip(5);
       } else {
-        setAllQuestions((prev) => {
-          const merged = [...prev, ...sorted];
-
-          return merged.filter(
-            (item, index, self) =>
-              index === self.findIndex((q) => q._id === item._id)
-          );
-        });
-
+        // next 5 add karo
+        setAllQuestions((prev) => [...prev, ...sorted]);
         setSkip(currentSkip + 5);
       }
 
+      // agar 5 se kam aaye to button hide
       setHasMore(sorted.length === 5);
     }
   } catch (err) {
@@ -67,29 +94,12 @@ export default function HomePage() {
   }
 };
 
-useEffect(() => {
-  const fetchCategories = async () => {
-    try {
-      const res = await fetch(`${backend}/categories`);
-      const data = await res.json();
-
-      if (data.success) {
-        setCategories(data.data);
-      }
-    } catch (err) {
-      console.error("❌ Error fetching categories:", err);
-    }
-  };
-
-  fetchCategories();
-}, []);
   useEffect(() => {
     setSkip(0);
-    fetchQuestions(true,0);
+    fetchQuestions(true);
   }, [selectedCategory]);
 
-  const filteredQuestions = allQuestions
-  .filter((q) =>
+  const filteredQuestions = allQuestions.filter((q) =>
     q.question.toLowerCase().includes(query.toLowerCase())
   );
 
@@ -527,7 +537,7 @@ useEffect(() => {
         {hasMore && filteredQuestions.length > 0 && (
           <div className="text-center mt-6">
             <button
-             onClick={() => fetchQuestions(false, skip)}
+              onClick={() => fetchQuestions()}
               className="px-6 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition"
             >
               مزید سوالات دیکھیں
@@ -536,7 +546,13 @@ useEffect(() => {
         )}
       </section>
 
-     
+      <div className="hidden">
+        {filteredQuestions.map((q) => (
+          <a key={q._id} href={`/questions/${q.slug}`}>
+            {q.question}
+          </a>
+        ))}
+      </div>
       {/* Modal */}
       <AnimatePresence>
         {selectedQuestion && (
