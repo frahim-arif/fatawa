@@ -56,6 +56,26 @@ export default function HomePage() {
 
 
 
+  useEffect(() => {
+  const fetchLatestQuestions = async () => {
+    try {
+      const res = await fetch(
+        `${backend}/admin/questions?limit=10`
+      );
+
+      const data = await res.json();
+
+      if (data.success) {
+        setLatestQuestions(data.data);
+      }
+    } catch (err) {
+      console.error("Latest question error:", err);
+    }
+  };
+
+  fetchLatestQuestions();
+}, []);
+
   // Fetch questions
 const fetchQuestions = async ({
   reset = false,
@@ -513,6 +533,34 @@ useEffect(() => {
           </div>
         </Link>
       </div>
+
+      {/* 🔥 Latest Questions Links */}
+<div className="mt-10 px-3">
+  <div
+    className="bg-white/80 rounded-2xl p-4 border border-yellow-400 shadow-lg"
+    style={{
+      fontFamily: "'Jameel Noori Nastaleeq', serif",
+      direction: "rtl",
+    }}
+  >
+    <h2 className="text-2xl text-green-800 font-bold mb-4 text-center">
+      نئے سوالات
+    </h2>
+
+    <div className="space-y-3">
+      {latestQuestions.map((item) => (
+        <Link
+          key={item._id}
+          href={`/questions/${item.slug}`}
+          className="block text-blue-700 hover:text-green-700 hover:underline text-lg leading-8"
+        >
+          ➜ {item.question}
+        </Link>
+      ))}
+    </div>
+  </div>
+</div>
+
       {/* Questions List */}
       <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
         {filteredQuestions.length > 0 ? (
