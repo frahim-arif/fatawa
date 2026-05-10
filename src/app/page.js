@@ -84,7 +84,7 @@ const fetchQuestions = async (reset = false) => {
       } else {
         // next 5 add
         setAllQuestions((prev) => [...prev, ...sorted]);
-        setSkip((prev) => prev + 5);
+        setSkip(currentSkip + 5);
       }
 
       // agar aur data nahi to button hide
@@ -95,14 +95,21 @@ const fetchQuestions = async (reset = false) => {
   }
 };
 
-  useEffect(() => {
-    setSkip(0);
-    fetchQuestions(true);
-  }, [selectedCategory]);
+ useEffect(() => {
+  setAllQuestions([]);
+  setSkip(0);
+  setHasMore(true);
 
-  const filteredQuestions = allQuestions.filter((q) =>
-    q.question.toLowerCase().includes(query.toLowerCase())
-  );
+  fetchQuestions(true);
+}, [selectedCategory]);
+
+
+  const filteredQuestions =
+  query.trim() === ""
+    ? allQuestions
+    : allQuestions.filter((q) =>
+        q.question.toLowerCase().includes(query.toLowerCase())
+      );
 
   // Voice Search
   const startListening = () => {
