@@ -55,9 +55,10 @@ export default function HomePage() {
   }, []);
 
 
-  
+
   // Fetch questions
-  const fetchQuestions = async (reset = false) => {
+ // Fetch questions
+const fetchQuestions = async (reset = false) => {
   try {
     const currentSkip = reset ? 0 : skip;
 
@@ -77,16 +78,16 @@ export default function HomePage() {
       );
 
       if (reset) {
-        // category change pe old remove
+        // sirf first 5
         setAllQuestions(sorted);
         setSkip(5);
       } else {
-        // next 5 add karo
+        // next 5 add
         setAllQuestions((prev) => [...prev, ...sorted]);
-        setSkip(currentSkip + 5);
+        setSkip((prev) => prev + 5);
       }
 
-      // agar 5 se kam aaye to button hide
+      // agar aur data nahi to button hide
       setHasMore(sorted.length === 5);
     }
   } catch (err) {
