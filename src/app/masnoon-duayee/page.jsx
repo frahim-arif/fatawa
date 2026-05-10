@@ -300,55 +300,42 @@ export default function MasnoonDuayePage() {
   ];
 
   return (
-  <div className="min-h-screen px-3 py-5 bg-[#ddeee9]">
-    <h1
-      className="text-2xl text-center font-bold text-green-800 mb-4"
-      style={{ fontFamily: "'Jameel Noori Nastaleeq', serif" }}
-    >
-      📿 مسنون دعائیں
-    </h1>
+    <div className="min-h-screen px-3 py-5 bg-[#ddeee9]">
+      <h1
+        className="text-2xl text-center font-bold text-green-800 mb-4"
+        style={{ fontFamily: "'Jameel Noori Nastaleeq', serif" }}
+      >
+        📿 مسنون دعائیں
+      </h1>
 
-    <div className="space-y-3 max-w-3xl mx-auto">
-      {duayein.map((dua, index) => (
-        <motion.div
-          key={index}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.05 }}
-          className="bg-white p-3 border border-green-200 shadow-sm"
-          style={{
-            direction: "rtl",
-            lineHeight: "1.9",
-          }}
-        >
-          <h2
-            className="text-lg font-bold text-green-700"
-            style={{ fontFamily: "'Jameel Noori Nastaleeq', serif" }}
-          >
-            {dua.title}
-          </h2>
-
-          {/* Arabic Text */}
-          <p
-            className="text-black text-xl"
+      <div className="space-y-3 max-w-3xl mx-auto">
+        {duayein.map((dua, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.05 }}
+            className="bg-white p-3 border border-green-200 shadow-sm"
             style={{
-              fontFamily: "'Amiri', serif",
               direction: "rtl",
+              fontFamily: "'Jameel Noori Nastaleeq', serif",
+              lineHeight: "1.9",
             }}
           >
-            {dua.arabic}
-          </p>
+            <h2 className="text-lg font-bold text-green-700">
+              {dua.title}
+            </h2>
 
-          {/* Translation */}
-          <p
-            className="text-gray-600 text-sm"
-            style={{ fontFamily: "sans-serif" }}
-          >
-            {dua.translation}
-          </p>
-        </motion.div>
-      ))}
+            <p className="text-black text-base">
+              {dua.arabic}
+            </p>
+
+            <p className="text-gray-600 text-sm">
+              {dua.translation}
+            </p>
+          </motion.div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
 }
