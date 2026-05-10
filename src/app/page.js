@@ -390,17 +390,17 @@ export default function HomePage() {
 
         <Link href="/masnoon-duayee">
           <div
-            className="
+             className="
       relative overflow-hidden
       h-10 flex items-center justify-center
       w-full
       cursor-pointer
       rounded-xl
-      border border-green-300/40
-      bg-gradient-to-br from-[#0f5132]/90 via-[#198754]/70 to-[#2ecc71]/70
+      border border-blue-300/40
+      bg-gradient-to-br from-[#A8DADC]/90 via-[#7EC8E3]/70 to-[#4DB8E2]/70
       backdrop-blur-md
       shadow-lg
-      hover:shadow-[0_0_25px_rgba(25,135,84,0.8)]
+      hover:shadow-[0_0_25px_rgba(78,184,226,0.8)]
       hover:scale-105
       transition-all duration-300
     "
@@ -409,10 +409,10 @@ export default function HomePage() {
             }}
           >
             {/* ✨ Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#7EC8E3]/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
             {/* 📿 Content */}
-            <p className="relative text-base text-yellow-100 font-bold tracking-wide">
+            <p className="relative text-base text-black font-bold tracking-wide">
               📿 مسنون دعائیں
             </p>
           </div>
@@ -421,17 +421,17 @@ export default function HomePage() {
         {/* 👶 اسلامی نام */}
         <Link href="/islami-naam">
           <div
-            className="
+             className="
       relative overflow-hidden
       h-10 flex items-center justify-center
       w-full
       cursor-pointer
       rounded-xl
-      border border-yellow-300/40
-      bg-gradient-to-br from-[#FFD166]/80 via-[#F4A261]/70 to-[#E76F51]/70
+      border border-blue-300/40
+      bg-gradient-to-br from-[#A8DADC]/90 via-[#7EC8E3]/70 to-[#4DB8E2]/70
       backdrop-blur-md
       shadow-lg
-      hover:shadow-[0_0_25px_rgba(244,162,97,0.8)]
+      hover:shadow-[0_0_25px_rgba(78,184,226,0.8)]
       hover:scale-105
       transition-all duration-300
     "
@@ -440,7 +440,7 @@ export default function HomePage() {
             }}
           >
             {/* ✨ Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#7EC8E3]/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
             {/* 👶 Content */}
             <p className="relative text-base text-black font-bold tracking-wide">
@@ -450,7 +450,7 @@ export default function HomePage() {
         </Link>
         <Link href="/books">
           <div
-            className="
+             className="
       relative overflow-hidden
       h-10 flex items-center justify-center
       w-full
@@ -510,17 +510,17 @@ export default function HomePage() {
         {/* 🧮 شرعیہ کیلکولیٹر */}
         <Link href="https://www.maslakedeoband.in/ozan-shariah-calculator">
           <div
-            className="
+             className="
       relative overflow-hidden
       h-10 flex items-center justify-center
       w-full
       cursor-pointer
       rounded-xl
-      border border-cyan-300/40
-      bg-gradient-to-br from-[#0d9488]/90 via-[#22d3ee]/70 to-[#38bdf8]/70
+      border border-blue-300/40
+      bg-gradient-to-br from-[#A8DADC]/90 via-[#7EC8E3]/70 to-[#4DB8E2]/70
       backdrop-blur-md
       shadow-lg
-      hover:shadow-[0_0_25px_rgba(34,211,238,0.8)]
+      hover:shadow-[0_0_25px_rgba(78,184,226,0.8)]
       hover:scale-105
       transition-all duration-300
     "
@@ -529,10 +529,10 @@ export default function HomePage() {
             }}
           >
             {/* ✨ Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#7EC8E3]/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
             {/* 🧮 Content */}
-            <p className="relative text-base text-white font-bold tracking-wide">
+            <p className="relative text-base text-black font-bold tracking-wide">
               🧮 شرعیہ کیلکولیٹر
             </p>
           </div>
@@ -540,17 +540,17 @@ export default function HomePage() {
         {/* 📖 40 Hadith Free */}
         <Link href="https://www.maslakedeoband.in/40-hadith-free">
   <div
-    className="
+     className="
       relative overflow-hidden
       h-10 flex items-center justify-center
       w-full
       cursor-pointer
       rounded-xl
-      border border-gray-300/40
-      bg-gradient-to-br from-[#374151]/90 via-[#9CA3AF]/70 to-[#E5E7EB]/60
+      border border-blue-300/40
+      bg-gradient-to-br from-[#A8DADC]/90 via-[#7EC8E3]/70 to-[#4DB8E2]/70
       backdrop-blur-md
       shadow-lg
-      hover:shadow-[0_0_25px_rgba(156,163,175,0.8)]
+      hover:shadow-[0_0_25px_rgba(78,184,226,0.8)]
       hover:scale-105
       transition-all duration-300
     "
@@ -559,10 +559,10 @@ export default function HomePage() {
     }}
   >
     {/* ✨ Glow Effect */}
-    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#7EC8E3]/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
     {/* 📖 Content */}
-    <p className="relative text-base text-white font-bold tracking-wide">
+    <p className="relative text-base text-black font-bold tracking-wide">
       📖 40 احادیث مفت
     </p>
   </div>
