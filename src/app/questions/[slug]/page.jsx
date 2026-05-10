@@ -175,21 +175,21 @@ export default function SingleQuestion() {
         </div>
 
 
-        <div className="p-5 rounded-2xl border bg-black space-y-4 text-yellow-100">
+    <div className="p-5 rounded-2xl border bg-black space-y-4 text-yellow-100">
   {question.hawala1 && (
-    <p className="font-amiri text-right leading-8">
+    <p className="arabic text-right leading-8">
       {question.hawala1}
     </p>
   )}
 
   {question.hawala2 && (
-    <p className="font-amiri text-right leading-8">
+    <p className="arabic text-right leading-8">
       {question.hawala2}
     </p>
   )}
 
   {question.hawala3 && (
-    <p className="font-amiri text-right leading-8">
+    <p className="arabic text-right leading-8">
       {question.hawala3}
     </p>
   )}
