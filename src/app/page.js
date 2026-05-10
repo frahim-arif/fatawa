@@ -22,51 +22,22 @@ export default function HomePage() {
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
   // Fetch categories
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await fetch(`${backend}/categories`);
-        const data = await res.json();
-        if (data.success) setCategories(data.data);
-      } catch (err) {
-        console.error("❌ Error fetching categories:", err);
-      }
-    };
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    const fetchPrayerTimes = async () => {
-      try {
-        const res = await fetch(
-          "https://api.aladhan.com/v1/timingsByCity?city=Guwahati&country=India&method=1"
-        );
-        const data = await res.json();
-
-        if (data.code === 200) {
-          setPrayerTimes(data.data.timings);
-        }
-      } catch (err) {
-        console.error("Namaz timing error:", err);
-      }
-    };
-
-    fetchPrayerTimes();
-  }, []);
-  // Fetch questions
-const fetchQuestions = async (reset = false, customSkip = 0) => {
+ const fetchQuestions = async (reset = false, customSkip = null) => {
   try {
+    const currentSkip =
+      customSkip !== null ? customSkip : reset ? 0 : skip;
+
+    console.log("SKIP:", currentSkip);
+
     let url =
       selectedCategory === ""
-        ? `${backend}/admin/questions?skip=${customSkip}&limit=5`
+        ? `${backend}/admin/questions?skip=${currentSkip}&limit=5`
         : `${backend}/admin/questions/category/${encodeURIComponent(
             selectedCategory
-          )}?skip=${customSkip}&limit=5`;
+          )}?skip=${currentSkip}&limit=5`;
 
     const res = await fetch(url);
     const data = await res.json();
-
-    console.log("SKIP:", customSkip);
 
     if (data.success) {
       const sorted = data.data.sort(
@@ -86,7 +57,7 @@ const fetchQuestions = async (reset = false, customSkip = 0) => {
           );
         });
 
-        setSkip(customSkip + 5);
+        setSkip(currentSkip + 5);
       }
 
       setHasMore(sorted.length === 5);
@@ -95,6 +66,23 @@ const fetchQuestions = async (reset = false, customSkip = 0) => {
     console.error("❌ Error fetching questions:", err);
   }
 };
+
+useEffect(() => {
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch(`${backend}/categories`);
+      const data = await res.json();
+
+      if (data.success) {
+        setCategories(data.data);
+      }
+    } catch (err) {
+      console.error("❌ Error fetching categories:", err);
+    }
+  };
+
+  fetchCategories();
+}, []);
   useEffect(() => {
     setSkip(0);
     fetchQuestions(true,0);
