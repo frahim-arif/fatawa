@@ -87,6 +87,12 @@ const fetchQuestions = async ({
   }
 };
 useEffect(() => {
+  // homepage pe kuch mat lao
+  if (selectedCategory === "") {
+    setAllQuestions([]);
+    return;
+  }
+
   fetchQuestions({
     reset: true,
     customSkip: 0,
