@@ -54,20 +54,19 @@ export default function HomePage() {
     fetchPrayerTimes();
   }, []);
   // Fetch questions
-const fetchQuestions = async (reset = false) => {
+const fetchQuestions = async (reset = false, customSkip = 0) => {
   try {
-    const currentSkip = reset ? 0 : skip;
-
     let url =
       selectedCategory === ""
-        ? `${backend}/admin/questions?skip=${currentSkip}&limit=5`
+        ? `${backend}/admin/questions?skip=${customSkip}&limit=5`
         : `${backend}/admin/questions/category/${encodeURIComponent(
             selectedCategory
-          )}?skip=${currentSkip}&limit=5`;
+          )}?skip=${customSkip}&limit=5`;
 
     const res = await fetch(url);
     const data = await res.json();
-    console.log("SKIP:", currentSkip);
+
+    console.log("SKIP:", customSkip);
 
     if (data.success) {
       const sorted = data.data.sort(
@@ -87,7 +86,7 @@ const fetchQuestions = async (reset = false) => {
           );
         });
 
-        setSkip((prev) => prev + 5);
+        setSkip(customSkip + 5);
       }
 
       setHasMore(sorted.length === 5);
@@ -96,11 +95,9 @@ const fetchQuestions = async (reset = false) => {
     console.error("❌ Error fetching questions:", err);
   }
 };
-
-
   useEffect(() => {
     setSkip(0);
-    fetchQuestions(true);
+    fetchQuestions(true,0);
   }, [selectedCategory]);
 
   const filteredQuestions = allQuestions
@@ -542,7 +539,7 @@ const fetchQuestions = async (reset = false) => {
         {hasMore && filteredQuestions.length > 0 && (
           <div className="text-center mt-6">
             <button
-              onClick={() => fetchQuestions()}
+             onClick={() => fetchQuestions(false, skip)}
               className="px-6 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition"
             >
               مزید سوالات دیکھیں
