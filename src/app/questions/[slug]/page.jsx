@@ -12,11 +12,9 @@ export default function SingleQuestion() {
   const [question, setQuestion] = useState(null);
   const [related, setRelated] = useState([]);
   const [loading, setLoading] = useState(true);
-  const hawalas = [
-  question.hawala1,
-  question.hawala2,
-  question.hawala3,
-].filter(Boolean);
+  const hawalas = question
+  ? [question.hawala1, question.hawala2, question.hawala3].filter(Boolean)
+  : [];
 
   useEffect(() => {
     if (!slug) return;
