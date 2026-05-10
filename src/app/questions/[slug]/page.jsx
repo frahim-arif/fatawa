@@ -158,11 +158,11 @@ export default function SingleQuestion() {
           <span>{question.question}</span>
         </nav>
         {/* Question */}
-        <div className="p-5 rounded-2xl border bg-yellow-50">
+        {/* <div className="p-5 rounded-2xl border bg-yellow-50">
           <h1 className="text-lg md:text-2xl font-bold text-green-800 leading-8">
             {question.metaTitle || question.question}
           </h1>
-        </div>
+        </div> */}
 
         {/* Answer */}
         <div className="p-5 md:p-6 rounded-2xl border bg-white shadow-sm leading-9">
@@ -173,13 +173,27 @@ export default function SingleQuestion() {
             }}
           />
         </div>
-        
+
 
         {/* Hawala */}
-        <div className="p-5 rounded-2xl border bg-black space-y-4">
-          {question.hawala1 && <p>{question.hawala1}</p>}
-          {question.hawala2 && <p>{question.hawala2}</p>}
-          {question.hawala3 && <p>{question.hawala3}</p>}
+        <div className="p-5 rounded-2xl border bg-black space-y-4 text-yellow-100">
+          {question.hawala1 && (
+            <p style={{ fontFamily: "Amiri, serif", direction: "rtl" }}>
+               {question.hawala1}
+            </p>
+          )}
+
+          {question.hawala2 && (
+            <p style={{ fontFamily: "Amiri, serif", direction: "rtl" }}>
+               {question.hawala2}
+            </p>
+          )}
+
+          {question.hawala3 && (
+            <p style={{ fontFamily: "Amiri, serif", direction: "rtl" }}>
+               {question.hawala3}
+            </p>
+          )}
         </div>
 
         {/* ✅ RELATED QUESTIONS YAHAN ADD KARO */}
