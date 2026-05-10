@@ -412,7 +412,7 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
             {/* 📿 Content */}
             <p className="relative text-base text-black font-bold tracking-wide">
-              📿 مسنون دعائیں
+               مسنون دعائیں
             </p>
           </div>
         </Link>
@@ -442,7 +442,7 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
             {/* 👶 Content */}
             <p className="relative text-base text-black font-bold tracking-wide">
-              👶 اسلامی نام
+               اسلامی نام
             </p>
           </div>
         </Link>
@@ -470,7 +470,7 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
             {/* 📚 Content */}
             <p className="relative text-base text-black font-bold tracking-wide">
-              📚 اسلامی کتابیں
+               اسلامی کتابیں
             </p>
           </div>
         </Link>
@@ -499,14 +499,14 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
             {/* 📄 Content */}
             <p className="relative text-base text-black font-bold tracking-wide">
-              📄 مضامین
+               مضامین
             </p>
           </div>
         </Link>
         {/* 🧮 شرعیہ کیلکولیٹر */}
         <Link href="https://www.maslakedeoband.in/ozan-shariah-calculator">
           <div
-           className="
+            className="
       relative overflow-hidden
       h-10 flex items-center justify-center
       w-full
@@ -527,15 +527,18 @@ export default function HomePage() {
             {/* ✨ Glow Effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
             {/* 🧮 Content */}
-            <p className="relative text-base text-black font-bold tracking-wide">
-              🧮 شرعیہ کیلکولیٹر
+            <p
+              className="relative text-sm md:text-base text-black font-bold"
+              style={{ letterSpacing: "0.5px" }}
+            >
+               شرعیہ کیلکولیٹر
             </p>
           </div>
         </Link>
         {/* 📖 40 Hadith Free */}
         <Link href="https://www.maslakedeoband.in/40-hadith-free">
-  <div
-    className="
+          <div
+            className="
       relative overflow-hidden
       h-10 flex items-center justify-center
       w-full
@@ -549,19 +552,19 @@ export default function HomePage() {
       hover:scale-105
       transition-all duration-300
     "
-    style={{
-      fontFamily: "'Jameel Noori Nastaleeq', serif",
-    }}
-  >
-    {/* ✨ Glow Effect */}
-    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+            style={{
+              fontFamily: "'Jameel Noori Nastaleeq', serif",
+            }}
+          >
+            {/* ✨ Glow Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
-    {/* 📖 Content */}
-    <p className="relative text-base text-black font-bold tracking-wide">
-      📖 40 احادیث مفت
-    </p>
-  </div>
-</Link>
+            {/* 📖 Content */}
+            <p className="relative text-base text-black font-bold tracking-wide">
+              احادیث
+            </p>
+          </div>
+        </Link>
       </div>
 
 
