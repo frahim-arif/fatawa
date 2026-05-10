@@ -54,49 +54,43 @@ export default function HomePage() {
     fetchPrayerTimes();
   }, []);
   // Fetch questions
-  const fetchQuestions = async (reset = false) => {
-    try {
-      let url =
-        selectedCategory === ""
-          ? `${backend}/admin/questions?skip=${reset ? 0 : skip}&limit=5`
-          : `${backend}/admin/questions/category/${encodeURIComponent(
+ const fetchQuestions = async (reset = false) => {
+  try {
+    const currentSkip = reset ? 0 : skip;
+
+    let url =
+      selectedCategory === ""
+        ? `${backend}/admin/questions?skip=${currentSkip}&limit=5`
+        : `${backend}/admin/questions/category/${encodeURIComponent(
             selectedCategory
-          )}?skip=${reset ? 0 : skip}&limit=5`;
+          )}?skip=${currentSkip}&limit=5`;
 
-      const res = await fetch(url);
-      const data = await res.json();
-      if (data.success) {
-        const sorted = data.data.sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        );
+    const res = await fetch(url);
+    const data = await res.json();
 
-        if (reset) {
-          // Category change ya first load
-          setAllQuestions(sorted);
-          setSkip(5);
-        } else {
-          // Load More pe sirf naye questions add hon
-          setAllQuestions((prev) => {
-            const merged = [...prev, ...sorted];
+    if (data.success) {
+      const sorted = data.data.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
 
-            // duplicate remove
-            const unique = merged.filter(
-              (item, index, self) =>
-                index === self.findIndex((q) => q._id === item._id)
-            );
+      if (reset) {
+        setAllQuestions(sorted);
+        setSkip(5);
+      } else {
+        setAllQuestions((prev) => [
+          ...prev,
+          ...sorted,
+        ]);
 
-            return unique;
-          });
-
-          setSkip((prev) => prev + 5);
-        }
-
-        setHasMore(sorted.length === 5);
+        setSkip(currentSkip + 5);
       }
-    } catch (err) {
-      console.error("❌ Error fetching questions:", err);
+
+      setHasMore(sorted.length === 5);
     }
-  };
+  } catch (err) {
+    console.error("❌ Error fetching questions:", err);
+  }
+};
 
 
   useEffect(() => {
