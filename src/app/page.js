@@ -357,7 +357,7 @@ useEffect(() => {
         ))}
 
         {/* تمام کیٹیگریز button at the end */}
-        <div
+        {/* <div
           onClick={() => {
             setSelectedCategory("");
             setTimeout(() => {
@@ -381,7 +381,7 @@ useEffect(() => {
           style={{ fontFamily: "'Jameel Noori Nastaleeq', serif", backdropFilter: "blur(12px)" }}
         >
           تمام سوالات
-        </div>
+        </div> */}
 
       </div>
 
