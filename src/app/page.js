@@ -537,53 +537,47 @@ useEffect(() => {
 
       
 
-      {/* Questions List */}
-      <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
-        {filteredQuestions.length > 0 ? (
-          filteredQuestions.map((q) => (
-            <div
-              key={q._id}
-              onClick={() => setSelectedQuestion(q)}
-              className="p-5 rounded-xl border bg-yellow-50 border-yellow-300 shadow-md w-full cursor-pointer hover:bg-yellow-100 transition hover:shadow-[0_0_20px_rgba(255,223,0,0.6)]"
-              style={{
-                direction: "rtl",
-                fontFamily: "'Jameel Noori Nastaleeq', serif",
-                lineHeight: "2.2",
-                textAlign: "right",
-              }}
-            >
-              <h3 className="font-bold text-xl text-green-800">{q.question}</h3>
-            </div>
-          ))
-        ) : (
-          <p className="text-center text-black text-lg font-medium">
-            سوالات دیکھنے کے لیے کوئی کیٹیگری منتخب کریں۔
-          </p>
-        )}
-
-        {hasMore && filteredQuestions.length > 0 && (
-          <div className="text-center mt-6">
-            <button
-  onClick={() =>
-    fetchQuestions({
-      customSkip: skip,
-    })
-  }
-  className="px-6 py-2 bg-green-600 text-white rounded-lg"
->
-  مزید سوالات دیکھیں
-</button>
-          </div>
-        )}
-      </section>
-
-      <div className="hidden">
-        {filteredQuestions.map((q) => (
-          <a key={q._id} href={`/questions/${q.slug}`}>
+     {/* Questions List */}
+<section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
+  {filteredQuestions.length > 0 ? (
+    filteredQuestions.map((q) => (
+      <Link key={q._id} href={`/questions/${q.slug}`}>
+        <div
+          className="p-5 rounded-xl border bg-yellow-50 border-yellow-300 shadow-md w-full cursor-pointer hover:bg-yellow-100 transition hover:shadow-[0_0_20px_rgba(255,223,0,0.6)]"
+          style={{
+            direction: "rtl",
+            fontFamily: "'Jameel Noori Nastaleeq', serif",
+            lineHeight: "2.2",
+            textAlign: "right",
+          }}
+        >
+          <h3 className="font-bold text-xl text-green-800">
             {q.question}
-          </a>
-        ))}
-      </div>
+          </h3>
+        </div>
+      </Link>
+    ))
+  ) : (
+    <p className="text-center text-black text-lg font-medium">
+      سوالات دیکھنے کے لیے کوئی کیٹیگری منتخب کریں۔
+    </p>
+  )}
+
+  {hasMore && filteredQuestions.length > 0 && (
+    <div className="text-center mt-6">
+      <button
+        onClick={() =>
+          fetchQuestions({
+            customSkip: skip,
+          })
+        }
+        className="px-6 py-2 bg-green-600 text-white rounded-lg"
+      >
+        مزید سوالات دیکھیں
+      </button>
+    </div>
+  )}
+</section>
 
       {/* 🔥 Latest Questions Links */}
 <div className="mt-10 px-3">
