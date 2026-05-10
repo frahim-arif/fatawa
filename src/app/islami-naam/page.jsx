@@ -1,3 +1,4 @@
+"use client";
 import { useMemo, useState } from "react";
 
 export default function IslamicNamesPage() {
@@ -11,76 +12,69 @@ export default function IslamicNamesPage() {
   ];
 
   const names = [
-    { name: "احمد", meaning: "تعریف کیا گیا", category: "boys" },
-    { name: "محمد", meaning: "بہت زیادہ تعریف کیا گیا", category: "boys" },
-    { name: "عائشہ", meaning: "زندہ رہنے والی", category: "girls" },
+    { name: "محمد", meaning: "قابلِ تعریف", category: "boys" },
+    { name: "احمد", meaning: "سب سے زیادہ تعریف کرنے والا", category: "boys" },
+    { name: "عائشہ", meaning: "زندہ دل", category: "girls" },
+    { name: "فاطمہ", meaning: "پاکیزہ", category: "girls" },
   ];
 
   const filtered = useMemo(() => {
     return names.filter((n) => {
-      const matchCategory = selectedCategory === "all" || n.category === selectedCategory;
-      const matchSearch = n.name.includes(search) || n.meaning.includes(search);
+      const matchCategory =
+        selectedCategory === "all" || n.category === selectedCategory;
+
+      const matchSearch =
+        n.name.includes(search) || n.meaning.includes(search);
+
       return matchCategory && matchSearch;
     });
-  }, [search, selectedCategory]);
+  }, [search, selectedCategory, names]);
 
   return (
-    <div className="min-h-screen bg-[#f7f3ee] p-4 md:p-8" style={{ fontFamily: "'Jameel Noori Nastaleeq', serif" }}>
-      {/* Header */}
-      <div className="text-center mb-6">
-        <h1 className="text-3xl md:text-4xl font-bold text-[#3b2a1a]">
-          اسلامی ناموں کا ذخیرہ
-        </h1>
-        <p className="text-gray-600 mt-2">
-          اوپر موجود بٹن یا سرچ استعمال کر کے نام اور ان کے معانی دیکھیں
-        </p>
+    <div className="min-h-screen bg-[#f6f1e7]" dir="rtl">
+
+      {/* Top Header like image */}
+      <div className="bg-[#4a3b2a] text-white p-4 text-center text-2xl font-bold">
+        اسلامی ناموں کا ذخیرہ
       </div>
 
-      {/* Search */}
-      <div className="flex justify-center mb-6">
+      {/* Search + Filter Bar */}
+      <div className="flex flex-col md:flex-row gap-3 justify-center p-4">
         <input
+          className="p-3 rounded border w-full md:w-1/3"
+          placeholder="نام تلاش کریں..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="اسلامی نام تلاش کریں..."
-          className="w-full md:w-1/2 p-3 rounded-xl border shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
         />
-      </div>
 
-      {/* Categories */}
-      <div className="flex gap-3 justify-center mb-8 flex-wrap">
-        {categories.map((cat) => (
-          <button
-            key={cat.id}
-            onClick={() => setSelectedCategory(cat.id)}
-            className={`px-5 py-2 rounded-full border transition font-semibold text-lg
-              ${selectedCategory === cat.id
-                ? "bg-[#3b2a1a] text-white"
-                : "bg-white text-black hover:bg-gray-100"
-              }`}
-          >
-            {cat.name}
-          </button>
-        ))}
+        <select
+          className="p-3 rounded border w-full md:w-1/4"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto bg-white rounded-2xl shadow-lg">
+      <div className="max-w-4xl mx-auto bg-white shadow rounded-lg overflow-hidden">
         <table className="w-full text-right">
-          <thead className="bg-[#3b2a1a] text-white">
+          <thead className="bg-[#4a3b2a] text-white">
             <tr>
-              <th className="p-4">نام</th>
-              <th className="p-4">معنی</th>
+              <th className="p-3">نام</th>
+              <th className="p-3">معنی</th>
             </tr>
           </thead>
+
           <tbody>
             {filtered.map((n, i) => (
               <tr key={i} className="border-b hover:bg-gray-50">
-                <td className="p-4 font-bold text-lg text-[#3b2a1a]">
-                  {n.name}
-                </td>
-                <td className="p-4 text-gray-700">
-                  {n.meaning}
-                </td>
+                <td className="p-3 font-bold text-[#4a3b2a]">{n.name}</td>
+                <td className="p-3 text-gray-700">{n.meaning}</td>
               </tr>
             ))}
           </tbody>
