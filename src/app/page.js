@@ -54,7 +54,7 @@ export default function HomePage() {
     fetchPrayerTimes();
   }, []);
   // Fetch questions
- const fetchQuestions = async (reset = false) => {
+const fetchQuestions = async (reset = false) => {
   try {
     const currentSkip = reset ? 0 : skip;
 
@@ -77,12 +77,16 @@ export default function HomePage() {
         setAllQuestions(sorted);
         setSkip(5);
       } else {
-        setAllQuestions((prev) => [
-          ...prev,
-          ...sorted,
-        ]);
+        setAllQuestions((prev) => {
+          const merged = [...prev, ...sorted];
 
-        setSkip(currentSkip + 5);
+          return merged.filter(
+            (item, index, self) =>
+              index === self.findIndex((q) => q._id === item._id)
+          );
+        });
+
+        setSkip((prev) => prev + 5);
       }
 
       setHasMore(sorted.length === 5);
