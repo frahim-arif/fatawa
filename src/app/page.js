@@ -527,7 +527,7 @@ export default function HomePage() {
             {/* ✨ Glow Effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
             {/* 🧮 Content */}
-            <p className="relative text-base text-blach font-bold tracking-wide">
+            <p className="relative text-base text-black font-bold tracking-wide">
               🧮 شرعیہ کیلکولیٹر
             </p>
           </div>
@@ -557,7 +557,7 @@ export default function HomePage() {
     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
     {/* 📖 Content */}
-    <p className="relative text-base text-white font-bold tracking-wide">
+    <p className="relative text-base text-black font-bold tracking-wide">
       📖 40 احادیث مفت
     </p>
   </div>
