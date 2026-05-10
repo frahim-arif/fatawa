@@ -57,40 +57,41 @@ export default function HomePage() {
 
 
   // Fetch questions
-const fetchQuestions = async (reset = false) => {
+const fetchQuestions = async ({
+  reset = false,
+  customSkip = 0,
+} = {}) => {
   try {
-    const currentSkip = reset ? 0 : skip;
-
     let url =
       selectedCategory === ""
-        ? `${backend}/admin/questions?skip=${currentSkip}&limit=5`
+        ? `${backend}/admin/questions?skip=${customSkip}&limit=5`
         : `${backend}/admin/questions/category/${encodeURIComponent(
             selectedCategory
-          )}?skip=${currentSkip}&limit=5`;
+          )}?skip=${customSkip}&limit=5`;
 
     const res = await fetch(url);
     const data = await res.json();
 
     if (data.success) {
       if (reset) {
-        setAllQuestions(data.data); // sirf new 5
+        setAllQuestions(data.data);
       } else {
         setAllQuestions((prev) => [...prev, ...data.data]);
       }
 
-      setSkip(currentSkip + 5);
-
-      // next button
+      setSkip(customSkip + 5);
       setHasMore(data.data.length === 5);
     }
   } catch (err) {
-    console.error("❌ Error fetching questions:", err);
+    console.error(err);
   }
 };
 useEffect(() => {
-  fetchQuestions(true);
+  fetchQuestions({
+    reset: true,
+    customSkip: 0,
+  });
 }, [selectedCategory]);
-
 
   const filteredQuestions =
   query.trim() === ""
@@ -533,11 +534,15 @@ useEffect(() => {
         {hasMore && filteredQuestions.length > 0 && (
           <div className="text-center mt-6">
             <button
-              onClick={() => fetchQuestions()}
-              className="px-6 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition"
-            >
-              مزید سوالات دیکھیں
-            </button>
+  onClick={() =>
+    fetchQuestions({
+      customSkip: skip,
+    })
+  }
+  className="px-6 py-2 bg-green-600 text-white rounded-lg"
+>
+  مزید سوالات دیکھیں
+</button>
           </div>
         )}
       </section>
