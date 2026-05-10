@@ -71,10 +71,23 @@ export default function HomePage() {
         );
 
         if (reset) {
+          // Category change ya first load
           setAllQuestions(sorted);
           setSkip(5);
         } else {
-          setAllQuestions((prev) => [...prev, ...sorted]);
+          // Load More pe sirf naye questions add hon
+          setAllQuestions((prev) => {
+            const merged = [...prev, ...sorted];
+
+            // duplicate remove
+            const unique = merged.filter(
+              (item, index, self) =>
+                index === self.findIndex((q) => q._id === item._id)
+            );
+
+            return unique;
+          });
+
           setSkip((prev) => prev + 5);
         }
 
@@ -90,7 +103,8 @@ export default function HomePage() {
     fetchQuestions(true);
   }, [selectedCategory]);
 
-  const filteredQuestions = allQuestions.filter((q) =>
+  const filteredQuestions = allQuestions
+  .filter((q) =>
     q.question.toLowerCase().includes(query.toLowerCase())
   );
 
