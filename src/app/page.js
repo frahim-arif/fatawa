@@ -533,7 +533,7 @@ useEffect(() => {
           ))
         ) : (
           <p className="text-center text-gray-500 text-lg font-medium">
-            کوئی سوال دستیاب نہیں۔
+            سوالات دیکھنے کے لیے کوئی کیٹیگری منتخب کریں۔
           </p>
         )}
 
