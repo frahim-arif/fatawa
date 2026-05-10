@@ -175,26 +175,25 @@ export default function SingleQuestion() {
         </div>
 
 
-        {/* Hawala */}
         <div className="p-5 rounded-2xl border bg-black space-y-4 text-yellow-100">
-          {question.hawala1 && (
-            <p style={{ fontFamily: "Amiri, serif", direction: "rtl" }}>
-               {question.hawala1}
-            </p>
-          )}
+  {question.hawala1 && (
+    <p className="font-amiri text-right leading-8">
+      {question.hawala1}
+    </p>
+  )}
 
-          {question.hawala2 && (
-            <p style={{ fontFamily: "Amiri, serif", direction: "rtl" }}>
-               {question.hawala2}
-            </p>
-          )}
+  {question.hawala2 && (
+    <p className="font-amiri text-right leading-8">
+      {question.hawala2}
+    </p>
+  )}
 
-          {question.hawala3 && (
-            <p style={{ fontFamily: "Amiri, serif", direction: "rtl" }}>
-               {question.hawala3}
-            </p>
-          )}
-        </div>
+  {question.hawala3 && (
+    <p className="font-amiri text-right leading-8">
+      {question.hawala3}
+    </p>
+  )}
+</div>
 
         {/* ✅ RELATED QUESTIONS YAHAN ADD KARO */}
         {related.length > 0 && (
