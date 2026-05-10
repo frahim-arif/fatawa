@@ -58,72 +58,72 @@ export default function HomePage() {
 
 
   useEffect(() => {
-  const fetchLatestQuestions = async () => {
-    try {
-      const res = await fetch(
-        `${backend}/admin/questions?limit=10`
-      );
+    const fetchLatestQuestions = async () => {
+      try {
+        const res = await fetch(
+          `${backend}/admin/questions?limit=10`
+        );
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (data.success) {
-        setLatestQuestions(data.data);
+        if (data.success) {
+          setLatestQuestions(data.data);
+        }
+      } catch (err) {
+        console.error("Latest question error:", err);
       }
-    } catch (err) {
-      console.error("Latest question error:", err);
-    }
-  };
+    };
 
-  fetchLatestQuestions();
-}, []);
+    fetchLatestQuestions();
+  }, []);
 
   // Fetch questions
-const fetchQuestions = async ({
-  reset = false,
-  customSkip = 0,
-} = {}) => {
-  try {
-    let url =
-      selectedCategory === ""
-        ? `${backend}/admin/questions?skip=${customSkip}&limit=5`
-        : `${backend}/admin/questions/category/${encodeURIComponent(
+  const fetchQuestions = async ({
+    reset = false,
+    customSkip = 0,
+  } = {}) => {
+    try {
+      let url =
+        selectedCategory === ""
+          ? `${backend}/admin/questions?skip=${customSkip}&limit=5`
+          : `${backend}/admin/questions/category/${encodeURIComponent(
             selectedCategory
           )}?skip=${customSkip}&limit=5`;
 
-    const res = await fetch(url);
-    const data = await res.json();
+      const res = await fetch(url);
+      const data = await res.json();
 
-    if (data.success) {
-      if (reset) {
-        setAllQuestions(data.data);
-      } else {
-        setAllQuestions((prev) => [...prev, ...data.data]);
+      if (data.success) {
+        if (reset) {
+          setAllQuestions(data.data);
+        } else {
+          setAllQuestions((prev) => [...prev, ...data.data]);
+        }
+
+        setSkip(customSkip + 5);
+        setHasMore(data.data.length === 5);
       }
-
-      setSkip(customSkip + 5);
-      setHasMore(data.data.length === 5);
+    } catch (err) {
+      console.error(err);
     }
-  } catch (err) {
-    console.error(err);
-  }
-};
-useEffect(() => {
-  // homepage pe kuch mat lao
-  if (selectedCategory === "") {
-    setAllQuestions([]);
-    return;
-  }
+  };
+  useEffect(() => {
+    // homepage pe kuch mat lao
+    if (selectedCategory === "") {
+      setAllQuestions([]);
+      return;
+    }
 
-  fetchQuestions({
-    reset: true,
-    customSkip: 0,
-  });
-}, [selectedCategory]);
+    fetchQuestions({
+      reset: true,
+      customSkip: 0,
+    });
+  }, [selectedCategory]);
 
   const filteredQuestions =
-  query.trim() === ""
-    ? allQuestions
-    : allQuestions.filter((q) =>
+    query.trim() === ""
+      ? allQuestions
+      : allQuestions.filter((q) =>
         q.question.toLowerCase().includes(query.toLowerCase())
       );
 
@@ -388,23 +388,31 @@ useEffect(() => {
 
       <div className="grid grid-cols-2 gap-2 px-2 mt-4">
 
-        {/* 📿 مسنون دعائیں */}
         <Link href="/masnoon-duayee">
           <div
             className="
-        h-10 flex items-center justify-center
-        cursor-pointer
-        border border-yellow-400
-        shadow-sm
-        hover:shadow-[0_0_10px_rgba(255,223,0,0.6)]
-        transition-all duration-300
-      "
+      relative overflow-hidden
+      h-10 flex items-center justify-center
+      w-full
+      cursor-pointer
+      rounded-xl
+      border border-green-300/40
+      bg-gradient-to-br from-[#0f5132]/90 via-[#198754]/70 to-[#2ecc71]/70
+      backdrop-blur-md
+      shadow-lg
+      hover:shadow-[0_0_25px_rgba(25,135,84,0.8)]
+      hover:scale-105
+      transition-all duration-300
+    "
             style={{
-              background: "linear-gradient(135deg, #0f5132, #198754)",
               fontFamily: "'Jameel Noori Nastaleeq', serif",
             }}
           >
-            <p className="text-sm text-yellow-200 font-bold">
+            {/* ✨ Glow Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+
+            {/* 📿 Content */}
+            <p className="relative text-base text-yellow-100 font-bold tracking-wide">
               📿 مسنون دعائیں
             </p>
           </div>
@@ -414,19 +422,28 @@ useEffect(() => {
         <Link href="/islami-naam">
           <div
             className="
-        h-10 flex items-center justify-center
-        cursor-pointer
-        border border-yellow-400
-        shadow-sm
-        hover:shadow-[0_0_10px_rgba(255,223,0,0.6)]
-        transition-all duration-300
-      "
+      relative overflow-hidden
+      h-10 flex items-center justify-center
+      w-full
+      cursor-pointer
+      rounded-xl
+      border border-yellow-300/40
+      bg-gradient-to-br from-[#FFD166]/80 via-[#F4A261]/70 to-[#E76F51]/70
+      backdrop-blur-md
+      shadow-lg
+      hover:shadow-[0_0_25px_rgba(244,162,97,0.8)]
+      hover:scale-105
+      transition-all duration-300
+    "
             style={{
-              background: "linear-gradient(135deg, #664d03, #ffc107)",
               fontFamily: "'Jameel Noori Nastaleeq', serif",
             }}
           >
-            <p className="text-sm text-black font-bold">
+            {/* ✨ Glow Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+
+            {/* 👶 Content */}
+            <p className="relative text-base text-black font-bold tracking-wide">
               👶 اسلامی نام
             </p>
           </div>
@@ -494,118 +511,135 @@ useEffect(() => {
         <Link href="https://www.maslakedeoband.in/ozan-shariah-calculator">
           <div
             className="
+      relative overflow-hidden
       h-10 flex items-center justify-center
+      w-full
       cursor-pointer
-      border border-cyan-400
-      shadow-sm
-      hover:shadow-[0_0_10px_rgba(52,211,153,0.6)]
+      rounded-xl
+      border border-cyan-300/40
+      bg-gradient-to-br from-[#0d9488]/90 via-[#22d3ee]/70 to-[#38bdf8]/70
+      backdrop-blur-md
+      shadow-lg
+      hover:shadow-[0_0_25px_rgba(34,211,238,0.8)]
+      hover:scale-105
       transition-all duration-300
     "
             style={{
-              background: "linear-gradient(135deg, #0d9488, #22d3ee)",
               fontFamily: "'Jameel Noori Nastaleeq', serif",
             }}
           >
-            <p className="text-sm text-white font-bold">
+            {/* ✨ Glow Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+
+            {/* 🧮 Content */}
+            <p className="relative text-base text-white font-bold tracking-wide">
               🧮 شرعیہ کیلکولیٹر
             </p>
           </div>
         </Link>
         {/* 📖 40 Hadith Free */}
-        {/* 📖 40 Hadith Free */}
         <Link href="https://www.maslakedeoband.in/40-hadith-free">
-          <div
-            className="
+  <div
+    className="
+      relative overflow-hidden
       h-10 flex items-center justify-center
+      w-full
       cursor-pointer
-      border border-gray-400
-      shadow-sm
-      hover:shadow-[0_0_10px_rgba(156,163,175,0.6)]
+      rounded-xl
+      border border-gray-300/40
+      bg-gradient-to-br from-[#374151]/90 via-[#9CA3AF]/70 to-[#E5E7EB]/60
+      backdrop-blur-md
+      shadow-lg
+      hover:shadow-[0_0_25px_rgba(156,163,175,0.8)]
+      hover:scale-105
       transition-all duration-300
     "
-            style={{
-              background: "linear-gradient(135deg, #4B5563, #9CA3AF)",
-              fontFamily: "'Jameel Noori Nastaleeq', serif",
-            }}
-          >
-            <p className="text-sm text-white font-bold">
-              📖 40 احادیث مفت
-            </p>
-          </div>
-        </Link>
-      </div>
-
-      
-
-     {/* Questions List */}
-<section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
-  {filteredQuestions.length > 0 ? (
-    filteredQuestions.map((q) => (
-      <Link key={q._id} href={`/questions/${q.slug}`}>
-        <div
-          className="p-5 rounded-xl border bg-yellow-50 border-yellow-300 shadow-md w-full cursor-pointer hover:bg-yellow-100 transition hover:shadow-[0_0_20px_rgba(255,223,0,0.6)]"
-          style={{
-            direction: "rtl",
-            fontFamily: "'Jameel Noori Nastaleeq', serif",
-            lineHeight: "2.2",
-            textAlign: "right",
-          }}
-        >
-          <h3 className="font-bold text-xl text-green-800">
-            {q.question}
-          </h3>
-        </div>
-      </Link>
-    ))
-  ) : (
-    <p className="text-center text-black text-lg font-medium">
-      سوالات دیکھنے کے لیے کوئی کیٹیگری منتخب کریں۔
-    </p>
-  )}
-
-  {hasMore && filteredQuestions.length > 0 && (
-    <div className="text-center mt-6">
-      <button
-        onClick={() =>
-          fetchQuestions({
-            customSkip: skip,
-          })
-        }
-        className="px-6 py-2 bg-green-600 text-white rounded-lg"
-      >
-        مزید سوالات دیکھیں
-      </button>
-    </div>
-  )}
-</section>
-
-      {/* 🔥 Latest Questions Links */}
-<div className="mt-10 px-3">
-  <div
-    className="bg-white/80 rounded-2xl p-4 border border-yellow-400 shadow-lg"
     style={{
       fontFamily: "'Jameel Noori Nastaleeq', serif",
-      direction: "rtl",
     }}
   >
-    <h2 className="text-2xl text-green-800 font-bold mb-4 text-center">
-      نئے سوالات
-    </h2>
+    {/* ✨ Glow Effect */}
+    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
 
-    <div className="space-y-3">
-      {latestQuestions.slice(0, 5).map((item) => (
-        <Link
-          key={item._id}
-          href={`/questions/${item.slug}`}
-          className="block text-blue-700 hover:text-green-700 hover:underline text-lg leading-8"
-        >
-          ➜ {item.question}
-        </Link>
-      ))}
-    </div>
+    {/* 📖 Content */}
+    <p className="relative text-base text-white font-bold tracking-wide">
+      📖 40 احادیث مفت
+    </p>
   </div>
-</div>
-      
+</Link>
+      </div>
+
+
+
+      {/* Questions List */}
+      <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
+        {filteredQuestions.length > 0 ? (
+          filteredQuestions.map((q) => (
+            <Link key={q._id} href={`/questions/${q.slug}`}>
+              <div
+                className="p-5 rounded-xl border bg-yellow-50 border-yellow-300 shadow-md w-full cursor-pointer hover:bg-yellow-100 transition hover:shadow-[0_0_20px_rgba(255,223,0,0.6)]"
+                style={{
+                  direction: "rtl",
+                  fontFamily: "'Jameel Noori Nastaleeq', serif",
+                  lineHeight: "2.2",
+                  textAlign: "right",
+                }}
+              >
+                <h3 className="font-bold text-xl text-green-800">
+                  {q.question}
+                </h3>
+              </div>
+            </Link>
+          ))
+        ) : (
+          <p className="text-center text-black text-lg font-medium">
+            سوالات دیکھنے کے لیے کوئی کیٹیگری منتخب کریں۔
+          </p>
+        )}
+
+        {hasMore && filteredQuestions.length > 0 && (
+          <div className="text-center mt-6">
+            <button
+              onClick={() =>
+                fetchQuestions({
+                  customSkip: skip,
+                })
+              }
+              className="px-6 py-2 bg-green-600 text-white rounded-lg"
+            >
+              مزید سوالات دیکھیں
+            </button>
+          </div>
+        )}
+      </section>
+
+      {/* 🔥 Latest Questions Links */}
+      <div className="mt-10 px-3">
+        <div
+          className="bg-white/80 rounded-2xl p-4 border border-yellow-400 shadow-lg"
+          style={{
+            fontFamily: "'Jameel Noori Nastaleeq', serif",
+            direction: "rtl",
+          }}
+        >
+          <h2 className="text-2xl text-green-800 font-bold mb-4 text-center">
+            نئے سوالات
+          </h2>
+
+          <div className="space-y-3">
+            {latestQuestions.slice(0, 5).map((item) => (
+              <Link
+                key={item._id}
+                href={`/questions/${item.slug}`}
+                className="block text-blue-700 hover:text-green-700 hover:underline text-lg leading-8"
+              >
+                ➜ {item.question}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
     </div>
 
   );
