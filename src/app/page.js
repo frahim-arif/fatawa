@@ -344,7 +344,7 @@ export default function HomePage() {
             className={`
         p-5 rounded-3xl cursor-pointer text-center select-none
         transition-all duration-300 transform border shadow-md
-        hover:scale-105
+        hover:scale-105 font-bold
         ${selectedCategory === cat.name
                 ? "bg-white border-yellow-500 text-black shadow-[0_0_20px_rgba(255,223,0,0.6)]"
                 : "bg-white border-gray-300 text-black hover:bg-gray-100"
