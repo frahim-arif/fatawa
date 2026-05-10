@@ -172,26 +172,28 @@ export default function IslamicNamesPage() {
       </div>
 
       {/* Search + Filter Bar */}
-      <div className="flex flex-col md:flex-row gap-3 justify-center p-4">
-        <input
-          className="p-3 rounded border w-full md:w-1/3"
-          placeholder="نام تلاش کریں..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+<div className="flex flex-col md:flex-row gap-3 p-4 max-w-4xl mx-auto">
 
-        <select
-          className="p-3 rounded border w-full md:w-1/4"
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-        >
-          {categories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
-      </div>
+  <input
+    className="p-3 rounded border w-full focus:outline-none focus:ring-2 focus:ring-[#4a3b2a]"
+    placeholder="نام تلاش کریں..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+  />
+
+  <select
+    className="p-3 rounded border w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-[#4a3b2a]"
+    value={selectedCategory}
+    onChange={(e) => setSelectedCategory(e.target.value)}
+  >
+    {categories.map((c) => (
+      <option key={c.id} value={c.id}>
+        {c.name}
+      </option>
+    ))}
+  </select>
+
+</div>
 
       {/* Table */}
       <div className="max-w-4xl mx-auto bg-white shadow rounded-lg overflow-hidden">
