@@ -175,14 +175,20 @@ export default function IslamicNamesPage() {
 <div className="flex flex-col md:flex-row gap-3 p-4 max-w-4xl mx-auto">
 
   <input
-    className="p-3 rounded border w-full focus:outline-none focus:ring-2 focus:ring-[#4a3b2a]"
+    className="p-3 rounded border w-full 
+               bg-white text-black border-gray-300
+               dark:bg-gray-800 dark:text-white dark:border-gray-600
+               focus:outline-none focus:ring-2 focus:ring-[#4a3b2a]"
     placeholder="نام تلاش کریں..."
     value={search}
     onChange={(e) => setSearch(e.target.value)}
   />
 
   <select
-    className="p-3 rounded border w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-[#4a3b2a]"
+    className="p-3 rounded border w-full md:w-64
+               bg-white text-black border-gray-300
+               dark:bg-gray-800 dark:text-white dark:border-gray-600
+               focus:outline-none focus:ring-2 focus:ring-[#4a3b2a]"
     value={selectedCategory}
     onChange={(e) => setSelectedCategory(e.target.value)}
   >
