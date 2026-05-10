@@ -532,7 +532,7 @@ useEffect(() => {
             </div>
           ))
         ) : (
-          <p className="text-center text-gray-500 text-lg font-medium">
+          <p className="text-center text-black text-lg font-medium">
             سوالات دیکھنے کے لیے کوئی کیٹیگری منتخب کریں۔
           </p>
         )}
