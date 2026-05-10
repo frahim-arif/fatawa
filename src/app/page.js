@@ -98,7 +98,7 @@ export default function HomePage() {
     }
   };
 
-  
+
   useEffect(() => {
     setSkip(0);
     fetchQuestions(true);
@@ -552,13 +552,7 @@ export default function HomePage() {
         )}
       </section>
 
-      <div className="hidden">
-        {filteredQuestions.map((q) => (
-          <a key={q._id} href={`/questions/${q.slug}`}>
-            {q.question}
-          </a>
-        ))}
-      </div>
+     
       {/* Modal */}
       <AnimatePresence>
         {selectedQuestion && (
