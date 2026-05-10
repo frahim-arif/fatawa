@@ -57,7 +57,6 @@ export default function HomePage() {
 
 
   // Fetch questions
- // Fetch questions
 const fetchQuestions = async (reset = false) => {
   try {
     const currentSkip = reset ? 0 : skip;
@@ -73,33 +72,22 @@ const fetchQuestions = async (reset = false) => {
     const data = await res.json();
 
     if (data.success) {
-      const sorted = data.data.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      );
-
       if (reset) {
-        // sirf first 5
-        setAllQuestions(sorted);
-        setSkip(5);
+        setAllQuestions(data.data); // sirf new 5
       } else {
-        // next 5 add
-        setAllQuestions((prev) => [...prev, ...sorted]);
-        setSkip(currentSkip + 5);
+        setAllQuestions((prev) => [...prev, ...data.data]);
       }
 
-      // agar aur data nahi to button hide
-      setHasMore(sorted.length === 5);
+      setSkip(currentSkip + 5);
+
+      // next button
+      setHasMore(data.data.length === 5);
     }
   } catch (err) {
     console.error("❌ Error fetching questions:", err);
   }
 };
-
- useEffect(() => {
-  setAllQuestions([]);
-  setSkip(0);
-  setHasMore(true);
-
+useEffect(() => {
   fetchQuestions(true);
 }, [selectedCategory]);
 
