@@ -67,6 +67,7 @@ const fetchQuestions = async (reset = false) => {
 
     const res = await fetch(url);
     const data = await res.json();
+    console.log("SKIP:", currentSkip);
 
     if (data.success) {
       const sorted = data.data.sort(
