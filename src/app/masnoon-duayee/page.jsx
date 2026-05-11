@@ -326,7 +326,7 @@ export default function MasnoonDuayePage() {
               {dua.title}
             </h2>
 
-            <p className="text-black text-2xl leading-relaxed text-right font-amiri">
+            <p className="font-amiri text-2xl leading-loose text-right text-black">
               {dua.arabic}
             </p>
 

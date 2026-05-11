@@ -121,5 +121,5 @@ p, div, span, h1, h2, h3 {
   color: var(--foreground); /* ya default text color */
 }
 .font-amiri {
-  font-family: var(--font-amiri);
+  font-family: var(--font-amiri), serif !important;
 }
