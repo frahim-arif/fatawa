@@ -4,11 +4,6 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, BookOpen } from "lucide-react";
 
-export const metadata = {
-  title: "40 Ahadith (Free) | Maslak e Deoband",
-  description: "Free access: 40 Ahadith with Urdu explanations.",
-};
-
 const hadithList = [
   {
     number: 1,
@@ -96,19 +91,17 @@ export default function FortyHadithFree() {
               className="bg-white border border-[#eadca6] rounded-xl overflow-hidden shadow-sm"
             >
 
-              {/* Title */}
+              {/* Header */}
               <button
                 onClick={() => toggleCard(index)}
                 className="w-full flex items-center justify-between px-4 py-3 bg-[#fffdf7] hover:bg-[#fff8e1] transition"
               >
                 <div className="flex items-center gap-2 flex-wrap">
 
-                  {/* Hadith Number */}
                   <span className="bg-[#d4b24c] text-black text-[11px] px-2 py-1 rounded-full font-semibold">
                     #{h.number}
                   </span>
 
-                  {/* Urdu Title */}
                   <h2
                     className="text-[15px] font-bold text-[#7a5a00]"
                     style={{
@@ -120,7 +113,6 @@ export default function FortyHadithFree() {
                   </h2>
                 </div>
 
-                {/* Icon */}
                 <motion.div
                   animate={{ rotate: isOpen ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
@@ -149,7 +141,7 @@ export default function FortyHadithFree() {
 
                       {/* Arabic */}
                       <div className="bg-[#fffdf6] border border-[#f0e2a8] rounded-lg px-4 py-3 mb-3">
-                        <p className="text-right text-[22px] leading-loose text-black font-amiri">
+                        <p className="text-right text-[22px] leading-loose text-black">
                           {h.arabic}
                         </p>
                       </div>
@@ -191,5 +183,4 @@ export default function FortyHadithFree() {
       </div>
     </div>
   );
-  
 }
