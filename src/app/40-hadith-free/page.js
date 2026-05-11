@@ -152,7 +152,8 @@ export default function FortyHadithFree() {
 
                       {/* Arabic */}
                       <div className="bg-[#fffdf6] border border-[#f0e2a8] rounded-lg px-4 py-3 mb-3">
-                        <p className="text-right text-[22px] leading-loose text-black">
+                        {/* Arabic Hadith */}
+                        <p className="font-amiri text-[1.05rem] leading-loose text-right text-black mb-3">
                           {h.arabic}
                         </p>
                       </div>
