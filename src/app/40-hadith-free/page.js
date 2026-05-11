@@ -34,7 +34,8 @@ const hadithList = [
       "لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيْهِ مَا يُحِبُّ لِنَفْسِهِ",
     translation:
       "Iman mukammal nahi jab tak bhai ke liye wohi na chahe jo apne liye chahta hai.",
-    explanation: "Husn-e-akhlaq ki bunyadi taleem.",
+    explanation:
+      "Husn-e-akhlaq ki bunyadi taleem.",
   },
   {
     number: 5,
@@ -75,7 +76,7 @@ export default function FortyHadithFree() {
         </h1>
 
         <p className="text-gray-600 text-xs mt-1">
-          Click any Hadith to read details
+          Click any Hadith to read
         </p>
       </div>
 
@@ -96,12 +97,15 @@ export default function FortyHadithFree() {
                 onClick={() => toggleCard(index)}
                 className="w-full flex items-center justify-between px-4 py-3 bg-[#fffdf7] hover:bg-[#fff8e1] transition"
               >
-                <div className="flex items-center gap-2 flex-wrap">
 
+                <div className="flex items-center gap-2">
+
+                  {/* Number */}
                   <span className="bg-[#d4b24c] text-black text-[11px] px-2 py-1 rounded-full font-semibold">
-                    #{h.number}
+                    {h.number}
                   </span>
 
+                  {/* Urdu Title */}
                   <h2
                     className="text-[15px] font-bold text-[#7a5a00]"
                     style={{
@@ -109,10 +113,12 @@ export default function FortyHadithFree() {
                         "'Jameel Noori Nastaleeq', serif",
                     }}
                   >
-                    حدیث نمبر {h.number}
+                    حدیث
                   </h2>
+
                 </div>
 
+                {/* Dropdown Icon */}
                 <motion.div
                   animate={{ rotate: isOpen ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
@@ -122,9 +128,10 @@ export default function FortyHadithFree() {
                     size={18}
                   />
                 </motion.div>
+
               </button>
 
-              {/* Content */}
+              {/* Dropdown Content */}
               <AnimatePresence>
                 {isOpen && (
                   <motion.div
@@ -133,10 +140,14 @@ export default function FortyHadithFree() {
                       height: "auto",
                       opacity: 1,
                     }}
-                    exit={{ height: 0, opacity: 0 }}
+                    exit={{
+                      height: 0,
+                      opacity: 0,
+                    }}
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
+
                     <div className="p-4">
 
                       {/* Arabic */}
@@ -173,6 +184,7 @@ export default function FortyHadithFree() {
                       </div>
 
                     </div>
+
                   </motion.div>
                 )}
               </AnimatePresence>
