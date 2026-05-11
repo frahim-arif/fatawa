@@ -224,7 +224,7 @@ export default function MasnoonDuayePage() {
             {/* Top */}
             <div className="bg-[#efe2a8] px-4 py-2 border-b border-[#e1cf88]">
               
-              <h2 className="urdu text-[#6d5200] text-lg font-bold leading-tight">
+              <h2 className="urdu text-[#6d5200] text-xl font-bold leading-tight">
                 {dua.title}
               </h2>
 
@@ -243,7 +243,7 @@ export default function MasnoonDuayePage() {
 
               {/* Urdu */}
               <div className="bg-[#fff9e8] border-r-4 border-[#d4b24c] rounded-md px-3 py-2 mb-2">
-                <p className="urdu text-gray-700 text-[13px] leading-7">
+                <p className="urdu text-gray-700 text-xl leading-7">
                   {dua.urdu}
                 </p>
               </div>
