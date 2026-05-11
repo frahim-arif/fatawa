@@ -36,20 +36,20 @@ export default function MajameenPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf8ef] px-3 py-5">
+    <div className="min-h-screen bg-[#fdfaf3] px-3 py-5">
 
       {/* Header */}
       <div className="max-w-4xl mx-auto text-center mb-6">
 
-        <div className="inline-flex items-center gap-2 bg-[#d4b24c] text-black px-4 py-1.5 rounded-full shadow-sm">
+        {/* <div className="inline-flex items-center gap-2 bg-[#ecd9a3] text-[#6b4d00] px-4 py-1.5 rounded-full shadow-sm">
           <BookOpen size={15} />
           <span className="text-xs tracking-wide font-medium">
             Islamic Majameen
           </span>
-        </div>
+        </div> */}
 
         <h1
-          className="mt-3 text-3xl font-bold text-[#8a6a00]"
+          className="mt-3 text-3xl font-bold text-[#9b7a20]"
           style={{
             fontFamily: "'Jameel Noori Nastaleeq', serif",
           }}
@@ -57,7 +57,7 @@ export default function MajameenPage() {
           📚 مضامین
         </h1>
 
-        <p className="text-gray-600 mt-1 text-xs">
+        <p className="text-gray-500 mt-1 text-xs">
           Click to Read Full Majmoon
         </p>
 
@@ -73,19 +73,19 @@ export default function MajameenPage() {
           return (
             <div
               key={item._id}
-              className="bg-white border border-[#ead89c] rounded-2xl overflow-hidden shadow-sm"
+              className="bg-white border border-[#f0dfb2] rounded-2xl overflow-hidden shadow-sm"
             >
 
               {/* Header */}
               <button
                 onClick={() => toggleCard(index)}
-                className="w-full flex items-center justify-between px-4 py-3 bg-[#fffdf7] hover:bg-[#fff8e1] transition"
+                className="w-full flex items-center justify-between px-4 py-3 bg-[#fffdf8] hover:bg-[#fff7df] transition"
               >
 
                 <div className="text-right">
 
                   <h2
-                    className="text-[18px] font-bold text-[#7a5a00]"
+                    className="text-[18px] font-bold text-[#8b6b1b]"
                     style={{
                       fontFamily:
                         "'Jameel Noori Nastaleeq', serif",
@@ -102,7 +102,7 @@ export default function MajameenPage() {
 
                 <ChevronDown
                   size={20}
-                  className={`text-[#8a6a00] transition-transform duration-300 ${
+                  className={`text-[#b08a2c] transition-transform duration-300 ${
                     isOpen ? "rotate-180" : ""
                   }`}
                 />
@@ -121,7 +121,7 @@ export default function MajameenPage() {
                     className="overflow-hidden"
                   >
 
-                    <div className="p-5 border-t bg-[#fffdfa]">
+                    <div className="p-5 border-t border-[#f3e6bf] bg-[#fffef9]">
 
                       <div
                         className="text-[18px] leading-10 text-gray-800 whitespace-pre-line"
