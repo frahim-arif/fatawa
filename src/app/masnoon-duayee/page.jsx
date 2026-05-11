@@ -243,7 +243,7 @@ export default function MasnoonDuayePage() {
 
               {/* Urdu */}
               <div className="bg-[#fff9e8] border-r-4 border-[#d4b24c] rounded-md px-3 py-2 mb-2">
-                <p className="urdu text-gray-700 text-xl leading-7">
+                <p className="urdu text-gray-700 text-[10px] leading-5">
                   {dua.urdu}
                 </p>
               </div>
