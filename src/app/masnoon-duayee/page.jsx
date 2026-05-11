@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import { motion } from "framer-motion";
 
@@ -6,331 +7,102 @@ export default function MasnoonDuayePage() {
   const duayein = [
     {
       title: "سونے سے پہلے",
+      hinglish: "Sone se pehle",
       arabic: "اللَّهُمَّ بِاسْمِكَ أَمُوتُ وَأَحْيَا",
-      translation: "اے اللہ! میں تیرے نام کے ساتھ مرتا اور جیتا ہوں",
+      urdu: "اے اللہ! میں تیرے نام کے ساتھ مرتا اور جیتا ہوں",
+      translation: "Ae Allah! Main tere naam ke saath sota aur jaagta hoon",
     },
     {
       title: "جاگنے کے بعد",
+      hinglish: "Jaagne ke baad",
       arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا",
-      translation: "تمام تعریف اللہ کے لیے ہے جس نے ہمیں زندہ کیا",
-    },
-    {
-      title: "نئی چاند دیکھنے کی دعا",
-      arabic: "اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالْأَمْنِ وَالإِيمَانِ",
-      translation: "اے اللہ! اس چاند کو ہمارے لیے امن اور ایمان والا بنا",
+      urdu: "تمام تعریف اللہ کے لیے ہے جس نے ہمیں زندہ کیا",
+      translation:
+        "Tamam tareef Allah ke liye hai jisne hume zinda kiya",
     },
     {
       title: "غصہ آنے پر",
+      hinglish: "Gussa aane par",
       arabic: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ",
-      translation: "میں شیطان مردود سے اللہ کی پناہ مانگتا ہوں",
-    },
-    {
-      title: "مصیبت میں",
-      arabic: "إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ",
-      translation: "ہم اللہ کے ہیں اور اسی کی طرف لوٹنے والے ہیں",
-    },
-    {
-      title: "قرض سے بچنے کی دعا",
-      arabic: "اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ",
-      translation: "اے اللہ! مجھے حلال کے ذریعے حرام سے بچا",
+      urdu: "میں شیطان مردود سے اللہ کی پناہ مانگتا ہوں",
+      translation:
+        "Main shaitaan mardood se Allah ki panaah maangta hoon",
     },
     {
       title: "علم میں اضافہ",
+      hinglish: "Ilm me izafa",
       arabic: "رَبِّ زِدْنِي عِلْمًا",
-      translation: "اے میرے رب! میرے علم میں اضافہ فرما",
-    },
-    {
-      title: "دل کی صفائی",
-      arabic: "اللَّهُمَّ طَهِّرْ قَلْبِي",
-      translation: "اے اللہ! میرے دل کو پاک کر دے",
-    },
-    {
-      title: "ہدایت کی دعا",
-      arabic: "اللَّهُمَّ اهْدِنِي",
-      translation: "اے اللہ! مجھے ہدایت دے",
+      urdu: "اے میرے رب! میرے علم میں اضافہ فرما",
+      translation: "Ae mere Rab! Mere ilm me izafa farma",
     },
     {
       title: "رزق میں برکت",
+      hinglish: "Rizq me barkat",
       arabic: "اللَّهُمَّ بَارِكْ لَنَا فِي رِزْقِنَا",
-      translation: "اے اللہ! ہمارے رزق میں برکت دے",
+      urdu: "اے اللہ! ہمارے رزق میں برکت دے",
+      translation: "Ae Allah! Hamare rizq me barkat ata farma",
     },
     {
       title: "گناہوں کی معافی",
+      hinglish: "Gunahon ki maafi",
       arabic: "رَبِّ اغْفِرْ لِي",
-      translation: "اے میرے رب! مجھے معاف کر دے",
-    },
-    {
-      title: "دل کے سکون کے لیے",
-      arabic: "اللَّهُمَّ أَنْزِلِ السَّكِينَةَ فِي قَلْبِي",
-      translation: "اے اللہ! میرے دل میں سکون نازل فرما",
-    },
-
-    {
-      title: "اولاد کے لیے دعا",
-      arabic: "رَبِّ هَبْ لِي مِنَ الصَّالِحِينَ",
-      translation: "اے رب! مجھے نیک اولاد عطا فرما",
-    },
-    {
-      title: "بیماری سے شفا",
-      arabic: "اللَّهُمَّ اشْفِنِي",
-      translation: "اے اللہ! مجھے شفا دے",
-    },
-    {
-      title: "مشکل آسانی کے لیے",
-      arabic: "اللَّهُمَّ يَسِّرْ وَلَا تُعَسِّرْ",
-      translation: "اے اللہ! آسانی فرما، مشکل نہ کر",
-    },
-    {
-      title: "دشمن سے حفاظت",
-      arabic: "اللَّهُمَّ اكْفِنِيهِمْ بِمَا شِئْتَ",
-      translation: "اے اللہ! دشمنوں سے حفاظت فرما",
-    },
-    {
-      title: "نیک اعمال کی دعا",
-      arabic: "اللَّهُمَّ وَفِّقْنِي لِلْخَيْرِ",
-      translation: "اے اللہ! مجھے نیکی کی توفیق دے",
-    },
-    {
-      title: "صبر کی دعا",
-      arabic: "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا",
-      translation: "اے رب! ہم پر صبر نازل فرما",
-    },
-    {
-      title: "دن کی ابتدا میں",
-      arabic: "اللَّهُمَّ بِكَ أَصْبَحْنَا",
-      translation: "اے اللہ! ہم نے تیرے نام سے صبح کی",
-    },
-    {
-      title: "شام کے وقت",
-      arabic: "اللَّهُمَّ بِكَ أَمْسَيْنَا",
-      translation: "اے اللہ! ہم نے تیرے نام سے شام کی",
-    },
-    {
-      title: "دل کی مضبوطی",
-      arabic: "اللَّهُمَّ ثَبِّتْ قَلْبِي",
-      translation: "اے اللہ! میرے دل کو ثابت رکھ",
-    },
-    {
-      title: "نیکی کی محبت",
-      arabic: "اللَّهُمَّ حَبِّبْ إِلَيَّ الْإِيمَانَ",
-      translation: "اے اللہ! ایمان کو میرے لیے محبوب بنا",
-    },
-
-    {
-      title: "برے خیالات سے بچاؤ",
-      arabic: "اللَّهُمَّ اصْرِفْ عَنِّي السُّوءَ",
-      translation: "اے اللہ! برائی کو مجھ سے دور کر",
-    },
-    {
-      title: "گھر کی برکت",
-      arabic: "اللَّهُمَّ بَارِكْ فِي بَيْتِنَا",
-      translation: "اے اللہ! ہمارے گھر میں برکت دے",
-    },
-    {
-      title: "نیند کے لیے",
-      arabic: "اللَّهُمَّ أَنْعِمْ عَلَيَّ بِالنَّوْمِ",
-      translation: "اے اللہ! مجھے اچھی نیند عطا کر",
-    },
-    {
-      title: "برے خواب سے بچاؤ",
-      arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْحُلْمِ السَّيِّئِ",
-      translation: "اے اللہ! برے خواب سے بچا",
-    },
-    {
-      title: "دوستی میں خیر",
-      arabic: "اللَّهُمَّ اجْعَلْ صُحْبَتِي صَالِحَةً",
-      translation: "اے اللہ! مجھے نیک دوست عطا فرما",
-    },
-    {
-      title: "رزق کی آسانی",
-      arabic: "اللَّهُمَّ سَهِّلْ لِي رِزْقِي",
-      translation: "اے اللہ! میرا رزق آسان فرما",
-    },
-    {
-      title: "برکت والی زندگی",
-      arabic: "اللَّهُمَّ بَارِكْ لِي فِي عُمْرِي",
-      translation: "اے اللہ! میری عمر میں برکت دے",
-    },
-    {
-      title: "ہر خیر کی دعا",
-      arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْخَيْرَ كُلَّهُ",
-      translation: "اے اللہ! میں تجھ سے ہر بھلائی مانگتا ہوں",
-    },
-    {
-      title: "گناہوں سے بچاؤ",
-      arabic: "اللَّهُمَّ جَنِّبْنِي الذُّنُوبَ",
-      translation: "اے اللہ! مجھے گناہوں سے بچا",
-    },
-    {
-      title: "دل کی روشنی",
-      arabic: "اللَّهُمَّ اجْعَلْ فِي قَلْبِي نُورًا",
-      translation: "اے اللہ! میرے دل میں نور پیدا فرما",
-    },
-
-    {
-      title: "قبولیت کی دعا",
-      arabic: "اللَّهُمَّ تَقَبَّلْ مِنِّي",
-      translation: "اے اللہ! مجھ سے قبول فرما",
-    },
-    {
-      title: "عبادت کی توفیق",
-      arabic: "اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ",
-      translation: "اے اللہ! مجھے اپنی عبادت کی توفیق دے",
-    },
-    {
-      title: "ایمان کی حفاظت",
-      arabic: "اللَّهُمَّ احْفَظْ إِيمَانِي",
-      translation: "اے اللہ! میرے ایمان کی حفاظت فرما",
-    },
-    {
-      title: "دل کی نرمی",
-      arabic: "اللَّهُمَّ لَيِّنْ قَلْبِي",
-      translation: "اے اللہ! میرے دل کو نرم بنا",
-    },
-    {
-      title: "حق پر قائم رہنے کی دعا",
-      arabic: "اللَّهُمَّ ثَبِّتْنِي عَلَى الْحَقِّ",
-      translation: "اے اللہ! مجھے حق پر قائم رکھ",
-    },
-    {
-      title: "بچوں کی حفاظت",
-      arabic: "اللَّهُمَّ احْفَظْ أَوْلَادِي",
-      translation: "اے اللہ! میری اولاد کی حفاظت فرما",
-    },
-    {
-      title: "ہر برائی سے بچاؤ",
-      arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ كُلِّ شَرٍّ",
-      translation: "اے اللہ! ہر برائی سے بچا",
-    },
-    {
-      title: "نیکیوں میں اضافہ",
-      arabic: "اللَّهُمَّ زِدْنِي حَسَنَاتٍ",
-      translation: "اے اللہ! میری نیکیوں میں اضافہ فرما",
-    },
-    {
-      title: "برکت والی اولاد",
-      arabic: "اللَّهُمَّ بَارِكْ فِي أَوْلَادِي",
-      translation: "اے اللہ! میری اولاد میں برکت دے",
-    },
-    {
-      title: "آخرت کی کامیابی",
-      arabic: "اللَّهُمَّ اجْعَلْنِي مِنْ أَهْلِ الْجَنَّةِ",
-      translation: "اے اللہ! مجھے جنت والوں میں شامل کر",
+      urdu: "اے میرے رب! مجھے معاف کر دے",
+      translation: "Ae mere Rab! Mujhe maaf farma",
     },
     {
       title: "کھانے سے پہلے",
+      hinglish: "Khane se pehle",
       arabic: "بِسْمِ اللَّهِ",
-      translation: "اللہ کے نام سے شروع",
+      urdu: "اللہ کے نام سے شروع",
+      translation: "Allah ke naam se shuru karta hoon",
     },
     {
       title: "کھانے کے بعد",
+      hinglish: "Khane ke baad",
       arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا",
-      translation: "تمام تعریف اللہ کے لیے ہے جس نے ہمیں کھلایا پلایا",
-    },
-    {
-      title: "گھر میں داخل ہوتے وقت",
-      arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الْمَوْلِجِ",
-      translation: "اے اللہ! میں تجھ سے داخل ہونے کی بھلائی مانگتا ہوں",
-    },
-    {
-      title: "گھر سے نکلتے وقت",
-      arabic: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ",
-      translation: "اللہ کے نام سے، میں نے اللہ پر بھروسہ کیا",
-    },
-    {
-      title: "بیت الخلاء میں داخل ہوتے وقت",
-      arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ",
-      translation: "اے اللہ! میں ناپاک چیزوں سے پناہ مانگتا ہوں",
-    },
-    {
-      title: "بیت الخلاء سے نکلتے وقت",
-      arabic: "غُفْرَانَكَ",
-      translation: "اے اللہ! مجھے بخش دے",
-    },
-    {
-      title: "لباس پہنتے وقت",
-      arabic: "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا",
-      translation: "تمام تعریف اللہ کے لیے ہے جس نے مجھے یہ پہنایا",
-    },
-    {
-      title: "آئینہ دیکھتے وقت",
-      arabic: "اللَّهُمَّ كَمَا حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي",
-      translation: "اے اللہ! جیسے تو نے میری صورت خوبصورت بنائی ویسے اخلاق بھی اچھے بنا",
-    },
-    {
-      title: "مسجد میں داخل ہوتے وقت",
-      arabic: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ",
-      translation: "اے اللہ! میرے لیے اپنی رحمت کے دروازے کھول دے",
-    },
-    {
-      title: "مسجد سے نکلتے وقت",
-      arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ",
-      translation: "اے اللہ! میں تجھ سے فضل مانگتا ہوں",
-    },
-    {
-      title: "چھینک آنے پر",
-      arabic: "الْحَمْدُ لِلَّهِ",
-      translation: "تمام تعریف اللہ کے لیے ہے",
-    },
-    {
-      title: "کسی کو چھینک آئے تو جواب",
-      arabic: "يَرْحَمُكَ اللَّهُ",
-      translation: "اللہ تم پر رحم کرے",
-    },
-    {
-      title: "سفر کی دعا",
-      arabic: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا",
-      translation: "پاک ہے وہ جس نے اسے ہمارے لیے مسخر کیا",
-    },
-    {
-      title: "غم و پریشانی میں",
-      arabic: "اللَّهُمَّ إِنِّي عَبْدُكَ",
-      translation: "اے اللہ! میں تیرا بندہ ہوں",
-    },
-    {
-      title: "بارش کے وقت",
-      arabic: "اللَّهُمَّ صَيِّبًا نَافِعًا",
-      translation: "اے اللہ! اسے نفع بخش بارش بنا",
-    },
-    {
-      title: "بیماری میں",
-      arabic: "اللَّهُمَّ رَبَّ النَّاسِ أَذْهِبِ الْبَأْسَ",
-      translation: "اے لوگوں کے رب! بیماری دور کر دے",
+      urdu:
+        "تمام تعریف اللہ کے لیے ہے جس نے ہمیں کھلایا اور پلایا",
+      translation:
+        "Tamam tareef Allah ke liye hai jisne hume khilaya aur pilaya",
     },
   ];
 
   return (
     <div className="min-h-screen px-3 py-5 bg-[#ddeee9]">
-      <h1
-        className="text-2xl text-center font-bold text-green-800 mb-4"
-        style={{ fontFamily: "'Jameel Noori Nastaleeq', serif" }}
-      >
+      <h1 className="text-3xl text-center font-bold text-green-800 mb-6 urdu">
         📿 مسنون دعائیں
       </h1>
 
-      <div className="space-y-3 max-w-3xl mx-auto">
+      <div className="space-y-4 max-w-3xl mx-auto">
         {duayein.map((dua, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
-            className="bg-white p-3 border border-green-200 shadow-sm"
-            style={{
-              direction: "rtl",
-              fontFamily: "'Jameel Noori Nastaleeq', serif",
-              lineHeight: "1.9",
-            }}
+            className="bg-white rounded-xl border border-green-200 shadow-sm p-4"
           >
-            <h2 className="text-lg font-bold text-green-700">
-              {dua.title}
+            {/* Title */}
+            <h2 className="text-lg font-bold text-green-700 flex flex-wrap items-center gap-2">
+              <span className="urdu">{dua.title}</span>
+
+              <span className="text-sm text-gray-500 ltr">
+                ({dua.hinglish})
+              </span>
             </h2>
 
-            <p className="font-amiri text-2xl leading-loose text-right text-black">
+            {/* Arabic Dua */}
+            <p className="font-amiri text-xl leading-loose text-right text-black mt-3">
               {dua.arabic}
             </p>
 
-            <p className="text-gray-600 text-sm">
+            {/* Urdu Translation */}
+            <p className="urdu text-gray-700 text-base mt-3">
+              {dua.urdu}
+            </p>
+
+            {/* Hinglish Translation */}
+            <p className="text-gray-600 text-sm mt-2 ltr leading-relaxed">
               {dua.translation}
             </p>
           </motion.div>
