@@ -13,6 +13,245 @@ export default function MasnoonDuayePage() {
 
   const duayein = [
     {
+      title: "صبح اٹھنے کی دعا",
+      titleHinglish: "Subah Uthne Ki Dua",
+      arabic: "الْحَمْدُ لِلَّهِ الَّذِي عَافَانِي فِي جَسَدِي",
+      urdu: "تمام تعریف اللہ کے لیے ہے جس نے میرے جسم کو عافیت دی",
+      hinglish: "Tamam tareef Allah ke liye hai jisne mere jism ko afiyat di",
+    },
+
+    {
+      title: "وضو سے پہلے",
+      titleHinglish: "Wuzu Se Pehle",
+      arabic: "بِسْمِ اللَّهِ",
+      urdu: "اللہ کے نام سے شروع",
+      hinglish: "Allah ke naam se shuru",
+    },
+
+    {
+      title: "وضو کے بعد",
+      titleHinglish: "Wuzu Ke Baad",
+      arabic: "أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ",
+      urdu: "میں گواہی دیتا ہوں کہ اللہ کے سوا کوئی معبود نہیں",
+      hinglish: "Main gawahi deta hoon ke Allah ke siwa koi mabood nahi",
+    },
+
+    {
+      title: "اذان کے بعد",
+      titleHinglish: "Azan Ke Baad",
+      arabic: "اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ",
+      urdu: "اے اللہ! اس کامل دعوت کے رب",
+      hinglish: "Ae Allah! Is kamil dawat ke Rab",
+    },
+
+    {
+      title: "نماز کے بعد",
+      titleHinglish: "Namaz Ke Baad",
+      arabic: "أَسْتَغْفِرُ اللَّهَ",
+      urdu: "میں اللہ سے معافی مانگتا ہوں",
+      hinglish: "Main Allah se maafi mangta hoon",
+    },
+
+    {
+      title: "استغفار",
+      titleHinglish: "Istighfar",
+      arabic: "أَسْتَغْفِرُ اللَّهَ رَبِّي مِنْ كُلِّ ذَنْبٍ",
+      urdu: "میں اپنے رب اللہ سے ہر گناہ کی معافی مانگتا ہوں",
+      hinglish: "Main apne Rab Allah se har gunah ki maafi mangta hoon",
+    },
+
+    {
+      title: "والدین کے لیے دعا",
+      titleHinglish: "Walidain Ke Liye Dua",
+      arabic: "رَبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا",
+      urdu: "اے رب! ان پر رحم فرما جیسے انہوں نے بچپن میں میری پرورش کی",
+      hinglish: "Ae Rab! Un par reham farma jaise unhone bachpan mein meri parwarish ki",
+    },
+
+    {
+      title: "جنت کی دعا",
+      titleHinglish: "Jannat Ki Dua",
+      arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ",
+      urdu: "اے اللہ! میں تجھ سے جنت مانگتا ہوں",
+      hinglish: "Ae Allah! Main tujhse jannat mangta hoon",
+    },
+
+    {
+      title: "جہنم سے پناہ",
+      titleHinglish: "Jahannam Se Panah",
+      arabic: "اللَّهُمَّ أَجِرْنِي مِنَ النَّارِ",
+      urdu: "اے اللہ! مجھے جہنم سے بچا",
+      hinglish: "Ae Allah! Mujhe jahannam se bacha",
+    },
+
+    {
+      title: "بارش رکنے کے بعد",
+      titleHinglish: "Barish Rukne Ke Baad",
+      arabic: "مُطِرْنَا بِفَضْلِ اللَّهِ",
+      urdu: "ہم پر اللہ کے فضل سے بارش ہوئی",
+      hinglish: "Hum par Allah ke fazal se barish hui",
+    },
+
+    {
+      title: "چاند دیکھنے کی دعا",
+      titleHinglish: "Chand Dekhne Ki Dua",
+      arabic: "اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالْأَمْنِ وَالإِيمَانِ",
+      urdu: "اے اللہ! اس چاند کو ہمارے لیے امن اور ایمان والا بنا",
+      hinglish: "Ae Allah! Is chand ko hamare liye aman aur iman wala bana",
+    },
+
+    {
+      title: "میت کے لیے دعا",
+      titleHinglish: "Mayyat Ke Liye Dua",
+      arabic: "اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ",
+      urdu: "اے اللہ! اسے بخش دے اور اس پر رحم فرما",
+      hinglish: "Ae Allah! Use bakhsh de aur us par reham farma",
+    },
+
+    {
+      title: "قبرستان میں داخل ہوتے وقت",
+      titleHinglish: "Qabristan Mein Dakhil Hote Waqt",
+      arabic: "السَّلَامُ عَلَيْكُمْ أَهْلَ الدِّيَارِ",
+      urdu: "اے قبرو والو! تم پر سلام ہو",
+      hinglish: "Ae qabro walo! Tum par salam ho",
+    },
+
+    {
+      title: "دعا قنوت",
+      titleHinglish: "Dua Qunoot",
+      arabic: "اللَّهُمَّ إِنَّا نَسْتَعِينُكَ",
+      urdu: "اے اللہ! ہم تجھ سے مدد چاہتے ہیں",
+      hinglish: "Ae Allah! Hum tujhse madad chahte hain",
+    },
+
+    {
+      title: "غم سے نجات",
+      titleHinglish: "Gham Se Nijat",
+      arabic: "حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ",
+      urdu: "اللہ ہمارے لیے کافی ہے اور وہ بہترین کارساز ہے",
+      hinglish: "Allah hamare liye kaafi hai aur woh behtareen karsaz hai",
+    },
+
+    {
+      title: "شیطان سے حفاظت",
+      titleHinglish: "Shaitan Se Hifazat",
+      arabic: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ",
+      urdu: "میں شیطان مردود سے اللہ کی پناہ مانگتا ہوں",
+      hinglish: "Main shaitan mardood se Allah ki panah mangta hoon",
+    },
+
+    {
+      title: "رزق بڑھنے کی دعا",
+      titleHinglish: "Rizq Barhne Ki Dua",
+      arabic: "اللَّهُمَّ ارْزُقْنِي رِزْقًا حَلَالًا",
+      urdu: "اے اللہ! مجھے حلال رزق عطا فرما",
+      hinglish: "Ae Allah! Mujhe halal rizq ata farma",
+    },
+
+    {
+      title: "نیا لباس پہننے کی دعا",
+      titleHinglish: "Naya Libas Pehne Ki Dua",
+      arabic: "اللَّهُمَّ لَكَ الْحَمْدُ أَنْتَ كَسَوْتَنِيهِ",
+      urdu: "اے اللہ! تیرا شکر ہے تو نے مجھے یہ لباس پہنایا",
+      hinglish: "Ae Allah! Tera shukar hai tune mujhe ye libas pehnaya",
+    },
+
+    {
+      title: "بازار میں داخل ہوتے وقت",
+      titleHinglish: "Bazaar Mein Dakhil Hote Waqt",
+      arabic: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ",
+      urdu: "اللہ کے سوا کوئی معبود نہیں، وہ اکیلا ہے",
+      hinglish: "Allah ke siwa koi mabood nahi, woh akela hai",
+    },
+
+    {
+      title: "سواری پر بیٹھنے کی دعا",
+      titleHinglish: "Sawari Par Baithne Ki Dua",
+      arabic: "بِسْمِ اللَّهِ وَالْحَمْدُ لِلَّهِ",
+      urdu: "اللہ کے نام سے اور تمام تعریف اللہ کے لیے ہے",
+      hinglish: "Allah ke naam se aur tamam tareef Allah ke liye hai",
+    },
+
+    {
+      title: "بجلی کڑکنے کے وقت",
+      titleHinglish: "Bijli Karakne Ke Waqt",
+      arabic: "اللَّهُمَّ لَا تَقْتُلْنَا بِغَضَبِكَ",
+      urdu: "اے اللہ! ہمیں اپنے غضب سے ہلاک نہ کر",
+      hinglish: "Ae Allah! Hame apne ghazab se halak na kar",
+    },
+
+    {
+      title: "درد کی دعا",
+      titleHinglish: "Dard Ki Dua",
+      arabic: "بِسْمِ اللَّهِ",
+      urdu: "اللہ کے نام سے",
+      hinglish: "Allah ke naam se",
+    },
+
+    {
+      title: "توبہ کی دعا",
+      titleHinglish: "Tauba Ki Dua",
+      arabic: "رَبِّ اغْفِرْ لِي وَتُبْ عَلَيَّ",
+      urdu: "اے میرے رب! مجھے معاف فرما اور میری توبہ قبول فرما",
+      hinglish: "Ae mere Rab! Mujhe maaf farma aur meri tauba qubool farma",
+    },
+
+    {
+      title: "دشمن پر غلبہ",
+      titleHinglish: "Dushman Par Ghalba",
+      arabic: "اللَّهُمَّ انْصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ",
+      urdu: "اے اللہ! کافروں کے مقابلے میں ہماری مدد فرما",
+      hinglish: "Ae Allah! Kafiron ke muqable mein hamari madad farma",
+    },
+
+    {
+      title: "اچھی اولاد کی دعا",
+      titleHinglish: "Achi Aulad Ki Dua",
+      arabic: "رَبِّ هَبْ لِي مِنَ الصَّالِحِينَ",
+      urdu: "اے رب! مجھے نیک اولاد عطا فرما",
+      hinglish: "Ae Rab! Mujhe nek aulad ata farma",
+    },
+
+    {
+      title: "سچی بات کی دعا",
+      titleHinglish: "Sachchi Baat Ki Dua",
+      arabic: "وَقُولُوا قَوْلًا سَدِيدًا",
+      urdu: "اور سیدھی بات کہا کرو",
+      hinglish: "Aur seedhi baat kaha karo",
+    },
+
+    {
+      title: "حفاظت کی دعا",
+      titleHinglish: "Hifazat Ki Dua",
+      arabic: "اللَّهُمَّ احْفَظْنِي مِنْ بَيْنِ يَدَيَّ",
+      urdu: "اے اللہ! مجھے ہر طرف سے محفوظ فرما",
+      hinglish: "Ae Allah! Mujhe har taraf se mehfooz farma",
+    },
+
+    {
+      title: "بے چینی دور کرنے کی دعا",
+      titleHinglish: "Bechaini Door Karne Ki Dua",
+      arabic: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
+      urdu: "اللہ کے بغیر نہ طاقت ہے نہ قوت",
+      hinglish: "Allah ke baghair na taqat hai na quwwat",
+    },
+
+    {
+      title: "دل نرم ہونے کی دعا",
+      titleHinglish: "Dil Naram Hone Ki Dua",
+      arabic: "اللَّهُمَّ لَيِّنْ قَلْبِي",
+      urdu: "اے اللہ! میرے دل کو نرم فرما",
+      hinglish: "Ae Allah! Mere dil ko naram farma",
+    },
+
+    {
+      title: "کام میں آسانی",
+      titleHinglish: "Kaam Mein Asani",
+      arabic: "رَبِّ اشْرَحْ لِي صَدْرِي",
+      urdu: "اے میرے رب! میرا سینہ کھول دے",
+      hinglish: "Ae mere Rab! Mera seena khol de",
+    },
+    {
       title: "سونے سے پہلے",
       titleHinglish: "Sone Se Pehle",
       arabic: "اللَّهُمَّ بِاسْمِكَ أَمُوتُ وَأَحْيَا",
