@@ -47,7 +47,7 @@ export default async function BooksPage() {
 
           <div
             key={book._id}
-            className="bg-white border border-[#f0dfb2] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition"
+            className="w-full bg-white border border-[#f0dfb2] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition"
           >
 
             {/* Book Link */}
