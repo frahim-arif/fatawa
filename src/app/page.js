@@ -387,7 +387,7 @@ export default function HomePage() {
       </div>
 
 
-       {/* Questions List */}
+      {/* Questions List */}
       <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
         {filteredQuestions.length > 0 ? (
           filteredQuestions.map((q) => (
@@ -456,7 +456,7 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
             {/* 📿 Content */}
             <p className="relative text-base text-black font-bold tracking-wide">
-               مسنون دعائیں
+              مسنون دعائیں
             </p>
           </div>
         </Link>
@@ -486,7 +486,7 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
             {/* 👶 Content */}
             <p className="relative text-base text-black font-bold tracking-wide">
-               اسلامی نام
+              اسلامی نام
             </p>
           </div>
         </Link>
@@ -514,7 +514,7 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
             {/* 📚 Content */}
             <p className="relative text-base text-black font-bold tracking-wide">
-               اسلامی کتابیں
+              اسلامی کتابیں
             </p>
           </div>
         </Link>
@@ -543,7 +543,7 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
             {/* 📄 Content */}
             <p className="relative text-base text-black font-bold tracking-wide">
-               مضامین
+              مضامین
             </p>
           </div>
         </Link>
@@ -575,7 +575,7 @@ export default function HomePage() {
               className="relative text-sm md:text-base text-black font-bold"
               style={{ letterSpacing: "0.5px" }}
             >
-               شرعیہ کیلکولیٹر
+              شرعیہ کیلکولیٹر
             </p>
           </div>
         </Link>
@@ -613,122 +613,120 @@ export default function HomePage() {
 
 
 
-     
+
 
       {/* 🔥 Latest Questions Links */}
       {/* Tabs Section */}
-<div className="mt-8 px-2">
+      <div className="mt-8 px-2">
 
-  {/* Tabs Header */}
-  <div className="flex w-full rounded-t-xl overflow-hidden shadow-lg">
+        {/* Tabs Header */}
+        <div className="flex w-full rounded-t-xl overflow-hidden shadow-lg">
 
-    {/* New Questions */}
-    <button
-      onClick={() => setActiveTab("questions")}
-      className={`w-1/2 py-4 text-2xl transition-all duration-300 ${
-        activeTab === "questions"
-          ? "bg-[#8b7355] text-white"
-          : "bg-[#d9cfbf] text-[#7a5f3e]"
-      }`}
-      style={{
-        fontFamily:
-          "'Jameel Noori Nastaleeq', serif",
-      }}
-    >
-      نئے سوالات
-    </button>
+          {/* New Questions */}
+          <button
+            onClick={() => setActiveTab("questions")}
+            className={`w-1/2 py-3 text-[34px] leading-[45px] transition-all duration-300 ${activeTab === "questions"
+                ? "bg-[#8b7355] text-white"
+                : "bg-[#d9cfbf] text-[#7a5f3e]"
+              }`}
+            style={{
+              fontFamily:
+                "'Jameel Noori Nastaleeq', serif",
+            }}
+          >
+            نئے سوالات
+          </button>
 
-    {/* Selected Articles */}
-    <button
-      onClick={() => setActiveTab("majameen")}
-      className={`w-1/2 py-4 text-2xl transition-all duration-300 ${
-        activeTab === "majameen"
-          ? "bg-[#8b7355] text-white"
-          : "bg-[#d9cfbf] text-[#7a5f3e]"
-      }`}
-      style={{
-        fontFamily:
-          "'Jameel Noori Nastaleeq', serif",
-      }}
-    >
-      منتخب مضامین
-    </button>
+          {/* Selected Articles */}
+          <button
+            onClick={() => setActiveTab("majameen")}
+            className={`w-1/2 py-3 text-[34px] leading-[45px] transition-all duration-300 ${activeTab === "majameen"
+                ? "bg-[#8b7355] text-white"
+                : "bg-[#d9cfbf] text-[#7a5f3e]"
+              }`}
+            style={{
+              fontFamily:
+                "'Jameel Noori Nastaleeq', serif",
+            }}
+          >
+            منتخب مضامین
+          </button>
 
-  </div>
+        </div>
 
-  {/* Content Box */}
-  <div className="bg-white/90 p-4 rounded-b-xl shadow-lg">
+        {/* Content Box */}
+        <div className="bg-white/95 p-4 rounded-b-xl shadow-lg border border-[#d9cfbf]">
 
-    {/* Questions */}
-    {activeTab === "questions" && (
-      <div className="space-y-3">
+          {/* Questions */}
+          {activeTab === "questions" && (
+            <div className="space-y-2 text-right">
 
-        {latestQuestions
-          .slice(0, 5)
-          .map((item) => (
+              {latestQuestions
+                .slice(0, 5)
+                .map((item) => (
 
-            <Link
-              key={item._id}
-              href={`/questions/${item.slug}`}
-              className="block text-lg text-green-800 hover:text-yellow-700 transition"
+                  <Link
+                    key={item._id}
+                    href={`/questions/${item.slug}`}
+                    className="block text-[30px] leading-[52px] text-green-900 hover:text-[#8b7355] transition"
+                    style={{
+                      direction: "rtl",
+                      fontFamily:
+                        "'Jameel Noori Nastaleeq', serif",
+                    }}
+                  >
+                    ➜ {item.question}
+                  </Link>
+                ))}
+
+            </div>
+          )}
+
+          {/* Majameen */}
+          {activeTab === "majameen" && (
+            <div
+              className="text-right text-green-900 space-y-2"
               style={{
                 direction: "rtl",
                 fontFamily:
                   "'Jameel Noori Nastaleeq', serif",
               }}
             >
-              ➜ {item.question}
-            </Link>
-          ))}
+
+              <Link
+                href="/majameen"
+                className="block text-[30px] leading-[52px] hover:text-[#8b7355] transition"
+              >
+                ➜ اسلامی معاشرہ
+              </Link>
+
+              <Link
+                href="/majameen"
+                className="block text-[30px] leading-[52px] hover:text-[#8b7355] transition"
+              >
+                ➜ سیرت النبی ﷺ
+              </Link>
+
+              <Link
+                href="/majameen"
+                className="block text-[30px] leading-[52px] hover:text-[#8b7355] transition"
+              >
+                ➜ اصلاحِ معاشرہ
+              </Link>
+
+              <Link
+                href="/majameen"
+                className="block text-[30px] leading-[52px] hover:text-[#8b7355] transition"
+              >
+                ➜ دینی مضامین
+              </Link>
+
+            </div>
+          )}
+
+        </div>
 
       </div>
-    )}
-
-    {/* Majameen */}
-    {activeTab === "majameen" && (
-      <div
-        className="text-right text-xl text-green-800 space-y-3"
-        style={{
-          direction: "rtl",
-          fontFamily:
-            "'Jameel Noori Nastaleeq', serif",
-        }}
-      >
-
-        <Link
-          href="/majameen"
-          className="block hover:text-yellow-700"
-        >
-          ➜ اسلامی معاشرہ
-        </Link>
-
-        <Link
-          href="/majameen"
-          className="block hover:text-yellow-700"
-        >
-          ➜ سیرت النبی ﷺ
-        </Link>
-
-        <Link
-          href="/majameen"
-          className="block hover:text-yellow-700"
-        >
-          ➜ اصلاحِ معاشرہ
-        </Link>
-
-        <Link
-          href="/majameen"
-          className="block hover:text-yellow-700"
-        >
-          ➜ دینی مضامین
-        </Link>
-
-      </div>
-    )}
-
-  </div>
-
-</div>
 
     </div>
 
