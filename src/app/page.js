@@ -19,6 +19,7 @@ export default function HomePage() {
   const [prayerTimes, setPrayerTimes] = useState(null);
   const questionsRef = useRef(null);
   const [latestQuestions, setLatestQuestions] = useState([]);
+  const [activeTab, setActiveTab] = useState("questions");
 
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
@@ -615,31 +616,119 @@ export default function HomePage() {
      
 
       {/* 🔥 Latest Questions Links */}
-      <div className="mt-10 px-3">
-        <div
-          className="bg-white/80 rounded-2xl p-4 border border-yellow-400 shadow-lg"
-          style={{
-            fontFamily: "'Jameel Noori Nastaleeq', serif",
-            direction: "rtl",
-          }}
-        >
-          <h2 className="text-2xl text-green-800 font-bold mb-4 text-center">
-            نئے سوالات
-          </h2>
+      {/* Tabs Section */}
+<div className="mt-8 px-2">
 
-          <div className="space-y-3">
-            {latestQuestions.slice(0, 5).map((item) => (
-              <Link
-                key={item._id}
-                href={`/questions/${item.slug}`}
-                className="block text-blue-700 hover:text-green-700 hover:underline text-lg leading-8"
-              >
-                ➜ {item.question}
-              </Link>
-            ))}
-          </div>
-        </div>
+  {/* Tabs Header */}
+  <div className="flex w-full rounded-t-xl overflow-hidden shadow-lg">
+
+    {/* New Questions */}
+    <button
+      onClick={() => setActiveTab("questions")}
+      className={`w-1/2 py-4 text-2xl transition-all duration-300 ${
+        activeTab === "questions"
+          ? "bg-[#8b7355] text-white"
+          : "bg-[#d9cfbf] text-[#7a5f3e]"
+      }`}
+      style={{
+        fontFamily:
+          "'Jameel Noori Nastaleeq', serif",
+      }}
+    >
+      نئے سوالات
+    </button>
+
+    {/* Selected Articles */}
+    <button
+      onClick={() => setActiveTab("majameen")}
+      className={`w-1/2 py-4 text-2xl transition-all duration-300 ${
+        activeTab === "majameen"
+          ? "bg-[#8b7355] text-white"
+          : "bg-[#d9cfbf] text-[#7a5f3e]"
+      }`}
+      style={{
+        fontFamily:
+          "'Jameel Noori Nastaleeq', serif",
+      }}
+    >
+      منتخب مضامین
+    </button>
+
+  </div>
+
+  {/* Content Box */}
+  <div className="bg-white/90 p-4 rounded-b-xl shadow-lg">
+
+    {/* Questions */}
+    {activeTab === "questions" && (
+      <div className="space-y-3">
+
+        {latestQuestions
+          .slice(0, 5)
+          .map((item) => (
+
+            <Link
+              key={item._id}
+              href={`/questions/${item.slug}`}
+              className="block text-lg text-green-800 hover:text-yellow-700 transition"
+              style={{
+                direction: "rtl",
+                fontFamily:
+                  "'Jameel Noori Nastaleeq', serif",
+              }}
+            >
+              ➜ {item.question}
+            </Link>
+          ))}
+
       </div>
+    )}
+
+    {/* Majameen */}
+    {activeTab === "majameen" && (
+      <div
+        className="text-right text-xl text-green-800 space-y-3"
+        style={{
+          direction: "rtl",
+          fontFamily:
+            "'Jameel Noori Nastaleeq', serif",
+        }}
+      >
+
+        <Link
+          href="/majameen"
+          className="block hover:text-yellow-700"
+        >
+          ➜ اسلامی معاشرہ
+        </Link>
+
+        <Link
+          href="/majameen"
+          className="block hover:text-yellow-700"
+        >
+          ➜ سیرت النبی ﷺ
+        </Link>
+
+        <Link
+          href="/majameen"
+          className="block hover:text-yellow-700"
+        >
+          ➜ اصلاحِ معاشرہ
+        </Link>
+
+        <Link
+          href="/majameen"
+          className="block hover:text-yellow-700"
+        >
+          ➜ دینی مضامین
+        </Link>
+
+      </div>
+    )}
+
+  </div>
+
+</div>
 
     </div>
 
