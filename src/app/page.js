@@ -622,42 +622,47 @@ export default function HomePage() {
   <div className="flex overflow-hidden rounded-t-2xl shadow-lg">
 
     {/* New Questions */}
-    <button
-      onClick={() => setActiveTab("questions")}
-      className={`w-1/2 py-3 transition-all duration-300 ${
-        activeTab === "questions"
-          ? "bg-[#8b7355] text-white"
-          : "bg-[#d9cfbf] text-[#7a5f3e]"
-      }`}
-      style={{
-        fontFamily:
-          "'Jameel Noori Nastaleeq', serif",
-        direction: "rtl",
-        fontSize: "26px",
-        lineHeight: "42px",
-      }}
-    >
-      نئے سوالات
-    </button>
+    {/* New Questions */}
+<button
+  onClick={() => setActiveTab("questions")}
+  className={`w-1/2 py-3 transition-all duration-300 ${
+    activeTab === "questions"
+      ? "bg-[#8b7355] text-white"
+      : "bg-[#d9cfbf] text-[#7a5f3e]"
+  }`}
+  style={{
+    fontFamily:
+      "'Jameel Noori Nastaleeq', serif",
+    direction: "rtl",
+    fontSize: "22px",
+    lineHeight: "34px",
+    fontWeight: "normal",
+    letterSpacing: "0px",
+  }}
+>
+  نئے سوالات
+</button>
 
-    {/* Selected Articles */}
-    <button
-      onClick={() => setActiveTab("majameen")}
-      className={`w-1/2 py-3 transition-all duration-300 ${
-        activeTab === "majameen"
-          ? "bg-[#8b7355] text-white"
-          : "bg-[#d9cfbf] text-[#7a5f3e]"
-      }`}
-      style={{
-        fontFamily:
-          "'Jameel Noori Nastaleeq', serif",
-        direction: "rtl",
-        fontSize: "26px",
-        lineHeight: "42px",
-      }}
-    >
-      منتخب مضامین
-    </button>
+{/* Selected Articles */}
+<button
+  onClick={() => setActiveTab("majameen")}
+  className={`w-1/2 py-3 transition-all duration-300 ${
+    activeTab === "majameen"
+      ? "bg-[#8b7355] text-white"
+      : "bg-[#d9cfbf] text-[#7a5f3e]"
+  }`}
+  style={{
+    fontFamily:
+      "'Jameel Noori Nastaleeq', serif",
+    direction: "rtl",
+    fontSize: "22px",
+    lineHeight: "34px",
+    fontWeight: "normal",
+    letterSpacing: "0px",
+  }}
+>
+  منتخب مضامین
+</button>
 
   </div>
 
@@ -684,8 +689,8 @@ export default function HomePage() {
               href={`/questions/${item.slug}`}
               className="block text-blue-700 hover:text-green-700 hover:underline"
               style={{
-                fontSize: "26px",
-                lineHeight: "42px",
+                fontSize: "22px",
+                lineHeight: "34px",
               }}
             >
               ➜ {item.question}
@@ -703,8 +708,8 @@ export default function HomePage() {
           href="/majameen"
           className="block text-blue-700 hover:text-green-700 hover:underline"
           style={{
-            fontSize: "26px",
-            lineHeight: "42px",
+            fontSize: "22px",
+            lineHeight: "34px",
           }}
         >
           ➜ اسلامی معاشرہ
@@ -714,8 +719,8 @@ export default function HomePage() {
           href="/majameen"
           className="block text-blue-700 hover:text-green-700 hover:underline"
           style={{
-            fontSize: "26px",
-            lineHeight: "42px",
+            fontSize: "22px",
+            lineHeight: "34px",
           }}
         >
           ➜ سیرت النبی ﷺ
@@ -725,8 +730,8 @@ export default function HomePage() {
           href="/majameen"
           className="block text-blue-700 hover:text-green-700 hover:underline"
           style={{
-            fontSize: "26px",
-            lineHeight: "42px",
+            fontSize: "22px",
+            lineHeight: "34px",
           }}
         >
           ➜ اصلاحِ معاشرہ
@@ -736,8 +741,8 @@ export default function HomePage() {
           href="/majameen"
           className="block text-blue-700 hover:text-green-700 hover:underline"
           style={{
-            fontSize: "26px",
-            lineHeight: "42px",
+            fontSize: "20px",
+            lineHeight: "34px",
           }}
         >
           ➜ دینی مضامین
