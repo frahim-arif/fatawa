@@ -430,186 +430,201 @@ export default function HomePage() {
       </section>
 
 
-      <div className="grid grid-cols-2 gap-2 px-2 mt-4">
+    <div className="grid grid-cols-2 gap-3 px-3 mt-5">
 
-        <Link href="/masnoon-duayee">
-          <div
-            className="
-      relative overflow-hidden
-      h-10 flex items-center justify-center
-      w-full
-      cursor-pointer
-      rounded-xl
-      border border-gray-300/40
-      bg-gradient-to-br from-[#374151]/90 via-[#9CA3AF]/70 to-[#E5E7EB]/60
-      backdrop-blur-md
-      shadow-lg
-      hover:shadow-[0_0_25px_rgba(156,163,175,0.8)]
-      hover:scale-105
-      transition-all duration-300
-    "
-            style={{
-              fontFamily: "'Jameel Noori Nastaleeq', serif",
-            }}
-          >
-            {/* ✨ Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
-            {/* 📿 Content */}
-            <p className="relative text-base text-black font-bold tracking-wide">
-              مسنون دعائیں
-            </p>
-          </div>
-        </Link>
+  {/* 📿 Masnoon Duayen */}
+  <Link href="/masnoon-duayee">
+    <div
+      className="
+        relative overflow-hidden
+        h-14 flex items-center justify-center
+        w-full cursor-pointer
+        rounded-2xl
+        border border-yellow-500/30
+        bg-gradient-to-br from-[#1f2937] via-[#374151] to-[#6b7280]
+        shadow-md
+        active:scale-[0.98]
+        hover:shadow-[0_0_20px_rgba(234,179,8,0.45)]
+        transition-all duration-300
+      "
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
 
-        {/* 👶 اسلامی نام */}
-        <Link href="/islami-naam">
-          <div
-            className="
-      relative overflow-hidden
-      h-10 flex items-center justify-center
-      w-full
-      cursor-pointer
-      rounded-xl
-      border border-gray-300/40
-      bg-gradient-to-br from-[#374151]/90 via-[#9CA3AF]/70 to-[#E5E7EB]/60
-      backdrop-blur-md
-      shadow-lg
-      hover:shadow-[0_0_25px_rgba(156,163,175,0.8)]
-      hover:scale-105
-      transition-all duration-300
-    "
-            style={{
-              fontFamily: "'Jameel Noori Nastaleeq', serif",
-            }}
-          >
-            {/* ✨ Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
-            {/* 👶 Content */}
-            <p className="relative text-base text-black font-bold tracking-wide">
-              اسلامی نام
-            </p>
-          </div>
-        </Link>
-        <Link href="/books">
-          <div
-            className="
-      relative overflow-hidden
-      h-10 flex items-center justify-center
-      w-full
-      cursor-pointer
-      rounded-xl
-      border border-gray-300/40
-      bg-gradient-to-br from-[#374151]/90 via-[#9CA3AF]/70 to-[#E5E7EB]/60
-      backdrop-blur-md
-      shadow-lg
-      hover:shadow-[0_0_25px_rgba(156,163,175,0.8)]
-      hover:scale-105
-      transition-all duration-300
-    "
-            style={{
-              fontFamily: "'Jameel Noori Nastaleeq', serif",
-            }}
-          >
-            {/* ✨ Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
-            {/* 📚 Content */}
-            <p className="relative text-base text-black font-bold tracking-wide">
-              اسلامی کتابیں
-            </p>
-          </div>
-        </Link>
+      <p
+        className="relative text-white"
+        style={{
+          fontFamily:
+            "'Jameel Noori Nastaleeq', serif",
+          fontSize: "24px",
+          lineHeight: "38px",
+        }}
+      >
+        📿 مسنون دعائیں
+      </p>
+    </div>
+  </Link>
 
-        <Link href="/majameen">
-          <div
-            className="
-      relative overflow-hidden
-      h-10 flex items-center justify-center
-      w-full
-      cursor-pointer
-      rounded-xl
-      border border-gray-300/40
-      bg-gradient-to-br from-[#374151]/90 via-[#9CA3AF]/70 to-[#E5E7EB]/60
-      backdrop-blur-md
-      shadow-lg
-      hover:shadow-[0_0_25px_rgba(156,163,175,0.8)]
-      hover:scale-105
-      transition-all duration-300
-    "
-            style={{
-              fontFamily: "'Jameel Noori Nastaleeq', serif",
-            }}
-          >
-            {/* ✨ Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
-            {/* 📄 Content */}
-            <p className="relative text-base text-black font-bold tracking-wide">
-              مضامین
-            </p>
-          </div>
-        </Link>
-        {/* 🧮 شرعیہ کیلکولیٹر */}
-        <Link href="https://www.maslakedeoband.in/ozan-shariah-calculator">
-          <div
-            className="
-      relative overflow-hidden
-      h-10 flex items-center justify-center
-      w-full
-      cursor-pointer
-      rounded-xl
-      border border-gray-300/40
-      bg-gradient-to-br from-[#374151]/90 via-[#9CA3AF]/70 to-[#E5E7EB]/60
-      backdrop-blur-md
-      shadow-lg
-      hover:shadow-[0_0_25px_rgba(156,163,175,0.8)]
-      hover:scale-105
-      transition-all duration-300
-    "
-            style={{
-              fontFamily: "'Jameel Noori Nastaleeq', serif",
-            }}
-          >
-            {/* ✨ Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
-            {/* 🧮 Content */}
-            <p
-              className="relative text-sm md:text-base text-black font-bold"
-              style={{ letterSpacing: "0.5px" }}
-            >
-              شرعیہ کیلکولیٹر
-            </p>
-          </div>
-        </Link>
-        {/* 📖 40 Hadith Free */}
-        <Link href="https://www.maslakedeoband.in/40-hadith-free">
-          <div
-            className="
-      relative overflow-hidden
-      h-10 flex items-center justify-center
-      w-full
-      cursor-pointer
-      rounded-xl
-      border border-gray-300/40
-      bg-gradient-to-br from-[#374151]/90 via-[#9CA3AF]/70 to-[#E5E7EB]/60
-      backdrop-blur-md
-      shadow-lg
-      hover:shadow-[0_0_25px_rgba(156,163,175,0.8)]
-      hover:scale-105
-      transition-all duration-300
-    "
-            style={{
-              fontFamily: "'Jameel Noori Nastaleeq', serif",
-            }}
-          >
-            {/* ✨ Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-0 hover:opacity-100 transition duration-500"></div>
+  {/* 👶 Islami Naam */}
+  <Link href="/islami-naam">
+    <div
+      className="
+        relative overflow-hidden
+        h-14 flex items-center justify-center
+        w-full cursor-pointer
+        rounded-2xl
+        border border-yellow-500/30
+        bg-gradient-to-br from-[#1f2937] via-[#374151] to-[#6b7280]
+        shadow-md
+        active:scale-[0.98]
+        hover:shadow-[0_0_20px_rgba(234,179,8,0.45)]
+        transition-all duration-300
+      "
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
 
-            {/* 📖 Content */}
-            <p className="relative text-base text-black font-bold tracking-wide">
-              احادیث
-            </p>
-          </div>
-        </Link>
-      </div>
+      <p
+        className="relative text-white"
+        style={{
+          fontFamily:
+            "'Jameel Noori Nastaleeq', serif",
+          fontSize: "24px",
+          lineHeight: "38px",
+        }}
+      >
+        👶 اسلامی نام
+      </p>
+    </div>
+  </Link>
+
+  {/* 📚 Books */}
+  <Link href="/books">
+    <div
+      className="
+        relative overflow-hidden
+        h-14 flex items-center justify-center
+        w-full cursor-pointer
+        rounded-2xl
+        border border-yellow-500/30
+        bg-gradient-to-br from-[#1f2937] via-[#374151] to-[#6b7280]
+        shadow-md
+        active:scale-[0.98]
+        hover:shadow-[0_0_20px_rgba(234,179,8,0.45)]
+        transition-all duration-300
+      "
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+      <p
+        className="relative text-white"
+        style={{
+          fontFamily:
+            "'Jameel Noori Nastaleeq', serif",
+          fontSize: "24px",
+          lineHeight: "38px",
+        }}
+      >
+        📚 اسلامی کتابیں
+      </p>
+    </div>
+  </Link>
+
+  {/* 📄 Majameen */}
+  <Link href="/majameen">
+    <div
+      className="
+        relative overflow-hidden
+        h-14 flex items-center justify-center
+        w-full cursor-pointer
+        rounded-2xl
+        border border-yellow-500/30
+        bg-gradient-to-br from-[#1f2937] via-[#374151] to-[#6b7280]
+        shadow-md
+        active:scale-[0.98]
+        hover:shadow-[0_0_20px_rgba(234,179,8,0.45)]
+        transition-all duration-300
+      "
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+      <p
+        className="relative text-white"
+        style={{
+          fontFamily:
+            "'Jameel Noori Nastaleeq', serif",
+          fontSize: "24px",
+          lineHeight: "38px",
+        }}
+      >
+        📄 مضامین
+      </p>
+    </div>
+  </Link>
+
+  {/* 🧮 Calculator */}
+  <Link href="https://www.maslakedeoband.in/ozan-shariah-calculator">
+    <div
+      className="
+        relative overflow-hidden
+        h-14 flex items-center justify-center
+        w-full cursor-pointer
+        rounded-2xl
+        border border-yellow-500/30
+        bg-gradient-to-br from-[#1f2937] via-[#374151] to-[#6b7280]
+        shadow-md
+        active:scale-[0.98]
+        hover:shadow-[0_0_20px_rgba(234,179,8,0.45)]
+        transition-all duration-300
+      "
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+      <p
+        className="relative text-white"
+        style={{
+          fontFamily:
+            "'Jameel Noori Nastaleeq', serif",
+          fontSize: "22px",
+          lineHeight: "36px",
+        }}
+      >
+        🧮 شرعیہ کیلکولیٹر
+      </p>
+    </div>
+  </Link>
+
+  {/* 📖 Ahadees */}
+  <Link href="https://www.maslakedeoband.in/40-hadith-free">
+    <div
+      className="
+        relative overflow-hidden
+        h-14 flex items-center justify-center
+        w-full cursor-pointer
+        rounded-2xl
+        border border-yellow-500/30
+        bg-gradient-to-br from-[#1f2937] via-[#374151] to-[#6b7280]
+        shadow-md
+        active:scale-[0.98]
+        hover:shadow-[0_0_20px_rgba(234,179,8,0.45)]
+        transition-all duration-300
+      "
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+      <p
+        className="relative text-white"
+        style={{
+          fontFamily:
+            "'Jameel Noori Nastaleeq', serif",
+          fontSize: "24px",
+          lineHeight: "38px",
+        }}
+      >
+        📖 احادیث
+      </p>
+    </div>
+  </Link>
+
+</div>
 
 
 
