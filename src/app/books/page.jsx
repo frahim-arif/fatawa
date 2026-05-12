@@ -96,11 +96,11 @@ export default async function BooksPage() {
                     {book.title}
                   </h2>
 
-                  <p className="text-sm text-gray-500 mt-1">
+                  {/* <p className="text-sm text-gray-500 mt-1">
                     ✍️{" "}
                     {book.author ||
                       "Unknown"}
-                  </p>
+                  </p> */}
 
                   {/* Read Button */}
                   <button className="mt-4 w-full bg-[#c9a227] hover:bg-[#b8911d] text-white py-3 rounded-xl text-sm transition">
