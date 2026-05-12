@@ -91,7 +91,7 @@ export default async function BooksPage() {
               </div>
             </Link>
 
-            {/* Delete Button */}
+            Delete Button
             <div className="px-4 pb-4">
 
               <Link
