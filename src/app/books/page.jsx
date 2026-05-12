@@ -45,49 +45,66 @@ export default async function BooksPage() {
 
         {books.map((book) => (
 
-          <Link
+          <div
             key={book._id}
-            href={`/books/${book._id}`}
             className="bg-white border border-[#f0dfb2] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition"
           >
 
-            {/* Image */}
-            {book.image ? (
-              <img
-                src={book.image}
-                alt={book.title}
-                className="w-full h-56 object-cover"
-              />
-            ) : (
-              <div className="w-full h-56 bg-[#f8f1dc] flex items-center justify-center text-[#8b6b1b]">
-                No Image
+            {/* Book Link */}
+            <Link href={`/books/${book._id}`}>
+
+              {/* Image */}
+              {book.image ? (
+                <img
+                  src={book.image}
+                  alt={book.title}
+                  className="w-full h-56 object-cover"
+                />
+              ) : (
+                <div className="w-full h-56 bg-[#f8f1dc] flex items-center justify-center text-[#8b6b1b]">
+                  No Image
+                </div>
+              )}
+
+              {/* Content */}
+              <div className="p-4">
+
+                <h2
+                  className="text-[22px] text-[#8b6b1b] leading-8"
+                  style={{
+                    fontFamily:
+                      "'Jameel Noori Nastaleeq', serif",
+                  }}
+                >
+                  {book.title}
+                </h2>
+
+                <p className="text-sm text-gray-500 mt-1">
+                  ✍️ {book.author || "Unknown"}
+                </p>
+
+                {/* Read Button */}
+                <button className="mt-4 w-full bg-[#c9a227] hover:bg-[#b8911d] text-white py-2 rounded-lg text-sm transition">
+                  Read Book
+                </button>
+
               </div>
-            )}
+            </Link>
 
-            {/* Content */}
-            <div className="p-4">
+            {/* Delete Button */}
+            <div className="px-4 pb-4">
 
-              <h2
-                className="text-[22px] text-[#8b6b1b] leading-8"
-                style={{
-                  fontFamily:
-                    "'Jameel Noori Nastaleeq', serif",
-                }}
+              <Link
+                href={`/admin/books/delete/${book._id}`}
               >
-                {book.title}
-              </h2>
-
-              <p className="text-sm text-gray-500 mt-1">
-                ✍️ {book.author || "Unknown"}
-              </p>
-
-              <button className="mt-4 w-full bg-[#c9a227] hover:bg-[#b8911d] text-white py-2 rounded-lg text-sm transition">
-                Read Book
-              </button>
+                <button className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg text-sm transition">
+                  Delete Book
+                </button>
+              </Link>
 
             </div>
 
-          </Link>
+          </div>
         ))}
 
       </div>
