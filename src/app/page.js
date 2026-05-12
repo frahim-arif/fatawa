@@ -432,26 +432,23 @@ export default function HomePage() {
 
     <div className="grid grid-cols-2 gap-3 px-3 mt-5">
 
-  {/* 📿 Masnoon Duayen */}
+  {/* مسنون دعائیں */}
   <Link href="/masnoon-duayee">
     <div
       className="
         relative overflow-hidden
         h-14 flex items-center justify-center
-        w-full cursor-pointer
         rounded-2xl
-        border border-yellow-500/30
-        bg-gradient-to-br from-[#1f2937] via-[#374151] to-[#6b7280]
-        shadow-md
-        active:scale-[0.98]
-        hover:shadow-[0_0_20px_rgba(234,179,8,0.45)]
-        transition-all duration-300
+        border border-[#c8b27a]
+        bg-gradient-to-b from-[#f6f0dd] via-[#e6d4a3] to-[#c9ab63]
+        shadow-[0_6px_0_#9b7b38,0_10px_20px_rgba(0,0,0,0.25)]
+        active:translate-y-[2px]
+        active:shadow-[0_3px_0_#9b7b38,0_6px_12px_rgba(0,0,0,0.2)]
+        transition-all duration-200
       "
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
       <p
-        className="relative text-white"
+        className="text-[#4b3415]"
         style={{
           fontFamily:
             "'Jameel Noori Nastaleeq', serif",
@@ -459,31 +456,28 @@ export default function HomePage() {
           lineHeight: "38px",
         }}
       >
-        📿 مسنون دعائیں
+        مسنون دعائیں
       </p>
     </div>
   </Link>
 
-  {/* 👶 Islami Naam */}
+  {/* اسلامی نام */}
   <Link href="/islami-naam">
     <div
       className="
         relative overflow-hidden
         h-14 flex items-center justify-center
-        w-full cursor-pointer
         rounded-2xl
-        border border-yellow-500/30
-        bg-gradient-to-br from-[#1f2937] via-[#374151] to-[#6b7280]
-        shadow-md
-        active:scale-[0.98]
-        hover:shadow-[0_0_20px_rgba(234,179,8,0.45)]
-        transition-all duration-300
+        border border-[#c8b27a]
+        bg-gradient-to-b from-[#f6f0dd] via-[#e6d4a3] to-[#c9ab63]
+        shadow-[0_6px_0_#9b7b38,0_10px_20px_rgba(0,0,0,0.25)]
+        active:translate-y-[2px]
+        active:shadow-[0_3px_0_#9b7b38,0_6px_12px_rgba(0,0,0,0.2)]
+        transition-all duration-200
       "
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
       <p
-        className="relative text-white"
+        className="text-[#4b3415]"
         style={{
           fontFamily:
             "'Jameel Noori Nastaleeq', serif",
@@ -491,31 +485,28 @@ export default function HomePage() {
           lineHeight: "38px",
         }}
       >
-        👶 اسلامی نام
+        اسلامی نام
       </p>
     </div>
   </Link>
 
-  {/* 📚 Books */}
+  {/* اسلامی کتابیں */}
   <Link href="/books">
     <div
       className="
         relative overflow-hidden
         h-14 flex items-center justify-center
-        w-full cursor-pointer
         rounded-2xl
-        border border-yellow-500/30
-        bg-gradient-to-br from-[#1f2937] via-[#374151] to-[#6b7280]
-        shadow-md
-        active:scale-[0.98]
-        hover:shadow-[0_0_20px_rgba(234,179,8,0.45)]
-        transition-all duration-300
+        border border-[#c8b27a]
+        bg-gradient-to-b from-[#f6f0dd] via-[#e6d4a3] to-[#c9ab63]
+        shadow-[0_6px_0_#9b7b38,0_10px_20px_rgba(0,0,0,0.25)]
+        active:translate-y-[2px]
+        active:shadow-[0_3px_0_#9b7b38,0_6px_12px_rgba(0,0,0,0.2)]
+        transition-all duration-200
       "
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
       <p
-        className="relative text-white"
+        className="text-[#4b3415]"
         style={{
           fontFamily:
             "'Jameel Noori Nastaleeq', serif",
@@ -523,31 +514,28 @@ export default function HomePage() {
           lineHeight: "38px",
         }}
       >
-        📚 اسلامی کتابیں
+        اسلامی کتابیں
       </p>
     </div>
   </Link>
 
-  {/* 📄 Majameen */}
+  {/* مضامین */}
   <Link href="/majameen">
     <div
       className="
         relative overflow-hidden
         h-14 flex items-center justify-center
-        w-full cursor-pointer
         rounded-2xl
-        border border-yellow-500/30
-        bg-gradient-to-br from-[#1f2937] via-[#374151] to-[#6b7280]
-        shadow-md
-        active:scale-[0.98]
-        hover:shadow-[0_0_20px_rgba(234,179,8,0.45)]
-        transition-all duration-300
+        border border-[#c8b27a]
+        bg-gradient-to-b from-[#f6f0dd] via-[#e6d4a3] to-[#c9ab63]
+        shadow-[0_6px_0_#9b7b38,0_10px_20px_rgba(0,0,0,0.25)]
+        active:translate-y-[2px]
+        active:shadow-[0_3px_0_#9b7b38,0_6px_12px_rgba(0,0,0,0.2)]
+        transition-all duration-200
       "
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
       <p
-        className="relative text-white"
+        className="text-[#4b3415]"
         style={{
           fontFamily:
             "'Jameel Noori Nastaleeq', serif",
@@ -555,31 +543,28 @@ export default function HomePage() {
           lineHeight: "38px",
         }}
       >
-        📄 مضامین
+        مضامین
       </p>
     </div>
   </Link>
 
-  {/* 🧮 Calculator */}
+  {/* شرعیہ کیلکولیٹر */}
   <Link href="https://www.maslakedeoband.in/ozan-shariah-calculator">
     <div
       className="
         relative overflow-hidden
         h-14 flex items-center justify-center
-        w-full cursor-pointer
         rounded-2xl
-        border border-yellow-500/30
-        bg-gradient-to-br from-[#1f2937] via-[#374151] to-[#6b7280]
-        shadow-md
-        active:scale-[0.98]
-        hover:shadow-[0_0_20px_rgba(234,179,8,0.45)]
-        transition-all duration-300
+        border border-[#c8b27a]
+        bg-gradient-to-b from-[#f6f0dd] via-[#e6d4a3] to-[#c9ab63]
+        shadow-[0_6px_0_#9b7b38,0_10px_20px_rgba(0,0,0,0.25)]
+        active:translate-y-[2px]
+        active:shadow-[0_3px_0_#9b7b38,0_6px_12px_rgba(0,0,0,0.2)]
+        transition-all duration-200
       "
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
       <p
-        className="relative text-white"
+        className="text-[#4b3415]"
         style={{
           fontFamily:
             "'Jameel Noori Nastaleeq', serif",
@@ -587,31 +572,28 @@ export default function HomePage() {
           lineHeight: "36px",
         }}
       >
-        🧮 شرعیہ کیلکولیٹر
+        شرعیہ کیلکولیٹر
       </p>
     </div>
   </Link>
 
-  {/* 📖 Ahadees */}
+  {/* احادیث */}
   <Link href="https://www.maslakedeoband.in/40-hadith-free">
     <div
       className="
         relative overflow-hidden
         h-14 flex items-center justify-center
-        w-full cursor-pointer
         rounded-2xl
-        border border-yellow-500/30
-        bg-gradient-to-br from-[#1f2937] via-[#374151] to-[#6b7280]
-        shadow-md
-        active:scale-[0.98]
-        hover:shadow-[0_0_20px_rgba(234,179,8,0.45)]
-        transition-all duration-300
+        border border-[#c8b27a]
+        bg-gradient-to-b from-[#f6f0dd] via-[#e6d4a3] to-[#c9ab63]
+        shadow-[0_6px_0_#9b7b38,0_10px_20px_rgba(0,0,0,0.25)]
+        active:translate-y-[2px]
+        active:shadow-[0_3px_0_#9b7b38,0_6px_12px_rgba(0,0,0,0.2)]
+        transition-all duration-200
       "
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-
       <p
-        className="relative text-white"
+        className="text-[#4b3415]"
         style={{
           fontFamily:
             "'Jameel Noori Nastaleeq', serif",
@@ -619,7 +601,7 @@ export default function HomePage() {
           lineHeight: "38px",
         }}
       >
-        📖 احادیث
+        احادیث
       </p>
     </div>
   </Link>
