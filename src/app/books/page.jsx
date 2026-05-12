@@ -1,11 +1,10 @@
 import Link from "next/link";
 
 async function getBooks() {
-
   const res = await fetch(
-    'https://f-backend-vdi1.onrender.com/api/books',
+    "https://f-backend-vdi1.onrender.com/api/books",
     {
-      cache: 'no-store',
+      cache: "no-store",
     }
   );
 
@@ -15,11 +14,10 @@ async function getBooks() {
 }
 
 export default async function BooksPage() {
-
   const books = await getBooks();
 
   return (
-    <div className="min-h-screen bg-[#fdfaf3] px-4 py-6">
+    <div className="min-h-screen bg-[#fdfaf3] px-2 py-6">
 
       {/* Header */}
       <div className="text-center mb-8">
@@ -40,74 +38,85 @@ export default async function BooksPage() {
 
       </div>
 
-      {/* Books */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 max-w-6xl mx-auto">
+      {/* Books Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 w-full max-w-6xl mx-auto">
 
-        {books.map((book) => (
+        {books.map((book) => {
 
-          <div
-            key={book._id}
-            className="w-full bg-white border border-[#f0dfb2] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition"
-          >
+          // Extract Google Drive File ID
+          let fileId = "";
 
-            {/* Book Link */}
-            <Link href={`/books/${book._id}`}>
+          if (book.pdf.includes("/d/")) {
 
-              {/* Image */}
-              {book.image ? (
-                <img
-                  src={book.image}
-                  alt={book.title}
-                  className="w-full h-56 object-cover"
-                />
-              ) : (
-                <div className="w-full h-56 bg-[#f8f1dc] flex items-center justify-center text-[#8b6b1b]">
-                  No Image
-                </div>
-              )}
+            fileId =
+              book.pdf
+                .split("/d/")[1]
+                ?.split("/")[0];
 
-              {/* Content */}
-              <div className="p-4">
+          } else if (
+            book.pdf.includes("id=")
+          ) {
 
-                <h2
-                  className="text-[22px] text-[#8b6b1b] leading-8"
-                  style={{
-                    fontFamily:
-                      "'Jameel Noori Nastaleeq', serif",
-                  }}
-                >
-                  {book.title}
-                </h2>
+            fileId = new URLSearchParams(
+              book.pdf.split("?")[1]
+            ).get("id");
+          }
 
-                <p className="text-sm text-gray-500 mt-1">
-                  ✍️ {book.author || "Unknown"}
-                </p>
+          const previewUrl =
+            `https://drive.google.com/file/d/${fileId}/preview`;
 
-                {/* Read Button */}
-                <button className="mt-4 w-full bg-[#c9a227] hover:bg-[#b8911d] text-white py-2 rounded-lg text-sm transition">
-                  Read Book
-                </button>
+          return (
+            <div
+              key={book._id}
+              className="w-full bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition"
+            >
 
-              </div>
-            </Link>
-
-            {/* Delete Button
-            <div className="px-4 pb-4">
-
+              {/* Book Link */}
               <Link
-                href={`/admin/books/delete/${book._id}`}
+                href={`/books/${book._id}`}
               >
-                <button className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg text-sm transition">
-                  Delete Book
-                </button>
+
+                {/* PDF First Page Preview */}
+                <iframe
+                  src={previewUrl}
+                  title={book.title}
+                  className="w-full h-64 border-0"
+                />
+
+                {/* Content */}
+                <div className="p-4">
+
+                  <h2
+                    className="text-[24px] text-[#8b6b1b] leading-9"
+                    style={{
+                      fontFamily:
+                        "'Jameel Noori Nastaleeq', serif",
+                    }}
+                  >
+                    {book.title}
+                  </h2>
+
+                  <p className="text-sm text-gray-500 mt-1">
+                    ✍️{" "}
+                    {book.author ||
+                      "Unknown"}
+                  </p>
+
+                  {/* Read Button */}
+                  <button className="mt-4 w-full bg-[#c9a227] hover:bg-[#b8911d] text-white py-3 rounded-xl text-sm transition">
+                    Read Book
+                  </button>
+
+                </div>
+
               </Link>
 
-            </div> */}
-
-          </div>
-        ))}
+            </div>
+          );
+        })}
 
       </div>
     </div>
   );
+  
 }
