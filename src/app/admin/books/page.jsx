@@ -134,7 +134,7 @@ export default function AddBookPage() {
             />
           </div>
 
-          {/* Author */}
+          {/* Author
           <div>
             <label className="block text-sm font-medium text-[#7a5a00] mb-1">
               Author Name
@@ -149,9 +149,9 @@ export default function AddBookPage() {
               placeholder="Author Name"
               className="w-full border border-[#ead89c] bg-[#fffdf7] px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-[#d4b24c]"
             />
-          </div>
+          </div> */}
           {/* Image */}
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-[#7a5a00] mb-1">
               Image URL
             </label>
@@ -165,7 +165,7 @@ export default function AddBookPage() {
               placeholder="https://example.com/book.jpg"
               className="w-full border border-[#ead89c] bg-[#fffdf7] px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-[#d4b24c]"
             />
-          </div>
+          </div> */}
 
           {/* PDF */}
           <div>
