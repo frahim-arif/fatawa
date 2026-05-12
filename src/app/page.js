@@ -694,8 +694,8 @@ export default function HomePage() {
                     href={`/questions/${item.slug}`}
                     className="block text-blue-700 hover:text-green-700 hover:underline"
                     style={{
-                      fontSize: "22px",
-                      lineHeight: "34px",
+                      fontSize: "18px",
+                      lineHeight: "30px",
                     }}
                   >
                     ➜ {item.question}
@@ -713,8 +713,8 @@ export default function HomePage() {
                 href="/majameen"
                 className="block text-blue-700 hover:text-green-700 hover:underline"
                 style={{
-                  fontSize: "22px",
-                  lineHeight: "34px",
+                  fontSize: "20px",
+                  lineHeight: "32px",
                 }}
               >
                 ➜ اسلامی معاشرہ
@@ -724,8 +724,8 @@ export default function HomePage() {
                 href="/majameen"
                 className="block text-blue-700 hover:text-green-700 hover:underline"
                 style={{
-                  fontSize: "22px",
-                  lineHeight: "34px",
+                  fontSize: "20px",
+                  lineHeight: "32px",
                 }}
               >
                 ➜ سیرت النبی ﷺ
@@ -735,8 +735,8 @@ export default function HomePage() {
                 href="/majameen"
                 className="block text-blue-700 hover:text-green-700 hover:underline"
                 style={{
-                  fontSize: "22px",
-                  lineHeight: "34px",
+                  fontSize: "20px",
+                  lineHeight: "32px",
                 }}
               >
                 ➜ اصلاحِ معاشرہ
@@ -747,7 +747,7 @@ export default function HomePage() {
                 className="block text-blue-700 hover:text-green-700 hover:underline"
                 style={{
                   fontSize: "20px",
-                  lineHeight: "34px",
+                  lineHeight: "32px",
                 }}
               >
                 ➜ دینی مضامین
