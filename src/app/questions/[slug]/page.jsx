@@ -1,34 +1,33 @@
-// app/questions/[slug]/page.jsx
-
 import Link from "next/link";
 
 const backend =
-  "https://f-backend-vdi1.onrender.com/api/admin/questions";
+  "https://f-backend-vdi1.onrender.com/api/website/questions";
 
-// ✅ SSR FETCH QUESTION
+// ✅ GET QUESTION
 async function getQuestion(slug) {
   try {
     const res = await fetch(
-      `${backend}/slug/${slug}`,
+      `${backend}/slug/${encodeURIComponent(slug)}`,
       {
         cache: "no-store",
       }
     );
 
-    const data = await res.json();
-
-    if (data.success) {
-      return data.data;
+    if (!res.ok) {
+      return null;
     }
 
-    return null;
+    const data = await res.json();
+
+    return data.success ? data.data : null;
+
   } catch (err) {
-    console.error("❌ Error fetching question:", err);
+    console.log("fetch question error", err);
     return null;
   }
 }
 
-// ✅ SSR FETCH RELATED
+// ✅ GET RELATED
 async function getRelated() {
   try {
     const res = await fetch(
@@ -38,20 +37,21 @@ async function getRelated() {
       }
     );
 
-    const data = await res.json();
-
-    if (data.success) {
-      return data.data;
+    if (!res.ok) {
+      return [];
     }
 
-    return [];
+    const data = await res.json();
+
+    return data.success ? data.data : [];
+
   } catch (err) {
-    console.error("❌ Error fetching related:", err);
+    console.log("related error", err);
     return [];
   }
 }
 
-// ✅ SEO METADATA
+// ✅ SEO
 export async function generateMetadata({ params }) {
 
   const question = await getQuestion(params.slug);
@@ -70,95 +70,68 @@ export async function generateMetadata({ params }) {
     question.metaDescription ||
     question.answer
       ?.replace(/<[^>]*>/g, "")
-      ?.slice(0, 150) ||
-    "اسلامی سوال و جواب";
-
-  const url =
-    `https://www.maslakedeoband.in/questions/${params.slug}`;
+      ?.slice(0, 150);
 
   return {
     title,
     description,
 
     alternates: {
-      canonical: url,
+      canonical: `https://www.maslakedeoband.in/questions/${params.slug}`,
     },
 
     openGraph: {
       title,
       description,
-      url,
+      url: `https://www.maslakedeoband.in/questions/${params.slug}`,
       type: "article",
-
-      images: [
-        {
-          url:
-            "https://www.maslakedeoband.in/og-image.jpg",
-        },
-      ],
-    },
-
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
     },
   };
 }
 
 // ✅ AUTO LINK
 function autoLink(text, related, slug) {
-  try {
-    if (!text || !Array.isArray(related)) return text;
 
-    let updatedText = text;
+  if (!text) return "";
 
-    let linkCount = 0;
+  let updatedText = text;
 
-    const MAX_LINKS = 3;
+  let linkCount = 0;
 
-    const escapeRegExp = (string) =>
-      string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const MAX_LINKS = 3;
 
-    related.forEach((item) => {
+  related.forEach((item) => {
+
+    if (linkCount >= MAX_LINKS) return;
+
+    if (!item?.keywords?.length) return;
+
+    if (item.slug === slug) return;
+
+    item.keywords.forEach((word) => {
 
       if (linkCount >= MAX_LINKS) return;
 
-      if (!item?.keywords?.length || !item?.slug) return;
+      if (!word) return;
 
-      if (item.slug === slug) return;
+      const regex = new RegExp(`(${word})`, "i");
 
-      item.keywords.forEach((word) => {
+      if (regex.test(updatedText)) {
 
-        if (linkCount >= MAX_LINKS) return;
+        updatedText = updatedText.replace(
+          regex,
+          `<a href="/questions/${item.slug}" class="text-blue-600 underline">$1</a>`
+        );
 
-        if (!word) return;
-
-        const safeKeyword = escapeRegExp(word);
-
-        const regex = new RegExp(`(${safeKeyword})`, "i");
-
-        if (regex.test(updatedText)) {
-
-          updatedText = updatedText.replace(
-            regex,
-            `<a href="/questions/${item.slug}" class="text-blue-600 underline">$1</a>`
-          );
-
-          linkCount++;
-        }
-      });
+        linkCount++;
+      }
     });
+  });
 
-    return updatedText;
-
-  } catch (err) {
-    console.error("❌ autoLink error:", err);
-    return text;
-  }
+  return updatedText;
 }
 
-// ✅ SSR PAGE
+// ✅ PAGE
 export default async function SingleQuestion({ params }) {
 
   const slug = params.slug;
@@ -231,8 +204,9 @@ export default async function SingleQuestion({ params }) {
 
       </div>
 
-      {/* Related Questions */}
+      {/* Related */}
       {related.length > 0 && (
+
         <div className="mt-6 p-4 bg-gray-50 rounded-xl">
 
           <h3 className="font-bold mb-2">
@@ -256,36 +230,9 @@ export default async function SingleQuestion({ params }) {
             ))}
 
           </ul>
+
         </div>
       )}
-
-      {/* JSON LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-
-            "@type": "QAPage",
-
-            mainEntity: {
-              "@type": "Question",
-
-              name: question.question,
-
-              acceptedAnswer: {
-                "@type": "Answer",
-
-                text:
-                  question.answer?.replace(
-                    /<[^>]*>/g,
-                    ""
-                  ),
-              },
-            },
-          }),
-        }}
-      />
     </div>
   );
 }
