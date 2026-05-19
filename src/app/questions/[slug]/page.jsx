@@ -1,56 +1,71 @@
 // app/questions/[slug]/page.jsx
 
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 const backend =
   "https://f-backend-vdi1.onrender.com/api/admin/questions";
 
-// ✅ FETCH SINGLE QUESTION
+// ✅ FETCH QUESTION
 async function getQuestion(slug) {
   try {
     const res = await fetch(
       `${backend}/slug/${slug}`,
       {
-        cache: "force-cache",
+        next: { revalidate: 60 },
       }
     );
 
+    if (!res.ok) {
+      return null;
+    }
+
     const data = await res.json();
 
-    if (!data.success) return null;
+    if (!data.success || !data.data) {
+      return null;
+    }
 
     return data.data;
   } catch (err) {
-    console.log("Question fetch error:", err);
+    console.log("Fetch Question Error:", err);
     return null;
   }
 }
 
-// ✅ FETCH RELATED QUESTIONS
+// ✅ FETCH RELATED
 async function getRelatedQuestions() {
   try {
     const res = await fetch(
       `${backend}?limit=10`,
       {
-        cache: "force-cache",
+        next: { revalidate: 60 },
       }
     );
 
+    if (!res.ok) {
+      return [];
+    }
+
     const data = await res.json();
 
-    if (!data.success) return [];
+    if (!data.success) {
+      return [];
+    }
 
-    return data.data;
+    return data.data || [];
   } catch (err) {
-    console.log("Related fetch error:", err);
+    console.log("Related Error:", err);
     return [];
   }
 }
 
-// ✅ AUTO LINK FUNCTION
+// ✅ AUTO LINK
 function autoLink(text, related, currentSlug) {
   try {
-    if (!text || !Array.isArray(related)) return text;
+    if (!text || !Array.isArray(related)) {
+      return text;
+    }
 
     let updatedText = text;
 
@@ -64,7 +79,9 @@ function autoLink(text, related, currentSlug) {
     related.forEach((item) => {
       if (linkCount >= MAX_LINKS) return;
 
-      if (!item?.keywords?.length || !item?.slug) return;
+      if (!item?.keywords?.length) return;
+
+      if (!item?.slug) return;
 
       if (item.slug === currentSlug) return;
 
@@ -90,14 +107,17 @@ function autoLink(text, related, currentSlug) {
 
     return updatedText;
   } catch (err) {
-    console.log("Auto link error:", err);
+    console.log("AutoLink Error:", err);
     return text;
   }
 }
 
 // ✅ SEO METADATA
 export async function generateMetadata({ params }) {
-  const question = await getQuestion(params.slug);
+
+  const slug = params.slug;
+
+  const question = await getQuestion(slug);
 
   if (!question) {
     return {
@@ -112,10 +132,13 @@ export async function generateMetadata({ params }) {
 
   const description =
     question.metaDescription ||
-    question.answer?.replace(/<[^>]*>/g, "").slice(0, 150) ||
+    question.answer
+      ?.replace(/<[^>]*>/g, "")
+      ?.slice(0, 160) ||
     "اسلامی سوال و جواب";
 
-  const url = `https://www.maslakedeoband.in/questions/${params.slug}`;
+  const url =
+    `https://www.maslakedeoband.in/questions/${slug}`;
 
   return {
     title,
@@ -152,18 +175,17 @@ export async function generateMetadata({ params }) {
 }
 
 // ✅ MAIN PAGE
-export default async function SingleQuestion({ params }) {
-  const question = await getQuestion(params.slug);
+export default async function Page({ params }) {
 
-  const related = await getRelatedQuestions();
+  const slug = params.slug;
+
+  const question = await getQuestion(slug);
 
   if (!question) {
-    return (
-      <h1 className="text-center mt-10 text-2xl">
-        ❌ سوال نہیں ملا
-      </h1>
-    );
+    notFound();
   }
+
+  const related = await getRelatedQuestions();
 
   const hawalas = [
     question.hawala1,
@@ -176,12 +198,16 @@ export default async function SingleQuestion({ params }) {
 
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-500 mb-2">
-        <Link href="/">Home</Link> /{" "}
+        <Link href="/">Home</Link>
+        {" / "}
 
         <Link href={`/category/${question.category}`}>
           {question.category}
-        </Link>{" "}
-        / <span>{question.question}</span>
+        </Link>
+
+        {" / "}
+
+        <span>{question.question}</span>
       </nav>
 
       {/* Question */}
@@ -193,6 +219,7 @@ export default async function SingleQuestion({ params }) {
 
       {/* Answer */}
       <div className="p-5 md:p-6 rounded-2xl border bg-gray-100 shadow-sm leading-9">
+
         <div
           className="text-black text-[18px] md:text-[20px]"
           dangerouslySetInnerHTML={{
@@ -203,54 +230,65 @@ export default async function SingleQuestion({ params }) {
             ),
           }}
         />
+
       </div>
 
-      {/* Hawalas */}
+      {/* Hawala */}
       {hawalas.length > 0 && (
         <div className="p-5 rounded-2xl border bg-gray-100 space-y-4 text-black">
+
           {hawalas.map((h, index) => (
             <p
               key={index}
-              className="arabic text-black leading-8"
+              className="arabic leading-8"
             >
               📖 {h}
             </p>
           ))}
+
         </div>
       )}
 
       {/* Related Questions */}
       {related.length > 0 && (
         <div className="mt-6 p-4 bg-gray-50 rounded-xl">
+
           <h3 className="font-bold mb-3">
             مزید متعلقہ سوالات
           </h3>
 
           <ul className="space-y-2">
+
             {related
-              .filter((item) => item.slug !== question.slug)
+              .filter(
+                (item) =>
+                  item.slug !== question.slug
+              )
               .slice(0, 5)
               .map((item) => (
                 <li key={item._id}>
+
                   <Link
                     href={`/questions/${item.slug}`}
                     className="text-blue-600 underline"
                   >
                     {item.question}
                   </Link>
+
                 </li>
               ))}
+
           </ul>
         </div>
       )}
 
-
-      {/* JSON-LD */}
+      {/* JSON LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
+
             "@type": "QAPage",
 
             mainEntity: {
@@ -261,7 +299,11 @@ export default async function SingleQuestion({ params }) {
               acceptedAnswer: {
                 "@type": "Answer",
 
-                text: question.answer,
+                text:
+                  question.answer?.replace(
+                    /<[^>]*>/g,
+                    ""
+                  ),
               },
             },
           }),
