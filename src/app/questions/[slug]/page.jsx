@@ -244,6 +244,7 @@ export default async function SingleQuestion({ params }) {
         </div>
       )}
 
+
       {/* JSON-LD */}
       <script
         type="application/ld+json"
