@@ -123,15 +123,18 @@ function autoLink(text, related, slug) {
 }
 
 // =======================
+// =======================
 // SEO METADATA
 // =======================
 export async function generateMetadata({ params }) {
 
-  const slug = decodeURIComponent(params.slug)
+  const { slug } = await params;
+
+  const cleanSlug = decodeURIComponent(slug)
     .trim()
     .toLowerCase();
 
-  const question = await getQuestion(slug);
+  const question = await getQuestion(cleanSlug);
 
   if (!question) {
     return {
@@ -150,7 +153,7 @@ export async function generateMetadata({ params }) {
     "اسلامی سوال و جواب";
 
   const url =
-    `https://www.maslakedeoband.in/questions/${slug}`;
+    `https://www.maslakedeoband.in/questions/${cleanSlug}`;
 
   return {
     title,
@@ -195,7 +198,11 @@ export async function generateMetadata({ params }) {
 // =======================
 export default async function Page({ params }) {
 
-  const slug = decodeURIComponent(params.slug)
+  const resolvedParams = await params;
+
+  const slug = decodeURIComponent(
+    resolvedParams.slug
+  )
     .trim()
     .toLowerCase();
 
