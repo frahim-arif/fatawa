@@ -1,3 +1,4 @@
+import Link from "next/link";
 export const revalidate = 3600;
 export const dynamicParams = true;
 
@@ -262,11 +263,11 @@ export default async function Page({ params }) {
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-500 mb-2">
 
-          <a href="/">Home</a> /{" "}
+          <Link href="/">Home</Link> /{" "}
 
-          <a href={`/category/${question.category}`}>
+          <Link href={`/category/${question.category}`}>
             {question.category}
-          </a>{" "}
+          </Link>{" "}
 
           / <span>{question.question}</span>
         </nav>
@@ -280,7 +281,7 @@ export default async function Page({ params }) {
 
           </h1>
         </div> */}
-        
+
 
         {/* Answer */}
         <div className="p-5 md:p-6 rounded-2xl border bg-gray-100 shadow-sm leading-9">
