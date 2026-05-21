@@ -39,7 +39,7 @@ async function getQuestion(slug) {
 
 // =======================
 // FETCH RELATED
-// =======================
+
 async function getRelated() {
   try {
     const res = await fetch(
