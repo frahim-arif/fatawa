@@ -271,7 +271,7 @@ export default async function Page({ params }) {
           / <span>{question.question}</span>
         </nav>
 
-        {/* Question */}
+        {/* Question
         <div className="p-5 rounded-2xl border bg-yellow-50">
 
           <h1 className="text-xl md:text-2xl font-bold text-green-800 leading-8">
@@ -279,7 +279,7 @@ export default async function Page({ params }) {
             {question.metaTitle || question.question}
 
           </h1>
-        </div>
+        </div> */}
 
         {/* Answer */}
         <div className="p-5 md:p-6 rounded-2xl border bg-gray-100 shadow-sm leading-9">
