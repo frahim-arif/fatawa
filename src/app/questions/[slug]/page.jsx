@@ -1,4 +1,5 @@
 export const revalidate = 3600;
+export const dynamicParams = true;
 
 const API =
   "https://f-backend-vdi1.onrender.com/api/admin/questions";
@@ -8,12 +9,21 @@ const API =
 // =======================
 async function getQuestion(slug) {
   try {
-    const res = await fetch(`${API}/slug/${slug}`, {
-      next: { revalidate: 3600 },
-      cache: "force-cache",
-    });
+    const cleanSlug = decodeURIComponent(slug)
+      .trim()
+      .toLowerCase();
+
+    console.log("SSR QUESTION SLUG:", cleanSlug);
+
+    const res = await fetch(
+      `${API}/slug/${cleanSlug}`,
+      {
+        next: { revalidate: 3600 },
+      }
+    );
 
     if (!res.ok) {
+      console.log("QUESTION NOT FOUND");
       return null;
     }
 
@@ -24,6 +34,7 @@ async function getQuestion(slug) {
     }
 
     return data.data;
+
   } catch (err) {
     console.error("SSR QUESTION ERROR:", err);
     return null;
@@ -35,10 +46,12 @@ async function getQuestion(slug) {
 // =======================
 async function getRelated() {
   try {
-    const res = await fetch(`${API}?limit=10`, {
-      next: { revalidate: 3600 },
-      cache: "force-cache",
-    });
+    const res = await fetch(
+      `${API}?limit=10`,
+      {
+        next: { revalidate: 3600 },
+      }
+    );
 
     if (!res.ok) {
       return [];
@@ -47,6 +60,7 @@ async function getRelated() {
     const data = await res.json();
 
     return data.success ? data.data : [];
+
   } catch (err) {
     console.error("SSR RELATED ERROR:", err);
     return [];
@@ -58,7 +72,9 @@ async function getRelated() {
 // =======================
 function autoLink(text, related, slug) {
   try {
-    if (!text || !Array.isArray(related)) return text;
+    if (!text || !Array.isArray(related)) {
+      return text;
+    }
 
     let updatedText = text;
     let linkCount = 0;
@@ -69,14 +85,19 @@ function autoLink(text, related, slug) {
       string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
     related.forEach((item) => {
+
       if (linkCount >= MAX_LINKS) return;
 
       if (!item?.keywords?.length) return;
+
       if (!item?.slug) return;
+
       if (item.slug === slug) return;
 
       item.keywords.forEach((word) => {
+
         if (linkCount >= MAX_LINKS) return;
+
         if (!word) return;
 
         const regex = new RegExp(
@@ -85,6 +106,7 @@ function autoLink(text, related, slug) {
         );
 
         if (regex.test(updatedText)) {
+
           updatedText = updatedText.replace(
             regex,
             `<a href="/questions/${item.slug}" class="text-blue-600 underline">$1</a>`
@@ -96,8 +118,9 @@ function autoLink(text, related, slug) {
     });
 
     return updatedText;
+
   } catch (err) {
-    console.error(err);
+    console.error("AUTO LINK ERROR:", err);
     return text;
   }
 }
@@ -106,11 +129,17 @@ function autoLink(text, related, slug) {
 // SEO METADATA
 // =======================
 export async function generateMetadata({ params }) {
-  const question = await getQuestion(params.slug);
+
+  const slug = decodeURIComponent(params.slug)
+    .trim()
+    .toLowerCase();
+
+  const question = await getQuestion(slug);
 
   if (!question) {
     return {
       title: "سوال نہیں ملا",
+      description: "Question not found",
     };
   }
 
@@ -120,9 +149,11 @@ export async function generateMetadata({ params }) {
 
   const description =
     question.metaDescription ||
-    question.answer?.slice(0, 150);
+    question.answer?.slice(0, 150) ||
+    "اسلامی سوال و جواب";
 
-  const url = `https://www.maslakedeoband.in/questions/${params.slug}`;
+  const url =
+    `https://www.maslakedeoband.in/questions/${slug}`;
 
   return {
     title,
@@ -144,7 +175,8 @@ export async function generateMetadata({ params }) {
 
       images: [
         {
-          url: "https://www.maslakedeoband.in/og-image.jpg",
+          url:
+            "https://www.maslakedeoband.in/og-image.jpg",
         },
       ],
     },
@@ -153,6 +185,7 @@ export async function generateMetadata({ params }) {
       card: "summary_large_image",
       title,
       description,
+
       images: [
         "https://www.maslakedeoband.in/og-image.jpg",
       ],
@@ -164,7 +197,12 @@ export async function generateMetadata({ params }) {
 // PAGE
 // =======================
 export default async function Page({ params }) {
-  const { slug } = params;
+
+  const slug = decodeURIComponent(params.slug)
+    .trim()
+    .toLowerCase();
+
+  console.log("SSR PAGE SLUG:", slug);
 
   const question = await getQuestion(slug);
 
@@ -197,14 +235,17 @@ export default async function Page({ params }) {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
+
             "@type": "QAPage",
 
             mainEntity: {
               "@type": "Question",
+
               name: question.question,
 
               acceptedAnswer: {
                 "@type": "Answer",
+
                 text: question.answer,
               },
             },
@@ -216,23 +257,29 @@ export default async function Page({ params }) {
 
         {/* Breadcrumb */}
         <nav className="text-sm text-gray-500 mb-2">
+
           <a href="/">Home</a> /{" "}
 
           <a href={`/category/${question.category}`}>
             {question.category}
           </a>{" "}
+
           / <span>{question.question}</span>
         </nav>
 
         {/* Question */}
         <div className="p-5 rounded-2xl border bg-yellow-50">
+
           <h1 className="text-xl md:text-2xl font-bold text-green-800 leading-8">
+
             {question.metaTitle || question.question}
+
           </h1>
         </div>
 
         {/* Answer */}
         <div className="p-5 md:p-6 rounded-2xl border bg-gray-100 shadow-sm leading-9">
+
           <div
             className="text-black text-[18px] md:text-[20px]"
             dangerouslySetInnerHTML={{
@@ -247,7 +294,9 @@ export default async function Page({ params }) {
 
         {/* Hawala */}
         {hawalas.length > 0 && (
+
           <div className="p-5 rounded-2xl border bg-gray-100 space-y-4 text-black">
+
             {hawalas.map((h, index) => (
               <p
                 key={index}
@@ -261,6 +310,7 @@ export default async function Page({ params }) {
 
         {/* Related */}
         {related.length > 0 && (
+
           <div className="mt-6 p-4 bg-gray-50 rounded-xl">
 
             <h3 className="font-bold mb-2">
@@ -268,17 +318,21 @@ export default async function Page({ params }) {
             </h3>
 
             <ul className="space-y-2">
+
               {related
                 .filter((i) => i.slug !== slug)
                 .slice(0, 5)
                 .map((item) => (
+
                   <li key={item._id}>
+
                     <a
                       href={`/questions/${item.slug}`}
                       className="text-blue-600 underline"
                     >
                       {item.question}
                     </a>
+
                   </li>
                 ))}
             </ul>
