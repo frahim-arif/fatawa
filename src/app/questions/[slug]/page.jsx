@@ -9,21 +9,15 @@ const API =
 // =======================
 async function getQuestion(slug) {
   try {
-    const cleanSlug = decodeURIComponent(slug)
-      .trim()
-      .toLowerCase();
-
-    console.log("SSR QUESTION SLUG:", cleanSlug);
 
     const res = await fetch(
-      `${API}/slug/${cleanSlug}`,
+      `${API}/slug/${slug}`,
       {
-        next: { revalidate: 3600 },
+        cache: "no-store",
       }
     );
 
     if (!res.ok) {
-      console.log("QUESTION NOT FOUND");
       return null;
     }
 
@@ -36,7 +30,9 @@ async function getQuestion(slug) {
     return data.data;
 
   } catch (err) {
+
     console.error("SSR QUESTION ERROR:", err);
+
     return null;
   }
 }
@@ -66,6 +62,7 @@ async function getRelated() {
     return [];
   }
 }
+
 
 // =======================
 // AUTO LINK
