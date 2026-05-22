@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 export const revalidate = 3600;
 export const dynamicParams = true;
 
@@ -138,11 +139,8 @@ export async function generateMetadata({ params }) {
   const question = await getQuestion(cleanSlug);
 
   if (!question) {
-    return {
-      title: "سوال نہیں ملا",
-      description: "Question not found",
-    };
-  }
+  notFound();
+}
 
   const title =
     question.metaTitle ||
@@ -332,12 +330,12 @@ export default async function Page({ params }) {
 
                   <li key={item._id}>
 
-                    <a
+                    <Link
                       href={`/questions/${item.slug}`}
                       className="text-blue-600 underline"
                     >
                       {item.question}
-                    </a>
+                    </Link>
 
                   </li>
                 ))}
