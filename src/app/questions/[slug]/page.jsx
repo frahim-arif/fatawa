@@ -142,6 +142,7 @@ export async function generateMetadata({ params }) {
   notFound();
 }
 
+
   const title =
     question.metaTitle ||
     `${question.question} | Maslak e Deoband`;
