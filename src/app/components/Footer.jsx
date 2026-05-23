@@ -39,7 +39,7 @@ export default function Footer() {
 
     {/* Copyright */}
     <p className="text-[10px] md:text-xs text-yellow-300">
-      © {new Date().getFullYear()} Web Core Cube Tech - 9058596626
+      © {new Date().getFullYear()} Web Core Cube Tech -9058596626
     </p>
 
   </div>
