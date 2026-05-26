@@ -430,12 +430,12 @@ export default function HomePage() {
       </section>
 
 
-    <div className="grid grid-cols-2 gap-3 px-3 mt-5">
+      <div className="grid grid-cols-2 gap-3 px-3 mt-5">
 
-  {/* مسنون دعائیں */}
-  <Link href="/masnoon-duayee">
-    <div
-      className="
+        {/* مسنون دعائیں */}
+        <Link href="/masnoon-duayee">
+          <div
+            className="
         relative overflow-hidden
         h-14 flex items-center justify-center
         rounded-2xl
@@ -446,25 +446,25 @@ export default function HomePage() {
         active:shadow-[0_3px_0_#9b7b38,0_6px_12px_rgba(0,0,0,0.2)]
         transition-all duration-200
       "
-    >
-      <p
-        className="text-[#4b3415]"
-        style={{
-          fontFamily:
-            "'Jameel Noori Nastaleeq', serif",
-          fontSize: "24px",
-          lineHeight: "38px",
-        }}
-      >
-        مسنون دعائیں
-      </p>
-    </div>
-  </Link>
+          >
+            <p
+              className="text-[#4b3415]"
+              style={{
+                fontFamily:
+                  "'Jameel Noori Nastaleeq', serif",
+                fontSize: "24px",
+                lineHeight: "38px",
+              }}
+            >
+              مسنون دعائیں
+            </p>
+          </div>
+        </Link>
 
-  {/* اسلامی نام */}
-  <Link href="/islami-naam">
-    <div
-      className="
+        {/* اسلامی نام */}
+        <Link href="/islami-naam">
+          <div
+            className="
         relative overflow-hidden
         h-14 flex items-center justify-center
         rounded-2xl
@@ -475,25 +475,25 @@ export default function HomePage() {
         active:shadow-[0_3px_0_#9b7b38,0_6px_12px_rgba(0,0,0,0.2)]
         transition-all duration-200
       "
-    >
-      <p
-        className="text-[#4b3415]"
-        style={{
-          fontFamily:
-            "'Jameel Noori Nastaleeq', serif",
-          fontSize: "24px",
-          lineHeight: "38px",
-        }}
-      >
-        اسلامی نام
-      </p>
-    </div>
-  </Link>
+          >
+            <p
+              className="text-[#4b3415]"
+              style={{
+                fontFamily:
+                  "'Jameel Noori Nastaleeq', serif",
+                fontSize: "24px",
+                lineHeight: "38px",
+              }}
+            >
+              اسلامی نام
+            </p>
+          </div>
+        </Link>
 
-  {/* اسلامی کتابیں */}
-  <Link href="/books">
-    <div
-      className="
+        {/* اسلامی کتابیں */}
+        <Link href="/books">
+          <div
+            className="
         relative overflow-hidden
         h-14 flex items-center justify-center
         rounded-2xl
@@ -504,25 +504,25 @@ export default function HomePage() {
         active:shadow-[0_3px_0_#9b7b38,0_6px_12px_rgba(0,0,0,0.2)]
         transition-all duration-200
       "
-    >
-      <p
-        className="text-[#4b3415]"
-        style={{
-          fontFamily:
-            "'Jameel Noori Nastaleeq', serif",
-          fontSize: "24px",
-          lineHeight: "38px",
-        }}
-      >
-        اسلامی کتابیں
-      </p>
-    </div>
-  </Link>
+          >
+            <p
+              className="text-[#4b3415]"
+              style={{
+                fontFamily:
+                  "'Jameel Noori Nastaleeq', serif",
+                fontSize: "24px",
+                lineHeight: "38px",
+              }}
+            >
+              اسلامی کتابیں
+            </p>
+          </div>
+        </Link>
 
-  {/* مضامین */}
-  <Link href="/majameen">
-    <div
-      className="
+        {/* مضامین */}
+        <Link href="/majameen">
+          <div
+            className="
         relative overflow-hidden
         h-14 flex items-center justify-center
         rounded-2xl
@@ -533,25 +533,25 @@ export default function HomePage() {
         active:shadow-[0_3px_0_#9b7b38,0_6px_12px_rgba(0,0,0,0.2)]
         transition-all duration-200
       "
-    >
-      <p
-        className="text-[#4b3415]"
-        style={{
-          fontFamily:
-            "'Jameel Noori Nastaleeq', serif",
-          fontSize: "24px",
-          lineHeight: "38px",
-        }}
-      >
-        مضامین
-      </p>
-    </div>
-  </Link>
+          >
+            <p
+              className="text-[#4b3415]"
+              style={{
+                fontFamily:
+                  "'Jameel Noori Nastaleeq', serif",
+                fontSize: "24px",
+                lineHeight: "38px",
+              }}
+            >
+              مضامین
+            </p>
+          </div>
+        </Link>
 
-  {/* شرعیہ کیلکولیٹر */}
-  <Link href="https://www.maslakedeoband.in/ozan-shariah-calculator">
-    <div
-      className="
+        {/* شرعیہ کیلکولیٹر */}
+        <Link href="https://www.maslakedeoband.in/ozan-shariah-calculator">
+          <div
+            className="
         relative overflow-hidden
         h-14 flex items-center justify-center
         rounded-2xl
@@ -562,25 +562,25 @@ export default function HomePage() {
         active:shadow-[0_3px_0_#9b7b38,0_6px_12px_rgba(0,0,0,0.2)]
         transition-all duration-200
       "
-    >
-      <p
-        className="text-[#4b3415]"
-        style={{
-          fontFamily:
-            "'Jameel Noori Nastaleeq', serif",
-          fontSize: "22px",
-          lineHeight: "36px",
-        }}
-      >
-        شرعیہ کیلکولیٹر
-      </p>
-    </div>
-  </Link>
+          >
+            <p
+              className="text-[#4b3415]"
+              style={{
+                fontFamily:
+                  "'Jameel Noori Nastaleeq', serif",
+                fontSize: "22px",
+                lineHeight: "36px",
+              }}
+            >
+              شرعیہ کیلکولیٹر
+            </p>
+          </div>
+        </Link>
 
-  {/* احادیث */}
-  <Link href="https://www.maslakedeoband.in/40-hadith-free">
-    <div
-      className="
+        {/* احادیث */}
+        <Link href="https://www.maslakedeoband.in/40-hadith-free">
+          <div
+            className="
         relative overflow-hidden
         h-14 flex items-center justify-center
         rounded-2xl
@@ -591,22 +591,22 @@ export default function HomePage() {
         active:shadow-[0_3px_0_#9b7b38,0_6px_12px_rgba(0,0,0,0.2)]
         transition-all duration-200
       "
-    >
-      <p
-        className="text-[#4b3415]"
-        style={{
-          fontFamily:
-            "'Jameel Noori Nastaleeq', serif",
-          fontSize: "24px",
-          lineHeight: "38px",
-        }}
-      >
-        احادیث
-      </p>
-    </div>
-  </Link>
+          >
+            <p
+              className="text-[#4b3415]"
+              style={{
+                fontFamily:
+                  "'Jameel Noori Nastaleeq', serif",
+                fontSize: "24px",
+                lineHeight: "38px",
+              }}
+            >
+              احادیث
+            </p>
+          </div>
+        </Link>
 
-</div>
+      </div>
 
 
 
@@ -624,8 +624,8 @@ export default function HomePage() {
           <button
             onClick={() => setActiveTab("questions")}
             className={`w-1/2 py-3 transition-all duration-300 ${activeTab === "questions"
-                ? "bg-[#8b7355] text-white"
-                : "bg-[#d9cfbf] text-[#7a5f3e]"
+              ? "bg-[#8b7355] text-white"
+              : "bg-[#d9cfbf] text-[#7a5f3e]"
               }`}
           >
             <span
@@ -647,8 +647,8 @@ export default function HomePage() {
           <button
             onClick={() => setActiveTab("majameen")}
             className={`w-1/2 py-3 transition-all duration-300 ${activeTab === "majameen"
-                ? "bg-[#8b7355] text-white"
-                : "bg-[#d9cfbf] text-[#7a5f3e]"
+              ? "bg-[#8b7355] text-white"
+              : "bg-[#d9cfbf] text-[#7a5f3e]"
               }`}
           >
             <span
@@ -752,6 +752,66 @@ export default function HomePage() {
 
             </div>
           )}
+          {/* 🕌 Next Prayer Countdown */}
+          <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 w-[92%] md:w-[400px]">
+            <motion.div
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+              className="
+      relative overflow-hidden
+      rounded-3xl
+      border border-yellow-500/40
+      bg-black/70
+      backdrop-blur-xl
+      shadow-[0_0_25px_rgba(255,215,0,0.25)]
+      px-5 py-4
+      text-center
+    "
+            >
+              {/* Glow */}
+              <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 via-transparent to-yellow-500/10 pointer-events-none" />
+
+              {/* Title */}
+              <p
+                className="text-yellow-300"
+                style={{
+                  fontFamily: "'Jameel Noori Nastaleeq', serif",
+                  fontSize: "24px",
+                  lineHeight: "38px",
+                }}
+              >
+                🕌 اگلی نماز: عصر
+              </p>
+
+              {/* Timer */}
+              <motion.div
+                animate={{
+                  opacity: [1, 0.6, 1],
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                }}
+                className="mt-1"
+              >
+                <span
+                  className="text-white font-bold tracking-widest"
+                  style={{
+                    fontSize: "30px",
+                    letterSpacing: "2px",
+                  }}
+                >
+                  00:32:12
+                </span>
+              </motion.div>
+
+              {/* Small Line */}
+              <p className="text-yellow-100/70 text-xs mt-1">
+                نماز کا وقت قریب ہے
+              </p>
+            </motion.div>
+          </div>
 
         </div>
 
