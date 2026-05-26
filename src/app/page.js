@@ -516,7 +516,88 @@ useEffect(() => {
           </div>
         )}
       </section>
+       {/* 🕌 Next Prayer Live */}
+<div className="w-full px-3 mt-4">
 
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    className="
+      relative overflow-hidden
+      rounded-3xl
+      border border-yellow-500/40
+      bg-black/60
+      backdrop-blur-xl
+      shadow-[0_0_25px_rgba(255,215,0,0.15)]
+      px-4 py-3
+    "
+  >
+
+    {/* Glow */}
+    <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/5 via-transparent to-yellow-500/5" />
+
+    <div className="flex items-center justify-between">
+
+      {/* Prayer */}
+      <div className="text-right">
+        <p
+          className="text-yellow-300"
+          style={{
+            fontFamily:
+              "'Jameel Noori Nastaleeq', serif",
+            fontSize: "20px",
+            lineHeight: "30px",
+          }}
+        >
+          🕌 اگلی نماز
+        </p>
+
+        <h2
+          className="text-white"
+          style={{
+            fontFamily:
+              "'Jameel Noori Nastaleeq', serif",
+            fontSize: "30px",
+            lineHeight: "40px",
+          }}
+        >
+          {nextPrayer}
+        </h2>
+      </div>
+
+      {/* Countdown */}
+      <motion.div
+        animate={{
+          opacity: [1, 0.7, 1],
+        }}
+        transition={{
+          duration: 1.5,
+          repeat: Infinity,
+        }}
+        className="
+          bg-yellow-500/10
+          border border-yellow-500/20
+          rounded-2xl
+          px-4 py-2
+        "
+      >
+        <span
+          className="text-yellow-200 font-bold"
+          style={{
+            fontSize: "24px",
+            letterSpacing: "2px",
+          }}
+        >
+          {countdown}
+        </span>
+      </motion.div>
+
+    </div>
+
+  </motion.div>
+
+</div>
 
       <div className="grid grid-cols-2 gap-3 px-3 mt-5">
 
@@ -840,88 +921,7 @@ useEffect(() => {
 
             </div>
           )}
-          {/* 🕌 Next Prayer Live */}
-<div className="w-full px-3 mt-4">
-
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
-    className="
-      relative overflow-hidden
-      rounded-3xl
-      border border-yellow-500/40
-      bg-black/60
-      backdrop-blur-xl
-      shadow-[0_0_25px_rgba(255,215,0,0.15)]
-      px-4 py-3
-    "
-  >
-
-    {/* Glow */}
-    <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/5 via-transparent to-yellow-500/5" />
-
-    <div className="flex items-center justify-between">
-
-      {/* Prayer */}
-      <div className="text-right">
-        <p
-          className="text-yellow-300"
-          style={{
-            fontFamily:
-              "'Jameel Noori Nastaleeq', serif",
-            fontSize: "20px",
-            lineHeight: "30px",
-          }}
-        >
-          🕌 اگلی نماز
-        </p>
-
-        <h2
-          className="text-white"
-          style={{
-            fontFamily:
-              "'Jameel Noori Nastaleeq', serif",
-            fontSize: "30px",
-            lineHeight: "40px",
-          }}
-        >
-          {nextPrayer}
-        </h2>
-      </div>
-
-      {/* Countdown */}
-      <motion.div
-        animate={{
-          opacity: [1, 0.7, 1],
-        }}
-        transition={{
-          duration: 1.5,
-          repeat: Infinity,
-        }}
-        className="
-          bg-yellow-500/10
-          border border-yellow-500/20
-          rounded-2xl
-          px-4 py-2
-        "
-      >
-        <span
-          className="text-yellow-200 font-bold"
-          style={{
-            fontSize: "24px",
-            letterSpacing: "2px",
-          }}
-        >
-          {countdown}
-        </span>
-      </motion.div>
-
-    </div>
-
-  </motion.div>
-
-</div>
+          
 
         </div>
 
