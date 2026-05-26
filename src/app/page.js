@@ -20,6 +20,8 @@ export default function HomePage() {
   const questionsRef = useRef(null);
   const [latestQuestions, setLatestQuestions] = useState([]);
   const [activeTab, setActiveTab] = useState("questions");
+  const [nextPrayer, setNextPrayer] = useState("");
+const [countdown, setCountdown] = useState("");
 
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
@@ -37,6 +39,92 @@ export default function HomePage() {
     fetchCategories();
   }, []);
 
+useEffect(() => {
+  if (!prayerTimes) return;
+
+  const updateCountdown = () => {
+    const now = new Date();
+
+    const prayers = [
+      { name: "فجر", time: prayerTimes.Fajr },
+      { name: "ظہر", time: prayerTimes.Dhuhr },
+      { name: "عصر", time: prayerTimes.Asr },
+      { name: "مغرب", time: prayerTimes.Maghrib },
+      { name: "عشاء", time: prayerTimes.Isha },
+    ];
+
+    let next = null;
+
+    for (const prayer of prayers) {
+      const [hours, minutes] = prayer.time.split(":");
+
+      const prayerDate = new Date();
+
+      prayerDate.setHours(
+        parseInt(hours),
+        parseInt(minutes),
+        0
+      );
+
+      if (prayerDate > now) {
+        next = {
+          name: prayer.name,
+          time: prayerDate,
+        };
+        break;
+      }
+    }
+
+    // If all prayers passed → tomorrow fajr
+    if (!next) {
+      const [hours, minutes] =
+        prayerTimes.Fajr.split(":");
+
+      const fajrTomorrow = new Date();
+
+      fajrTomorrow.setDate(fajrTomorrow.getDate() + 1);
+
+      fajrTomorrow.setHours(
+        parseInt(hours),
+        parseInt(minutes),
+        0
+      );
+
+      next = {
+        name: "فجر",
+        time: fajrTomorrow,
+      };
+    }
+
+    const diff = next.time - now;
+
+    const hrs = Math.floor(diff / 1000 / 60 / 60);
+    const mins = Math.floor(
+      (diff / 1000 / 60) % 60
+    );
+    const secs = Math.floor((diff / 1000) % 60);
+
+    setNextPrayer(next.name);
+
+    setCountdown(
+      `${String(hrs).padStart(2, "0")}:${String(
+        mins
+      ).padStart(2, "0")}:${String(secs).padStart(
+        2,
+        "0"
+      )}`
+    );
+  };
+
+  updateCountdown();
+
+  const interval = setInterval(updateCountdown, 1000);
+
+  return () => clearInterval(interval);
+
+}, [prayerTimes]);
+
+  
   useEffect(() => {
     const fetchPrayerTimes = async () => {
       try {
@@ -752,66 +840,88 @@ export default function HomePage() {
 
             </div>
           )}
-          {/* 🕌 Next Prayer Countdown */}
-          <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 w-[92%] md:w-[400px]">
-            <motion.div
-              initial={{ y: 100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              className="
+          {/* 🕌 Next Prayer Live */}
+<div className="w-full px-3 mt-4">
+
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    className="
       relative overflow-hidden
       rounded-3xl
       border border-yellow-500/40
-      bg-black/70
+      bg-black/60
       backdrop-blur-xl
-      shadow-[0_0_25px_rgba(255,215,0,0.25)]
-      px-5 py-4
-      text-center
+      shadow-[0_0_25px_rgba(255,215,0,0.15)]
+      px-4 py-3
     "
-            >
-              {/* Glow */}
-              <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/10 via-transparent to-yellow-500/10 pointer-events-none" />
+  >
 
-              {/* Title */}
-              <p
-                className="text-yellow-300"
-                style={{
-                  fontFamily: "'Jameel Noori Nastaleeq', serif",
-                  fontSize: "24px",
-                  lineHeight: "38px",
-                }}
-              >
-                🕌 اگلی نماز: عصر
-              </p>
+    {/* Glow */}
+    <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/5 via-transparent to-yellow-500/5" />
 
-              {/* Timer */}
-              <motion.div
-                animate={{
-                  opacity: [1, 0.6, 1],
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                }}
-                className="mt-1"
-              >
-                <span
-                  className="text-white font-bold tracking-widest"
-                  style={{
-                    fontSize: "30px",
-                    letterSpacing: "2px",
-                  }}
-                >
-                  00:32:12
-                </span>
-              </motion.div>
+    <div className="flex items-center justify-between">
 
-              {/* Small Line */}
-              <p className="text-yellow-100/70 text-xs mt-1">
-                نماز کا وقت قریب ہے
-              </p>
-            </motion.div>
-          </div>
+      {/* Prayer */}
+      <div className="text-right">
+        <p
+          className="text-yellow-300"
+          style={{
+            fontFamily:
+              "'Jameel Noori Nastaleeq', serif",
+            fontSize: "20px",
+            lineHeight: "30px",
+          }}
+        >
+          🕌 اگلی نماز
+        </p>
+
+        <h2
+          className="text-white"
+          style={{
+            fontFamily:
+              "'Jameel Noori Nastaleeq', serif",
+            fontSize: "30px",
+            lineHeight: "40px",
+          }}
+        >
+          {nextPrayer}
+        </h2>
+      </div>
+
+      {/* Countdown */}
+      <motion.div
+        animate={{
+          opacity: [1, 0.7, 1],
+        }}
+        transition={{
+          duration: 1.5,
+          repeat: Infinity,
+        }}
+        className="
+          bg-yellow-500/10
+          border border-yellow-500/20
+          rounded-2xl
+          px-4 py-2
+        "
+      >
+        <span
+          className="text-yellow-200 font-bold"
+          style={{
+            fontSize: "24px",
+            letterSpacing: "2px",
+          }}
+        >
+          {countdown}
+        </span>
+      </motion.div>
+
+    </div>
+
+  </motion.div>
+
+</div>
 
         </div>
 
