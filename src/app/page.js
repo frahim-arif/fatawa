@@ -921,6 +921,154 @@ useEffect(() => {
 
             </div>
           )}
+          {/* AI Smart Search */}
+<div className="relative w-11/12 md:w-4/5 mx-auto mt-8 z-10">
+
+  {/* Glow */}
+  <div className="absolute inset-0 bg-yellow-400/20 blur-3xl rounded-full"></div>
+
+  <div
+    className="
+      relative
+      bg-black/50
+      backdrop-blur-xl
+      border border-yellow-500/40
+      rounded-[32px]
+      p-5
+      shadow-[0_0_40px_rgba(255,215,0,0.25)]
+    "
+  >
+
+    {/* Heading */}
+    <div className="text-center mb-5">
+
+      <h2
+        className="text-yellow-300"
+        style={{
+          fontFamily:
+            "'Jameel Noori Nastaleeq', serif",
+          fontSize: "38px",
+          lineHeight: "55px",
+        }}
+      >
+        آپ کیا جاننا چاہتے ہیں؟
+      </h2>
+
+      <p className="text-gray-300 text-sm mt-1">
+        AI Smart Islamic Search
+      </p>
+    </div>
+
+    {/* Search Input */}
+    <div
+      className="
+        flex items-center
+        bg-black/60
+        border border-yellow-500/30
+        rounded-2xl
+        overflow-hidden
+        shadow-inner
+      "
+    >
+
+      {/* Search Icon */}
+      <div className="px-4">
+        <Search className="text-yellow-400 w-5 h-5" />
+      </div>
+
+      {/* Input */}
+      <input
+        type="text"
+        value={query}
+        onChange={(e) =>
+          setQuery(e.target.value)
+        }
+        placeholder="مثلاً: نکاح، طلاق، نماز، روزہ..."
+        className="
+          w-full
+          bg-transparent
+          py-4
+          text-right
+          text-white
+          placeholder:text-gray-400
+          outline-none
+          text-lg
+        "
+        style={{
+          direction: "rtl",
+          fontFamily:
+            "'Jameel Noori Nastaleeq', serif",
+        }}
+      />
+
+      {/* Voice Button */}
+      <button
+        onClick={startListening}
+        className="
+          px-4
+          h-full
+          hover:bg-yellow-500/10
+          transition
+        "
+      >
+        <Mic className="text-yellow-400 w-6 h-6" />
+      </button>
+
+    </div>
+
+    {/* Smart Suggestions */}
+    <div className="flex flex-wrap gap-2 mt-4 justify-center">
+
+      {[
+        "نماز",
+        "طلاق",
+        "نکاح",
+        "روزہ",
+        "زکوٰۃ",
+        "سود",
+      ].map((item) => (
+
+        <button
+          key={item}
+          onClick={() => setQuery(item)}
+          className="
+            px-4 py-1.5
+            rounded-full
+            bg-yellow-500/10
+            border border-yellow-500/20
+            text-yellow-300
+            text-sm
+            hover:bg-yellow-500/20
+            transition
+          "
+          style={{
+            fontFamily:
+              "'Jameel Noori Nastaleeq', serif",
+          }}
+        >
+          {item}
+        </button>
+      ))}
+
+    </div>
+
+    {/* AI Text */}
+    <div className="text-center mt-4">
+
+      <p
+        className="text-gray-400 text-sm"
+        style={{
+          fontFamily:
+            "'Jameel Noori Nastaleeq', serif",
+        }}
+      >
+        🎙️ آواز سے سوال پوچھیں یا لکھ کر تلاش کریں
+      </p>
+
+    </div>
+
+  </div>
+</div>
           
 
         </div>
