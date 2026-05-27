@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Search, Mic,X  } from "lucide-react";
+import { Search, Mic, X } from "lucide-react";
 import Head from "next/head";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
@@ -21,7 +21,7 @@ export default function HomePage() {
   const [latestQuestions, setLatestQuestions] = useState([]);
   const [activeTab, setActiveTab] = useState("questions");
   const [nextPrayer, setNextPrayer] = useState("");
-const [countdown, setCountdown] = useState("");
+  const [countdown, setCountdown] = useState("");
 
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
@@ -39,92 +39,92 @@ const [countdown, setCountdown] = useState("");
     fetchCategories();
   }, []);
 
-useEffect(() => {
-  if (!prayerTimes) return;
+  useEffect(() => {
+    if (!prayerTimes) return;
 
-  const updateCountdown = () => {
-    const now = new Date();
+    const updateCountdown = () => {
+      const now = new Date();
 
-    const prayers = [
-      { name: "فجر", time: prayerTimes.Fajr },
-      { name: "ظہر", time: prayerTimes.Dhuhr },
-      { name: "عصر", time: prayerTimes.Asr },
-      { name: "مغرب", time: prayerTimes.Maghrib },
-      { name: "عشاء", time: prayerTimes.Isha },
-    ];
+      const prayers = [
+        { name: "فجر", time: prayerTimes.Fajr },
+        { name: "ظہر", time: prayerTimes.Dhuhr },
+        { name: "عصر", time: prayerTimes.Asr },
+        { name: "مغرب", time: prayerTimes.Maghrib },
+        { name: "عشاء", time: prayerTimes.Isha },
+      ];
 
-    let next = null;
+      let next = null;
 
-    for (const prayer of prayers) {
-      const [hours, minutes] = prayer.time.split(":");
+      for (const prayer of prayers) {
+        const [hours, minutes] = prayer.time.split(":");
 
-      const prayerDate = new Date();
+        const prayerDate = new Date();
 
-      prayerDate.setHours(
-        parseInt(hours),
-        parseInt(minutes),
-        0
-      );
+        prayerDate.setHours(
+          parseInt(hours),
+          parseInt(minutes),
+          0
+        );
 
-      if (prayerDate > now) {
-        next = {
-          name: prayer.name,
-          time: prayerDate,
-        };
-        break;
+        if (prayerDate > now) {
+          next = {
+            name: prayer.name,
+            time: prayerDate,
+          };
+          break;
+        }
       }
-    }
 
-    // If all prayers passed → tomorrow fajr
-    if (!next) {
-      const [hours, minutes] =
-        prayerTimes.Fajr.split(":");
+      // If all prayers passed → tomorrow fajr
+      if (!next) {
+        const [hours, minutes] =
+          prayerTimes.Fajr.split(":");
 
-      const fajrTomorrow = new Date();
+        const fajrTomorrow = new Date();
 
-      fajrTomorrow.setDate(fajrTomorrow.getDate() + 1);
+        fajrTomorrow.setDate(fajrTomorrow.getDate() + 1);
 
-      fajrTomorrow.setHours(
-        parseInt(hours),
-        parseInt(minutes),
-        0
+        fajrTomorrow.setHours(
+          parseInt(hours),
+          parseInt(minutes),
+          0
+        );
+
+        next = {
+          name: "فجر",
+          time: fajrTomorrow,
+        };
+      }
+
+      const diff = next.time - now;
+
+      const hrs = Math.floor(diff / 1000 / 60 / 60);
+      const mins = Math.floor(
+        (diff / 1000 / 60) % 60
       );
+      const secs = Math.floor((diff / 1000) % 60);
 
-      next = {
-        name: "فجر",
-        time: fajrTomorrow,
-      };
-    }
+      setNextPrayer(next.name);
 
-    const diff = next.time - now;
+      setCountdown(
+        `${String(hrs).padStart(2, "0")}:${String(
+          mins
+        ).padStart(2, "0")}:${String(secs).padStart(
+          2,
+          "0"
+        )}`
+      );
+    };
 
-    const hrs = Math.floor(diff / 1000 / 60 / 60);
-    const mins = Math.floor(
-      (diff / 1000 / 60) % 60
-    );
-    const secs = Math.floor((diff / 1000) % 60);
+    updateCountdown();
 
-    setNextPrayer(next.name);
+    const interval = setInterval(updateCountdown, 1000);
 
-    setCountdown(
-      `${String(hrs).padStart(2, "0")}:${String(
-        mins
-      ).padStart(2, "0")}:${String(secs).padStart(
-        2,
-        "0"
-      )}`
-    );
-  };
+    return () => clearInterval(interval);
 
-  updateCountdown();
+  }, [prayerTimes]);
 
-  const interval = setInterval(updateCountdown, 1000);
 
-  return () => clearInterval(interval);
-
-}, [prayerTimes]);
-
-  
   useEffect(() => {
     const fetchPrayerTimes = async () => {
       try {
@@ -197,51 +197,46 @@ useEffect(() => {
     }
   };
   useEffect(() => {
-    // homepage pe kuch mat lao
-    if (selectedCategory === "") {
-      setAllQuestions([]);
-      return;
-    }
+    const delayDebounce = setTimeout(async () => {
+      try {
 
-    fetchQuestions({
-      reset: true,
-      customSkip: 0,
-    });
-  }, [selectedCategory]);
+        // agar search empty hai
+        if (query.trim() === "") {
 
-  useEffect(() => {
-  const delayDebounce = setTimeout(async () => {
-    try {
-      if (query.trim() === "") {
-        if (selectedCategory === "") {
-          setAllQuestions([]);
+          // category selected hai to uske questions lao
+          if (selectedCategory !== "") {
+            fetchQuestions({
+              reset: true,
+              customSkip: 0,
+            });
+          } else {
+
+            // homepage empty rakho
+            setAllQuestions([]);
+          }
+
           return;
         }
 
-        fetchQuestions({
-          reset: true,
-          customSkip: 0,
-        });
+        // SEARCH API
+        const res = await fetch(
+          `${backend}/admin/search?query=${encodeURIComponent(query)}`
+        );
 
-        return;
+        const data = await res.json();
+
+        if (data.success) {
+          setAllQuestions(data.data);
+        }
+
+      } catch (err) {
+        console.error(err);
       }
+    }, 400);
 
-      const res = await fetch(
-        `${backend}/admin/search?query=${encodeURIComponent(query)}`
-      );
+    return () => clearTimeout(delayDebounce);
 
-      const data = await res.json();
-
-      if (data.success) {
-        setAllQuestions(data.data);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }, 400);
-
-  return () => clearTimeout(delayDebounce);
-}, [query]);
+  }, [query, selectedCategory]);
 
   // Voice Search
   const startListening = () => {
@@ -431,14 +426,14 @@ useEffect(() => {
               fontFamily: "'Jameel Noori Nastaleeq', serif",
             }}
           />
-           {query && (
-  <button
-    onClick={() => setQuery("")}
-    className="px-2 text-yellow-400"
-  >
-    <X className="w-5 h-5" />
-  </button>
-)} 
+          {query && (
+            <button
+              onClick={() => setQuery("")}
+              className="px-2 text-yellow-400"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          )}
           {/* Mic Button */}
           <button
             onClick={startListening}
@@ -535,29 +530,31 @@ useEffect(() => {
           </p>
         )}
 
-        {hasMore && allQuestions.length > 0 && (
-          <div className="text-center mt-6">
-            <button
-              onClick={() =>
-                fetchQuestions({
-                  customSkip: skip,
-                })
-              }
-              className="px-6 py-2 bg-green-600 text-white rounded-lg"
-            >
-              مزید سوالات دیکھیں
-            </button>
-          </div>
-        )}
+        {hasMore &&
+          allQuestions.length > 0 &&
+          query.trim() === "" && (
+            <div className="text-center mt-6">
+              <button
+                onClick={() =>
+                  fetchQuestions({
+                    customSkip: skip,
+                  })
+                }
+                className="px-6 py-2 bg-green-600 text-white rounded-lg"
+              >
+                مزید سوالات دیکھیں
+              </button>
+            </div>
+          )}
       </section>
-       {/* 🕌 Next Prayer Live */}
-<div className="w-full px-3 mt-4">
+      {/* 🕌 Next Prayer Live */}
+      <div className="w-full px-3 mt-4">
 
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
-    className="
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="
       relative overflow-hidden
       rounded-3xl
       border border-yellow-500/40
@@ -566,72 +563,72 @@ useEffect(() => {
       shadow-[0_0_25px_rgba(255,215,0,0.15)]
       px-4 py-3
     "
-  >
-
-    {/* Glow */}
-    <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/5 via-transparent to-yellow-500/5" />
-
-    <div className="flex items-center justify-between">
-
-      {/* Prayer */}
-      <div className="text-right">
-        <p
-          className="text-yellow-300"
-          style={{
-            fontFamily:
-              "'Jameel Noori Nastaleeq', serif",
-            fontSize: "20px",
-            lineHeight: "30px",
-          }}
         >
-          🕌 اگلی نماز
-        </p>
 
-        <h2
-          className="text-white"
-          style={{
-            fontFamily:
-              "'Jameel Noori Nastaleeq', serif",
-            fontSize: "30px",
-            lineHeight: "40px",
-          }}
-        >
-          {nextPrayer}
-        </h2>
-      </div>
+          {/* Glow */}
+          <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/5 via-transparent to-yellow-500/5" />
 
-      {/* Countdown */}
-      <motion.div
-        animate={{
-          opacity: [1, 0.7, 1],
-        }}
-        transition={{
-          duration: 1.5,
-          repeat: Infinity,
-        }}
-        className="
+          <div className="flex items-center justify-between">
+
+            {/* Prayer */}
+            <div className="text-right">
+              <p
+                className="text-yellow-300"
+                style={{
+                  fontFamily:
+                    "'Jameel Noori Nastaleeq', serif",
+                  fontSize: "20px",
+                  lineHeight: "30px",
+                }}
+              >
+                🕌 اگلی نماز
+              </p>
+
+              <h2
+                className="text-white"
+                style={{
+                  fontFamily:
+                    "'Jameel Noori Nastaleeq', serif",
+                  fontSize: "30px",
+                  lineHeight: "40px",
+                }}
+              >
+                {nextPrayer}
+              </h2>
+            </div>
+
+            {/* Countdown */}
+            <motion.div
+              animate={{
+                opacity: [1, 0.7, 1],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+              }}
+              className="
           bg-yellow-500/10
           border border-yellow-500/20
           rounded-2xl
           px-4 py-2
         "
-      >
-        <span
-          className="text-yellow-200 font-bold"
-          style={{
-            fontSize: "24px",
-            letterSpacing: "2px",
-          }}
-        >
-          {countdown}
-        </span>
-      </motion.div>
+            >
+              <span
+                className="text-yellow-200 font-bold"
+                style={{
+                  fontSize: "24px",
+                  letterSpacing: "2px",
+                }}
+              >
+                {countdown}
+              </span>
+            </motion.div>
 
-    </div>
+          </div>
 
-  </motion.div>
+        </motion.div>
 
-</div>
+      </div>
 
       <div className="grid grid-cols-2 gap-3 px-3 mt-5">
 
@@ -955,8 +952,8 @@ useEffect(() => {
 
             </div>
           )}
-          
-          
+
+
 
         </div>
 
