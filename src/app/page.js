@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Search, Mic, X } from "lucide-react";
+import { Search, Mic,X  } from "lucide-react";
 import Head from "next/head";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
@@ -209,12 +209,39 @@ useEffect(() => {
     });
   }, [selectedCategory]);
 
-  const filteredQuestions =
-    query.trim() === ""
-      ? allQuestions
-      : allQuestions.filter((q) =>
-        q.question.toLowerCase().includes(query.toLowerCase())
+  useEffect(() => {
+  const delayDebounce = setTimeout(async () => {
+    try {
+      if (query.trim() === "") {
+        if (selectedCategory === "") {
+          setAllQuestions([]);
+          return;
+        }
+
+        fetchQuestions({
+          reset: true,
+          customSkip: 0,
+        });
+
+        return;
+      }
+
+      const res = await fetch(
+        `${backend}/admin/search?query=${encodeURIComponent(query)}`
       );
+
+      const data = await res.json();
+
+      if (data.success) {
+        setAllQuestions(data.data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, 400);
+
+  return () => clearTimeout(delayDebounce);
+}, [query]);
 
   // Voice Search
   const startListening = () => {
@@ -225,7 +252,7 @@ useEffect(() => {
       return;
     }
     const recognition = new SpeechRecognition();
-    recognition.lang = "ur-PK";
+    recognition.lang = "ur-IN";;
     recognition.onresult = (e) => setQuery(e.results[0][0].transcript);
     recognition.start();
   };
@@ -404,7 +431,7 @@ useEffect(() => {
               fontFamily: "'Jameel Noori Nastaleeq', serif",
             }}
           />
-
+            
           {/* Mic Button */}
           <button
             onClick={startListening}
@@ -477,8 +504,8 @@ useEffect(() => {
 
       {/* Questions List */}
       <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
-        {filteredQuestions.length > 0 ? (
-          filteredQuestions.map((q) => (
+        {allQuestions.length > 0 ? (
+          allQuestions.map((q) => (
             <Link key={q._id} href={`/questions/${q.slug}`}>
               <div
                 className="p-5 rounded-xl border bg-yellow-50 border-yellow-300 shadow-md w-full cursor-pointer hover:bg-yellow-100 transition hover:shadow-[0_0_20px_rgba(255,223,0,0.6)]"
@@ -501,7 +528,7 @@ useEffect(() => {
           </p>
         )}
 
-        {hasMore && filteredQuestions.length > 0 && (
+        {hasMore && allQuestions.length > 0 && (
           <div className="text-center mt-6">
             <button
               onClick={() =>
@@ -921,154 +948,7 @@ useEffect(() => {
 
             </div>
           )}
-          {/* AI Smart Search */}
-<div className="relative w-11/12 md:w-4/5 mx-auto mt-8 z-10">
-
-  {/* Glow */}
-  <div className="absolute inset-0 bg-yellow-400/20 blur-3xl rounded-full"></div>
-
-  <div
-    className="
-      relative
-      bg-black/50
-      backdrop-blur-xl
-      border border-yellow-500/40
-      rounded-[32px]
-      p-5
-      shadow-[0_0_40px_rgba(255,215,0,0.25)]
-    "
-  >
-
-    {/* Heading */}
-    <div className="text-center mb-5">
-
-      <h2
-        className="text-yellow-300"
-        style={{
-          fontFamily:
-            "'Jameel Noori Nastaleeq', serif",
-          fontSize: "38px",
-          lineHeight: "55px",
-        }}
-      >
-        آپ کیا جاننا چاہتے ہیں؟
-      </h2>
-
-      <p className="text-gray-300 text-sm mt-1">
-        AI Smart Islamic Search
-      </p>
-    </div>
-
-    {/* Search Input */}
-    <div
-      className="
-        flex items-center
-        bg-black/60
-        border border-yellow-500/30
-        rounded-2xl
-        overflow-hidden
-        shadow-inner
-      "
-    >
-
-      {/* Search Icon */}
-      <div className="px-4">
-        <Search className="text-yellow-400 w-5 h-5" />
-      </div>
-
-      {/* Input */}
-      <input
-        type="text"
-        value={query}
-        onChange={(e) =>
-          setQuery(e.target.value)
-        }
-        placeholder="مثلاً: نکاح، طلاق، نماز، روزہ..."
-        className="
-          w-full
-          bg-transparent
-          py-4
-          text-right
-          text-white
-          placeholder:text-gray-400
-          outline-none
-          text-lg
-        "
-        style={{
-          direction: "rtl",
-          fontFamily:
-            "'Jameel Noori Nastaleeq', serif",
-        }}
-      />
-
-      {/* Voice Button */}
-      <button
-        onClick={startListening}
-        className="
-          px-4
-          h-full
-          hover:bg-yellow-500/10
-          transition
-        "
-      >
-        <Mic className="text-yellow-400 w-6 h-6" />
-      </button>
-
-    </div>
-
-    {/* Smart Suggestions */}
-    <div className="flex flex-wrap gap-2 mt-4 justify-center">
-
-      {[
-        "نماز",
-        "طلاق",
-        "نکاح",
-        "روزہ",
-        "زکوٰۃ",
-        "سود",
-      ].map((item) => (
-
-        <button
-          key={item}
-          onClick={() => setQuery(item)}
-          className="
-            px-4 py-1.5
-            rounded-full
-            bg-yellow-500/10
-            border border-yellow-500/20
-            text-yellow-300
-            text-sm
-            hover:bg-yellow-500/20
-            transition
-          "
-          style={{
-            fontFamily:
-              "'Jameel Noori Nastaleeq', serif",
-          }}
-        >
-          {item}
-        </button>
-      ))}
-
-    </div>
-
-    {/* AI Text */}
-    <div className="text-center mt-4">
-
-      <p
-        className="text-gray-400 text-sm"
-        style={{
-          fontFamily:
-            "'Jameel Noori Nastaleeq', serif",
-        }}
-      >
-        🎙️ آواز سے سوال پوچھیں یا لکھ کر تلاش کریں
-      </p>
-
-    </div>
-
-  </div>
-</div>
+          
           
 
         </div>
