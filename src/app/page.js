@@ -252,7 +252,7 @@ useEffect(() => {
       return;
     }
     const recognition = new SpeechRecognition();
-    recognition.lang = "ur-IN";;
+    recognition.lang = "ur-IN";
     recognition.onresult = (e) => setQuery(e.results[0][0].transcript);
     recognition.start();
   };
@@ -431,7 +431,14 @@ useEffect(() => {
               fontFamily: "'Jameel Noori Nastaleeq', serif",
             }}
           />
-            
+           {query && (
+  <button
+    onClick={() => setQuery("")}
+    className="px-2 text-yellow-400"
+  >
+    <X className="w-5 h-5" />
+  </button>
+)} 
           {/* Mic Button */}
           <button
             onClick={startListening}
