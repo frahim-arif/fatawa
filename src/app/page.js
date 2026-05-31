@@ -476,46 +476,138 @@ useEffect(() => {
 
 
       {/* Questions List */}
-      <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
-        {filteredQuestions.length > 0 ? (
-          filteredQuestions.map((q) => (
-            <Link key={q._id} href={`/questions/${q.slug}`}>
-              <div
-                className="p-5 rounded-xl border bg-yellow-50 border-yellow-300 shadow-md w-full cursor-pointer hover:bg-yellow-100 transition hover:shadow-[0_0_20px_rgba(255,223,0,0.6)]"
-                style={{
-                  direction: "rtl",
-                  fontFamily: "'Jameel Noori Nastaleeq', serif",
-                  lineHeight: "2.2",
-                  textAlign: "right",
-                }}
-              >
-                <h3 className="font-bold text-xl text-green-800">
-                  {q.question}
-                </h3>
-              </div>
-            </Link>
-          ))
-        ) : (
-          <p className="text-center text-black text-lg font-medium">
-            اوپر دیے گئے بٹن پر کلک کر کے سوال و جواب دیکھیں
-          </p>
-        )}
+<section
+  ref={questionsRef}
+  className="space-y-4 px-0 z-10 relative"
+>
 
-        {hasMore && filteredQuestions.length > 0 && (
-          <div className="text-center mt-6">
-            <button
-              onClick={() =>
-                fetchQuestions({
-                  customSkip: skip,
-                })
-              }
-              className="px-6 py-2 bg-green-600 text-white rounded-lg"
-            >
-              مزید سوالات دیکھیں
-            </button>
-          </div>
-        )}
-      </section>
+  {filteredQuestions.length > 0 ? (
+
+    filteredQuestions.map((q) => (
+      <Link key={q._id} href={`/questions/${q.slug}`}>
+        <div
+          className="
+            p-5 rounded-xl border
+            bg-yellow-50
+            border-yellow-300
+            shadow-md
+            w-full
+            cursor-pointer
+            hover:bg-yellow-100
+            transition
+            hover:shadow-[0_0_20px_rgba(255,223,0,0.6)]
+          "
+          style={{
+            direction: "rtl",
+            fontFamily: "'Jameel Noori Nastaleeq', serif",
+            lineHeight: "2.2",
+            textAlign: "right",
+          }}
+        >
+          <h3 className="font-bold text-xl text-green-800">
+            {q.question}
+          </h3>
+        </div>
+      </Link>
+    ))
+
+  ) : (
+
+    <div className="flex flex-col justify-center items-center py-20">
+
+      {/* Premium Islamic Loader */}
+      <div className="relative flex items-center justify-center">
+
+        {/* Outer Ring */}
+        <div
+          className="
+            w-20 h-20
+            rounded-full
+            border-4
+            border-yellow-500/20
+          "
+        ></div>
+
+        {/* Rotating Ring */}
+        <div
+          className="
+            absolute
+            w-20 h-20
+            rounded-full
+            border-4
+            border-yellow-400
+            border-t-transparent
+            animate-spin
+            shadow-[0_0_25px_rgba(255,215,0,0.5)]
+          "
+          style={{
+            animationDuration: "1.2s",
+          }}
+        ></div>
+
+        {/* Glow Circle */}
+        <div
+          className="
+            absolute
+            w-10 h-10
+            rounded-full
+            bg-yellow-400/20
+            animate-pulse
+          "
+        ></div>
+
+        {/* Center Dot */}
+        <div
+          className="
+            absolute
+            w-3 h-3
+            rounded-full
+            bg-yellow-300
+            shadow-[0_0_15px_rgba(255,215,0,0.9)]
+          "
+        ></div>
+
+      </div>
+
+      {/* Loading Text */}
+      <p
+        className="mt-6 text-yellow-200"
+        style={{
+          fontFamily: "'Jameel Noori Nastaleeq', serif",
+          fontSize: "24px",
+          lineHeight: "38px",
+        }}
+      >
+        سوالات لوڈ ہو رہے ہیں...
+      </p>
+
+    </div>
+
+  )}
+
+  {hasMore && filteredQuestions.length > 0 && (
+    <div className="text-center mt-6">
+      <button
+        onClick={() =>
+          fetchQuestions({
+            customSkip: skip,
+          })
+        }
+        className="
+          px-6 py-2
+          bg-green-600
+          text-white
+          rounded-lg
+          hover:bg-green-700
+          transition
+        "
+      >
+        مزید سوالات دیکھیں
+      </button>
+    </div>
+  )}
+
+</section>
        {/* 🕌 Next Prayer Live */}
 <div className="w-full px-3 mt-4">
 
