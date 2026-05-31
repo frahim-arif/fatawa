@@ -22,7 +22,6 @@ export default function HomePage() {
   const [activeTab, setActiveTab] = useState("questions");
   const [nextPrayer, setNextPrayer] = useState("");
 const [countdown, setCountdown] = useState("");
-const [loadingQuestions, setLoadingQuestions] = useState(false);
 
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
@@ -167,81 +166,54 @@ useEffect(() => {
     fetchLatestQuestions();
   }, []);
 
-// Fetch questions
-const fetchQuestions = async ({
-  reset = false,
-  customSkip = 0,
-} = {}) => {
-
-  setLoadingQuestions(true);
-
-  try {
-
-    let url =
-      selectedCategory === ""
-        ? `${backend}/admin/questions?skip=${customSkip}&limit=5`
-        : `${backend}/admin/questions/category/${encodeURIComponent(
+  // Fetch questions
+  const fetchQuestions = async ({
+    reset = false,
+    customSkip = 0,
+  } = {}) => {
+    try {
+      let url =
+        selectedCategory === ""
+          ? `${backend}/admin/questions?skip=${customSkip}&limit=5`
+          : `${backend}/admin/questions/category/${encodeURIComponent(
             selectedCategory
           )}?skip=${customSkip}&limit=5`;
 
-    const res = await fetch(url);
+      const res = await fetch(url);
+      const data = await res.json();
 
-    const data = await res.json();
+      if (data.success) {
+        if (reset) {
+          setAllQuestions(data.data);
+        } else {
+          setAllQuestions((prev) => [...prev, ...data.data]);
+        }
 
-    if (data.success) {
-
-      if (reset) {
-        setAllQuestions(data.data);
-
-      } else {
-
-        setAllQuestions((prev) => [
-          ...prev,
-          ...data.data,
-        ]);
-
+        setSkip(customSkip + 5);
+        setHasMore(data.data.length === 5);
       }
-
-      setSkip(customSkip + 5);
-
-      setHasMore(data.data.length === 5);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  useEffect(() => {
+    // homepage pe kuch mat lao
+    if (selectedCategory === "") {
+      setAllQuestions([]);
+      return;
     }
 
-  } catch (err) {
+    fetchQuestions({
+      reset: true,
+      customSkip: 0,
+    });
+  }, [selectedCategory]);
 
-    console.error(err);
-
-  } finally {
-
-    setLoadingQuestions(false);
-
-  }
-};
-
-useEffect(() => {
-
-  // homepage pe kuch mat lao
-  if (selectedCategory === "") {
-
-    setAllQuestions([]);
-
-    return;
-  }
-
-  fetchQuestions({
-    reset: true,
-    customSkip: 0,
-  });
-
-}, [selectedCategory]);
-
-const filteredQuestions =
-  query.trim() === ""
-    ? allQuestions
-    : allQuestions.filter((q) =>
-        q.question
-          .toLowerCase()
-          .includes(query.toLowerCase())
+  const filteredQuestions =
+    query.trim() === ""
+      ? allQuestions
+      : allQuestions.filter((q) =>
+        q.question.toLowerCase().includes(query.toLowerCase())
       );
 
   // Voice Search
@@ -503,139 +475,47 @@ const filteredQuestions =
       </div>
 
 
-     {/* Questions List */}
-<section
-  ref={questionsRef}
-  className="space-y-4 px-0 z-10 relative"
->
+      {/* Questions List */}
+      <section ref={questionsRef} className="space-y-4 px-0 z-10 relative">
+        {filteredQuestions.length > 0 ? (
+          filteredQuestions.map((q) => (
+            <Link key={q._id} href={`/questions/${q.slug}`}>
+              <div
+                className="p-5 rounded-xl border bg-yellow-50 border-yellow-300 shadow-md w-full cursor-pointer hover:bg-yellow-100 transition hover:shadow-[0_0_20px_rgba(255,223,0,0.6)]"
+                style={{
+                  direction: "rtl",
+                  fontFamily: "'Jameel Noori Nastaleeq', serif",
+                  lineHeight: "2.2",
+                  textAlign: "right",
+                }}
+              >
+                <h3 className="font-bold text-xl text-green-800">
+                  {q.question}
+                </h3>
+              </div>
+            </Link>
+          ))
+        ) : (
+          <p className="text-center text-black text-lg font-medium">
+            اوپر دیے گئے بٹن پر کلک کر کے سوال و جواب دیکھیں
+          </p>
+        )}
 
-  {loadingQuestions ? (
-
-    // Loader
-    <div className="flex flex-col justify-center items-center py-20">
-
-      <div className="relative flex items-center justify-center">
-
-        <div className="w-20 h-20 rounded-full border-4 border-yellow-500/20"></div>
-
-        <div
-          className="
-            absolute
-            w-20 h-20
-            rounded-full
-            border-4
-            border-yellow-400
-            border-t-transparent
-            animate-spin
-            shadow-[0_0_25px_rgba(255,215,0,0.5)]
-          "
-          style={{
-            animationDuration: "1.2s",
-          }}
-        ></div>
-
-        <div
-          className="
-            absolute
-            w-10 h-10
-            rounded-full
-            bg-yellow-400/20
-            animate-pulse
-          "
-        ></div>
-
-        <div
-          className="
-            absolute
-            w-3 h-3
-            rounded-full
-            bg-yellow-300
-            shadow-[0_0_15px_rgba(255,215,0,0.9)]
-          "
-        ></div>
-
-      </div>
-
-      <p
-        className="mt-6 text-yellow-200"
-        style={{
-          fontFamily: "'Jameel Noori Nastaleeq', serif",
-          fontSize: "24px",
-          lineHeight: "38px",
-        }}
-      >
-        سوالات لوڈ ہو رہے ہیں...
-      </p>
-
-    </div>
-
-  ) : filteredQuestions.length > 0 ? (
-
-    filteredQuestions.map((q) => (
-      <Link key={q._id} href={`/questions/${q.slug}`}>
-        <div
-          className="
-            p-5 rounded-xl border
-            bg-yellow-50
-            border-yellow-300
-            shadow-md
-            w-full
-            cursor-pointer
-            hover:bg-yellow-100
-            transition
-            hover:shadow-[0_0_20px_rgba(255,223,0,0.6)]
-          "
-          style={{
-            direction: "rtl",
-            fontFamily: "'Jameel Noori Nastaleeq', serif",
-            lineHeight: "2.2",
-            textAlign: "right",
-          }}
-        >
-          <h3 className="font-bold text-xl text-green-800">
-            {q.question}
-          </h3>
-        </div>
-      </Link>
-    ))
-
-  ) : (
-
-    <p
-      className="text-center text-yellow-200 py-10"
-      style={{
-        fontFamily: "'Jameel Noori Nastaleeq', serif",
-        fontSize: "24px",
-      }}
-    >
-      کوئی سوال موجود نہیں
-    </p>
-
-  )}
-
-  {hasMore && filteredQuestions.length > 0 && !loadingQuestions && (
-    <div className="text-center mt-6">
-      <button
-        onClick={() =>
-          fetchQuestions({
-            customSkip: skip,
-          })
-        }
-        className="
-          px-6 py-2
-          bg-green-600
-          text-white
-          rounded-lg
-          hover:bg-green-700
-          transition
-        "
-      >
-        مزید سوالات دیکھیں
-      </button>
-    </div>
-  )}
-
-</section>
+        {hasMore && filteredQuestions.length > 0 && (
+          <div className="text-center mt-6">
+            <button
+              onClick={() =>
+                fetchQuestions({
+                  customSkip: skip,
+                })
+              }
+              className="px-6 py-2 bg-green-600 text-white rounded-lg"
+            >
+              مزید سوالات دیکھیں
+            </button>
+          </div>
+        )}
+      </section>
        {/* 🕌 Next Prayer Live */}
 <div className="w-full px-3 mt-4">
 
