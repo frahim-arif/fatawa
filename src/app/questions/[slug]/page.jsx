@@ -235,27 +235,47 @@ export default async function Page({ params }) {
     <>
       {/* JSON LD */}
       <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
 
-            "@type": "QAPage",
+      "@type": "QAPage",
 
-            mainEntity: {
-              "@type": "Question",
+      "mainEntity": {
+        "@type": "Question",
 
-              name: question.question,
+        "name": question.question,
 
-              acceptedAnswer: {
-                "@type": "Answer",
+        "text": question.question,
 
-                text: question.answer,
-              },
-            },
-          }),
-        }}
-      />
+        "answerCount": 1,
+
+        "datePublished":
+          question.createdAt ||
+          new Date().toISOString(),
+
+        "author": {
+          "@type": "Organization",
+          "name": "Maslak e Deoband"
+        },
+
+        "acceptedAnswer": {
+          "@type": "Answer",
+
+          "text":
+            question.answer?.replace(/<[^>]*>/g, "") || "",
+
+          "datePublished":
+            question.createdAt ||
+            new Date().toISOString(),
+
+          "upvoteCount": 0
+        }
+      }
+    }),
+  }}
+/>
 
       <div className="max-w-3xl mx-auto px-4 md:px-6 py-6 space-y-6 text-right">
 
