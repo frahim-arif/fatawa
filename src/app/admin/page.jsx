@@ -28,7 +28,7 @@ export default function AdminAddQuestion() {
     "جدید مسائل",
     "نماز",
     "حج",
-    "زکات",
+    "زکوٰۃ",
     "عقیقہ",
     "طہارت",
     "رمضان",
