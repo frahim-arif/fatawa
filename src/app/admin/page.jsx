@@ -24,18 +24,18 @@ export default function AdminAddQuestion() {
 
   const router = useRouter();
 
- const categories = [
-  "جدید مسائل",
-  "نماز",
-  "حج",
-  "زکوٰۃ",
-  "عقیقہ",
-  "طہارت",
-  "رمضان",
-  "قربانی",
-  "نکاح",
-  "بیوع",
-];
+  const categories = [
+    { name: "جدید مسائل", slug: "jadeed-masail" },
+    { name: "نماز", slug: "namaz" },
+    { name: "حج", slug: "hajj" },
+    { name: "زکوٰۃ", slug: "zakat" },
+    { name: "عقیقہ", slug: "aqiqah" },
+    { name: "طہارت", slug: "taharat" },
+    { name: "رمضان", slug: "ramzan" },
+    { name: "قربانی", slug: "qurbani" },
+    { name: "نکاح", slug: "nikah" },
+    { name: "بیوع", slug: "buyuo" },
+  ];
 
   // ✅ SLUG GENERATOR (Urdu + English support)
   const generateSlug = (text) => {
@@ -142,8 +142,10 @@ export default function AdminAddQuestion() {
               className="w-full border p-2 rounded"
             >
               <option value="">زمرہ منتخب کریں</option>
-              {categories.map((cat, i) => (
-                <option key={i}>{cat}</option>
+              {categories.map((cat) => (
+                <option key={cat.slug} value={cat.slug}>
+                  {cat.name}
+                </option>
               ))}
             </select>
           </div>
