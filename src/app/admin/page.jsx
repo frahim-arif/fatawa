@@ -24,18 +24,18 @@ export default function AdminAddQuestion() {
 
   const router = useRouter();
 
-  const categories = [
-    "جدید مسائل",
-    "نماز",
-    "حج",
-    "زکوٰۃ",
-    "عقیقہ",
-    "طہارت",
-    "رمضان",
-    "قربانی",
-    "نکاح",
-    "بیوع",
-  ];
+ const categories = [
+  "جدید مسائل",
+  "نماز",
+  "حج",
+  "زکوٰۃ",
+  "عقیقہ",
+  "طہارت",
+  "رمضان",
+  "قربانی",
+  "نکاح",
+  "بیوع",
+];
 
   // ✅ SLUG GENERATOR (Urdu + English support)
   const generateSlug = (text) => {
