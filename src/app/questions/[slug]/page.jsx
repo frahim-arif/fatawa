@@ -257,7 +257,8 @@ export default async function Page({ params }) {
 
         "author": {
           "@type": "Organization",
-          "name": "Maslak e Deoband"
+          "name": "Maslak e Deoband",
+            "url": "https://www.maslakedeoband.in/images/logo.png"
         },
 
         "acceptedAnswer": {
