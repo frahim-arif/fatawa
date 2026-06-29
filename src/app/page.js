@@ -22,6 +22,7 @@ export default function HomePage() {
   const [activeTab, setActiveTab] = useState("questions");
   const [nextPrayer, setNextPrayer] = useState("");
   const [countdown, setCountdown] = useState("");
+  const [majameen, setMajameen] = useState([]);
 
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
@@ -143,6 +144,16 @@ export default function HomePage() {
 
     fetchPrayerTimes();
   }, []);
+
+  useEffect(() =>{
+fetch("https://f-backend-vdi1.onrender.com/api/majameen")
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.success) {
+      setMajameen(data.data.slice(0, 4));
+    }
+  });
+  },[])
 
 
 
@@ -871,55 +882,31 @@ export default function HomePage() {
           )}
 
           {/* Majameen */}
-          {activeTab === "majameen" && (
-            <div className="space-y-3">
+{activeTab === "majameen" && (
+  <div className="space-y-3">
 
-              <Link
-                href="/majameen"
-                className="block text-blue-700 hover:text-green-700 hover:underline"
-                style={{
-                  fontSize: "20px",
-                  lineHeight: "32px",
-                }}
-              >
-                ➜ اسلامی معاشرہ
-              </Link>
+    {majameen.length > 0 ? (
+      majameen.map((item) => (
+        <Link
+          key={item._id}
+          href={`/majameen/${item._id}`}
+          className="block text-blue-700 hover:text-green-700 hover:underline"
+          style={{
+            fontSize: "20px",
+            lineHeight: "32px",
+          }}
+        >
+          ➜ {item.title}
+        </Link>
+      ))
+    ) : (
+      <p className="text-gray-500 text-center">
+        کوئی مضمون موجود نہیں۔
+      </p>
+    )}
 
-              <Link
-                href="/majameen"
-                className="block text-blue-700 hover:text-green-700 hover:underline"
-                style={{
-                  fontSize: "20px",
-                  lineHeight: "32px",
-                }}
-              >
-                ➜ سیرت النبی ﷺ
-              </Link>
-
-              <Link
-                href="/majameen"
-                className="block text-blue-700 hover:text-green-700 hover:underline"
-                style={{
-                  fontSize: "20px",
-                  lineHeight: "32px",
-                }}
-              >
-                ➜ اصلاحِ معاشرہ
-              </Link>
-
-              <Link
-                href="/majameen"
-                className="block text-blue-700 hover:text-green-700 hover:underline"
-                style={{
-                  fontSize: "20px",
-                  lineHeight: "32px",
-                }}
-              >
-                ➜ دینی مضامین
-              </Link>
-
-            </div>
-          )}
+  </div>
+)}
 
 
         </div>
