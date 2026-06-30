@@ -909,8 +909,9 @@ fetch("https://f-backend-vdi1.onrender.com/api/majameen")
   </div>
 )}
 
-<LatestBooksSlider />
+
         </div>
+        <LatestBooksSlider />
 
       </div>
 
