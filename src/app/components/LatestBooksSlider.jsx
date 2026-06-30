@@ -38,6 +38,7 @@ export default function LatestBooksSlider() {
     if (book.image) return book.image;
 
     let fileId = "";
+
     if (book.pdf?.includes("/d/")) {
       fileId = book.pdf.split("/d/")[1]?.split("/")[0];
     } else if (book.pdf?.includes("id=")) {
@@ -56,6 +57,7 @@ export default function LatestBooksSlider() {
       <div className="rounded-2xl border border-yellow-600/40 bg-white/95 shadow-lg p-3 overflow-hidden">
         <div className="text-center mb-3">
           <BookOpen className="mx-auto text-blue-950 mb-1" size={24} />
+
           <h2 className="text-2xl font-bold text-[#4b3415]">
             تازہ ترین اسلامی کتب
           </h2>
@@ -74,20 +76,24 @@ export default function LatestBooksSlider() {
                 href={`/books/${book._id}`}
                 className="min-w-[25%] px-1"
               >
-                <div className="rounded-xl border border-yellow-200 bg-white shadow p-1 text-center">
-                  <div className="h-[75px] overflow-hidden rounded-lg border-2 border-yellow-600 bg-[#14532d]">
-                    {cover ? (
-                      <img
-                        src={cover}
-                        alt={book.title}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <BookOpen className="text-yellow-300" size={30} />
-                      </div>
-                    )}
+                <div className="rounded-xl border border-blue-200 bg-white shadow p-1 text-center hover:shadow-lg transition">
+                  <div className="relative h-[75px] rounded-lg overflow-hidden">
+                    <div className="absolute inset-0 rounded-lg bg-[conic-gradient(from_0deg,#06b6d4,#2563eb,#1d4ed8,#38bdf8,#06b6d4)] animate-spin"></div>
+
+                    <div className="absolute inset-[2px] rounded-[6px] bg-[#14532d] overflow-hidden">
+                      {cover ? (
+                        <img
+                          src={cover}
+                          alt={book.title}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <BookOpen className="text-cyan-300" size={30} />
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <h3 className="mt-1 line-clamp-1 text-[#2d1f10] text-[11px]">
