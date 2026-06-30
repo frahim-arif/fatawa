@@ -6,7 +6,7 @@ import { BookOpen, Layers } from "lucide-react";
 
 export default function LatestBooksSlider() {
   const [books, setBooks] = useState([]);
-  const [start, setStart] = useState(0);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     fetch("https://f-backend-vdi1.onrender.com/api/books")
@@ -19,8 +19,8 @@ export default function LatestBooksSlider() {
     if (books.length <= 4) return;
 
     const timer = setInterval(() => {
-      setStart((prev) => (prev + 1) % books.length);
-    }, 1800);
+      setIndex((prev) => (prev + 1) % books.length);
+    }, 2200);
 
     return () => clearInterval(timer);
   }, [books]);
@@ -42,9 +42,7 @@ export default function LatestBooksSlider() {
       : "";
   };
 
-  const visibleBooks = Array.from({ length: 4 }, (_, i) => {
-    return books[(start + i) % books.length];
-  });
+  const displayBooks = [...books, ...books, ...books];
 
   return (
     <section className="w-full px-2 pb-6 mt-6">
@@ -56,35 +54,46 @@ export default function LatestBooksSlider() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-4 gap-2 transition-all duration-700 ease-in-out">
-          {visibleBooks.map((book) => {
-            const cover = getCover(book);
+        <div className="overflow-hidden w-full">
+          <div
+            className="flex transition-transform duration-700 ease-in-out"
+            style={{
+              transform: `translateX(-${index * 25}%)`,
+            }}
+          >
+            {displayBooks.map((book, i) => {
+              const cover = getCover(book);
 
-            return (
-              <Link key={book._id} href={`/books/${book._id}`}>
-                <div className="rounded-xl border border-yellow-200 bg-white shadow p-1 text-center transition-all duration-700 ease-in-out">
-                  <div className="h-[75px] sm:h-[105px] md:h-[135px] overflow-hidden rounded-lg border-2 border-yellow-600 bg-[#14532d]">
-                    {cover ? (
-                      <img
-                        src={cover}
-                        alt={book.title}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <BookOpen className="text-yellow-300" size={30} />
-                      </div>
-                    )}
+              return (
+                <Link
+                  key={`${book._id}-${i}`}
+                  href={`/books/${book._id}`}
+                  className="flex-[0_0_25%] px-1"
+                >
+                  <div className="rounded-xl border border-yellow-200 bg-white shadow p-1 text-center">
+                    <div className="h-[75px] sm:h-[105px] md:h-[135px] overflow-hidden rounded-lg border-2 border-yellow-600 bg-[#14532d]">
+                      {cover ? (
+                        <img
+                          src={cover}
+                          alt={book.title}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <BookOpen className="text-yellow-300" size={30} />
+                        </div>
+                      )}
+                    </div>
+
+                    <h3 className="mt-1 line-clamp-1 text-[#2d1f10] text-[11px] sm:text-[13px]">
+                      {book.title}
+                    </h3>
                   </div>
-
-                  <h3 className="mt-1 line-clamp-1 text-[#2d1f10] text-[11px] sm:text-[13px]">
-                    {book.title}
-                  </h3>
-                </div>
-              </Link>
-            );
-          })}
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
         <div className="text-center mt-4">
