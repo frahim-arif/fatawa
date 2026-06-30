@@ -12,7 +12,7 @@ export default function LatestBooksSlider() {
     fetch("https://f-backend-vdi1.onrender.com/api/books")
       .then((res) => res.json())
       .then((data) => {
-        if (data.success) setBooks(data.data || []);
+        setBooks(data.books || []);
       })
       .catch(() => setBooks([]));
   }, []);
@@ -23,55 +23,65 @@ export default function LatestBooksSlider() {
 
   return (
     <section className="px-2 pb-8 mt-8">
-      <div className="overflow-hidden rounded-2xl border border-yellow-600/40 bg-white/90 shadow-lg p-4">
+      <div className="rounded-2xl border border-yellow-600/40 bg-white/90 shadow-lg p-4 overflow-hidden">
         <div className="text-center mb-4">
           <BookOpen className="mx-auto text-yellow-700 mb-1" size={28} />
           <h2 className="text-2xl md:text-3xl font-bold text-[#4b3415]">
             تازہ ترین اسلامی کتب
           </h2>
-          <p className="text-[#7a5f3e] text-sm md:text-lg mt-1">
-            مستند اسلامی کتابیں، آسان مطالعہ اور ڈاؤنلوڈ
-          </p>
         </div>
 
         <div className="overflow-hidden">
           <div className="flex gap-3 animate-book-scroll w-max">
-            {loopBooks.map((book, i) => (
-              <Link
-                key={`${book._id}-${i}`}
-                href={`/books/${book._id}`}
-                className="w-[110px] sm:w-[130px] md:w-[160px] shrink-0"
-              >
-                <div className="bg-white rounded-xl border shadow p-2 text-center hover:shadow-lg transition">
-                  <div className="h-[110px] sm:h-[130px] md:h-[170px] rounded-lg bg-gradient-to-b from-[#123b2a] to-[#061812] border-2 border-yellow-700 flex items-center justify-center overflow-hidden">
-                    {book.image ? (
-                      <img
-                        src={book.image}
-                        alt={book.title}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <BookOpen className="text-yellow-400" size={34} />
-                    )}
-                  </div>
+            {loopBooks.map((book, i) => {
+              let fileId = "";
 
-                  <h3 className="mt-2 text-[#2d1f10] text-sm md:text-lg font-semibold line-clamp-1">
-                    {book.title}
-                  </h3>
+              if (book.pdf?.includes("/d/")) {
+                fileId = book.pdf.split("/d/")[1]?.split("/")[0];
+              } else if (book.pdf?.includes("id=")) {
+                fileId = new URLSearchParams(
+                  book.pdf.split("?")[1]
+                ).get("id");
+              }
 
-                  <div className="mt-2 border border-yellow-600/50 rounded-lg py-1 text-[#6b4515] text-sm md:text-base">
-                    پڑھیں 📖
+              const previewUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+
+              return (
+                <Link
+                  key={`${book._id}-${i}`}
+                  href={`/books/${book._id}`}
+                  className="w-[105px] sm:w-[125px] md:w-[150px] shrink-0"
+                >
+                  <div className="bg-white rounded-xl border shadow p-2 text-center hover:shadow-lg transition">
+                    <iframe
+                      src={previewUrl}
+                      title={book.title}
+                      className="w-full h-[120px] sm:h-[145px] md:h-[175px] rounded-lg border-0 pointer-events-none"
+                    />
+
+                    <h3
+                      className="mt-2 text-[#2d1f10] text-sm md:text-lg line-clamp-1"
+                      style={{
+                        fontFamily: "'Jameel Noori Nastaleeq', serif",
+                      }}
+                    >
+                      {book.title}
+                    </h3>
+
+                    <div className="mt-2 border border-yellow-600/50 rounded-lg py-1 text-[#6b4515] text-sm">
+                      پڑھیں 📖
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         </div>
 
         <div className="text-center mt-5">
           <Link
             href="/books"
-            className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-b from-yellow-500 to-yellow-700 text-white shadow text-base md:text-xl"
+            className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-b from-yellow-500 to-yellow-700 text-white shadow text-base"
           >
             <Layers size={18} />
             تمام کتب دیکھیں

@@ -134,7 +134,7 @@ p, div, span, h1, h2, h3 {
 }
 
 .animate-book-scroll {
-  animation: book-scroll 22s linear infinite;
+  animation: book-scroll 24s linear infinite;
 }
 
 .animate-book-scroll:hover {
