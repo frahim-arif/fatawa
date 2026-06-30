@@ -20,7 +20,7 @@ export default function LatestBooksSlider() {
     },
     [
       Autoplay({
-        delay: 1200,
+        delay: 3000,
         stopOnInteraction: false,
         stopOnMouseEnter: true,
       }),
