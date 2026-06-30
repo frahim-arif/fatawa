@@ -124,23 +124,3 @@ p, div, span, h1, h2, h3 {
   font-family: var(--font-amiri), serif !important;
 }
 
-.book-slider-track {
-  display: flex;
-  gap: 8px;
-  width: max-content;
-  animation: bookSlider 18s linear infinite;
-  will-change: transform;
-}
-
-.book-slider-track:hover {
-  animation-play-state: paused;
-}
-
-@keyframes bookSlider {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-25%);
-  }
-}

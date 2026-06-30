@@ -1,12 +1,31 @@
 // components/LatestBooksSlider.jsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import { BookOpen, Layers } from "lucide-react";
 
 export default function LatestBooksSlider() {
   const [books, setBooks] = useState([]);
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+      align: "start",
+      direction: "ltr",
+      dragFree: true,
+      containScroll: false,
+    },
+    [
+      Autoplay({
+        delay: 1200,
+        stopOnInteraction: false,
+        stopOnMouseEnter: true,
+      }),
+    ]
+  );
 
   useEffect(() => {
     fetch("https://f-backend-vdi1.onrender.com/api/books")
@@ -15,13 +34,31 @@ export default function LatestBooksSlider() {
       .catch(() => setBooks([]));
   }, []);
 
+  useEffect(() => {
+    if (emblaApi) emblaApi.reInit();
+  }, [emblaApi, books]);
+
   if (!books.length) return null;
 
-  const loopBooks = [...books, ...books, ...books, ...books];
+  const getCover = (book) => {
+    if (book.image) return book.image;
+
+    let fileId = "";
+
+    if (book.pdf?.includes("/d/")) {
+      fileId = book.pdf.split("/d/")[1]?.split("/")[0];
+    } else if (book.pdf?.includes("id=")) {
+      fileId = new URLSearchParams(book.pdf.split("?")[1]).get("id");
+    }
+
+    return fileId
+      ? `https://drive.google.com/thumbnail?id=${fileId}&sz=w400`
+      : "";
+  };
 
   return (
     <section className="w-full px-1 pb-5 mt-6">
-      <div className="w-full overflow-hidden rounded-2xl border border-yellow-600/40 bg-white/95 shadow-lg p-3">
+      <div className="w-full rounded-2xl border border-yellow-600/40 bg-white/95 shadow-lg p-3 overflow-hidden">
         <div className="text-center mb-3">
           <BookOpen className="mx-auto text-yellow-700 mb-1" size={24} />
           <h2
@@ -32,32 +69,49 @@ export default function LatestBooksSlider() {
           </h2>
         </div>
 
-        <div className="relative overflow-hidden w-full">
-          <div className="book-slider-track">
-            {loopBooks.map((book, i) => (
-              <Link
-                key={`${book._id}-${i}`}
-                href={`/books/${book._id}`}
-                className="w-[95px] sm:w-[115px] md:w-[145px] shrink-0"
-              >
-                <div className="rounded-xl border border-yellow-200 bg-white shadow p-2 text-center">
-                  <div className="h-[95px] sm:h-[115px] md:h-[145px] rounded-lg bg-gradient-to-b from-[#14532d] via-[#166534] to-[#052e16] border-2 border-yellow-600 flex items-center justify-center px-1">
-                    <BookOpen className="text-yellow-300 absolute opacity-20" size={52} />
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex gap-2">
+            {books.map((book) => {
+              const cover = getCover(book);
 
-                    <h3
-                      className="relative z-10 text-white text-[15px] sm:text-[17px] md:text-xl leading-7 line-clamp-3"
-                      style={{ fontFamily: "'Jameel Noori Nastaleeq', serif" }}
-                    >
-                      {book.title}
-                    </h3>
-                  </div>
+              return (
+                <div
+                  key={book._id}
+                  className="min-w-[32%] sm:min-w-[24%] md:min-w-[16%]"
+                >
+                  <Link href={`/books/${book._id}`}>
+                    <div className="rounded-xl border border-yellow-200 bg-white shadow p-2 text-center">
+                      <div className="h-[95px] sm:h-[120px] md:h-[145px] rounded-lg overflow-hidden bg-[#14532d] border-2 border-yellow-600">
+                        {cover ? (
+                          <img
+                            src={cover}
+                            alt={book.title}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <BookOpen className="text-yellow-300" size={42} />
+                          </div>
+                        )}
+                      </div>
 
-                  <div className="mt-2 rounded-lg bg-yellow-600 text-white py-1 text-xs">
-                    پڑھیں
-                  </div>
+                      <h3
+                        className="mt-2 text-[#2d1f10] text-[14px] md:text-lg line-clamp-1"
+                        style={{
+                          fontFamily: "'Jameel Noori Nastaleeq', serif",
+                        }}
+                      >
+                        {book.title}
+                      </h3>
+
+                      <div className="mt-2 rounded-lg bg-yellow-600 text-white py-1 text-xs">
+                        پڑھیں
+                      </div>
+                    </div>
+                  </Link>
                 </div>
-              </Link>
-            ))}
+              );
+            })}
           </div>
         </div>
 
