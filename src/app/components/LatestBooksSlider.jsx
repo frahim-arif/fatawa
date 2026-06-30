@@ -17,10 +17,10 @@ export default function LatestBooksSlider() {
 
   if (!books.length) return null;
 
-  const loopBooks = [...books, ...books];
+  const loopBooks = Array(6).fill(books).flat();
 
   return (
-    <section className="w-full px-1 sm:px-2 pb-6 mt-6">
+    <section className="w-full px-1 pb-6 mt-6">
       <div className="w-full overflow-hidden rounded-2xl border border-yellow-600/40 bg-white/90 shadow-lg p-3">
         <div className="text-center mb-3">
           <BookOpen className="mx-auto text-yellow-700 mb-1" size={26} />
@@ -32,8 +32,8 @@ export default function LatestBooksSlider() {
           </h2>
         </div>
 
-        <div className="overflow-hidden">
-          <div className="flex gap-3 w-max animate-book-scroll">
+        <div className="overflow-hidden w-full">
+          <div className="book-marquee">
             {loopBooks.map((book, i) => {
               let fileId = "";
 
@@ -49,23 +49,23 @@ export default function LatestBooksSlider() {
                 <Link
                   key={`${book._id}-${i}`}
                   href={`/books/${book._id}`}
-                  className="w-[145px] sm:w-[160px] md:w-[175px] shrink-0"
+                  className="w-[135px] sm:w-[155px] md:w-[175px] shrink-0"
                 >
-                  <div className="bg-white rounded-xl border border-yellow-200 shadow p-2 text-center hover:shadow-lg transition">
+                  <div className="bg-white rounded-xl border border-yellow-200 shadow p-2 text-center">
                     <iframe
                       src={previewUrl}
                       title={book.title}
-                      className="w-full h-[95px] sm:h-[115px] md:h-[135px] rounded-lg border-0 pointer-events-none"
+                      className="w-full h-[85px] sm:h-[105px] md:h-[130px] rounded-lg border-0 pointer-events-none"
                     />
 
                     <h3
-                      className="mt-2 text-[#2d1f10] text-[16px] md:text-lg line-clamp-1"
+                      className="mt-2 text-[#2d1f10] text-[15px] md:text-lg line-clamp-1"
                       style={{ fontFamily: "'Jameel Noori Nastaleeq', serif" }}
                     >
                       {book.title}
                     </h3>
 
-                    <div className="mt-2 rounded-lg border border-yellow-600/50 py-1 text-[#6b4515] text-sm">
+                    <div className="mt-2 rounded-lg border border-yellow-600/50 py-1 text-[#6b4515] text-xs md:text-sm">
                       پڑھیں 📖
                     </div>
                   </div>
