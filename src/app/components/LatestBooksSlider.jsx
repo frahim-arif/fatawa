@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
+import AutoScroll from "embla-carousel-auto-scroll";
 import { BookOpen, Layers } from "lucide-react";
 
 export default function LatestBooksSlider() {
@@ -14,14 +14,15 @@ export default function LatestBooksSlider() {
     {
       loop: true,
       align: "start",
-      direction: "ltr",
-      slidesToScroll: 1,
+      dragFree: true,
       containScroll: false,
-      dragFree: false,
+      direction: "ltr",
     },
     [
-      Autoplay({
-        delay: 1600,
+      AutoScroll({
+        speed: 0.6,
+        startDelay: 0,
+        playOnInit: true,
         stopOnInteraction: false,
         stopOnMouseEnter: true,
       }),
@@ -36,8 +37,12 @@ export default function LatestBooksSlider() {
   }, []);
 
   useEffect(() => {
-    if (emblaApi) emblaApi.reInit();
+    if (emblaApi && books.length) emblaApi.reInit();
   }, [emblaApi, books]);
+
+  if (!books.length) return null;
+
+  const displayBooks = Array.from({ length: 10 }, () => books).flat();
 
   const getCover = (book) => {
     if (book.image) return book.image;
@@ -55,13 +60,9 @@ export default function LatestBooksSlider() {
       : "";
   };
 
-  if (!books.length) return null;
-
-  const displayBooks = [...books, ...books, ...books, ...books];
-
   return (
     <section className="w-full px-1 pb-5 mt-6">
-      <div className="w-full overflow-hidden rounded-2xl border border-yellow-600/40 bg-white/95 shadow-lg p-3">
+      <div className="w-full rounded-2xl border border-yellow-600/40 bg-white/95 shadow-lg p-3 overflow-hidden">
         <div className="text-center mb-3">
           <BookOpen className="mx-auto text-blue-950 mb-1" size={24} />
           <h2
@@ -80,17 +81,11 @@ export default function LatestBooksSlider() {
               return (
                 <div
                   key={`${book._id}-${index}`}
-                  className="
-                    flex-[0_0_25%]
-                    sm:flex-[0_0_22%]
-                    md:flex-[0_0_16.666%]
-                    lg:flex-[0_0_14.285%]
-                    px-1
-                  "
+                  className="flex-[0_0_25%] sm:flex-[0_0_22%] md:flex-[0_0_16.666%] lg:flex-[0_0_14.285%] px-1"
                 >
                   <Link href={`/books/${book._id}`}>
-                    <div className="rounded-xl border border-yellow-200 bg-white shadow hover:shadow-lg transition-all duration-300 p-1.5 text-center">
-                      <div className="h-[75px] sm:h-[115px] md:h-[145px] overflow-hidden rounded-lg border-2 border-yellow-600 bg-[#14532d]">
+                    <div className="rounded-xl border border-yellow-200 bg-white shadow hover:shadow-lg transition p-1.5 text-center">
+                      <div className="h-[78px] sm:h-[115px] md:h-[145px] overflow-hidden rounded-lg border-2 border-yellow-600 bg-[#14532d]">
                         {cover ? (
                           <img
                             src={cover}
@@ -106,8 +101,10 @@ export default function LatestBooksSlider() {
                       </div>
 
                       <h3
-                        className="mt-1.5 line-clamp-1 text-[#2d1f10] text-[11px] sm:text-[13px] md:text-base leading-5"
-                        style={{ fontFamily: "'Jameel Noori Nastaleeq', serif" }}
+                        className="mt-1.5 line-clamp-1 text-[#2d1f10] text-[11px] sm:text-[13px] md:text-base"
+                        style={{
+                          fontFamily: "'Jameel Noori Nastaleeq', serif",
+                        }}
                       >
                         {book.title}
                       </h3>
