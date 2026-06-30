@@ -124,3 +124,47 @@ p, div, span, h1, h2, h3 {
   font-family: var(--font-amiri), serif !important;
 }
 
+.latest-books-mask {
+  width: 100%;
+  overflow: hidden;
+}
+
+.latest-books-track {
+  display: flex;
+  gap: 6px;
+  width: max-content;
+  animation: latestBooksMove 18s linear infinite;
+}
+
+.latest-book-card {
+  flex: 0 0 auto;
+  width: calc((100vw - 22px) / 4);
+  max-width: 120px;
+}
+
+@media (min-width: 640px) {
+  .latest-book-card {
+    width: 150px;
+    max-width: 150px;
+  }
+}
+
+@media (min-width: 768px) {
+  .latest-book-card {
+    width: 170px;
+    max-width: 170px;
+  }
+}
+
+@keyframes latestBooksMove {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-25%);
+  }
+}
+
+.latest-books-track:hover {
+  animation-play-state: paused;
+}
