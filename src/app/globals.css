@@ -129,12 +129,12 @@ p, div, span, h1, h2, h3 {
     transform: translateX(0);
   }
   to {
-    transform: translateX(-33.33%);
+    transform: translateX(-50%);
   }
 }
 
 .animate-book-scroll {
-  animation: book-scroll 22s linear infinite;
+  animation: book-scroll 35s linear infinite;
   will-change: transform;
 }
 

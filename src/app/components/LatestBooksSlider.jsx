@@ -17,7 +17,7 @@ export default function LatestBooksSlider() {
 
   if (!books.length) return null;
 
-  const loopBooks = [...books, ...books, ...books];
+  const loopBooks = [...books, ...books];
 
   return (
     <section className="w-full px-1 sm:px-2 pb-6 mt-6">
