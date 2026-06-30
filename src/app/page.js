@@ -5,6 +5,7 @@ import Head from "next/head";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
+import LatestBooksSlider from "@/components/LatestBooksSlider";
 
 
 
@@ -908,7 +909,7 @@ fetch("https://f-backend-vdi1.onrender.com/api/majameen")
   </div>
 )}
 
-
+<LatestBooksSlider />
         </div>
 
       </div>
