@@ -9,6 +9,27 @@ export default function LatestBooksSlider() {
   const sliderRef = useRef(null);
 
   useEffect(() => {
+    const style = document.createElement("style");
+
+    style.innerHTML = `
+      @keyframes slow-spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+
+      .animate-slow-spin {
+        animation: slow-spin 8s linear infinite;
+      }
+    `;
+
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
+  useEffect(() => {
     fetch("https://f-backend-vdi1.onrender.com/api/books")
       .then((res) => res.json())
       .then((data) => setBooks(data.books || []))
@@ -78,7 +99,7 @@ export default function LatestBooksSlider() {
               >
                 <div className="rounded-xl border border-blue-200 bg-white shadow p-1 text-center hover:shadow-lg transition">
                   <div className="relative h-[75px] rounded-lg overflow-hidden">
-                    <div className="absolute inset-0 rounded-lg bg-[conic-gradient(from_0deg,#06b6d4,#2563eb,#1d4ed8,#38bdf8,#06b6d4)] animate-spin"></div>
+                    <div className="absolute inset-0 rounded-lg bg-[conic-gradient(from_0deg,#06b6d4,#2563eb,#1d4ed8,#38bdf8,#06b6d4)] animate-slow-spin"></div>
 
                     <div className="absolute inset-[2px] rounded-[6px] bg-[#14532d] overflow-hidden">
                       {cover ? (
