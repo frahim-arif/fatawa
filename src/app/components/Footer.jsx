@@ -14,7 +14,7 @@ export default function Footer() {
   return (
     <footer className="relative mt-8 overflow-hidden border-t border-yellow-700/40">
       <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-[#3b2f2f]" />
+        <div className="absolute inset-0 " />
         <div
           className="absolute inset-0 opacity-10"
           style={{
