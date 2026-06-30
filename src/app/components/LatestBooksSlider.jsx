@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { BookOpen, Layers } from "lucide-react";
 
 export default function LatestBooksSlider() {
   const [books, setBooks] = useState([]);
-  const [index, setIndex] = useState(0);
+  const sliderRef = useRef(null);
 
   useEffect(() => {
     fetch("https://f-backend-vdi1.onrender.com/api/books")
@@ -16,11 +16,18 @@ export default function LatestBooksSlider() {
   }, []);
 
   useEffect(() => {
-    if (books.length <= 4) return;
+    const slider = sliderRef.current;
+    if (!slider || books.length <= 4) return;
 
     const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % books.length);
-    }, 2200);
+      const cardWidth = slider.clientWidth / 4;
+
+      if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 5) {
+        slider.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        slider.scrollBy({ left: cardWidth, behavior: "smooth" });
+      }
+    }, 2000);
 
     return () => clearInterval(timer);
   }, [books]);
@@ -42,7 +49,7 @@ export default function LatestBooksSlider() {
       : "";
   };
 
-  const displayBooks = [...books, ...books, ...books];
+  const displayBooks = [...books, ...books];
 
   return (
     <section className="w-full px-2 pb-6 mt-6">
@@ -54,46 +61,42 @@ export default function LatestBooksSlider() {
           </h2>
         </div>
 
-        <div className="overflow-hidden w-full">
-          <div
-            className="flex transition-transform duration-700 ease-in-out"
-            style={{
-              transform: `translateX(-${index * 25}%)`,
-            }}
-          >
-            {displayBooks.map((book, i) => {
-              const cover = getCover(book);
+        <div
+          ref={sliderRef}
+          className="flex overflow-x-scroll scroll-smooth no-scrollbar"
+        >
+          {displayBooks.map((book, i) => {
+            const cover = getCover(book);
 
-              return (
-                <Link
-                  key={`${book._id}-${i}`}
-                  href={`/books/${book._id}`}
-                  className="flex-[0_0_25%] px-1"
-                >
-                  <div className="rounded-xl border border-yellow-200 bg-white shadow p-1 text-center">
-                    <div className="h-[75px] sm:h-[105px] md:h-[135px] overflow-hidden rounded-lg border-2 border-yellow-600 bg-[#14532d]">
-                      {cover ? (
-                        <img
-                          src={cover}
-                          alt={book.title}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <BookOpen className="text-yellow-300" size={30} />
-                        </div>
-                      )}
-                    </div>
-
-                    <h3 className="mt-1 line-clamp-1 text-[#2d1f10] text-[11px] sm:text-[13px]">
-                      {book.title}
-                    </h3>
+            return (
+              <Link
+                key={`${book._id}-${i}`}
+                href={`/books/${book._id}`}
+                className="min-w-[25%] px-1"
+              >
+                <div className="rounded-xl border border-yellow-200 bg-white shadow p-1 text-center">
+                  <div className="h-[75px] overflow-hidden rounded-lg border-2 border-yellow-600 bg-[#14532d]">
+                    {cover ? (
+                      <img
+                        src={cover}
+                        alt={book.title}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <BookOpen className="text-yellow-300" size={30} />
+                      </div>
+                    )}
                   </div>
-                </Link>
-              );
-            })}
-          </div>
+
+                  <h3 className="mt-1 line-clamp-1 text-[#2d1f10] text-[11px]">
+                    {book.title}
+                  </h3>
+                </div>
+              </Link>
+            );
+          })}
         </div>
 
         <div className="text-center mt-4">
