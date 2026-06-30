@@ -66,7 +66,7 @@ export default function AdminAddQuestion() {
         `${question}, ${category}, اسلامی سوال جواب, فتوی, islamic fatwa`
       );
     }
-  }, [question, answer, category]);
+ }, [question, answer, category, metaTitle, slug]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
