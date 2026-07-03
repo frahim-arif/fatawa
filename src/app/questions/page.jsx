@@ -118,31 +118,51 @@ export default function QuestionsPage() {
         </div>
 
         {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-3 mt-8">
+{/* Pagination */}
+{totalPages > 1 && (
+  <div className="flex flex-wrap justify-center items-center gap-2 mt-8">
 
-            <button
-              disabled={page === 1}
-              onClick={() => setPage(page - 1)}
-              className="px-4 py-2 rounded-lg bg-[#d4b24c] disabled:bg-gray-300"
-            >
-              Previous
-            </button>
+    {/* Previous */}
+    <button
+      disabled={page === 1}
+      onClick={() => setPage(page - 1)}
+      className="px-4 py-2 rounded-lg bg-[#d4b24c] text-white disabled:bg-gray-300"
+    >
+      Previous
+    </button>
 
-            <span className="text-sm text-gray-700">
-              Page {page} of {totalPages}
-            </span>
+    {/* Page Numbers */}
+    {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+      <button
+        key={num}
+        onClick={() => {
+          setPage(num);
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        }}
+        className={`w-10 h-10 rounded-lg border font-semibold transition ${
+          page === num
+            ? "bg-[#8b6b1b] text-white border-[#8b6b1b]"
+            : "bg-white text-gray-700 border-gray-300 hover:bg-[#f5e6b0]"
+        }`}
+      >
+        {num}
+      </button>
+    ))}
 
-            <button
-              disabled={page === totalPages}
-              onClick={() => setPage(page + 1)}
-              className="px-4 py-2 rounded-lg bg-[#d4b24c] disabled:bg-gray-300"
-            >
-              Next
-            </button>
+    {/* Next */}
+    <button
+      disabled={page === totalPages}
+      onClick={() => setPage(page + 1)}
+      className="px-4 py-2 rounded-lg bg-[#d4b24c] text-white disabled:bg-gray-300"
+    >
+      Next
+    </button>
 
-          </div>
-        )}
+  </div>
+)}
       </div>
     </div>
   );
