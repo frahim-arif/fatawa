@@ -27,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const res = await fetch(
-      "https://f-backend-vdi1.onrender.com/api/admin/questions?limit=500",
+      "https://f-backend-vdi1.onrender.com/api/admin/questions?limit=5000",
       { next: { revalidate: 3600 } }
     );
 
