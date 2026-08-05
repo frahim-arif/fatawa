@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-
+import Image from "next/image";
 import {
   Phone,
   Mail,
@@ -11,7 +11,6 @@ import {
   ShieldCheck,
   ChevronLeft,
 } from "lucide-react";
-
 
 export default function Footer() {
   const links = [
@@ -51,11 +50,13 @@ export default function Footer() {
     <footer className="relative overflow-hidden mt-10">
 
       {/* Background Image */}
-     <img
-  src="/images/1934.jpg"
-  alt=""
-  className="w-full h-64 object-cover"
-/>
+      <Image
+        src="/images/1934.jpg"
+        alt="Footer Background"
+        fill
+        priority
+        className="object-cover -z-20"
+      />
 
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/80 -z-10"></div>
