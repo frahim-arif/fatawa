@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+
 import {
   Phone,
   Mail,
@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   ChevronLeft,
 } from "lucide-react";
+import Image from "next/image";
 
 export default function Footer() {
   const links = [
@@ -50,13 +51,11 @@ export default function Footer() {
     <footer className="relative overflow-hidden mt-10">
 
       {/* Background Image */}
-      <Image
-        src="/images/1934.jpg"
-        alt="Footer Background"
-        fill
-        priority
-        className="object-cover -z-20"
-      />
+     <Image
+  src="/images/1934.jpg"
+  alt=""
+  className="w-full h-64 object-cover"
+/>
 
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/80 -z-10"></div>
@@ -114,33 +113,6 @@ export default function Footer() {
 
           {/* Contact */}
 
-          <div className="text-center md:text-right">
-
-            <h3 className="text-xl font-semibold text-yellow-300 mb-5">
-              رابطہ
-            </h3>
-
-            <div className="space-y-4">
-
-              <a
-                href="tel:9058596626"
-                className="flex justify-center md:justify-end items-center gap-3 hover:text-yellow-300 transition"
-              >
-                <Phone size={18} />
-                9058596626
-              </a>
-
-              <a
-                href="mailto:frahimm46@gmail.com"
-                className="flex justify-center md:justify-end items-center gap-3 hover:text-yellow-300 transition"
-              >
-                <Mail size={18} />
-                frahimm46@gmail.com
-              </a>
-
-            </div>
-
-          </div>
 
         </div>
 
