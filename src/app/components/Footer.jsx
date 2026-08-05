@@ -11,7 +11,7 @@ import {
   ShieldCheck,
   ChevronLeft,
 } from "lucide-react";
-import Image from "next/image";
+
 
 export default function Footer() {
   const links = [
@@ -51,7 +51,7 @@ export default function Footer() {
     <footer className="relative overflow-hidden mt-10">
 
       {/* Background Image */}
-     <Image
+     <img
   src="/images/1934.jpg"
   alt=""
   className="w-full h-64 object-cover"
