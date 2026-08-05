@@ -132,7 +132,7 @@ export default function Footer() {
           <p className="text-yellow-100/70 mt-3 text-sm">
             © {new Date().getFullYear()} Maslak e Deoband
             <br />
-            Developed with ❤️ by Web Core Cube Tech
+            Developed by -Web Core Cube Tech-9058596626
           </p>
 
         </div>
