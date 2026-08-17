@@ -22,7 +22,7 @@ export default function ContactUs() {
 
       <p className="text-gray-700 dark:text-gray-300">
         <strong className="text-gray-900 dark:text-white">Name:</strong>{" "}
-        Frahim Arif Mamud
+        Frahim Arif Mamud Qasmi
         <br />
 
         <strong className="text-gray-900 dark:text-white">Phone:</strong>{" "}
