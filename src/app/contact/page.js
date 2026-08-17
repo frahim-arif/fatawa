@@ -10,7 +10,7 @@ export default function ContactUs() {
         Contact Us
       </h1>
 
-      <p>
+      <p className="text yellow-500">
         You are welcome to contact us for Islamic questions, fatwa requests,
         feedback, or any support regarding the website.
       </p>
@@ -19,9 +19,9 @@ export default function ContactUs() {
         Contact Information
       </h2>
 
-      <p>
+      <p className="text yellow-500">
         <strong>Name:</strong> Frahim Arif Mamud<br />
-        <strong>Email:</strong> frahim9900@gmail.com<br />
+        
         <strong>Phone:</strong> +9058596626
       </p>
 
