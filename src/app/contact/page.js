@@ -21,8 +21,8 @@ export default function ContactUs() {
       </h2>
 
       <p className="text-gray-700 dark:text-gray-300">
-        <strong className="text-gray-900 dark:text-white">Name:</strong>{" "}
-        Frahim Arif Mamud Qasmi
+        <strong className="text-gray-900 dark:text-white">Mufti:</strong>{" "}
+       Frahim Arif Qasmi
         <br />
 
         <strong className="text-gray-900 dark:text-white">Phone:</strong>{" "}
@@ -36,7 +36,7 @@ export default function ContactUs() {
         <br />
 
         <strong className="text-gray-900 dark:text-white">Mufti:</strong>{" "}
-        Mufti Daud Qasmi
+        Daud Qasmi
         <br />
 
         <strong className="text-gray-900 dark:text-white">Phone:</strong>{" "}
