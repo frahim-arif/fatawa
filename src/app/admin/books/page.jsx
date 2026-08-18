@@ -19,27 +19,33 @@ export default function AddBookPage() {
 
     try {
 
-      let pdfUrl = pdf.trim();
+     let pdfUrl = pdf.trim();
+let fileId = "";
 
-      // ✅ Google Drive Link Convert
-      if (pdfUrl.includes('/file/d/')) {
+// Google Drive File ID
+if (pdfUrl.includes("/file/d/")) {
+  fileId = pdfUrl.split("/d/")[1]?.split("/")[0] || "";
+} 
+else if (pdfUrl.includes("/d/")) {
+  fileId = pdfUrl.split("/d/")[1]?.split("/")[0] || "";
+} 
+else if (pdfUrl.includes("id=")) {
+  fileId = new URL(pdfUrl).searchParams.get("id") || "";
+}
 
-        const fileId =
-          pdfUrl.split('/d/')[1]?.split('/')[0];
+if (!fileId) {
+  setMessage("❌ Valid Google Drive PDF link paste karein");
+  setLoading(false);
+  return;
+}
 
-        pdfUrl =
-          `https://drive.google.com/uc?export=download&id=${fileId}`;
+// PDF URL
+pdfUrl =
+  `https://drive.google.com/uc?export=download&id=${fileId}`;
 
-      } else if (pdfUrl.includes('id=')) {
-
-        const fileId =
-          new URLSearchParams(
-            pdfUrl.split('?')[1]
-          ).get('id');
-
-        pdfUrl =
-          `https://drive.google.com/uc?export=download&id=${fileId}`;
-      }
+// PDF ke FIRST PAGE ka thumbnail
+const imageUrl =
+  `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`;
 
       // ✅ API Request
       const res = await fetch(
@@ -50,11 +56,11 @@ export default function AddBookPage() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            title,
-            author,
-            image,
-            pdf: pdfUrl,
-          }),
+  title,
+  author,
+  image: imageUrl,
+  pdf: pdfUrl,
+}),
         }
       );
 

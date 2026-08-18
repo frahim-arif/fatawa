@@ -55,27 +55,21 @@ export default function LatestBooksSlider() {
 
   if (!books.length) return null;
 
- const getCover = (book) => {
-  if (book.image) {
-    return book.image;
-  }
+  const getCover = (book) => {
+    if (book.image) return book.image;
 
-  let fileId = "";
+    let fileId = "";
 
-  if (book.pdf?.includes("/d/")) {
-    fileId = book.pdf.split("/d/")[1]?.split("/")[0];
-  } else if (book.pdf?.includes("id=")) {
-    try {
-      fileId = new URL(book.pdf).searchParams.get("id") || "";
-    } catch {
-      fileId = "";
+    if (book.pdf?.includes("/d/")) {
+      fileId = book.pdf.split("/d/")[1]?.split("/")[0];
+    } else if (book.pdf?.includes("id=")) {
+      fileId = new URLSearchParams(book.pdf.split("?")[1]).get("id");
     }
-  }
 
-  return fileId
-    ? `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`
-    : "";
-};
+    return fileId
+      ? `https://drive.google.com/thumbnail?id=${fileId}&sz=w400`
+      : "";
+  };
 
   const displayBooks = [...books, ...books];
 
