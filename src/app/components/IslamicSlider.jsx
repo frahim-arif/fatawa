@@ -5,12 +5,12 @@ import { useEffect, useState } from 'react';
 const slides = [
   {
     id: 1,
-    image: '/images/slider06.png.jpg',
+    image: '/images/slider06.png',
     alt: 'اسلامی معلومات',
   },
   {
     id: 2,
-    image: '/images/slider09.png.jpg',
+    image: '/images/slider09.png',
     alt: 'اسلامی تعلیمات',
   },
   {
