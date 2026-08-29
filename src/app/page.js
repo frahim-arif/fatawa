@@ -247,7 +247,7 @@ fetch("https://f-backend-vdi1.onrender.com/api/majameen")
 
   return (
     <div
-      className="relative space-y-10 w-full px-0 overflow-hidden min-h-screen bg-repeat md:bg-cover bg-contain md:bg-center bg-top md:bg-fixed"
+      className="relative space-y-10 w-full px-0 overflow-hidden min-h-screen -mt-4 bg-repeat md:bg-cover bg-contain md:bg-center bg-top md:bg-fixed"
       style={{
         backgroundImage: "url('/images/ramadan_15_03_2022_1.jpg')",
 
