@@ -6,7 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
 import LatestBooksSlider from "./components/LatestBooksSlider";
-import IslamicTools from '@/components/IslamicTools';
+import IslamicTools from './components/IslamicTools';
+
 
 
 
