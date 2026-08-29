@@ -27,22 +27,16 @@ export default function IslamicSlider() {
   // Auto Slide
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrent((prev) =>
-        prev === slides.length - 1 ? 0 : prev + 1
-      );
+      setCurrent((prev) => (prev + 1) % slides.length);
     }, 5000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // Next Slide
   const nextSlide = () => {
-    setCurrent((prev) =>
-      prev === slides.length - 1 ? 0 : prev + 1
-    );
+    setCurrent((prev) => (prev + 1) % slides.length);
   };
 
-  // Previous Slide
   const prevSlide = () => {
     setCurrent((prev) =>
       prev === 0 ? slides.length - 1 : prev - 1
@@ -50,132 +44,132 @@ export default function IslamicSlider() {
   };
 
   return (
-    <section className="w-full m-0 p-0">
-      <div className="relative w-full m-0 p-0 overflow-hidden">
+    <section className="relative w-full m-0 p-0 overflow-hidden">
 
-        {/* Slides */}
-        <div
-          className="flex w-full m-0 p-0 transition-transform duration-700 ease-in-out"
-          style={{
-            transform: `translateX(-${current * 100}%)`,
-          }}
-        >
-          {slides.map((slide) => (
-            <div
-              key={slide.id}
-              className="relative min-w-full w-full m-0 p-0"
-            >
-              <img
-                src={slide.image}
-                alt={slide.alt}
-                className="block w-full h-auto m-0 p-0"
-              />
-            </div>
-          ))}
-        </div>
+      {/* Images */}
+      <div className="relative w-full m-0 p-0">
 
-        {/* Previous Button */}
-        <button
-          type="button"
-          onClick={prevSlide}
-          aria-label="Previous slide"
-          className="
-            absolute
-            left-3
-            md:left-6
-            top-1/2
-            -translate-y-1/2
-            w-9
-            h-9
-            md:w-11
-            md:h-11
-            rounded-full
-            bg-black/30
-            hover:bg-[#166534]
-            text-white
-            flex
-            items-center
-            justify-center
-            transition-all
-            duration-200
-            backdrop-blur-sm
-            z-10
-          "
-        >
-          <span className="text-2xl md:text-3xl leading-none -mt-1">
-            ‹
-          </span>
-        </button>
-
-        {/* Next Button */}
-        <button
-          type="button"
-          onClick={nextSlide}
-          aria-label="Next slide"
-          className="
-            absolute
-            right-3
-            md:right-6
-            top-1/2
-            -translate-y-1/2
-            w-9
-            h-9
-            md:w-11
-            md:h-11
-            rounded-full
-            bg-black/30
-            hover:bg-[#166534]
-            text-white
-            flex
-            items-center
-            justify-center
-            transition-all
-            duration-200
-            backdrop-blur-sm
-            z-10
-          "
-        >
-          <span className="text-2xl md:text-3xl leading-none -mt-1">
-            ›
-          </span>
-        </button>
-
-        {/* Dots */}
-        <div
-          className="
-            absolute
-            bottom-3
-            md:bottom-5
-            left-1/2
-            -translate-x-1/2
-            flex
-            items-center
-            gap-2
-            z-10
-          "
-        >
-          {slides.map((slide, index) => (
-            <button
-              key={slide.id}
-              type="button"
-              onClick={() => setCurrent(index)}
-              aria-label={`Slide ${index + 1}`}
-              className={`
-                h-2
-                rounded-full
-                transition-all
-                duration-300
-                ${
-                  current === index
-                    ? 'w-7 bg-[#c9a227]'
-                    : 'w-2 bg-white/80 hover:bg-white'
-                }
-              `}
-            />
-          ))}
-        </div>
+        {slides.map((slide, index) => (
+          <img
+            key={slide.id}
+            src={slide.image}
+            alt={slide.alt}
+            className={`
+              w-full
+              h-auto
+              block
+              m-0
+              p-0
+              transition-opacity
+              duration-700
+              ${index === current ? 'opacity-100' : 'opacity-0'}
+              ${index === 0 ? 'relative' : 'absolute top-0 left-0'}
+            `}
+          />
+        ))}
 
       </div>
+
+      {/* Previous */}
+      <button
+        type="button"
+        onClick={prevSlide}
+        aria-label="Previous slide"
+        className="
+          absolute
+          left-3
+          md:left-6
+          top-1/2
+          -translate-y-1/2
+          z-20
+          w-9
+          h-9
+          md:w-11
+          md:h-11
+          rounded-full
+          bg-black/30
+          hover:bg-[#166534]
+          text-white
+          flex
+          items-center
+          justify-center
+          transition
+          backdrop-blur-sm
+        "
+      >
+        <span className="text-2xl md:text-3xl">
+          ‹
+        </span>
+      </button>
+
+      {/* Next */}
+      <button
+        type="button"
+        onClick={nextSlide}
+        aria-label="Next slide"
+        className="
+          absolute
+          right-3
+          md:right-6
+          top-1/2
+          -translate-y-1/2
+          z-20
+          w-9
+          h-9
+          md:w-11
+          md:h-11
+          rounded-full
+          bg-black/30
+          hover:bg-[#166534]
+          text-white
+          flex
+          items-center
+          justify-center
+          transition
+          backdrop-blur-sm
+        "
+      >
+        <span className="text-2xl md:text-3xl">
+          ›
+        </span>
+      </button>
+
+      {/* Dots */}
+      <div
+        className="
+          absolute
+          bottom-3
+          md:bottom-5
+          left-1/2
+          -translate-x-1/2
+          z-20
+          flex
+          items-center
+          gap-2
+        "
+      >
+        {slides.map((slide, index) => (
+          <button
+            key={slide.id}
+            type="button"
+            onClick={() => setCurrent(index)}
+            aria-label={`Slide ${index + 1}`}
+            className={`
+              h-2
+              rounded-full
+              transition-all
+              duration-300
+              ${
+                current === index
+                  ? 'w-7 bg-[#c9a227]'
+                  : 'w-2 bg-white/80 hover:bg-white'
+              }
+            `}
+          />
+        ))}
+      </div>
+
     </section>
   );
 }
+
