@@ -7,6 +7,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import LatestBooksSlider from "./components/LatestBooksSlider";
 import IslamicTools from './components/IslamicTools';
+import IslamicSlider from './components/IslamicSlider';
 
 
 
@@ -430,6 +431,8 @@ fetch("https://f-backend-vdi1.onrender.com/api/majameen")
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 px-2 mt-6 w-full">
+
+        <IslamicSlider />
 
         {/* Dynamic Categories */}
         {categories.map((cat) => (
