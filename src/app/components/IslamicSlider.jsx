@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -23,10 +24,7 @@ const slides = [
 export default function IslamicSlider() {
   const [current, setCurrent] = useState(0);
 
-  // =====================================================
-  // AUTO SLIDE
-  // =====================================================
-
+  // Auto Slide
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrent((prev) =>
@@ -37,20 +35,14 @@ export default function IslamicSlider() {
     return () => clearInterval(interval);
   }, []);
 
-  // =====================================================
-  // NEXT SLIDE
-  // =====================================================
-
+  // Next Slide
   const nextSlide = () => {
     setCurrent((prev) =>
       prev === slides.length - 1 ? 0 : prev + 1
     );
   };
 
-  // =====================================================
-  // PREVIOUS SLIDE
-  // =====================================================
-
+  // Previous Slide
   const prevSlide = () => {
     setCurrent((prev) =>
       prev === 0 ? slides.length - 1 : prev - 1
@@ -58,18 +50,12 @@ export default function IslamicSlider() {
   };
 
   return (
-    <section className="w-full py-0">
-      
-      {/* =================================================
-          SLIDER
-      ================================================= */}
-
-      <div className="relative w-full overflow-hidden">
+    <section className="w-full m-0 p-0">
+      <div className="relative w-full m-0 p-0 overflow-hidden">
 
         {/* Slides */}
-
         <div
-          className="flex w-full transition-transform duration-700 ease-in-out"
+          className="flex w-full m-0 p-0 transition-transform duration-700 ease-in-out"
           style={{
             transform: `translateX(-${current * 100}%)`,
           }}
@@ -77,22 +63,18 @@ export default function IslamicSlider() {
           {slides.map((slide) => (
             <div
               key={slide.id}
-              className="relative min-w-full w-full"
+              className="relative min-w-full w-full m-0 p-0"
             >
               <img
                 src={slide.image}
                 alt={slide.alt}
-                className="block w-full h-auto"
+                className="block w-full h-auto m-0 p-0"
               />
             </div>
           ))}
         </div>
 
-
-        {/* =================================================
-            PREVIOUS BUTTON
-        ================================================= */}
-
+        {/* Previous Button */}
         <button
           type="button"
           onClick={prevSlide}
@@ -117,6 +99,7 @@ export default function IslamicSlider() {
             transition-all
             duration-200
             backdrop-blur-sm
+            z-10
           "
         >
           <span className="text-2xl md:text-3xl leading-none -mt-1">
@@ -124,11 +107,7 @@ export default function IslamicSlider() {
           </span>
         </button>
 
-
-        {/* =================================================
-            NEXT BUTTON
-        ================================================= */}
-
+        {/* Next Button */}
         <button
           type="button"
           onClick={nextSlide}
@@ -153,6 +132,7 @@ export default function IslamicSlider() {
             transition-all
             duration-200
             backdrop-blur-sm
+            z-10
           "
         >
           <span className="text-2xl md:text-3xl leading-none -mt-1">
@@ -160,11 +140,7 @@ export default function IslamicSlider() {
           </span>
         </button>
 
-
-        {/* =================================================
-            DOTS
-        ================================================= */}
-
+        {/* Dots */}
         <div
           className="
             absolute
@@ -175,6 +151,7 @@ export default function IslamicSlider() {
             flex
             items-center
             gap-2
+            z-10
           "
         >
           {slides.map((slide, index) => (
@@ -188,7 +165,6 @@ export default function IslamicSlider() {
                 rounded-full
                 transition-all
                 duration-300
-
                 ${
                   current === index
                     ? 'w-7 bg-[#c9a227]'
@@ -200,7 +176,6 @@ export default function IslamicSlider() {
         </div>
 
       </div>
-
     </section>
   );
 }
