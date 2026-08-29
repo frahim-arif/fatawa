@@ -419,7 +419,7 @@ fetch("https://f-backend-vdi1.onrender.com/api/majameen")
               fontFamily: "'Jameel Noori Nastaleeq', serif",
             }}
           />
-
+      <IslamicSlider />
           {/* Mic Button */}
           <button
             onClick={startListening}
@@ -432,7 +432,7 @@ fetch("https://f-backend-vdi1.onrender.com/api/majameen")
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 px-2 mt-6 w-full">
 
-        <IslamicSlider />
+        
 
         {/* Dynamic Categories */}
         {categories.map((cat) => (
