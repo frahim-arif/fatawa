@@ -371,7 +371,7 @@ fetch("https://f-backend-vdi1.onrender.com/api/majameen")
 
       </div>
 
-
+  <IslamicSlider />
       {/* Search Box */}
       <div className="relative w-11/12 md:w-full mx-auto mt-6 z-10">
         <div
@@ -419,7 +419,7 @@ fetch("https://f-backend-vdi1.onrender.com/api/majameen")
               fontFamily: "'Jameel Noori Nastaleeq', serif",
             }}
           />
-      <IslamicSlider />
+    
           {/* Mic Button */}
           <button
             onClick={startListening}
