@@ -1,8 +1,6 @@
-
 'use client';
 
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 
 const slides = [
   {
@@ -40,7 +38,7 @@ export default function IslamicSlider() {
   }, []);
 
   // =====================================================
-  // NEXT
+  // NEXT SLIDE
   // =====================================================
 
   const nextSlide = () => {
@@ -50,7 +48,7 @@ export default function IslamicSlider() {
   };
 
   // =====================================================
-  // PREVIOUS
+  // PREVIOUS SLIDE
   // =====================================================
 
   const prevSlide = () => {
@@ -60,159 +58,149 @@ export default function IslamicSlider() {
   };
 
   return (
-    <section className="w-full px-3 md:px-5 py-5 md:py-8">
-      <div className="max-w-7xl mx-auto">
+    <section className="w-full py-0">
+      
+      {/* =================================================
+          SLIDER
+      ================================================= */}
+
+      <div className="relative w-full overflow-hidden">
+
+        {/* Slides */}
+
+        <div
+          className="flex w-full transition-transform duration-700 ease-in-out"
+          style={{
+            transform: `translateX(-${current * 100}%)`,
+          }}
+        >
+          {slides.map((slide) => (
+            <div
+              key={slide.id}
+              className="relative min-w-full w-full"
+            >
+              <img
+                src={slide.image}
+                alt={slide.alt}
+                className="block w-full h-auto"
+              />
+            </div>
+          ))}
+        </div>
+
 
         {/* =================================================
-            SLIDER
+            PREVIOUS BUTTON
         ================================================= */}
 
-        <div className="relative overflow-hidden rounded-2xl md:rounded-3xl bg-[#f5f5f2]">
-
-          {/* Slides */}
-
-          <div
-            className="flex transition-transform duration-700 ease-in-out"
-            style={{
-              transform: `translateX(-${current * 100}%)`,
-            }}
-          >
-
-            {slides.map((slide) => (
-              <div
-                key={slide.id}
-                className="relative min-w-full aspect-[16/8] md:aspect-[16/7]"
-              >
-
-                <Image
-                  src={slide.image}
-                  alt={slide.alt}
-                  fill
-                  priority={slide.id === 1}
-                  sizes="100vw"
-                  className="object-cover"
-                />
-
-              </div>
-            ))}
-
-          </div>
-
-
-          {/* =================================================
-              PREVIOUS BUTTON
-          ================================================= */}
-
-          <button
-            type="button"
-            onClick={prevSlide}
-            aria-label="Previous slide"
-            className="
-              absolute
-              left-3
-              md:left-5
-              top-1/2
-              -translate-y-1/2
-              w-9
-              h-9
-              md:w-11
-              md:h-11
-              rounded-full
-              bg-black/35
-              hover:bg-[#166534]
-              text-white
-              flex
-              items-center
-              justify-center
-              transition
-              backdrop-blur-sm
-            "
-          >
-            <span className="text-xl md:text-2xl leading-none">
-              ‹
-            </span>
-          </button>
+        <button
+          type="button"
+          onClick={prevSlide}
+          aria-label="Previous slide"
+          className="
+            absolute
+            left-3
+            md:left-6
+            top-1/2
+            -translate-y-1/2
+            w-9
+            h-9
+            md:w-11
+            md:h-11
+            rounded-full
+            bg-black/30
+            hover:bg-[#166534]
+            text-white
+            flex
+            items-center
+            justify-center
+            transition-all
+            duration-200
+            backdrop-blur-sm
+          "
+        >
+          <span className="text-2xl md:text-3xl leading-none -mt-1">
+            ‹
+          </span>
+        </button>
 
 
-          {/* =================================================
-              NEXT BUTTON
-          ================================================= */}
+        {/* =================================================
+            NEXT BUTTON
+        ================================================= */}
 
-          <button
-            type="button"
-            onClick={nextSlide}
-            aria-label="Next slide"
-            className="
-              absolute
-              right-3
-              md:right-5
-              top-1/2
-              -translate-y-1/2
-              w-9
-              h-9
-              md:w-11
-              md:h-11
-              rounded-full
-              bg-black/35
-              hover:bg-[#166534]
-              text-white
-              flex
-              items-center
-              justify-center
-              transition
-              backdrop-blur-sm
-            "
-          >
-            <span className="text-xl md:text-2xl leading-none">
-              ›
-            </span>
-          </button>
+        <button
+          type="button"
+          onClick={nextSlide}
+          aria-label="Next slide"
+          className="
+            absolute
+            right-3
+            md:right-6
+            top-1/2
+            -translate-y-1/2
+            w-9
+            h-9
+            md:w-11
+            md:h-11
+            rounded-full
+            bg-black/30
+            hover:bg-[#166534]
+            text-white
+            flex
+            items-center
+            justify-center
+            transition-all
+            duration-200
+            backdrop-blur-sm
+          "
+        >
+          <span className="text-2xl md:text-3xl leading-none -mt-1">
+            ›
+          </span>
+        </button>
 
 
-          {/* =================================================
-              DOTS
-          ================================================= */}
+        {/* =================================================
+            DOTS
+        ================================================= */}
 
-          <div
-            className="
-              absolute
-              bottom-3
-              md:bottom-5
-              left-1/2
-              -translate-x-1/2
-              flex
-              items-center
-              gap-2
-            "
-          >
+        <div
+          className="
+            absolute
+            bottom-3
+            md:bottom-5
+            left-1/2
+            -translate-x-1/2
+            flex
+            items-center
+            gap-2
+          "
+        >
+          {slides.map((slide, index) => (
+            <button
+              key={slide.id}
+              type="button"
+              onClick={() => setCurrent(index)}
+              aria-label={`Slide ${index + 1}`}
+              className={`
+                h-2
+                rounded-full
+                transition-all
+                duration-300
 
-            {slides.map((slide, index) => (
-              <button
-                key={slide.id}
-                type="button"
-                onClick={() => setCurrent(index)}
-                aria-label={`Go to slide ${index + 1}`}
-                className={`
-                  h-2
-                  rounded-full
-                  transition-all
-                  duration-300
-
-                  ${
-                    current === index
-                      ? 'w-7 bg-[#c9a227]'
-                      : 'w-2 bg-white/70 hover:bg-white'
-                  }
-                `}
-              />
-            ))}
-
-          </div>
-
+                ${
+                  current === index
+                    ? 'w-7 bg-[#c9a227]'
+                    : 'w-2 bg-white/80 hover:bg-white'
+                }
+              `}
+            />
+          ))}
         </div>
 
       </div>
+
     </section>
   );
 }
-
