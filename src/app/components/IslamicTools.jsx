@@ -1,9 +1,10 @@
-
 'use client';
 
 import { useState } from 'react';
 
 export default function IslamicToolsPage() {
+
+  const [activeTool, setActiveTool] = useState(null);
 
   // =====================================================
   // ZAKAT
@@ -29,9 +30,10 @@ export default function IslamicToolsPage() {
     const netAmount =
       totalAssets - Number(debt || 0);
 
-    const zakat = netAmount > 0
-      ? netAmount * 0.025
-      : 0;
+    const zakat =
+      netAmount > 0
+        ? netAmount * 0.025
+        : 0;
 
     setZakatResult({
       total: totalAssets,
@@ -42,7 +44,7 @@ export default function IslamicToolsPage() {
 
 
   // =====================================================
-  // MIRاث
+  // MIRATH
   // =====================================================
 
   const [husband, setHusband] = useState(false);
@@ -63,7 +65,7 @@ export default function IslamicToolsPage() {
 
 
   // =====================================================
-  // HIJRI DATE CONVERTER
+  // HIJRI DATE
   // =====================================================
 
   const [gregorianDate, setGregorianDate] = useState('');
@@ -140,10 +142,12 @@ export default function IslamicToolsPage() {
       setPrayerResult({
         error: 'براہ کرم شہر کا نام درج کریں۔',
       });
+
       return;
     }
 
     // Demo timings
+
     setPrayerResult({
       city: city,
       fajr: '04:25 AM',
@@ -156,72 +160,169 @@ export default function IslamicToolsPage() {
   };
 
 
+  // =====================================================
+  // TOOL BUTTON
+  // =====================================================
+
+  const tools = [
+    {
+      id: 'zakat',
+      icon: '🧮',
+      title: 'زکوٰۃ کیلکولیٹر',
+      subtitle: 'زکوٰۃ معلوم کریں',
+      color: 'from-emerald-700 to-emerald-500',
+    },
+
+    {
+      id: 'mirath',
+      icon: '⚖️',
+      title: 'میراث کیلکولیٹر',
+      subtitle: 'شرعی حصص معلوم کریں',
+      color: 'from-amber-700 to-yellow-500',
+    },
+
+    {
+      id: 'hijri-date',
+      icon: '📅',
+      title: 'ہجری تاریخ',
+      subtitle: 'تاریخ تبدیل کریں',
+      color: 'from-blue-700 to-blue-500',
+    },
+
+    {
+      id: 'hijri-age',
+      icon: '🎂',
+      title: 'ہجری عمر',
+      subtitle: 'عمر معلوم کریں',
+      color: 'from-purple-700 to-purple-500',
+    },
+
+    {
+      id: 'prayer-times',
+      icon: '🕌',
+      title: 'نماز کے اوقات',
+      subtitle: 'نماز کے اوقات دیکھیں',
+      color: 'from-teal-700 to-teal-500',
+    },
+  ];
+
+
   return (
-    <main className="min-h-screen bg-[#faf8ef] px-4 py-10">
+
+    <main
+      dir="rtl"
+      className="min-h-screen bg-[#faf8ef] px-4 py-8 md:py-12"
+    >
 
       {/* =====================================================
-          PAGE HEADER
+          HEADER
       ===================================================== */}
 
-      <div className="max-w-6xl mx-auto text-center mb-12">
+      <div className="max-w-6xl mx-auto text-center mb-8">
 
-        <h1 className="text-3xl md:text-4xl font-bold text-[#8a6a00]">
-          🕌 اسلامی سہولیات
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#fffdf7] border border-[#ead89c] shadow-sm mb-4">
+
+          <span className="text-3xl">
+            🕌
+          </span>
+
+        </div>
+
+        <h1 className="text-3xl md:text-4xl font-bold text-[#7a5a00]">
+
+          اسلامی سہولیات
+
         </h1>
 
-        <p className="text-gray-600 mt-3">
-          روزمرہ ضروریات کے لیے مفید اسلامی کیلکولیٹرز اور ٹولز
+        <p className="text-gray-600 mt-2 text-sm md:text-base">
+
+          روزمرہ ضروریات کے لیے مفید اسلامی ٹولز
+
         </p>
 
       </div>
 
 
       {/* =====================================================
-          TOOLS NAVIGATION
+          TOOL BUTTONS
       ===================================================== */}
 
-      <div className="max-w-6xl mx-auto mb-10">
+      <div className="max-w-5xl mx-auto">
 
-        <div className="bg-white border border-[#ead89c] rounded-2xl p-4 shadow-sm">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
 
-          <div className="flex flex-wrap justify-center gap-2">
+          {tools.map((tool) => (
 
-            <a
-              href="#zakat"
-              className="px-4 py-2 rounded-xl bg-[#faf8ef] text-[#7a5a00] hover:bg-[#f3e8bd] transition"
+            <button
+              key={tool.id}
+              onClick={() => {
+
+                setActiveTool(
+                  activeTool === tool.id
+                    ? null
+                    : tool.id
+                );
+
+                setTimeout(() => {
+
+                  document
+                    .getElementById(tool.id)
+                    ?.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start',
+                    });
+
+                }, 100);
+
+              }}
+              className={`
+                group
+                relative
+                overflow-hidden
+                rounded-2xl
+                p-4
+                md:p-5
+                text-white
+                bg-gradient-to-br
+                ${tool.color}
+                shadow-md
+                hover:shadow-xl
+                hover:-translate-y-1
+                active:scale-95
+                transition-all
+                duration-300
+              `}
             >
-              زکوٰۃ
-            </a>
 
-            <a
-              href="#mirath"
-              className="px-4 py-2 rounded-xl bg-[#faf8ef] text-[#7a5a00] hover:bg-[#f3e8bd] transition"
-            >
-              میراث
-            </a>
+              {/* Shine */}
 
-            <a
-              href="#hijri-date"
-              className="px-4 py-2 rounded-xl bg-[#faf8ef] text-[#7a5a00] hover:bg-[#f3e8bd] transition"
-            >
-              ہجری تاریخ
-            </a>
+              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition" />
 
-            <a
-              href="#hijri-age"
-              className="px-4 py-2 rounded-xl bg-[#faf8ef] text-[#7a5a00] hover:bg-[#f3e8bd] transition"
-            >
-              ہجری عمر
-            </a>
+              <div className="relative">
 
-            <a
-              href="#prayer-times"
-              className="px-4 py-2 rounded-xl bg-[#faf8ef] text-[#7a5a00] hover:bg-[#f3e8bd] transition"
-            >
-              نماز کے اوقات
-            </a>
+                <div className="text-3xl md:text-4xl mb-3">
 
-          </div>
+                  {tool.icon}
+
+                </div>
+
+                <h2 className="font-bold text-base md:text-lg">
+
+                  {tool.title}
+
+                </h2>
+
+                <p className="text-xs md:text-sm text-white/80 mt-1">
+
+                  {tool.subtitle}
+
+                </p>
+
+              </div>
+
+            </button>
+
+          ))}
 
         </div>
 
@@ -229,467 +330,413 @@ export default function IslamicToolsPage() {
 
 
       {/* =====================================================
-          ZAKAT CALCULATOR
+          ACTIVE TOOL AREA
       ===================================================== */}
 
-      <section
-        id="zakat"
-        className="max-w-4xl mx-auto mb-12 scroll-mt-6"
-      >
+      <div className="max-w-4xl mx-auto mt-8">
 
-        <div className="bg-white border border-[#ead89c] rounded-2xl shadow-sm p-6 md:p-8">
 
-          <div className="text-center mb-7">
+        {/* =====================================================
+            ZAKAT
+        ===================================================== */}
 
-            <div className="text-4xl mb-2">
-              🧮
+        {activeTool === 'zakat' && (
+
+          <section
+            id="zakat"
+            className="bg-white border border-[#ead89c] rounded-3xl shadow-md p-5 md:p-8 scroll-mt-5"
+          >
+
+            <ToolHeading
+              icon="🧮"
+              title="زکوٰۃ کیلکولیٹر"
+              description="اپنے قابلِ زکوٰۃ مال کی مقدار درج کریں"
+            />
+
+
+            <div className="grid md:grid-cols-2 gap-4">
+
+              <InputField
+                label="نقد رقم"
+                value={cash}
+                setValue={setCash}
+                placeholder="مثلاً 100000"
+              />
+
+              <InputField
+                label="سونے کی موجودہ مالیت"
+                value={gold}
+                setValue={setGold}
+                placeholder="مثلاً 200000"
+              />
+
+              <InputField
+                label="چاندی کی موجودہ مالیت"
+                value={silver}
+                setValue={setSilver}
+                placeholder="مثلاً 50000"
+              />
+
+              <InputField
+                label="کاروباری مال"
+                value={business}
+                setValue={setBusiness}
+                placeholder="مثلاً 300000"
+              />
+
+              <InputField
+                label="قابلِ وصول رقم"
+                value={receivable}
+                setValue={setReceivable}
+                placeholder="مثلاً 50000"
+              />
+
+              <InputField
+                label="قابلِ منہا قرض"
+                value={debt}
+                setValue={setDebt}
+                placeholder="مثلاً 50000"
+              />
+
             </div>
 
-            <h2 className="text-2xl font-bold text-[#8a6a00]">
-              زکوٰۃ کیلکولیٹر
-            </h2>
 
-            <p className="text-sm text-gray-500 mt-1">
-              اپنے قابلِ زکوٰۃ مال کی بنیادی مقدار درج کریں
-            </p>
+            <button
+              onClick={calculateZakat}
+              className="w-full mt-6 bg-[#087f5b] hover:bg-[#066b4c] text-white font-bold py-3.5 rounded-xl transition"
+            >
 
-          </div>
+              زکوٰۃ معلوم کریں
 
-
-          <div className="grid md:grid-cols-2 gap-4">
-
-            <InputField
-              label="نقد رقم"
-              value={cash}
-              setValue={setCash}
-              placeholder="مثلاً 100000"
-            />
-
-            <InputField
-              label="سونے کی موجودہ مالیت"
-              value={gold}
-              setValue={setGold}
-              placeholder="مثلاً 200000"
-            />
-
-            <InputField
-              label="چاندی کی موجودہ مالیت"
-              value={silver}
-              setValue={setSilver}
-              placeholder="مثلاً 50000"
-            />
-
-            <InputField
-              label="کاروباری مال"
-              value={business}
-              setValue={setBusiness}
-              placeholder="مثلاً 300000"
-            />
-
-            <InputField
-              label="قابلِ وصول رقم"
-              value={receivable}
-              setValue={setReceivable}
-              placeholder="مثلاً 50000"
-            />
-
-            <InputField
-              label="قابلِ منہا قرض"
-              value={debt}
-              setValue={setDebt}
-              placeholder="مثلاً 50000"
-            />
-
-          </div>
+            </button>
 
 
-          <button
-            onClick={calculateZakat}
-            className="w-full mt-6 bg-[#c8a645] hover:bg-[#b8932f] text-white font-medium py-3 rounded-xl transition"
-          >
-            زکوٰۃ معلوم کریں
-          </button>
+            {zakatResult && (
 
+              <div className="mt-6 bg-[#f7fbf9] border border-emerald-200 rounded-2xl p-5 text-center">
 
-          {zakatResult && (
+                <p className="text-gray-600">
 
-            <div className="mt-6 bg-[#fffdf7] border border-[#ead89c] rounded-xl p-5 text-center">
+                  کل اثاثہ:
 
-              <p className="text-gray-600">
-                کل اثاثہ:
-                <span className="font-bold text-[#7a5a00] ml-2">
-                  ₹{zakatResult.total.toLocaleString()}
-                </span>
-              </p>
+                  <span className="font-bold text-[#087f5b] mr-2">
 
-              <p className="text-gray-600 mt-2">
-                منہا کرنے کے بعد:
-                <span className="font-bold text-[#7a5a00] ml-2">
-                  ₹{zakatResult.net.toLocaleString()}
-                </span>
-              </p>
+                    ₹{zakatResult.total.toLocaleString()}
 
-              <div className="border-t border-[#ead89c] mt-4 pt-4">
+                  </span>
 
-                <p className="text-sm text-gray-500">
-                  اندازاً واجب زکوٰۃ
                 </p>
 
-                <p className="text-3xl font-bold text-[#8a6a00] mt-1">
-                  ₹{zakatResult.zakat.toLocaleString()}
+
+                <p className="text-gray-600 mt-2">
+
+                  منہا کرنے کے بعد:
+
+                  <span className="font-bold text-[#087f5b] mr-2">
+
+                    ₹{zakatResult.net.toLocaleString()}
+
+                  </span>
+
+                </p>
+
+
+                <div className="border-t border-emerald-200 mt-4 pt-4">
+
+                  <p className="text-sm text-gray-500">
+
+                    اندازاً واجب زکوٰۃ
+
+                  </p>
+
+                  <p className="text-3xl font-bold text-[#087f5b] mt-1">
+
+                    ₹{zakatResult.zakat.toLocaleString()}
+
+                  </p>
+
+                </div>
+
+              </div>
+
+            )}
+
+          </section>
+
+        )}
+
+
+        {/* =====================================================
+            MIRATH
+        ===================================================== */}
+
+        {activeTool === 'mirath' && (
+
+          <section
+            id="mirath"
+            className="bg-white border border-[#ead89c] rounded-3xl shadow-md p-5 md:p-8 scroll-mt-5"
+          >
+
+            <ToolHeading
+              icon="⚖️"
+              title="میراث کیلکولیٹر"
+              description="ورثاء کی تفصیل درج کریں"
+            />
+
+
+            <div className="grid md:grid-cols-2 gap-4">
+
+              <CheckBoxField
+                label="شوہر موجود ہے"
+                checked={husband}
+                setChecked={setHusband}
+              />
+
+              <InputField
+                label="بیویوں کی تعداد"
+                value={wife}
+                setValue={setWife}
+                placeholder="0"
+              />
+
+              <InputField
+                label="بیٹوں کی تعداد"
+                value={sons}
+                setValue={setSons}
+                placeholder="0"
+              />
+
+              <InputField
+                label="بیٹیوں کی تعداد"
+                value={daughters}
+                setValue={setDaughters}
+                placeholder="0"
+              />
+
+              <CheckBoxField
+                label="والدہ موجود ہے"
+                checked={mother}
+                setChecked={setMother}
+              />
+
+              <CheckBoxField
+                label="والد موجود ہے"
+                checked={father}
+                setChecked={setFather}
+              />
+
+            </div>
+
+
+            <button
+              onClick={calculateMirath}
+              className="w-full mt-6 bg-[#b8860b] hover:bg-[#9f7407] text-white font-bold py-3.5 rounded-xl transition"
+            >
+
+              میراث کا حساب کریں
+
+            </button>
+
+
+            {mirathResult && (
+
+              <div className="mt-6 bg-[#fffdf7] border border-[#ead89c] rounded-2xl p-5 text-center text-gray-700 leading-8">
+
+                {mirathResult}
+
+                <p className="text-xs text-gray-500 mt-3">
+
+                  حتمی شرعی حساب کے لیے مستند مفتی صاحب سے
+                  رجوع کرنا ضروری ہے۔
+
                 </p>
 
               </div>
 
-            </div>
+            )}
 
-          )}
+          </section>
 
-        </div>
-
-      </section>
+        )}
 
 
-      {/* =====================================================
-          MIRاث CALCULATOR
-      ===================================================== */}
+        {/* =====================================================
+            HIJRI DATE
+        ===================================================== */}
 
-      <section
-        id="mirath"
-        className="max-w-4xl mx-auto mb-12 scroll-mt-6"
-      >
+        {activeTool === 'hijri-date' && (
 
-        <div className="bg-white border border-[#ead89c] rounded-2xl shadow-sm p-6 md:p-8">
+          <section
+            id="hijri-date"
+            className="bg-white border border-[#ead89c] rounded-3xl shadow-md p-5 md:p-8 scroll-mt-5"
+          >
 
-          <div className="text-center mb-7">
-
-            <div className="text-4xl mb-2">
-              ⚖️
-            </div>
-
-            <h2 className="text-2xl font-bold text-[#8a6a00]">
-              میراث کیلکولیٹر
-            </h2>
-
-            <p className="text-sm text-gray-500 mt-1">
-              ورثاء کی تفصیل درج کریں
-            </p>
-
-          </div>
-
-
-          <div className="grid md:grid-cols-2 gap-4">
-
-            <label className="flex items-center gap-3 border border-[#ead89c] bg-[#fffdf7] rounded-xl p-3">
-
-              <input
-                type="checkbox"
-                checked={husband}
-                onChange={(e) =>
-                  setHusband(e.target.checked)
-                }
-              />
-
-              <span>
-                شوہر موجود ہے
-              </span>
-
-            </label>
-
-
-            <div>
-
-              <label className="block text-sm font-medium text-[#7a5a00] mb-1">
-                بیویاں
-              </label>
-
-              <input
-                type="number"
-                min="0"
-                value={wife}
-                onChange={(e) =>
-                  setWife(e.target.value)
-                }
-                className="w-full border border-[#ead89c] bg-[#fffdf7] px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-[#d4b24c]"
-              />
-
-            </div>
-
-
-            <InputField
-              label="بیٹے"
-              value={sons}
-              setValue={setSons}
-              placeholder="0"
-              type="number"
-            />
-
-            <InputField
-              label="بیٹیاں"
-              value={daughters}
-              setValue={setDaughters}
-              placeholder="0"
-              type="number"
+            <ToolHeading
+              icon="📅"
+              title="ہجری تاریخ کنورٹر"
+              description="عیسوی تاریخ کو ہجری تاریخ میں تبدیل کریں"
             />
 
 
-            <label className="flex items-center gap-3 border border-[#ead89c] bg-[#fffdf7] rounded-xl p-3">
-
-              <input
-                type="checkbox"
-                checked={mother}
-                onChange={(e) =>
-                  setMother(e.target.checked)
-                }
-              />
-
-              <span>
-                والدہ موجود ہے
-              </span>
-
-            </label>
+            <input
+              type="date"
+              value={gregorianDate}
+              onChange={(e) =>
+                setGregorianDate(e.target.value)
+              }
+              className="w-full border border-[#ead89c] bg-[#fffdf7] px-4 py-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-300"
+            />
 
 
-            <label className="flex items-center gap-3 border border-[#ead89c] bg-[#fffdf7] rounded-xl p-3">
+            <button
+              onClick={convertToHijri}
+              className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition"
+            >
 
-              <input
-                type="checkbox"
-                checked={father}
-                onChange={(e) =>
-                  setFather(e.target.checked)
-                }
-              />
+              ہجری تاریخ معلوم کریں
 
-              <span>
-                والد موجود ہے
-              </span>
-
-            </label>
-
-          </div>
+            </button>
 
 
-          <button
-            onClick={calculateMirath}
-            className="w-full mt-6 bg-[#c8a645] hover:bg-[#b8932f] text-white font-medium py-3 rounded-xl transition"
+            {hijriResult && (
+
+              <div className="mt-5 bg-blue-50 border border-blue-200 rounded-2xl p-5 text-center">
+
+                <p className="text-sm text-gray-500">
+
+                  ہجری تاریخ
+
+                </p>
+
+                <p className="text-2xl font-bold text-blue-700 mt-2">
+
+                  {hijriResult}
+
+                </p>
+
+              </div>
+
+            )}
+
+          </section>
+
+        )}
+
+
+        {/* =====================================================
+            HIJRI AGE
+        ===================================================== */}
+
+        {activeTool === 'hijri-age' && (
+
+          <section
+            id="hijri-age"
+            className="bg-white border border-[#ead89c] rounded-3xl shadow-md p-5 md:p-8 scroll-mt-5"
           >
-            میراث کا حساب کریں
-          </button>
+
+            <ToolHeading
+              icon="🎂"
+              title="ہجری عمر کیلکولیٹر"
+              description="اپنی تاریخ پیدائش درج کریں"
+            />
 
 
-          {mirathResult && (
-
-            <div className="mt-6 bg-[#fffdf7] border border-[#ead89c] rounded-xl p-5 text-center text-gray-700 leading-8">
-
-              {mirathResult}
-
-              <p className="text-xs text-gray-500 mt-3">
-                یہ صرف ابتدائی معلوماتی ڈیمو ہے۔ شرعی میراث کے حتمی حساب کے لیے
-                مستند مفتی سے مسئلہ کی مکمل تفصیل کے ساتھ رجوع کریں۔
-              </p>
-
-            </div>
-
-          )}
-
-        </div>
-
-      </section>
+            <input
+              type="date"
+              value={birthDate}
+              onChange={(e) =>
+                setBirthDate(e.target.value)
+              }
+              className="w-full border border-[#ead89c] bg-[#fffdf7] px-4 py-3 rounded-xl outline-none focus:ring-2 focus:ring-purple-300"
+            />
 
 
-      {/* =====================================================
-          HIJRI DATE CONVERTER
-      ===================================================== */}
+            <button
+              onClick={calculateAge}
+              className="w-full mt-4 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-xl transition"
+            >
 
-      <section
-        id="hijri-date"
-        className="max-w-4xl mx-auto mb-12 scroll-mt-6"
-      >
+              عمر معلوم کریں
 
-        <div className="bg-white border border-[#ead89c] rounded-2xl shadow-sm p-6 md:p-8">
-
-          <div className="text-center mb-7">
-
-            <div className="text-4xl mb-2">
-              📅
-            </div>
-
-            <h2 className="text-2xl font-bold text-[#8a6a00]">
-              ہجری تاریخ کنورٹر
-            </h2>
-
-            <p className="text-sm text-gray-500 mt-1">
-              عیسوی تاریخ کو ہجری تاریخ میں تبدیل کریں
-            </p>
-
-          </div>
+            </button>
 
 
-          <input
-            type="date"
-            value={gregorianDate}
-            onChange={(e) =>
-              setGregorianDate(e.target.value)
-            }
-            className="w-full border border-[#ead89c] bg-[#fffdf7] px-4 py-3 rounded-xl outline-none focus:ring-2 focus:ring-[#d4b24c]"
-          />
+            {ageResult && (
+
+              <div className="mt-5 bg-purple-50 border border-purple-200 rounded-2xl p-5 text-center">
+
+                <p className="text-xl font-bold text-purple-700">
+
+                  {ageResult}
+
+                </p>
+
+              </div>
+
+            )}
+
+          </section>
+
+        )}
 
 
-          <button
-            onClick={convertToHijri}
-            className="w-full mt-4 bg-[#c8a645] hover:bg-[#b8932f] text-white font-medium py-3 rounded-xl transition"
+        {/* =====================================================
+            PRAYER TIMES
+        ===================================================== */}
+
+        {activeTool === 'prayer-times' && (
+
+          <section
+            id="prayer-times"
+            className="bg-white border border-[#ead89c] rounded-3xl shadow-md p-5 md:p-8 scroll-mt-5"
           >
-            ہجری تاریخ معلوم کریں
-          </button>
+
+            <ToolHeading
+              icon="🕌"
+              title="نماز کے اوقات"
+              description="اپنے شہر کے نماز کے اوقات معلوم کریں"
+            />
 
 
-          {hijriResult && (
-
-            <div className="mt-5 bg-[#fffdf7] border border-[#ead89c] rounded-xl p-5 text-center">
-
-              <p className="text-sm text-gray-500">
-                ہجری تاریخ
-              </p>
-
-              <p className="text-2xl font-bold text-[#8a6a00] mt-2">
-                {hijriResult}
-              </p>
-
-            </div>
-
-          )}
-
-        </div>
-
-      </section>
+            <input
+              type="text"
+              value={city}
+              onChange={(e) =>
+                setCity(e.target.value)
+              }
+              placeholder="مثلاً Nagaon, Assam"
+              className="w-full border border-[#ead89c] bg-[#fffdf7] px-4 py-3 rounded-xl outline-none focus:ring-2 focus:ring-teal-300"
+            />
 
 
-      {/* =====================================================
-          HIJRI AGE CALCULATOR
-      ===================================================== */}
+            <button
+              onClick={calculatePrayerTimes}
+              className="w-full mt-4 bg-teal-600 hover:bg-teal-700 text-white font-bold py-3.5 rounded-xl transition"
+            >
 
-      <section
-        id="hijri-age"
-        className="max-w-4xl mx-auto mb-12 scroll-mt-6"
-      >
+              نماز کے اوقات دیکھیں
 
-        <div className="bg-white border border-[#ead89c] rounded-2xl shadow-sm p-6 md:p-8">
-
-          <div className="text-center mb-7">
-
-            <div className="text-4xl mb-2">
-              🎂
-            </div>
-
-            <h2 className="text-2xl font-bold text-[#8a6a00]">
-              ہجری عمر کیلکولیٹر
-            </h2>
-
-            <p className="text-sm text-gray-500 mt-1">
-              اپنی تاریخ پیدائش درج کریں
-            </p>
-
-          </div>
+            </button>
 
 
-          <input
-            type="date"
-            value={birthDate}
-            onChange={(e) =>
-              setBirthDate(e.target.value)
-            }
-            className="w-full border border-[#ead89c] bg-[#fffdf7] px-4 py-3 rounded-xl outline-none focus:ring-2 focus:ring-[#d4b24c]"
-          />
+            {prayerResult && (
 
-
-          <button
-            onClick={calculateAge}
-            className="w-full mt-4 bg-[#c8a645] hover:bg-[#b8932f] text-white font-medium py-3 rounded-xl transition"
-          >
-            عمر معلوم کریں
-          </button>
-
-
-          {ageResult && (
-
-            <div className="mt-5 bg-[#fffdf7] border border-[#ead89c] rounded-xl p-5 text-center">
-
-              <p className="text-xl font-bold text-[#8a6a00]">
-                {ageResult}
-              </p>
-
-            </div>
-
-          )}
-
-        </div>
-
-      </section>
-
-
-      {/* =====================================================
-          PRAYER TIMES
-      ===================================================== */}
-
-      <section
-        id="prayer-times"
-        className="max-w-4xl mx-auto mb-12 scroll-mt-6"
-      >
-
-        <div className="bg-white border border-[#ead89c] rounded-2xl shadow-sm p-6 md:p-8">
-
-          <div className="text-center mb-7">
-
-            <div className="text-4xl mb-2">
-              🕌
-            </div>
-
-            <h2 className="text-2xl font-bold text-[#8a6a00]">
-              نماز کے اوقات
-            </h2>
-
-            <p className="text-sm text-gray-500 mt-1">
-              اپنے شہر کے نماز کے اوقات معلوم کریں
-            </p>
-
-          </div>
-
-
-          <input
-            type="text"
-            value={city}
-            onChange={(e) =>
-              setCity(e.target.value)
-            }
-            placeholder="مثلاً Nagaon, Assam"
-            className="w-full border border-[#ead89c] bg-[#fffdf7] px-4 py-3 rounded-xl outline-none focus:ring-2 focus:ring-[#d4b24c]"
-          />
-
-
-          <button
-            onClick={calculatePrayerTimes}
-            className="w-full mt-4 bg-[#c8a645] hover:bg-[#b8932f] text-white font-medium py-3 rounded-xl transition"
-          >
-            نماز کے اوقات دیکھیں
-          </button>
-
-
-          {prayerResult && (
-
-            <>
-
-              {prayerResult.error ? (
+              prayerResult.error ? (
 
                 <div className="mt-5 text-center text-red-600">
+
                   {prayerResult.error}
+
                 </div>
 
               ) : (
 
                 <div className="mt-6">
 
-                  <h3 className="text-center text-xl font-bold text-[#8a6a00] mb-4">
+                  <h3 className="text-center text-xl font-bold text-teal-700 mb-4">
+
                     {prayerResult.city}
+
                   </h3>
 
 
@@ -729,34 +776,33 @@ export default function IslamicToolsPage() {
 
                 </div>
 
-              )}
+              )
 
-            </>
+            )}
 
-          )}
+          </section>
 
-        </div>
+        )}
 
-      </section>
+      </div>
 
 
       {/* =====================================================
-          DISCLAIMER
+          NOTE
       ===================================================== */}
 
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto mt-8">
 
-        <div className="bg-[#fffdf7] border border-[#ead89c] rounded-2xl p-5 text-center text-sm text-gray-600 leading-7">
+        <div className="bg-[#fffdf7] border border-[#ead89c] rounded-2xl p-4 text-center text-xs md:text-sm text-gray-500 leading-7">
 
-          <strong className="text-[#7a5a00]">
+          <span className="font-bold text-[#7a5a00]">
             اہم نوٹ:
-          </strong>
+          </span>
 
           <br />
 
           ان ٹولز کا مقصد عمومی معلومات اور سہولت فراہم کرنا ہے۔
-          زکوٰۃ، میراث اور دیگر شرعی مسائل میں حتمی حکم کے لیے
-          مستند علماء کرام سے رجوع کرنا چاہیے۔
+          زکوٰۃ اور میراث کے حتمی شرعی حکم کے لیے مستند علماء کرام سے رجوع کریں۔
 
         </div>
 
@@ -768,7 +814,45 @@ export default function IslamicToolsPage() {
 
 
 // =====================================================
-// INPUT COMPONENT
+// TOOL HEADING
+// =====================================================
+
+function ToolHeading({
+  icon,
+  title,
+  description,
+}) {
+
+  return (
+
+    <div className="text-center mb-7">
+
+      <div className="text-4xl mb-2">
+
+        {icon}
+
+      </div>
+
+      <h2 className="text-2xl font-bold text-[#7a5a00]">
+
+        {title}
+
+      </h2>
+
+      <p className="text-sm text-gray-500 mt-1">
+
+        {description}
+
+      </p>
+
+    </div>
+
+  );
+}
+
+
+// =====================================================
+// INPUT FIELD
 // =====================================================
 
 function InputField({
@@ -776,28 +860,66 @@ function InputField({
   value,
   setValue,
   placeholder,
-  type = 'number',
 }) {
 
   return (
+
     <div>
 
       <label className="block text-sm font-medium text-[#7a5a00] mb-1">
+
         {label}
+
       </label>
 
       <input
-        type={type}
+        type="number"
+        min="0"
         value={value}
         onChange={(e) =>
           setValue(e.target.value)
         }
         placeholder={placeholder}
-        min={type === 'number' ? '0' : undefined}
-        className="w-full border border-[#ead89c] bg-[#fffdf7] px-4 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-[#d4b24c]"
+        className="w-full border border-[#ead89c] bg-[#fffdf7] px-4 py-3 rounded-xl outline-none focus:ring-2 focus:ring-[#d4b24c]"
       />
 
     </div>
+
+  );
+}
+
+
+// =====================================================
+// CHECKBOX
+// =====================================================
+
+function CheckBoxField({
+  label,
+  checked,
+  setChecked,
+}) {
+
+  return (
+
+    <label className="flex items-center gap-3 border border-[#ead89c] bg-[#fffdf7] rounded-xl p-4 cursor-pointer hover:bg-[#fffaf0] transition">
+
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) =>
+          setChecked(e.target.checked)
+        }
+        className="w-5 h-5 accent-[#b8860b]"
+      />
+
+      <span className="text-gray-700">
+
+        {label}
+
+      </span>
+
+    </label>
+
   );
 }
 
@@ -812,16 +934,22 @@ function PrayerCard({
 }) {
 
   return (
-    <div className="bg-[#fffdf7] border border-[#ead89c] rounded-xl p-4 text-center">
+
+    <div className="bg-[#f4fbfa] border border-teal-200 rounded-2xl p-4 text-center">
 
       <p className="text-sm text-gray-500">
+
         {name}
+
       </p>
 
-      <p className="text-lg font-bold text-[#8a6a00] mt-1">
+      <p className="text-lg font-bold text-teal-700 mt-1">
+
         {time}
+
       </p>
 
     </div>
+
   );
 }
