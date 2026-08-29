@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
 import LatestBooksSlider from "./components/LatestBooksSlider";
+import IslamicTools from '@/components/IslamicTools';
 
 
 
@@ -912,6 +913,8 @@ fetch("https://f-backend-vdi1.onrender.com/api/majameen")
 
         </div>
         <LatestBooksSlider />
+         <IslamicTools/>
+
 
       </div>
 
