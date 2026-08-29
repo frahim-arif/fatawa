@@ -371,7 +371,9 @@ fetch("https://f-backend-vdi1.onrender.com/api/majameen")
 
       </div>
 
+  <div className="-mt-16">
   <IslamicSlider />
+</div>
       {/* Search Box */}
       <div className="relative w-11/12 md:w-full mx-auto mt-6 z-10">
         <div
