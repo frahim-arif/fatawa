@@ -29,14 +29,61 @@ export default function Header() {
       {/* 🔥 Content */}
       <div className="relative max-w-6xl mx-auto py-2 px-3 md:px-4 flex justify-between items-center">
 
-        {/* English Button */}
-        <div className="flex items-center gap-3">
-          <Link
-            href="/en"
-            className="text-xl md:text-2xl font-bold text-yellow-300 hover:text-yellow-400 transition"
+        {/* 🌐 Language Dropdown */}
+        <div className="relative">
+
+          <button
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="flex items-center gap-1 text-xl md:text-2xl font-bold text-yellow-300 hover:text-yellow-400 transition"
           >
             English
-          </Link>
+            <ChevronDown size={20} />
+          </button>
+
+          {/* Language Dropdown */}
+          <AnimatePresence>
+            {dropdownOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+                className="absolute top-10 left-0 bg-[#2f2626] text-yellow-200 shadow-xl rounded-md w-32 py-2 z-50"
+              >
+
+                {/* English */}
+                <Link
+                  href="/en"
+                  onClick={() => setDropdownOpen(false)}
+                  className="block px-4 py-2 hover:bg-[#3a2f2f]"
+                >
+                  English
+                </Link>
+
+                {/* Urdu */}
+                <Link
+                  href="/"
+                  onClick={() => setDropdownOpen(false)}
+                  className="block px-4 py-2 hover:bg-[#3a2f2f]"
+                >
+                  اردو
+                </Link>
+
+                {/* Future: Bangla */}
+                {/* 
+                <Link
+                  href="/bn"
+                  onClick={() => setDropdownOpen(false)}
+                  className="block px-4 py-2 hover:bg-[#3a2f2f]"
+                >
+                  বাংলা
+                </Link>
+                */}
+
+              </motion.div>
+            )}
+          </AnimatePresence>
+
         </div>
 
         {/* Desktop Menu */}
