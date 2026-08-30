@@ -50,6 +50,7 @@ export default function Header() {
         <div className="flex items-center justify-between min-h-[48px]">
 
          
+
 {/* 🌐 Language Dropdown */}
 <div className="relative shrink-0">
 
@@ -60,7 +61,8 @@ export default function Header() {
     className="
       flex items-center gap-1.5
       text-lg md:text-2xl
-      font-bold
+      font-semibold
+      tracking-wide
       text-yellow-300
       hover:text-yellow-400
       transition-all duration-200
@@ -117,8 +119,6 @@ export default function Header() {
         "
       >
 
-        
-
         {/* English */}
         <Link
           href="/en"
@@ -138,6 +138,8 @@ export default function Header() {
             hover:border-yellow-400
             hover:text-yellow-200
             transition-all duration-200
+            font-semibold
+            tracking-wide
           "
         >
           English
@@ -162,6 +164,8 @@ export default function Header() {
             hover:border-yellow-400
             hover:text-yellow-300
             transition-all duration-200
+            text-lg
+            font-medium
           "
         >
           اردو
@@ -185,6 +189,8 @@ export default function Header() {
             hover:border-yellow-400
             hover:text-yellow-300
             transition-all duration-200
+            font-semibold
+            tracking-wide
           "
         >
           বাংলা
@@ -195,6 +201,8 @@ export default function Header() {
   </AnimatePresence>
 
 </div>
+
+
 
 
           {/* =========================
