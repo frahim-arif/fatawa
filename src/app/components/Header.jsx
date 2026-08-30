@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, MoreVertical } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Header() {
@@ -12,10 +12,10 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-[100] shadow-md">
 
-      {/* 🔥 Base Color */}
+      {/* Base Color */}
       <div className="absolute inset-0 bg-[#3b2f2f]" />
 
-      {/* 🔥 Pattern Overlay */}
+      {/* Pattern Overlay */}
       <div
         className="absolute inset-0 opacity-10"
         style={{
@@ -25,13 +25,11 @@ export default function Header() {
         }}
       />
 
-      {/* 🔥 Content */}
+      {/* Content */}
       <div className="relative max-w-6xl mx-auto py-2 px-3 md:px-4 flex justify-between items-center">
 
         {/* Logo + Title */}
         <div className="flex items-center gap-3">
-          
-
           <Link
             href="/"
             className="text-xl md:text-2xl font-bold text-yellow-300 hover:text-yellow-400 transition"
@@ -43,12 +41,23 @@ export default function Header() {
         {/* Desktop Menu */}
         <nav className="hidden md:flex gap-6 items-center text-base font-semibold text-yellow-100">
 
-          <Link href="/ozan-shariah-calculator" className="hover:text-yellow-400 transition">
+          <Link
+            href="/ozan-shariah-calculator"
+            className="hover:text-yellow-400 transition"
+          >
             اوزان شرعیہ کیلکولیٹر
           </Link>
 
           <Link href="/" className="hover:text-yellow-400 transition">
             ہوم پیج
+          </Link>
+
+          {/* English */}
+          <Link
+            href="/en"
+            className="hover:text-yellow-400 transition"
+          >
+            English
           </Link>
 
           {/* Dropdown */}
@@ -70,12 +79,24 @@ export default function Header() {
                   className="absolute top-8 right-0 bg-[#2f2626] text-yellow-200 shadow-xl rounded-md w-48 py-2 z-50"
                   onMouseLeave={() => setDropdownOpen(false)}
                 >
-                  <Link href="/courses" className="block px-4 py-2 hover:bg-[#3a2f2f]">Courses</Link>
-                  <Link href="/about" className="block px-4 py-2 hover:bg-[#3a2f2f]">About</Link>
-                  <Link href="/privacy" className="block px-4 py-2 hover:bg-[#3a2f2f]">Privacy Policy</Link>
-                  <Link href="/contact" className="block px-4 py-2 hover:bg-[#3a2f2f]">Contact</Link>
-                  <Link href="/terms" className="block px-4 py-2 hover:bg-[#3a2f2f]">Terms</Link>
-                  <Link href="/disclaimer" className="block px-4 py-2 hover:bg-[#3a2f2f]">Disclaimer</Link>
+                  <Link href="/courses" className="block px-4 py-2 hover:bg-[#3a2f2f]">
+                    Courses
+                  </Link>
+                  <Link href="/about" className="block px-4 py-2 hover:bg-[#3a2f2f]">
+                    About
+                  </Link>
+                  <Link href="/privacy" className="block px-4 py-2 hover:bg-[#3a2f2f]">
+                    Privacy Policy
+                  </Link>
+                  <Link href="/contact" className="block px-4 py-2 hover:bg-[#3a2f2f]">
+                    Contact
+                  </Link>
+                  <Link href="/terms" className="block px-4 py-2 hover:bg-[#3a2f2f]">
+                    Terms
+                  </Link>
+                  <Link href="/disclaimer" className="block px-4 py-2 hover:bg-[#3a2f2f]">
+                    Disclaimer
+                  </Link>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -85,20 +106,35 @@ export default function Header() {
           <Link
             href="/40-hadith-free"
             className="ml-3 px-4 py-2 rounded-md font-semibold text-black"
-            style={{ background: "linear-gradient(90deg,#d4af37,#facc15)" }}
+            style={{
+              background: "linear-gradient(90deg,#d4af37,#facc15)",
+            }}
           >
             40 احادیث
           </Link>
-
         </nav>
 
-        {/* Mobile Button */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="md:hidden text-yellow-200"
-        >
-          {open ? <X size={28} /> : <Menu size={28} />}
-        </button>
+        {/* Mobile Right Side */}
+        <div className="md:hidden flex items-center gap-3">
+
+          {/* English - 3 dots ke bahar */}
+          <Link
+            href="/en"
+            className="text-yellow-200 text-sm font-semibold hover:text-yellow-400 transition"
+          >
+            English
+          </Link>
+
+          {/* 3 Dot / Menu Button */}
+          <button
+            onClick={() => setOpen(!open)}
+            className="text-yellow-200"
+            aria-label="Menu"
+          >
+            {open ? <X size={28} /> : <MoreVertical size={28} />}
+          </button>
+
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -113,7 +149,10 @@ export default function Header() {
           >
             <div className="bg-[#2f2626] text-yellow-100 rounded-xl flex flex-col items-center gap-4 py-4 shadow-lg">
 
-              <Link href="/ozan-shariah-calculator" onClick={() => setOpen(false)}>
+              <Link
+                href="/ozan-shariah-calculator"
+                onClick={() => setOpen(false)}
+              >
                 اوزان شرعیہ کیلکولیٹر
               </Link>
 
@@ -121,18 +160,37 @@ export default function Header() {
                 ہوم پیج
               </Link>
 
-              <Link href="/courses" onClick={() => setOpen(false)}>Courses</Link>
-              <Link href="/about" onClick={() => setOpen(false)}>About</Link>
-              <Link href="/privacy" onClick={() => setOpen(false)}>Privacy Policy</Link>
-              <Link href="/contact" onClick={() => setOpen(false)}>Contact</Link>
-              <Link href="/terms" onClick={() => setOpen(false)}>Terms</Link>
-              <Link href="/disclaimer" onClick={() => setOpen(false)}>Disclaimer</Link>
+              <Link href="/courses" onClick={() => setOpen(false)}>
+                Courses
+              </Link>
+
+              <Link href="/about" onClick={() => setOpen(false)}>
+                About
+              </Link>
+
+              <Link href="/privacy" onClick={() => setOpen(false)}>
+                Privacy Policy
+              </Link>
+
+              <Link href="/contact" onClick={() => setOpen(false)}>
+                Contact
+              </Link>
+
+              <Link href="/terms" onClick={() => setOpen(false)}>
+                Terms
+              </Link>
+
+              <Link href="/disclaimer" onClick={() => setOpen(false)}>
+                Disclaimer
+              </Link>
 
               <Link
                 href="/40-hadith-free"
                 onClick={() => setOpen(false)}
                 className="mt-2 px-4 py-2 rounded-md font-semibold text-black"
-                style={{ background: "linear-gradient(90deg,#d4af37,#facc15)" }}
+                style={{
+                  background: "linear-gradient(90deg,#d4af37,#facc15)",
+                }}
               >
                 40 احادیث
               </Link>
