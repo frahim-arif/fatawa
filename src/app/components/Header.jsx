@@ -13,10 +13,10 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-[100] shadow-md">
 
-      {/* Base Color */}
+      {/* 🔥 Base Color */}
       <div className="absolute inset-0 bg-[#3b2f2f]" />
 
-      {/* Pattern Overlay */}
+      {/* 🔥 Pattern Overlay */}
       <div
         className="absolute inset-0 opacity-10"
         style={{
@@ -26,117 +26,92 @@ export default function Header() {
         }}
       />
 
-      {/* Content */}
+      {/* 🔥 Content */}
       <div className="relative max-w-6xl mx-auto py-2 px-3 md:px-4 flex justify-between items-center">
 
-        {/* Logo / Language */}
-        <div className="relative">
-
-          <button
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="flex items-center gap-1 text-xl md:text-2xl font-bold text-yellow-300 hover:text-yellow-400 transition"
+        {/* English Button */}
+        <div className="flex items-center gap-3">
+          <Link
+            href="/en"
+            className="text-xl md:text-2xl font-bold text-yellow-300 hover:text-yellow-400 transition"
           >
             English
-            <ChevronDown size={20} />
-          </button>
-
-          {/* Language Dropdown */}
-          <AnimatePresence>
-            {dropdownOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-                className="absolute top-10 left-0 bg-[#2f2626] text-yellow-200 shadow-xl rounded-md w-32 py-2 z-50"
-              >
-                <Link
-                  href="/"
-                  onClick={() => setDropdownOpen(false)}
-                  className="block px-4 py-2 hover:bg-[#3a2f2f] text-right"
-                >
-                  اردو
-                </Link>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
+          </Link>
         </div>
 
         {/* Desktop Menu */}
         <nav className="hidden md:flex gap-6 items-center text-base font-semibold text-yellow-100">
 
           <Link
-            href="/en/ozan-shariah-calculator"
+            href="/ozan-shariah-calculator"
             className="hover:text-yellow-400 transition"
           >
-            Shariah Weights Calculator
+            اوزان شرعیہ کیلکولیٹر
           </Link>
 
           <Link
-            href="/en"
+            href="/"
             className="hover:text-yellow-400 transition"
           >
-            Home
+            ہوم پیج
           </Link>
 
-          {/* More Dropdown */}
+          {/* Dropdown */}
           <div className="relative">
-
             <button
-              onClick={() => setOpen(!open)}
+              onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex items-center gap-1 hover:text-yellow-400 transition"
             >
-              More
-              <ChevronDown size={18} />
+              More <ChevronDown size={18} />
             </button>
 
             <AnimatePresence>
-              {open && (
+              {dropdownOpen && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
                   className="absolute top-8 right-0 bg-[#2f2626] text-yellow-200 shadow-xl rounded-md w-48 py-2 z-50"
+                  onMouseLeave={() => setDropdownOpen(false)}
                 >
                   <Link
-                    href="/en/courses"
+                    href="/courses"
                     className="block px-4 py-2 hover:bg-[#3a2f2f]"
                   >
                     Courses
                   </Link>
 
                   <Link
-                    href="/en/about"
+                    href="/about"
                     className="block px-4 py-2 hover:bg-[#3a2f2f]"
                   >
                     About
                   </Link>
 
                   <Link
-                    href="/en/privacy"
+                    href="/privacy"
                     className="block px-4 py-2 hover:bg-[#3a2f2f]"
                   >
                     Privacy Policy
                   </Link>
 
                   <Link
-                    href="/en/contact"
+                    href="/contact"
                     className="block px-4 py-2 hover:bg-[#3a2f2f]"
                   >
                     Contact
                   </Link>
 
                   <Link
-                    href="/en/terms"
+                    href="/terms"
                     className="block px-4 py-2 hover:bg-[#3a2f2f]"
                   >
                     Terms
                   </Link>
 
                   <Link
-                    href="/en/disclaimer"
+                    href="/disclaimer"
                     className="block px-4 py-2 hover:bg-[#3a2f2f]"
                   >
                     Disclaimer
@@ -144,18 +119,17 @@ export default function Header() {
                 </motion.div>
               )}
             </AnimatePresence>
-
           </div>
 
           {/* CTA */}
           <Link
-            href="/en/40-hadith-free"
+            href="/40-hadith-free"
             className="ml-3 px-4 py-2 rounded-md font-semibold text-black"
             style={{
               background: "linear-gradient(90deg,#d4af37,#facc15)",
             }}
           >
-            40 Hadith
+            40 احادیث
           </Link>
 
         </nav>
@@ -164,7 +138,6 @@ export default function Header() {
         <button
           onClick={() => setOpen(!open)}
           className="md:hidden text-yellow-200"
-          aria-label="Menu"
         >
           {open ? <X size={28} /> : <Menu size={28} />}
         </button>
@@ -184,79 +157,70 @@ export default function Header() {
             <div className="bg-[#2f2626] text-yellow-100 rounded-xl flex flex-col items-center gap-4 py-4 shadow-lg">
 
               <Link
-                href="/en/ozan-shariah-calculator"
+                href="/ozan-shariah-calculator"
                 onClick={() => setOpen(false)}
               >
-                Shariah Weights Calculator
+                اوزان شرعیہ کیلکولیٹر
               </Link>
 
               <Link
-                href="/en"
+                href="/"
                 onClick={() => setOpen(false)}
               >
-                Home
+                ہوم پیج
               </Link>
 
               <Link
-                href="/en/courses"
+                href="/courses"
                 onClick={() => setOpen(false)}
               >
                 Courses
               </Link>
 
               <Link
-                href="/en/about"
+                href="/about"
                 onClick={() => setOpen(false)}
               >
                 About
               </Link>
 
               <Link
-                href="/en/privacy"
+                href="/privacy"
                 onClick={() => setOpen(false)}
               >
                 Privacy Policy
               </Link>
 
               <Link
-                href="/en/contact"
+                href="/contact"
                 onClick={() => setOpen(false)}
               >
                 Contact
               </Link>
 
               <Link
-                href="/en/terms"
+                href="/terms"
                 onClick={() => setOpen(false)}
               >
                 Terms
               </Link>
 
               <Link
-                href="/en/disclaimer"
+                href="/disclaimer"
                 onClick={() => setOpen(false)}
               >
                 Disclaimer
               </Link>
 
               <Link
-                href="/en/40-hadith-free"
+                href="/40-hadith-free"
                 onClick={() => setOpen(false)}
                 className="mt-2 px-4 py-2 rounded-md font-semibold text-black"
                 style={{
                   background: "linear-gradient(90deg,#d4af37,#facc15)",
                 }}
               >
-                40 Hadith
-              </Link>
-
-              {/* Urdu */}
-              <Link
-                href="/"
-                onClick={() => setOpen(false)}
-                className="border-t border-yellow-800 pt-3 mt-1 w-full text-center text-yellow-300 font-semibold"
-              >
-                اردو
+                40 احادیث
               </Link>
 
             </div>
