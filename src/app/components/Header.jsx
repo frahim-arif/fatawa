@@ -49,157 +49,157 @@ export default function Header() {
 
         <div className="flex items-center justify-between min-h-[48px]">
 
-          {/* =========================
-              LANGUAGE SWITCHER
-          ========================== */}
-          <div className="relative shrink-0">
+         
+{/* 🌐 Language Dropdown */}
+<div className="relative shrink-0">
 
-            <button
-              type="button"
-              onClick={toggleLanguage}
-              aria-expanded={languageOpen}
-              className="
-                flex items-center gap-1.5
-                text-lg md:text-2xl
-                font-bold
-                text-yellow-300
-                hover:text-yellow-400
-                transition-all duration-200
-                whitespace-nowrap
-              "
-            >
-              <Globe2
-                size={19}
-                className="md:w-5 md:h-5"
-              />
+  <button
+    type="button"
+    onClick={toggleLanguage}
+    aria-expanded={languageOpen}
+    className="
+      flex items-center gap-1.5
+      text-lg md:text-2xl
+      font-bold
+      text-yellow-300
+      hover:text-yellow-400
+      transition-all duration-200
+      whitespace-nowrap
+    "
+  >
+    English
 
-              <span>English</span>
+    <ChevronDown
+      size={18}
+      className={`transition-transform duration-200 ${
+        languageOpen ? "rotate-180" : ""
+      }`}
+    />
+  </button>
 
-              <ChevronDown
-                size={18}
-                className={`transition-transform duration-200 ${
-                  languageOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
+  {/* 🌐 Language Dropdown */}
+  <AnimatePresence>
+    {languageOpen && (
+      <motion.div
+        initial={{
+          opacity: 0,
+          y: -8,
+          scale: 0.96,
+        }}
+        animate={{
+          opacity: 1,
+          y: 0,
+          scale: 1,
+        }}
+        exit={{
+          opacity: 0,
+          y: -8,
+          scale: 0.96,
+        }}
+        transition={{
+          duration: 0.18,
+        }}
+        className="
+          absolute
+          left-0
+          top-full
+          mt-2
+          w-40
+          sm:w-44
+          bg-[#241d1d]/95
+          backdrop-blur-md
+          border border-yellow-700/30
+          rounded-xl
+          shadow-2xl
+          p-2
+          overflow-hidden
+          z-[9999]
+        "
+      >
 
-            {/* 🌐 Language Dropdown */}
-            <AnimatePresence>
-              {languageOpen && (
-                <motion.div
-                  initial={{
-                    opacity: 0,
-                    y: -8,
-                    scale: 0.96,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                  }}
-                  exit={{
-                    opacity: 0,
-                    y: -8,
-                    scale: 0.96,
-                  }}
-                  transition={{
-                    duration: 0.18,
-                  }}
-                  className="
-                    absolute
-                    left-0
-                    top-full
-                    mt-2
-                    w-40
-                    sm:w-44
-                    bg-[#241d1d]/95
-                    backdrop-blur-md
-                    border border-yellow-700/30
-                    rounded-xl
-                    shadow-2xl
-                    overflow-hidden
-                    z-[9999]
-                  "
-                >
+        {/* Select Language */}
+        <div className="px-2 pb-2">
+          <p className="text-sm font-semibold text-yellow-400 text-center">
+            Select Language
+          </p>
+        </div>
 
-                  {/* Dropdown Header */}
-                  <div className="px-4 py-2.5 border-b border-yellow-800/30">
-                    <p className="text-xs uppercase tracking-wider text-yellow-500/80">
-                      Select Language
-                    </p>
-                  </div>
+        {/* English */}
+        <Link
+          href="/en"
+          onClick={() => setLanguageOpen(false)}
+          className="
+            block
+            w-full
+            text-center
+            px-4
+            py-2.5
+            mb-2
+            rounded-lg
+            border
+            border-yellow-700/50
+            text-yellow-300
+            hover:bg-[#3a2f2f]
+            hover:border-yellow-400
+            hover:text-yellow-200
+            transition-all duration-200
+          "
+        >
+          English
+        </Link>
 
-                  {/* English */}
-                  <Link
-                    href="/en"
-                    onClick={() => setLanguageOpen(false)}
-                    className="
-                      flex items-center justify-between
-                      px-4 py-3
-                      text-yellow-300
-                      hover:bg-[#3a2f2f]
-                      hover:text-yellow-200
-                      transition
-                    "
-                  >
-                    <span className="font-medium">
-                      English
-                    </span>
+        {/* Urdu */}
+        <Link
+          href="/"
+          onClick={() => setLanguageOpen(false)}
+          className="
+            block
+            w-full
+            text-center
+            px-4
+            py-2.5
+            mb-2
+            rounded-lg
+            border
+            border-yellow-700/50
+            text-yellow-200
+            hover:bg-[#3a2f2f]
+            hover:border-yellow-400
+            hover:text-yellow-300
+            transition-all duration-200
+          "
+        >
+          اردو
+        </Link>
 
-                    <span className="text-xs text-yellow-600">
-                      EN
-                    </span>
-                  </Link>
+        {/* Bangla */}
+        <Link
+          href="/bn"
+          onClick={() => setLanguageOpen(false)}
+          className="
+            block
+            w-full
+            text-center
+            px-4
+            py-2.5
+            rounded-lg
+            border
+            border-yellow-700/50
+            text-yellow-200
+            hover:bg-[#3a2f2f]
+            hover:border-yellow-400
+            hover:text-yellow-300
+            transition-all duration-200
+          "
+        >
+          বাংলা
+        </Link>
 
-                  {/* Urdu */}
-                  <Link
-                    href="/"
-                    onClick={() => setLanguageOpen(false)}
-                    className="
-                      flex items-center justify-between
-                      px-4 py-3
-                      text-yellow-200
-                      hover:bg-[#3a2f2f]
-                      hover:text-yellow-300
-                      transition
-                    "
-                  >
-                    <span className="font-medium">
-                      اردو
-                    </span>
+      </motion.div>
+    )}
+  </AnimatePresence>
 
-                    <span className="text-xs text-yellow-600">
-                      UR
-                    </span>
-                  </Link>
-
-                  {/* Bangla */}
-                  <Link
-                    href="/bn"
-                    onClick={() => setLanguageOpen(false)}
-                    className="
-                      flex items-center justify-between
-                      px-4 py-3
-                      text-yellow-200
-                      hover:bg-[#3a2f2f]
-                      hover:text-yellow-300
-                      transition
-                    "
-                  >
-                    <span className="font-medium">
-                      বাংলা
-                    </span>
-
-                    <span className="text-xs text-yellow-600">
-                      BN
-                    </span>
-                  </Link>
-
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-          </div>
+</div>
 
 
           {/* =========================
