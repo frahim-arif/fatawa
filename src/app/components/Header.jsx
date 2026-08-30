@@ -120,6 +120,13 @@ export default function Header() {
         "
       >
 
+        {/* Dropdown Header */}
+        <div className="px-4 py-2.5 border-b border-yellow-800/30">
+          <p className="text-xs uppercase tracking-wider text-yellow-500/80">
+            Select Language
+          </p>
+        </div>
+
         {/* English */}
         <Link
           href="/en"
@@ -177,6 +184,11 @@ export default function Header() {
   </AnimatePresence>
 
 </div>
+
+
+
+
+
 
 
           {/* =========================
