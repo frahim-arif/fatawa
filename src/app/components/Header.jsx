@@ -67,7 +67,7 @@ export default function Header() {
       whitespace-nowrap
     "
   >
-    English
+    Select Language
 
     <ChevronDown
       size={18}
@@ -117,12 +117,7 @@ export default function Header() {
         "
       >
 
-        {/* Select Language */}
-        <div className="px-2 pb-2">
-          <p className="text-sm font-semibold text-yellow-400 text-center">
-            Select Language
-          </p>
-        </div>
+        
 
         {/* English */}
         <Link
