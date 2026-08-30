@@ -56,30 +56,37 @@ export default function Header() {
 {/* 🌐 Language Dropdown */}
 <div className="relative shrink-0">
 
+  {/* Language Button */}
   <button
     type="button"
     onClick={toggleLanguage}
     aria-expanded={languageOpen}
+    aria-label="Select language"
     className="
       flex items-center gap-1.5
-      text-lg md:text-2xl
+      whitespace-nowrap
+      text-xs
+      uppercase
+      tracking-wider
       font-medium
-      tracking-wide
-      text-yellow-300
+      text-yellow-500/80
       hover:text-yellow-400
       transition-all duration-200
-      whitespace-nowrap
+      focus:outline-none
     "
   >
-    Select Language
+    <span>Select Language</span>
 
     <ChevronDown
-      size={18}
-      className={`transition-transform duration-200 ${
-        languageOpen ? "rotate-180" : ""
-      }`}
+      size={16}
+      strokeWidth={2}
+      className={`
+        transition-transform duration-200
+        ${languageOpen ? "rotate-180" : ""}
+      `}
     />
   </button>
+
 
   {/* Language Dropdown */}
   <AnimatePresence>
@@ -102,78 +109,128 @@ export default function Header() {
         }}
         transition={{
           duration: 0.18,
+          ease: "easeOut",
         }}
         className="
           absolute
           left-0
           top-full
           mt-2
-          w-40
-          sm:w-44
+          z-[9999]
+
+          w-[170px]
+          sm:w-[180px]
+
+          rounded-xl
+          border border-yellow-700/30
+
           bg-[#241d1d]/95
           backdrop-blur-md
-          border border-yellow-700/30
-          rounded-xl
+
+          p-2
           shadow-2xl
-          overflow-hidden
-          z-[9999]
         "
       >
 
         {/* Dropdown Header */}
-        <div className="px-4 py-2.5 border-b border-yellow-800/30">
-          <p className="text-xs uppercase tracking-wider text-yellow-500/80">
+        <div className="px-3 py-2 border-b border-yellow-800/30 mb-2">
+          <p className="
+            text-xs
+            uppercase
+            tracking-wider
+            font-medium
+            text-yellow-500/80
+          ">
             Select Language
           </p>
         </div>
+
 
         {/* English */}
         <Link
           href="/en"
           onClick={() => setLanguageOpen(false)}
           className="
-            block
-            px-4 py-3
-            text-yellow-300
-            hover:bg-[#3a2f2f]
-            hover:text-yellow-200
-            transition
+            flex items-center justify-center
+            w-full
+
+            rounded-lg
+            border border-yellow-700/50
+
+            px-4 py-2.5
+            mb-2
+
+            text-sm
             font-medium
+            tracking-wide
+
+            text-yellow-300
+
+            hover:bg-[#3a2f2f]
+            hover:border-yellow-400
+            hover:text-yellow-200
+
+            transition-all duration-200
           "
         >
           English
         </Link>
+
 
         {/* Urdu */}
         <Link
           href="/"
           onClick={() => setLanguageOpen(false)}
           className="
-            block
-            px-4 py-3
-            text-yellow-200
-            hover:bg-[#3a2f2f]
-            hover:text-yellow-300
-            transition
+            flex items-center justify-center
+            w-full
+
+            rounded-lg
+            border border-yellow-700/50
+
+            px-4 py-2.5
+            mb-2
+
+            text-base
             font-medium
-            text-lg
+
+            text-yellow-200
+
+            hover:bg-[#3a2f2f]
+            hover:border-yellow-400
+            hover:text-yellow-300
+
+            transition-all duration-200
           "
         >
           اردو
         </Link>
+
 
         {/* Bangla */}
         <Link
           href="/bn"
           onClick={() => setLanguageOpen(false)}
           className="
-            block
-            px-4 py-3
-            text-yellow-200
-            hover:bg-[#3a2f2f]
-            hover:text-yellow-300
-            transition
+            flex items-center justify-center
+            w-full
+
+            rounded-lg
+            border border-yellow-700/50
+
+            px-4 py-2.5
+
+            text-sm
             font-medium
+            tracking-wide
+
+            text-yellow-200
+
+            hover:bg-[#3a2f2f]
+            hover:border-yellow-400
+            hover:text-yellow-300
+
+            transition-all duration-200
           "
         >
           বাংলা
