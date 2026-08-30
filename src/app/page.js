@@ -345,7 +345,7 @@ fetch("https://f-backend-vdi1.onrender.com/api/majameen")
           style={{ background: "#000000", borderBottom: "2px solid #a86423" }}
         >
           <motion.div
-            className="whitespace-nowrap w-full text-yellow-200 text-sm font-semibold"
+            className="whitespace-nowrap w-full text-yellow-500 text-sm font-semibold"
             style={{
               direction: "rtl",
               fontFamily: "'Jameel Noori Nastaleeq', serif",
