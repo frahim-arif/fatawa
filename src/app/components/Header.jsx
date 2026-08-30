@@ -33,29 +33,35 @@ export default function Header() {
         <div className="relative">
 
           <button
+            type="button"
             onClick={() => setDropdownOpen(!dropdownOpen)}
             className="flex items-center gap-1 text-xl md:text-2xl font-bold text-yellow-300 hover:text-yellow-400 transition"
           >
             English
-            <ChevronDown size={20} />
+            <ChevronDown
+              size={20}
+              className={`transition-transform duration-200 ${
+                dropdownOpen ? "rotate-180" : ""
+              }`}
+            />
           </button>
 
           {/* Language Dropdown */}
           <AnimatePresence>
             {dropdownOpen && (
               <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-                className="absolute top-10 left-0 bg-[#2f2626] text-yellow-200 shadow-xl rounded-md w-32 py-2 z-50"
+                initial={{ opacity: 0, y: -8, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                transition={{ duration: 0.18 }}
+                className="absolute left-0 top-full mt-2 w-36 bg-[#2f2626] text-yellow-200 rounded-lg shadow-2xl border border-yellow-900/40 overflow-hidden z-[200]"
               >
 
                 {/* English */}
                 <Link
                   href="/en"
                   onClick={() => setDropdownOpen(false)}
-                  className="block px-4 py-2 hover:bg-[#3a2f2f]"
+                  className="block px-4 py-3 hover:bg-[#3a2f2f] hover:text-yellow-300 transition"
                 >
                   English
                 </Link>
@@ -64,21 +70,19 @@ export default function Header() {
                 <Link
                   href="/"
                   onClick={() => setDropdownOpen(false)}
-                  className="block px-4 py-2 hover:bg-[#3a2f2f]"
+                  className="block px-4 py-3 hover:bg-[#3a2f2f] hover:text-yellow-300 transition"
                 >
                   اردو
                 </Link>
 
-                {/* Future: Bangla */}
-                {/* 
+                {/* Bangla */}
                 <Link
                   href="/bn"
                   onClick={() => setDropdownOpen(false)}
-                  className="block px-4 py-2 hover:bg-[#3a2f2f]"
+                  className="block px-4 py-3 hover:bg-[#3a2f2f] hover:text-yellow-300 transition"
                 >
                   বাংলা
                 </Link>
-                */}
 
               </motion.div>
             )}
@@ -103,25 +107,29 @@ export default function Header() {
             ہوم پیج
           </Link>
 
-          {/* Dropdown */}
+          {/* More Dropdown */}
           <div className="relative">
+
             <button
-              onClick={() => setDropdownOpen(!dropdownOpen)}
+              type="button"
+              onClick={() => setOpen(!open)}
               className="flex items-center gap-1 hover:text-yellow-400 transition"
             >
-              More <ChevronDown size={18} />
+              More
+              <ChevronDown size={18} />
             </button>
 
             <AnimatePresence>
-              {dropdownOpen && (
+              {open && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-8 right-0 bg-[#2f2626] text-yellow-200 shadow-xl rounded-md w-48 py-2 z-50"
-                  onMouseLeave={() => setDropdownOpen(false)}
+                  className="absolute top-8 right-0 bg-[#2f2626] text-yellow-200 shadow-xl rounded-md w-48 py-2 z-[200]"
+                  onMouseLeave={() => setOpen(false)}
                 >
+
                   <Link
                     href="/courses"
                     className="block px-4 py-2 hover:bg-[#3a2f2f]"
@@ -163,9 +171,11 @@ export default function Header() {
                   >
                     Disclaimer
                   </Link>
+
                 </motion.div>
               )}
             </AnimatePresence>
+
           </div>
 
           {/* CTA */}
@@ -183,8 +193,10 @@ export default function Header() {
 
         {/* Mobile Button */}
         <button
+          type="button"
           onClick={() => setOpen(!open)}
-          className="md:hidden text-yellow-200"
+          className="md:hidden text-yellow-200 p-1"
+          aria-label="Open menu"
         >
           {open ? <X size={28} /> : <Menu size={28} />}
         </button>
@@ -199,7 +211,7 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.25 }}
-            className="relative md:hidden px-4 pb-4"
+            className="relative md:hidden px-4 pb-4 z-[150]"
           >
             <div className="bg-[#2f2626] text-yellow-100 rounded-xl flex flex-col items-center gap-4 py-4 shadow-lg">
 
@@ -278,3 +290,4 @@ export default function Header() {
     </header>
   );
 }
+
