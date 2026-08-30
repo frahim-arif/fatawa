@@ -70,7 +70,7 @@ export default function Header() {
       tracking-wider
       font-medium
       text-yellow-500/80
-      hover:text-yellow-400
+      hover:text-yellow-500
       transition-all duration-200
       focus:outline-none
     "
@@ -78,7 +78,7 @@ export default function Header() {
     <span>Select Language</span>
 
     <ChevronDown
-      size={16}
+      size={18}
       strokeWidth={2}
       className={`
         transition-transform duration-200
@@ -132,18 +132,7 @@ export default function Header() {
         "
       >
 
-        {/* Dropdown Header */}
-        <div className="px-3 py-2 border-b border-yellow-800/30 mb-2">
-          <p className="
-            text-xs
-            uppercase
-            tracking-wider
-            font-medium
-            text-yellow-500/80
-          ">
-            Select Language
-          </p>
-        </div>
+      
 
 
         {/* English */}
