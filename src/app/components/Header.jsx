@@ -69,7 +69,7 @@ export default function Header() {
       uppercase
       tracking-wider
       font-medium
-      text-yellow-500/80
+      text-yellow-500
       hover:text-yellow-500
       transition-all duration-200
       focus:outline-none
