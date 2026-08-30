@@ -29,66 +29,77 @@ export default function Header() {
       {/* 🔥 Content */}
       <div className="relative max-w-6xl mx-auto py-2 px-3 md:px-4 flex justify-between items-center">
 
-        {/* 🌐 Language Dropdown */}
-        <div className="relative">
+      
+{/* 🌐 Language Dropdown */}
+<div className="relative shrink-0">
 
-          <button
-            type="button"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="flex items-center gap-1 text-xl md:text-2xl font-bold text-yellow-300 hover:text-yellow-400 transition"
-          >
-            English
-            <ChevronDown
-              size={20}
-              className={`transition-transform duration-200 ${
-                dropdownOpen ? "rotate-180" : ""
-              }`}
-            />
-          </button>
+  <button
+    type="button"
+    onClick={() => setDropdownOpen(!dropdownOpen)}
+    className="flex items-center gap-1 text-lg md:text-2xl font-bold text-yellow-300 hover:text-yellow-400 transition whitespace-nowrap"
+  >
+    English
+    <ChevronDown
+      size={18}
+      className={`transition-transform duration-200 ${
+        dropdownOpen ? "rotate-180" : ""
+      }`}
+    />
+  </button>
 
-          {/* Language Dropdown */}
-          <AnimatePresence>
-            {dropdownOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -8, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -8, scale: 0.95 }}
-                transition={{ duration: 0.18 }}
-                className="absolute left-0 top-full mt-2 w-36 bg-[#2f2626] text-yellow-200 rounded-lg shadow-2xl border border-yellow-900/40 overflow-hidden z-[200]"
-              >
+  {/* Language Dropdown */}
+  <AnimatePresence>
+    {dropdownOpen && (
+      <motion.div
+        initial={{ opacity: 0, y: -8, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: -8, scale: 0.95 }}
+        transition={{ duration: 0.18 }}
+        className="
+          absolute top-full mt-2
+          left-0
+          w-32
+          bg-[#2f2626]
+          text-yellow-200
+          rounded-lg
+          shadow-2xl
+          border border-yellow-900/40
+          overflow-hidden
+          z-[999]
+          md:w-36
+        "
+      >
 
-                {/* English */}
-                <Link
-                  href="/en"
-                  onClick={() => setDropdownOpen(false)}
-                  className="block px-4 py-3 hover:bg-[#3a2f2f] hover:text-yellow-300 transition"
-                >
-                  English
-                </Link>
+        <Link
+          href="/en"
+          onClick={() => setDropdownOpen(false)}
+          className="block px-4 py-3 whitespace-nowrap hover:bg-[#3a2f2f] hover:text-yellow-300 transition"
+        >
+          English
+        </Link>
 
-                {/* Urdu */}
-                <Link
-                  href="/"
-                  onClick={() => setDropdownOpen(false)}
-                  className="block px-4 py-3 hover:bg-[#3a2f2f] hover:text-yellow-300 transition"
-                >
-                  اردو
-                </Link>
+        <Link
+          href="/"
+          onClick={() => setDropdownOpen(false)}
+          className="block px-4 py-3 whitespace-nowrap hover:bg-[#3a2f2f] hover:text-yellow-300 transition"
+        >
+          اردو
+        </Link>
 
-                {/* Bangla */}
-                <Link
-                  href="/bn"
-                  onClick={() => setDropdownOpen(false)}
-                  className="block px-4 py-3 hover:bg-[#3a2f2f] hover:text-yellow-300 transition"
-                >
-                  বাংলা
-                </Link>
+        <Link
+          href="/bn"
+          onClick={() => setDropdownOpen(false)}
+          className="block px-4 py-3 whitespace-nowrap hover:bg-[#3a2f2f] hover:text-yellow-300 transition"
+        >
+          বাংলা
+        </Link>
 
-              </motion.div>
-            )}
-          </AnimatePresence>
+      </motion.div>
+    )}
+  </AnimatePresence>
 
-        </div>
+</div>
+
 
         {/* Desktop Menu */}
         <nav className="hidden md:flex gap-6 items-center text-base font-semibold text-yellow-100">
