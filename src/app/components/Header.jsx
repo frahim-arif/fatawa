@@ -52,39 +52,34 @@ export default function Header() {
          
 
 
+
 {/* 🌐 Language Dropdown */}
 <div className="relative shrink-0">
 
-  {/* Language Button */}
   <button
     type="button"
     onClick={toggleLanguage}
     aria-expanded={languageOpen}
-    aria-label="Select language"
     className="
       flex items-center gap-1.5
-      whitespace-nowrap
       text-lg md:text-2xl
-      font-semibold
+      font-medium
       tracking-wide
       text-yellow-300
       hover:text-yellow-400
       transition-all duration-200
-      focus:outline-none
+      whitespace-nowrap
     "
   >
-    <span>Select Language</span>
+    Select Language
 
     <ChevronDown
       size={18}
-      strokeWidth={2}
-      className={`
-        transition-transform duration-200
-        ${languageOpen ? "rotate-180" : ""}
-      `}
+      className={`transition-transform duration-200 ${
+        languageOpen ? "rotate-180" : ""
+      }`}
     />
   </button>
-
 
   {/* Language Dropdown */}
   <AnimatePresence>
@@ -107,26 +102,21 @@ export default function Header() {
         }}
         transition={{
           duration: 0.18,
-          ease: "easeOut",
         }}
         className="
           absolute
           left-0
           top-full
           mt-2
-          z-[9999]
-
-          w-[170px]
-          sm:w-[180px]
-
-          rounded-xl
-          border border-yellow-700/40
-
+          w-40
+          sm:w-44
           bg-[#241d1d]/95
           backdrop-blur-md
-
-          p-2
+          border border-yellow-700/30
+          rounded-xl
           shadow-2xl
+          overflow-hidden
+          z-[9999]
         "
       >
 
@@ -135,83 +125,48 @@ export default function Header() {
           href="/en"
           onClick={() => setLanguageOpen(false)}
           className="
-            flex items-center justify-center
-            w-full
-            rounded-lg
-            border border-yellow-700/50
-
-            px-4 py-2.5
-            mb-2
-
-            text-base
-            font-semibold
-            tracking-wide
-
+            block
+            px-4 py-3
             text-yellow-300
-
             hover:bg-[#3a2f2f]
-            hover:border-yellow-400
             hover:text-yellow-200
-
-            transition-all duration-200
+            transition
+            font-medium
           "
         >
           English
         </Link>
-
 
         {/* Urdu */}
         <Link
           href="/"
           onClick={() => setLanguageOpen(false)}
           className="
-            flex items-center justify-center
-            w-full
-            rounded-lg
-            border border-yellow-700/50
-
-            px-4 py-2.5
-            mb-2
-
-            text-lg
-            font-medium
-
+            block
+            px-4 py-3
             text-yellow-200
-
             hover:bg-[#3a2f2f]
-            hover:border-yellow-400
             hover:text-yellow-300
-
-            transition-all duration-200
+            transition
+            font-medium
+            text-lg
           "
         >
           اردو
         </Link>
-
 
         {/* Bangla */}
         <Link
           href="/bn"
           onClick={() => setLanguageOpen(false)}
           className="
-            flex items-center justify-center
-            w-full
-            rounded-lg
-            border border-yellow-700/50
-
-            px-4 py-2.5
-
-            text-base
-            font-semibold
-            tracking-wide
-
+            block
+            px-4 py-3
             text-yellow-200
-
             hover:bg-[#3a2f2f]
-            hover:border-yellow-400
             hover:text-yellow-300
-
-            transition-all duration-200
+            transition
+            font-medium
           "
         >
           বাংলা
@@ -222,10 +177,6 @@ export default function Header() {
   </AnimatePresence>
 
 </div>
-
-
-
-
 
 
           {/* =========================
