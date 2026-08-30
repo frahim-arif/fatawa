@@ -78,7 +78,7 @@ export default function Header() {
     <span>Select Language</span>
 
     <ChevronDown
-      size={18}
+      size={22}
       strokeWidth={2}
       className={`
         transition-transform duration-200
