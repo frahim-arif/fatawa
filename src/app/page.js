@@ -342,10 +342,10 @@ fetch("https://f-backend-vdi1.onrender.com/api/majameen")
         {/* Namaz Timings */}
         <div
           className="w-full overflow-hidden px-0"
-          style={{ background: "#000000", borderBottom: "2px solid #a86423" }}
+          style={{ background: "#000000", borderBottom: "2px solid #75593f" }}
         >
           <motion.div
-            className="whitespace-nowrap w-full text-yellow-500 text-sm font-semibold"
+            className="whitespace-nowrap w-full text-yellow-500 text-sm font-medium"
             style={{
               direction: "rtl",
               fontFamily: "'Jameel Noori Nastaleeq', serif",
