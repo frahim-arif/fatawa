@@ -1,0 +1,435 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { Search, Mic } from "lucide-react";
+
+export default function BanglaHomePage() {
+  const [query, setQuery] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [latestQuestions, setLatestQuestions] = useState([]);
+  const [majameen, setMajameen] = useState([]);
+  const [prayerTimes, setPrayerTimes] = useState(null);
+
+  const backend = "https://f-backend-vdi1.onrender.com/api";
+
+  // Categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch(`${backend}/categories`);
+        const data = await res.json();
+
+        if (data.success) {
+          setCategories(data.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Latest Questions
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const res = await fetch(
+          `${backend}/admin/questions?limit=5`
+        );
+
+        const data = await res.json();
+
+        if (data.success) {
+          setLatestQuestions(data.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchQuestions();
+  }, []);
+
+  // Articles
+  useEffect(() => {
+    fetch(`${backend}/majameen`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setMajameen(data.data.slice(0, 5));
+        }
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
+  // Prayer Time
+  useEffect(() => {
+    const fetchPrayerTimes = async () => {
+      try {
+        const res = await fetch(
+          "https://api.aladhan.com/v1/timingsByCity?city=Guwahati&country=India&method=1"
+        );
+
+        const data = await res.json();
+
+        if (data.code === 200) {
+          setPrayerTimes(data.data.timings);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchPrayerTimes();
+  }, []);
+
+  // Voice Search
+  const startListening = () => {
+    const SpeechRecognition =
+      window.SpeechRecognition ||
+      window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("ভয়েস সার্চ এই ব্রাউজারে সমর্থিত নয়");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = "bn-BD";
+
+    recognition.onresult = (event) => {
+      setQuery(event.results[0][0].transcript);
+    };
+
+    recognition.start();
+  };
+
+  const getBanglaQuestion = (item) => {
+    return (
+      item.banglaQuestion ||
+      item.bnQuestion ||
+      item.questionBn ||
+      item.question
+    );
+  };
+
+  const getBanglaCategory = (item) => {
+    return (
+      item.banglaName ||
+      item.bnName ||
+      item.nameBn ||
+      item.name
+    );
+  };
+
+  const getBanglaArticleTitle = (item) => {
+    return (
+      item.banglaTitle ||
+      item.bnTitle ||
+      item.titleBn ||
+      item.title
+    );
+  };
+
+  const filteredQuestions = latestQuestions.filter((item) =>
+    getBanglaQuestion(item)
+      ?.toLowerCase()
+      .includes(query.toLowerCase())
+  );
+
+  return (
+    <main className="min-h-screen bg-[#f7f3e8]">
+
+      {/* HERO */}
+      <section
+        className="relative overflow-hidden py-10 px-4"
+        style={{
+          backgroundImage:
+            "url('/images/ramadan_15_03_2022_1.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="absolute inset-0 bg-black/55" />
+
+        <div className="relative max-w-6xl mx-auto text-center">
+
+          <h1 className="text-3xl md:text-5xl font-bold text-yellow-300">
+            ইসলামী প্রশ্ন ও উত্তর
+          </h1>
+
+          <p className="mt-3 text-yellow-100 text-base md:text-lg">
+            কুরআন ও সুন্নাহর আলোকে ইসলামী জ্ঞান
+          </p>
+
+        </div>
+      </section>
+
+      {/* PRAYER TIMES */}
+      <div className="bg-black border-b-2 border-[#75593f]">
+        <div className="max-w-6xl mx-auto py-2 px-3 text-center text-yellow-400 text-sm md:text-base">
+
+          {prayerTimes ? (
+            <>
+              ফজর: {prayerTimes.Fajr.split(" ")[0]}
+              <span className="mx-3">|</span>
+
+              যোহর: {prayerTimes.Dhuhr.split(" ")[0]}
+              <span className="mx-3">|</span>
+
+              আসর: {prayerTimes.Asr.split(" ")[0]}
+              <span className="mx-3">|</span>
+
+              মাগরিব: {prayerTimes.Maghrib.split(" ")[0]}
+              <span className="mx-3">|</span>
+
+              এশা: {prayerTimes.Isha.split(" ")[0]}
+            </>
+          ) : (
+            "নামাজের সময় লোড হচ্ছে..."
+          )}
+
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-3 py-8">
+
+        {/* SEARCH */}
+        <div className="relative mb-8">
+
+          <div className="flex items-center bg-white border border-yellow-600 rounded-2xl shadow-md overflow-hidden">
+
+            <div className="px-3">
+              <Search className="w-5 h-5 text-yellow-600" />
+            </div>
+
+            <input
+              type="text"
+              value={query}
+              onChange={(e) =>
+                setQuery(e.target.value)
+              }
+              placeholder="প্রশ্ন খুঁজুন..."
+              className="
+                w-full
+                py-3
+                outline-none
+                text-gray-800
+                bg-transparent
+              "
+            />
+
+            <button
+              onClick={startListening}
+              className="px-4"
+            >
+              <Mic className="w-5 h-5 text-yellow-600" />
+            </button>
+
+          </div>
+
+        </div>
+
+        {/* CATEGORIES */}
+        <section className="mb-10">
+
+          <div className="flex justify-between items-center mb-4">
+
+            <h2 className="text-2xl font-bold text-[#4b3415]">
+              বিষয়সমূহ
+            </h2>
+
+            <Link
+              href="/bn/categories"
+              className="text-yellow-700 font-semibold"
+            >
+              সব দেখুন →
+            </Link>
+
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+            {categories.slice(0, 8).map((cat) => (
+
+              <Link
+                key={cat._id}
+                href={`/bn/categories/${encodeURIComponent(
+                  cat.slug || cat.name
+                )}`}
+                className="
+                  flex items-center justify-center
+                  min-h-[80px]
+                  rounded-2xl
+                  border border-[#c8b27a]
+                  bg-gradient-to-b
+                  from-[#f6f0dd]
+                  via-[#e6d4a3]
+                  to-[#c9ab63]
+                  text-[#4b3415]
+                  text-center
+                  font-semibold
+                  shadow-md
+                  hover:scale-[1.02]
+                  transition
+                "
+              >
+                {getBanglaCategory(cat)}
+              </Link>
+
+            ))}
+
+          </div>
+
+        </section>
+
+        {/* QUICK LINKS */}
+        <section className="mb-10">
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+            <Link
+              href="/bn/fatawa"
+              className="rounded-xl bg-[#3b2f2f] text-yellow-200 text-center py-4 font-semibold hover:bg-[#4a3a3a]"
+            >
+              ফতোয়া
+            </Link>
+
+            <Link
+              href="/bn/articles"
+              className="rounded-xl bg-[#3b2f2f] text-yellow-200 text-center py-4 font-semibold hover:bg-[#4a3a3a]"
+            >
+              প্রবন্ধ
+            </Link>
+
+            <Link
+              href="/bn/categories"
+              className="rounded-xl bg-[#3b2f2f] text-yellow-200 text-center py-4 font-semibold hover:bg-[#4a3a3a]"
+            >
+              বিষয়সমূহ
+            </Link>
+
+            <Link
+              href="/ozan-shariah-calculator"
+              className="rounded-xl bg-[#3b2f2f] text-yellow-200 text-center py-4 font-semibold hover:bg-[#4a3a3a]"
+            >
+              ইসলামী ক্যালকুলেটর
+            </Link>
+
+          </div>
+
+        </section>
+
+        {/* LATEST QUESTIONS */}
+        <section className="mb-10">
+
+          <div className="flex justify-between items-center mb-4">
+
+            <h2 className="text-2xl font-bold text-[#4b3415]">
+              নতুন প্রশ্নসমূহ
+            </h2>
+
+            <Link
+              href="/bn/fatawa"
+              className="text-yellow-700 font-semibold"
+            >
+              সব দেখুন →
+            </Link>
+
+          </div>
+
+          <div className="space-y-3">
+
+            {filteredQuestions.length > 0 ? (
+
+              filteredQuestions.map((item) => (
+
+                <Link
+                  key={item._id}
+                  href={`/bn/fatawa/${item.slug}`}
+                  className="
+                    block
+                    bg-white
+                    border border-yellow-200
+                    rounded-xl
+                    p-4
+                    shadow-sm
+                    hover:border-yellow-500
+                    hover:shadow-md
+                    transition
+                  "
+                >
+                  <h3 className="text-gray-800 font-semibold">
+                    {getBanglaQuestion(item)}
+                  </h3>
+                </Link>
+
+              ))
+
+            ) : (
+
+              <p className="text-center text-gray-500">
+                কোনো প্রশ্ন পাওয়া যায়নি।
+              </p>
+
+            )}
+
+          </div>
+
+        </section>
+
+        {/* LATEST ARTICLES */}
+        <section>
+
+          <div className="flex justify-between items-center mb-4">
+
+            <h2 className="text-2xl font-bold text-[#4b3415]">
+              নির্বাচিত প্রবন্ধ
+            </h2>
+
+            <Link
+              href="/bn/articles"
+              className="text-yellow-700 font-semibold"
+            >
+              সব দেখুন →
+            </Link>
+
+          </div>
+
+          <div className="space-y-3">
+
+            {majameen.map((item) => (
+
+              <Link
+                key={item._id}
+                href={`/bn/articles/${
+                  item.slug || item._id
+                }`}
+                className="
+                  block
+                  bg-white
+                  border border-yellow-200
+                  rounded-xl
+                  p-4
+                  shadow-sm
+                  hover:border-yellow-500
+                  transition
+                "
+              >
+                {getBanglaArticleTitle(item)}
+              </Link>
+
+            ))}
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </main>
+  );
+}
