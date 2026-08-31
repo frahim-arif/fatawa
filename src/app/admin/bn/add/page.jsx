@@ -35,7 +35,7 @@ export default function BanglaQuestionAddPage() {
   });
 
   // =========================================
-  // GET CATEGORIES
+  // FETCH CATEGORIES
   // =========================================
   useEffect(() => {
     const fetchCategories = async () => {
@@ -48,7 +48,6 @@ export default function BanglaQuestionAddPage() {
           setCategories(res.data.data || []);
         } else {
           setCategories([]);
-
           toast.error(
             res.data?.message || "Failed to load categories"
           );
@@ -134,24 +133,44 @@ export default function BanglaQuestionAddPage() {
   };
 
   // =========================================
+  // RESET FORM
+  // =========================================
+  const resetForm = () => {
+    setFormData({
+      banglaQuestion: "",
+      banglaAnswer: "",
+      banglaHawala1: "",
+      banglaHawala2: "",
+      banglaHawala3: "",
+      banglaSlug: "",
+      banglaMetaTitle: "",
+      banglaMetaDescription: "",
+      banglaKeywords: "",
+      category: "",
+    });
+  };
+
+  // =========================================
   // SUBMIT
   // =========================================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
+    // -----------------------------------------
+    // VALIDATION
+    // -----------------------------------------
     if (!formData.banglaQuestion.trim()) {
-      toast.error("Bangla question is required");
+      toast.error("বাংলা প্রশ্ন লিখুন");
       return;
     }
 
     if (!formData.banglaAnswer.trim()) {
-      toast.error("Bangla answer is required");
+      toast.error("বাংলা উত্তর লিখুন");
       return;
     }
 
     if (!formData.category) {
-      toast.error("Please select a category");
+      toast.error("ক্যাটাগরি নির্বাচন করুন");
       return;
     }
 
@@ -191,34 +210,33 @@ export default function BanglaQuestionAddPage() {
         category: formData.category,
       };
 
+      // -----------------------------------------
+      // API REQUEST
+      // -----------------------------------------
       const res = await axios.post(
         `${backend}/bn/questions`,
         payload
       );
 
+      // -----------------------------------------
+      // SUCCESS
+      // -----------------------------------------
       if (res.data?.success) {
         toast.success(
           res.data.message ||
-            "Bangla question added successfully"
+            "বাংলা প্রশ্ন সফলভাবে যোগ হয়েছে"
         );
 
-        // Reset form
-        setFormData({
-          banglaQuestion: "",
-          banglaAnswer: "",
-          banglaHawala1: "",
-          banglaHawala2: "",
-          banglaHawala3: "",
-          banglaSlug: "",
-          banglaMetaTitle: "",
-          banglaMetaDescription: "",
-          banglaKeywords: "",
-          category: "",
-        });
+        resetForm();
+
+        // Success toast dikhne ke baad Bangla home/list page
+        setTimeout(() => {
+          router.push("/admin/bn");
+        }, 800);
       } else {
         toast.error(
           res.data?.message ||
-            "Something went wrong"
+            "প্রশ্ন যোগ করা যায়নি"
         );
       }
     } catch (error) {
@@ -229,7 +247,7 @@ export default function BanglaQuestionAddPage() {
 
       toast.error(
         error.response?.data?.message ||
-          "Failed to add Bangla question"
+          "বাংলা প্রশ্ন যোগ করতে ব্যর্থ হয়েছে"
       );
     } finally {
       setLoading(false);
@@ -240,13 +258,15 @@ export default function BanglaQuestionAddPage() {
   // RENDER
   // =========================================
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-8 md:px-8">
+    <div
+      className="min-h-screen bg-gray-50 px-4 py-8 md:px-8"
+      dir="ltr"
+    >
       <div className="mx-auto max-w-5xl">
 
-        {/* ========================================= */}
-        {/* HEADER */}
-        {/* ========================================= */}
-
+        {/* =========================================
+            HEADER
+        ========================================= */}
         <div className="mb-6 rounded-xl border bg-white p-6 shadow-sm">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
@@ -264,7 +284,8 @@ export default function BanglaQuestionAddPage() {
             <button
               type="button"
               onClick={() => router.push("/admin/bn")}
-              className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+              disabled={loading}
+              className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
             >
               Back
             </button>
@@ -272,29 +293,26 @@ export default function BanglaQuestionAddPage() {
           </div>
         </div>
 
-        {/* ========================================= */}
-        {/* FORM */}
-        {/* ========================================= */}
-
+        {/* =========================================
+            FORM
+        ========================================= */}
         <form
           onSubmit={handleSubmit}
           className="space-y-6"
         >
 
-          {/* ========================================= */}
-          {/* BANGLA CONTENT */}
-          {/* ========================================= */}
+          {/* =========================================
+              BANGLA CONTENT
+          ========================================= */}
+          <section className="rounded-xl border bg-white p-6 shadow-sm">
 
-          <div className="rounded-xl border bg-white p-6 shadow-sm">
-
-            <h2 className="mb-5 text-lg font-semibold text-gray-800">
+            <h2 className="mb-5 border-b pb-3 text-lg font-semibold text-gray-800">
               Bangla Content
             </h2>
 
             <div className="space-y-5">
 
               {/* QUESTION */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Bangla Question *
@@ -307,13 +325,12 @@ export default function BanglaQuestionAddPage() {
                   rows={4}
                   dir="ltr"
                   placeholder="বাংলা প্রশ্ন লিখুন"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                   required
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm leading-7 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                 />
               </div>
 
               {/* ANSWER */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Bangla Answer *
@@ -323,31 +340,29 @@ export default function BanglaQuestionAddPage() {
                   name="banglaAnswer"
                   value={formData.banglaAnswer}
                   onChange={handleChange}
-                  rows={12}
+                  rows={14}
                   dir="ltr"
                   placeholder="বাংলা উত্তর লিখুন"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                   required
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm leading-7 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                 />
               </div>
 
             </div>
-          </div>
+          </section>
 
-          {/* ========================================= */}
-          {/* HAWALA / REFERENCES */}
-          {/* ========================================= */}
+          {/* =========================================
+              HAWALA
+          ========================================= */}
+          <section className="rounded-xl border bg-white p-6 shadow-sm">
 
-          <div className="rounded-xl border bg-white p-6 shadow-sm">
-
-            <h2 className="mb-5 text-lg font-semibold text-gray-800">
+            <h2 className="mb-5 border-b pb-3 text-lg font-semibold text-gray-800">
               Hawala / References
             </h2>
 
             <div className="space-y-5">
 
               {/* HAWALA 1 */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Hawala 1
@@ -360,12 +375,11 @@ export default function BanglaQuestionAddPage() {
                   rows={3}
                   dir="ltr"
                   placeholder="প্রথম হাওয়ালা / রেফারেন্স লিখুন"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm leading-7 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                 />
               </div>
 
               {/* HAWALA 2 */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Hawala 2
@@ -378,12 +392,11 @@ export default function BanglaQuestionAddPage() {
                   rows={3}
                   dir="ltr"
                   placeholder="দ্বিতীয় হাওয়ালা / রেফারেন্স লিখুন"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm leading-7 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                 />
               </div>
 
               {/* HAWALA 3 */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Hawala 3
@@ -396,27 +409,25 @@ export default function BanglaQuestionAddPage() {
                   rows={3}
                   dir="ltr"
                   placeholder="তৃতীয় হাওয়ালা / রেফারেন্স লিখুন"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm leading-7 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                 />
               </div>
 
             </div>
-          </div>
+          </section>
 
-          {/* ========================================= */}
-          {/* SEO */}
-          {/* ========================================= */}
+          {/* =========================================
+              SEO
+          ========================================= */}
+          <section className="rounded-xl border bg-white p-6 shadow-sm">
 
-          <div className="rounded-xl border bg-white p-6 shadow-sm">
-
-            <h2 className="mb-5 text-lg font-semibold text-gray-800">
+            <h2 className="mb-5 border-b pb-3 text-lg font-semibold text-gray-800">
               SEO Settings
             </h2>
 
             <div className="space-y-5">
 
               {/* SLUG */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Bangla Slug
@@ -428,7 +439,7 @@ export default function BanglaQuestionAddPage() {
                   value={formData.banglaSlug}
                   onChange={handleChange}
                   placeholder="bangla-question-slug"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                 />
 
                 <p className="mt-1 text-xs text-gray-400">
@@ -437,7 +448,6 @@ export default function BanglaQuestionAddPage() {
               </div>
 
               {/* META TITLE */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Meta Title
@@ -449,12 +459,11 @@ export default function BanglaQuestionAddPage() {
                   value={formData.banglaMetaTitle}
                   onChange={handleChange}
                   placeholder="SEO meta title লিখুন"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                 />
               </div>
 
               {/* META DESCRIPTION */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Meta Description
@@ -468,7 +477,7 @@ export default function BanglaQuestionAddPage() {
                   maxLength={160}
                   dir="ltr"
                   placeholder="SEO meta description লিখুন"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm leading-7 outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                 />
 
                 <p className="mt-1 text-xs text-gray-400">
@@ -477,7 +486,6 @@ export default function BanglaQuestionAddPage() {
               </div>
 
               {/* KEYWORDS */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Keywords
@@ -489,7 +497,7 @@ export default function BanglaQuestionAddPage() {
                   value={formData.banglaKeywords}
                   onChange={handleChange}
                   placeholder="নামাজ, রোজা, যাকাত, ইসলাম"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none focus:border-green-600 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
                 />
 
                 <p className="mt-1 text-xs text-gray-400">
@@ -498,17 +506,20 @@ export default function BanglaQuestionAddPage() {
               </div>
 
             </div>
-          </div>
+          </section>
 
-          {/* ========================================= */}
-          {/* CATEGORY */}
-          {/* ========================================= */}
+          {/* =========================================
+              CATEGORY
+          ========================================= */}
+          <section className="rounded-xl border bg-white p-6 shadow-sm">
 
-          <div className="rounded-xl border bg-white p-6 shadow-sm">
-
-            <h2 className="mb-5 text-lg font-semibold text-gray-800">
+            <h2 className="mb-5 border-b pb-3 text-lg font-semibold text-gray-800">
               Category
             </h2>
+
+            <label className="mb-2 block text-sm font-semibold text-gray-700">
+              Select Bangla Category *
+            </label>
 
             <select
               name="category"
@@ -525,29 +536,28 @@ export default function BanglaQuestionAddPage() {
               </option>
 
               {!categoryLoading &&
-                categories.map((cat) => (
+                categories.map((category) => (
                   <option
-                    key={cat._id}
-                    value={cat._id}
+                    key={category._id}
+                    value={category._id}
                   >
-                    {getCategoryName(cat)}
+                    {getCategoryName(category)}
                   </option>
                 ))}
             </select>
 
             {!categoryLoading &&
               categories.length === 0 && (
-                <p className="mt-2 text-sm text-red-500">
+                <p className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
                   No categories found. Please add a category first.
                 </p>
               )}
 
-          </div>
+          </section>
 
-          {/* ========================================= */}
-          {/* SUBMIT */}
-          {/* ========================================= */}
-
+          {/* =========================================
+              ACTIONS
+          ========================================= */}
           <div className="flex flex-col gap-3 rounded-xl border bg-white p-6 shadow-sm sm:flex-row sm:justify-end">
 
             <button
@@ -566,7 +576,7 @@ export default function BanglaQuestionAddPage() {
                 categoryLoading ||
                 categories.length === 0
               }
-              className="min-w-[200px] rounded-lg bg-green-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
+              className="min-w-[210px] rounded-lg bg-green-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading
                 ? "Adding..."
