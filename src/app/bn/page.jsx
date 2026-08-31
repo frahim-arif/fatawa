@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Search, Mic } from "lucide-react";
 
-export default function EnglishHomePage() {
+export default function BanglaHomePage() {
   const [query, setQuery] = useState("");
   const [categories, setCategories] = useState([]);
   const [latestQuestions, setLatestQuestions] = useState([]);
@@ -35,7 +35,7 @@ export default function EnglishHomePage() {
   }, []);
 
   // =========================
-  // Latest English Questions
+  // Latest Bangla Questions
   // =========================
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -47,15 +47,15 @@ export default function EnglishHomePage() {
         const data = await res.json();
 
         if (data.success) {
-          // ❗ Sirf English questions
-          const englishQuestions = data.data.filter(
+          // ❗ Sirf Bangla questions
+          const banglaQuestions = data.data.filter(
             (item) =>
-              item.englishQuestion ||
-              item.enQuestion ||
-              item.questionEn
+              item.banglaQuestion ||
+              item.bnQuestion ||
+              item.questionBn
           );
 
-          setLatestQuestions(englishQuestions.slice(0, 5));
+          setLatestQuestions(banglaQuestions.slice(0, 5));
         }
       } catch (error) {
         console.error("Questions error:", error);
@@ -66,7 +66,7 @@ export default function EnglishHomePage() {
   }, []);
 
   // =========================
-  // Latest English Articles
+  // Latest Bangla Articles
   // =========================
   useEffect(() => {
     const fetchArticles = async () => {
@@ -75,15 +75,15 @@ export default function EnglishHomePage() {
         const data = await res.json();
 
         if (data.success) {
-          // ❗ Sirf English articles
-          const englishArticles = data.data.filter(
+          // ❗ Sirf Bangla articles
+          const banglaArticles = data.data.filter(
             (item) =>
-              item.englishTitle ||
-              item.enTitle ||
-              item.titleEn
+              item.banglaTitle ||
+              item.bnTitle ||
+              item.titleBn
           );
 
-          setMajameen(englishArticles.slice(0, 5));
+          setMajameen(banglaArticles.slice(0, 5));
         }
       } catch (error) {
         console.error("Articles error:", error);
@@ -125,13 +125,13 @@ export default function EnglishHomePage() {
       window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      alert("Voice search is not supported in this browser.");
+      alert("ভয়েস সার্চ এই ব্রাউজারে সমর্থিত নয়");
       return;
     }
 
     const recognition = new SpeechRecognition();
 
-    recognition.lang = "en-US";
+    recognition.lang = "bn-BD";
 
     recognition.onresult = (event) => {
       setQuery(event.results[0][0].transcript);
@@ -141,37 +141,37 @@ export default function EnglishHomePage() {
   };
 
   // =========================
-  // English Question
+  // Bangla Question
   // =========================
-  const getEnglishQuestion = (item) => {
+  const getBanglaQuestion = (item) => {
     return (
-      item.englishQuestion ||
-      item.enQuestion ||
-      item.questionEn ||
+      item.banglaQuestion ||
+      item.bnQuestion ||
+      item.questionBn ||
       null
     );
   };
 
   // =========================
-  // English Category
+  // Bangla Category
   // =========================
-  const getEnglishCategory = (item) => {
+  const getBanglaCategory = (item) => {
     return (
-      item.englishName ||
-      item.enName ||
-      item.nameEn ||
+      item.banglaName ||
+      item.bnName ||
+      item.nameBn ||
       null
     );
   };
 
   // =========================
-  // English Article
+  // Bangla Article
   // =========================
-  const getEnglishArticleTitle = (item) => {
+  const getBanglaArticleTitle = (item) => {
     return (
-      item.englishTitle ||
-      item.enTitle ||
-      item.titleEn ||
+      item.banglaTitle ||
+      item.bnTitle ||
+      item.titleBn ||
       null
     );
   };
@@ -180,7 +180,7 @@ export default function EnglishHomePage() {
   // Search
   // =========================
   const filteredQuestions = latestQuestions.filter((item) => {
-    const question = getEnglishQuestion(item);
+    const question = getBanglaQuestion(item);
 
     return (
       question &&
@@ -208,11 +208,11 @@ export default function EnglishHomePage() {
         <div className="relative max-w-6xl mx-auto text-center">
 
           <h1 className="text-3xl md:text-5xl font-bold text-yellow-300">
-            Islamic Questions & Answers
+            ইসলামী প্রশ্ন ও উত্তর
           </h1>
 
           <p className="mt-3 text-yellow-100 text-base md:text-lg">
-            Islamic knowledge based on the Quran and Sunnah
+            কুরআন ও সুন্নাহর আলোকে ইসলামী জ্ঞান
           </p>
 
         </div>
@@ -227,26 +227,26 @@ export default function EnglishHomePage() {
 
           {prayerTimes ? (
             <>
-              Fajr: {prayerTimes.Fajr.split(" ")[0]}
+              ফজর: {prayerTimes.Fajr.split(" ")[0]}
 
               <span className="mx-3">|</span>
 
-              Dhuhr: {prayerTimes.Dhuhr.split(" ")[0]}
+              যোহর: {prayerTimes.Dhuhr.split(" ")[0]}
 
               <span className="mx-3">|</span>
 
-              Asr: {prayerTimes.Asr.split(" ")[0]}
+              আসর: {prayerTimes.Asr.split(" ")[0]}
 
               <span className="mx-3">|</span>
 
-              Maghrib: {prayerTimes.Maghrib.split(" ")[0]}
+              মাগরিব: {prayerTimes.Maghrib.split(" ")[0]}
 
               <span className="mx-3">|</span>
 
-              Isha: {prayerTimes.Isha.split(" ")[0]}
+              এশা: {prayerTimes.Isha.split(" ")[0]}
             </>
           ) : (
-            "Loading prayer times..."
+            "নামাজের সময় লোড হচ্ছে..."
           )}
 
         </div>
@@ -269,7 +269,7 @@ export default function EnglishHomePage() {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search Islamic questions..."
+              placeholder="প্রশ্ন খুঁজুন..."
               className="
                 w-full
                 py-3
@@ -282,7 +282,7 @@ export default function EnglishHomePage() {
             <button
               onClick={startListening}
               className="px-4"
-              aria-label="Voice Search"
+              aria-label="ভয়েস সার্চ"
             >
               <Mic className="w-5 h-5 text-yellow-600" />
             </button>
@@ -299,14 +299,14 @@ export default function EnglishHomePage() {
           <div className="flex justify-between items-center mb-4">
 
             <h2 className="text-2xl font-bold text-[#4b3415]">
-              Categories
+              বিষয়সমূহ
             </h2>
 
             <Link
-              href="/en/categories"
+              href="/bn/categories"
               className="text-yellow-700 font-semibold"
             >
-              View All →
+              সব দেখুন →
             </Link>
 
           </div>
@@ -314,13 +314,13 @@ export default function EnglishHomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
 
             {categories
-              .filter((cat) => getEnglishCategory(cat))
+              .filter((cat) => getBanglaCategory(cat))
               .slice(0, 8)
               .map((cat) => (
 
                 <Link
                   key={cat._id}
-                  href={`/en/categories/${encodeURIComponent(
+                  href={`/bn/categories/${encodeURIComponent(
                     cat.slug || cat.name
                   )}`}
                   className="
@@ -340,7 +340,7 @@ export default function EnglishHomePage() {
                     transition
                   "
                 >
-                  {getEnglishCategory(cat)}
+                  {getBanglaCategory(cat)}
                 </Link>
 
               ))}
@@ -357,7 +357,7 @@ export default function EnglishHomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
 
             <Link
-              href="/en/fatawa"
+              href="/bn/fatawa"
               className="
                 rounded-xl
                 bg-[#3b2f2f]
@@ -368,11 +368,11 @@ export default function EnglishHomePage() {
                 hover:bg-[#4a3a3a]
               "
             >
-              Fatwas
+              ফতোয়া
             </Link>
 
             <Link
-              href="/en/articles"
+              href="/bn/articles"
               className="
                 rounded-xl
                 bg-[#3b2f2f]
@@ -383,11 +383,11 @@ export default function EnglishHomePage() {
                 hover:bg-[#4a3a3a]
               "
             >
-              Articles
+              প্রবন্ধ
             </Link>
 
             <Link
-              href="/en/categories"
+              href="/bn/categories"
               className="
                 rounded-xl
                 bg-[#3b2f2f]
@@ -398,7 +398,7 @@ export default function EnglishHomePage() {
                 hover:bg-[#4a3a3a]
               "
             >
-              Categories
+              বিষয়সমূহ
             </Link>
 
             <Link
@@ -413,7 +413,7 @@ export default function EnglishHomePage() {
                 hover:bg-[#4a3a3a]
               "
             >
-              Islamic Calculator
+              ইসলামী ক্যালকুলেটর
             </Link>
 
           </div>
@@ -428,14 +428,14 @@ export default function EnglishHomePage() {
           <div className="flex justify-between items-center mb-4">
 
             <h2 className="text-2xl font-bold text-[#4b3415]">
-              Latest Questions
+              নতুন প্রশ্নসমূহ
             </h2>
 
             <Link
-              href="/en/fatawa"
+              href="/bn/fatawa"
               className="text-yellow-700 font-semibold"
             >
-              View All →
+              সব দেখুন →
             </Link>
 
           </div>
@@ -448,7 +448,7 @@ export default function EnglishHomePage() {
 
                 <Link
                   key={item._id}
-                  href={`/en/fatawa/${item.slug}`}
+                  href={`/bn/fatawa/${item.slug}`}
                   className="
                     block
                     bg-white
@@ -462,7 +462,7 @@ export default function EnglishHomePage() {
                   "
                 >
                   <h3 className="text-gray-800 font-semibold">
-                    {getEnglishQuestion(item)}
+                    {getBanglaQuestion(item)}
                   </h3>
                 </Link>
 
@@ -471,7 +471,7 @@ export default function EnglishHomePage() {
             ) : (
 
               <p className="text-center text-gray-500 py-4">
-                No English questions available yet.
+                এখনো কোনো বাংলা প্রশ্ন পাওয়া যায়নি।
               </p>
 
             )}
@@ -488,14 +488,14 @@ export default function EnglishHomePage() {
           <div className="flex justify-between items-center mb-4">
 
             <h2 className="text-2xl font-bold text-[#4b3415]">
-              Featured Articles
+              নির্বাচিত প্রবন্ধ
             </h2>
 
             <Link
-              href="/en/articles"
+              href="/bn/articles"
               className="text-yellow-700 font-semibold"
             >
-              View All →
+              সব দেখুন →
             </Link>
 
           </div>
@@ -508,7 +508,7 @@ export default function EnglishHomePage() {
 
                 <Link
                   key={item._id}
-                  href={`/en/articles/${
+                  href={`/bn/articles/${
                     item.slug || item._id
                   }`}
                   className="
@@ -522,7 +522,7 @@ export default function EnglishHomePage() {
                     transition
                   "
                 >
-                  {getEnglishArticleTitle(item)}
+                  {getBanglaArticleTitle(item)}
                 </Link>
 
               ))
@@ -530,7 +530,7 @@ export default function EnglishHomePage() {
             ) : (
 
               <p className="text-center text-gray-500 py-4">
-                No English articles available yet.
+                এখনো কোনো বাংলা প্রবন্ধ পাওয়া যায়নি।
               </p>
 
             )}
@@ -544,4 +544,3 @@ export default function EnglishHomePage() {
     </main>
   );
 }
-
