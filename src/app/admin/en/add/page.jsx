@@ -60,7 +60,8 @@ export default function EnglishQuestionAddPage() {
         setCategories([]);
 
         toast.error(
-          "Failed to load English categories"
+          error.response?.data?.message ||
+            "Failed to load English categories"
         );
       } finally {
         setCategoriesLoading(false);
@@ -84,7 +85,7 @@ export default function EnglishQuestionAddPage() {
   };
 
   // =====================================================
-  // GENERATE ENGLISH SLUG
+  // GENERATE SLUG
   // =====================================================
 
   const generateSlug = (text) => {
@@ -141,7 +142,7 @@ export default function EnglishQuestionAddPage() {
     }
 
     if (!formData.category) {
-      toast.error("Please select an English category");
+      toast.error("Please select a category");
       return;
     }
 
@@ -151,16 +152,13 @@ export default function EnglishQuestionAddPage() {
       const payload = {
         question: formData.question.trim(),
 
-        answer: formData.answer,
+        answer: formData.answer.trim(),
 
-        hawala1:
-          formData.hawala1.trim(),
+        hawala1: formData.hawala1.trim(),
 
-        hawala2:
-          formData.hawala2.trim(),
+        hawala2: formData.hawala2.trim(),
 
-        hawala3:
-          formData.hawala3.trim(),
+        hawala3: formData.hawala3.trim(),
 
         slug:
           formData.slug.trim() ||
@@ -173,11 +171,9 @@ export default function EnglishQuestionAddPage() {
         metaDescription:
           formData.metaDescription.trim(),
 
-        keywords:
-          formData.keywords.trim(),
+        keywords: formData.keywords.trim(),
 
-        category:
-          formData.category,
+        category: formData.category,
       };
 
       const res = await axios.post(
@@ -203,9 +199,6 @@ export default function EnglishQuestionAddPage() {
           keywords: "",
           category: "",
         });
-
-        // Agar question list par jana ho:
-        // router.push("/admin/en");
       } else {
         toast.error(
           res.data?.message ||
@@ -229,7 +222,6 @@ export default function EnglishQuestionAddPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-8 md:px-8">
-
       <div className="mx-auto max-w-5xl">
 
         {/* =====================================================
@@ -237,7 +229,6 @@ export default function EnglishQuestionAddPage() {
         ===================================================== */}
 
         <div className="mb-6 rounded-xl border bg-white p-6 shadow-sm">
-
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
             <div>
@@ -273,7 +264,6 @@ export default function EnglishQuestionAddPage() {
             </button>
 
           </div>
-
         </div>
 
         {/* =====================================================
@@ -300,7 +290,6 @@ export default function EnglishQuestionAddPage() {
               {/* QUESTION */}
 
               <div>
-
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   English Question *
                 </label>
@@ -327,13 +316,11 @@ export default function EnglishQuestionAddPage() {
                   "
                   required
                 />
-
               </div>
 
               {/* ANSWER */}
 
               <div>
-
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   English Answer *
                 </label>
@@ -360,15 +347,13 @@ export default function EnglishQuestionAddPage() {
                   "
                   required
                 />
-
               </div>
 
             </div>
-
           </div>
 
           {/* =====================================================
-              HAWALA / REFERENCES
+              REFERENCES
           ===================================================== */}
 
           <div className="rounded-xl border bg-white p-6 shadow-sm">
@@ -382,7 +367,6 @@ export default function EnglishQuestionAddPage() {
               {/* HAWALA 1 */}
 
               <div>
-
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Hawala 1
                 </label>
@@ -407,13 +391,11 @@ export default function EnglishQuestionAddPage() {
                     focus:ring-green-100
                   "
                 />
-
               </div>
 
               {/* HAWALA 2 */}
 
               <div>
-
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Hawala 2
                 </label>
@@ -438,13 +420,11 @@ export default function EnglishQuestionAddPage() {
                     focus:ring-green-100
                   "
                 />
-
               </div>
 
               {/* HAWALA 3 */}
 
               <div>
-
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Hawala 3
                 </label>
@@ -469,11 +449,9 @@ export default function EnglishQuestionAddPage() {
                     focus:ring-green-100
                   "
                 />
-
               </div>
 
             </div>
-
           </div>
 
           {/* =====================================================
@@ -491,7 +469,6 @@ export default function EnglishQuestionAddPage() {
               {/* SLUG */}
 
               <div>
-
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   English Slug
                 </label>
@@ -521,13 +498,11 @@ export default function EnglishQuestionAddPage() {
                   Slug is automatically generated
                   from the English question.
                 </p>
-
               </div>
 
               {/* META TITLE */}
 
               <div>
-
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Meta Title
                 </label>
@@ -552,13 +527,11 @@ export default function EnglishQuestionAddPage() {
                     focus:ring-green-100
                   "
                 />
-
               </div>
 
               {/* META DESCRIPTION */}
 
               <div>
-
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Meta Description
                 </label>
@@ -588,13 +561,11 @@ export default function EnglishQuestionAddPage() {
                 <p className="mt-1 text-xs text-gray-400">
                   Recommended: 150–160 characters.
                 </p>
-
               </div>
 
               {/* KEYWORDS */}
 
               <div>
-
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Keywords
                 </label>
@@ -623,11 +594,9 @@ export default function EnglishQuestionAddPage() {
                 <p className="mt-1 text-xs text-gray-400">
                   Separate keywords with commas.
                 </p>
-
               </div>
 
             </div>
-
           </div>
 
           {/* =====================================================
@@ -728,9 +697,7 @@ export default function EnglishQuestionAddPage() {
           </div>
 
         </form>
-
       </div>
-
     </div>
   );
 }
