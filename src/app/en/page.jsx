@@ -14,72 +14,102 @@ export default function EnglishHomePage() {
 
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
-  // ================================
-  // Categories
-  // ================================
+  // =========================================
+  // FETCH CATEGORIES
+  // =========================================
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch(`${backend}/categories`);
+        const res = await fetch(`${backend}/categories`, {
+          cache: "no-store",
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch categories");
+        }
+
         const data = await res.json();
 
-        if (data.success) {
+        if (data.success && Array.isArray(data.data)) {
           setCategories(data.data);
+        } else {
+          setCategories([]);
         }
       } catch (error) {
         console.error("Categories fetch error:", error);
+        setCategories([]);
       }
     };
 
     fetchCategories();
   }, []);
 
-  // ================================
-  // Latest Questions
-  // ================================
+  // =========================================
+  // FETCH LATEST QUESTIONS
+  // =========================================
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
         const res = await fetch(
-          `${backend}/admin/questions?limit=5`
+          `${backend}/admin/questions?limit=5`,
+          {
+            cache: "no-store",
+          }
         );
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch questions");
+        }
 
         const data = await res.json();
 
-        if (data.success) {
+        if (data.success && Array.isArray(data.data)) {
           setLatestQuestions(data.data);
+        } else {
+          setLatestQuestions([]);
         }
       } catch (error) {
         console.error("Questions fetch error:", error);
+        setLatestQuestions([]);
       }
     };
 
     fetchQuestions();
   }, []);
 
-  // ================================
-  // Articles
-  // ================================
+  // =========================================
+  // FETCH ARTICLES
+  // =========================================
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const res = await fetch(`${backend}/majameen`);
+        const res = await fetch(`${backend}/majameen`, {
+          cache: "no-store",
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch articles");
+        }
+
         const data = await res.json();
 
-        if (data.success) {
+        if (data.success && Array.isArray(data.data)) {
           setMajameen(data.data.slice(0, 5));
+        } else {
+          setMajameen([]);
         }
       } catch (error) {
         console.error("Articles fetch error:", error);
+        setMajameen([]);
       }
     };
 
     fetchArticles();
   }, []);
 
-  // ================================
-  // Prayer Times
-  // ================================
+  // =========================================
+  // PRAYER TIMES
+  // =========================================
   useEffect(() => {
     const fetchPrayerTimes = async () => {
       try {
@@ -100,9 +130,9 @@ export default function EnglishHomePage() {
     fetchPrayerTimes();
   }, []);
 
-  // ================================
-  // Voice Search
-  // ================================
+  // =========================================
+  // VOICE SEARCH
+  // =========================================
   const startListening = () => {
     const SpeechRecognition =
       window.SpeechRecognition ||
@@ -124,49 +154,70 @@ export default function EnglishHomePage() {
     recognition.start();
   };
 
-  // ================================
-  // English Question ONLY
-  // ================================
+  // =========================================
+  // ENGLISH QUESTION
+  // =========================================
   const getEnglishQuestion = (item) => {
     return (
-      item.englishQuestion ||
-      item.enQuestion ||
-      item.questionEn ||
+      item?.englishQuestion ||
+      item?.enQuestion ||
+      item?.questionEn ||
       ""
     );
   };
 
-  // ================================
-  // English Category ONLY
-  // ================================
+  // =========================================
+  // ENGLISH CATEGORY
+  // =========================================
   const getEnglishCategory = (item) => {
     return (
-      item.englishName ||
-      item.enName ||
-      item.nameEn ||
+      item?.englishName ||
+      item?.enName ||
+      item?.nameEn ||
       ""
     );
   };
 
-  // ================================
-  // English Article Title ONLY
-  // ================================
+  // =========================================
+  // ENGLISH CATEGORY SLUG
+  // =========================================
+  const getEnglishCategorySlug = (item) => {
+    return (
+      item?.englishSlug ||
+      item?.enSlug ||
+      item?.slugEn ||
+      ""
+    );
+  };
+
+  // =========================================
+  // ENGLISH ARTICLE TITLE
+  // =========================================
   const getEnglishArticleTitle = (item) => {
     return (
-      item.englishTitle ||
-      item.enTitle ||
-      item.titleEn ||
+      item?.englishTitle ||
+      item?.enTitle ||
+      item?.titleEn ||
       ""
     );
   };
 
-  // ================================
-  // Filter English Questions
-  // ================================
+  // =========================================
+  // FILTER ENGLISH CATEGORIES
+  // =========================================
+  const englishCategories = categories.filter((cat) => {
+    const name = getEnglishCategory(cat);
+    const slug = getEnglishCategorySlug(cat);
+
+    return Boolean(name && slug);
+  });
+
+  // =========================================
+  // FILTER ENGLISH QUESTIONS
+  // =========================================
   const filteredQuestions = latestQuestions.filter((item) => {
     const question = getEnglishQuestion(item);
 
-    // English question nahi hai to show nahi hoga
     if (!question) return false;
 
     return question
@@ -174,13 +225,12 @@ export default function EnglishHomePage() {
       .includes(query.toLowerCase());
   });
 
-  // ================================
-  // Filter English Articles
-  // ================================
+  // =========================================
+  // FILTER ENGLISH ARTICLES
+  // =========================================
   const filteredArticles = majameen.filter((item) => {
     const title = getEnglishArticleTitle(item);
 
-    // English title nahi hai to show nahi hoga
     if (!title) return false;
 
     return title
@@ -191,9 +241,9 @@ export default function EnglishHomePage() {
   return (
     <main className="min-h-screen bg-[#f7f3e8]">
 
-      {/* =================================
+      {/* =========================================
           HERO
-      ================================= */}
+      ========================================= */}
       <section
         className="relative overflow-hidden py-10 px-4"
         style={{
@@ -206,7 +256,6 @@ export default function EnglishHomePage() {
         <div className="absolute inset-0 bg-black/55" />
 
         <div className="relative max-w-6xl mx-auto text-center">
-
           <h1 className="text-3xl md:text-5xl font-bold text-yellow-300">
             Islamic Questions & Answers
           </h1>
@@ -214,36 +263,34 @@ export default function EnglishHomePage() {
           <p className="mt-3 text-yellow-100 text-base md:text-lg">
             Islamic knowledge based on the Quran and Sunnah
           </p>
-
         </div>
       </section>
 
-      {/* =================================
+      {/* =========================================
           PRAYER TIMES
-      ================================= */}
+      ========================================= */}
       <div className="bg-black border-b-2 border-[#75593f]">
-
         <div className="max-w-6xl mx-auto py-2 px-3 text-center text-yellow-400 text-sm md:text-base">
 
           {prayerTimes ? (
             <>
-              Fajr: {prayerTimes.Fajr.split(" ")[0]}
+              Fajr: {prayerTimes.Fajr?.split(" ")[0]}
 
               <span className="mx-3">|</span>
 
-              Dhuhr: {prayerTimes.Dhuhr.split(" ")[0]}
+              Dhuhr: {prayerTimes.Dhuhr?.split(" ")[0]}
 
               <span className="mx-3">|</span>
 
-              Asr: {prayerTimes.Asr.split(" ")[0]}
+              Asr: {prayerTimes.Asr?.split(" ")[0]}
 
               <span className="mx-3">|</span>
 
-              Maghrib: {prayerTimes.Maghrib.split(" ")[0]}
+              Maghrib: {prayerTimes.Maghrib?.split(" ")[0]}
 
               <span className="mx-3">|</span>
 
-              Isha: {prayerTimes.Isha.split(" ")[0]}
+              Isha: {prayerTimes.Isha?.split(" ")[0]}
             </>
           ) : (
             "Loading prayer times..."
@@ -254,9 +301,9 @@ export default function EnglishHomePage() {
 
       <div className="max-w-6xl mx-auto px-3 py-8">
 
-        {/* =================================
+        {/* =========================================
             SEARCH
-        ================================= */}
+        ========================================= */}
         <div className="relative mb-8">
 
           <div className="flex items-center bg-white border border-yellow-600 rounded-2xl shadow-md overflow-hidden">
@@ -292,46 +339,84 @@ export default function EnglishHomePage() {
 
         </div>
 
-        {/* =================================
+        {/* =========================================
             CATEGORIES
-        ================================= */}
-      const englishCategoryNames = {
-  "جدید مسائل": "New Issues",
-  "نماز": "Prayer",
-  "حج": "Hajj",
-  "زکوٰۃ": "Zakat",
-  "عقیقہ": "Aqiqah",
-  "طہارت": "Purification",
-  "رمضان": "Ramadan",
-  "قربانی": "Qurbani",
-  "نکاح": "Marriage",
-  "بیوع": "Business & Trade",
-};
+        ========================================= */}
+        <section className="mb-10">
 
-// ================================
-// English Category
-// ================================
-const getEnglishCategory = (item) => {
-  // Agar backend mein English name already hai
-  if (item.englishName) {
-    return item.englishName;
-  }
+          <div className="flex justify-between items-center mb-4">
 
-  if (item.enName) {
-    return item.enName;
-  }
+            <h2 className="text-2xl font-bold text-[#4b3415]">
+              Categories
+            </h2>
 
-  if (item.nameEn) {
-    return item.nameEn;
-  }
+            <Link
+              href="/en/categories"
+              className="text-yellow-700 font-semibold"
+            >
+              View All →
+            </Link>
 
-  // Existing Urdu category ka English name
-  return englishCategoryNames[item.name] || "";
-};
+          </div>
 
-        {/* =================================
+          {englishCategories.length > 0 ? (
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+              {englishCategories
+                .slice(0, 8)
+                .map((cat) => {
+
+                  const categoryName =
+                    getEnglishCategory(cat);
+
+                  const categorySlug =
+                    getEnglishCategorySlug(cat);
+
+                  return (
+                    <Link
+                      key={cat._id}
+                      href={`/en/categories/${encodeURIComponent(
+                        categorySlug
+                      )}`}
+                      className="
+                        flex items-center justify-center
+                        min-h-[80px]
+                        rounded-2xl
+                        border border-[#c8b27a]
+                        bg-gradient-to-b
+                        from-[#f6f0dd]
+                        via-[#e6d4a3]
+                        to-[#c9ab63]
+                        text-[#4b3415]
+                        text-center
+                        font-semibold
+                        shadow-md
+                        hover:scale-[1.02]
+                        transition
+                        px-3
+                      "
+                    >
+                      {categoryName}
+                    </Link>
+                  );
+                })}
+
+            </div>
+
+          ) : (
+
+            <div className="rounded-xl border border-yellow-200 bg-white p-6 text-center text-gray-500">
+              No English categories available.
+            </div>
+
+          )}
+
+        </section>
+
+        {/* =========================================
             QUICK LINKS
-        ================================= */}
+        ========================================= */}
         <section className="mb-10">
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -400,9 +485,9 @@ const getEnglishCategory = (item) => {
 
         </section>
 
-        {/* =================================
+        {/* =========================================
             LATEST QUESTIONS
-        ================================= */}
+        ========================================= */}
         <section className="mb-10">
 
           <div className="flex justify-between items-center mb-4">
@@ -428,7 +513,9 @@ const getEnglishCategory = (item) => {
 
                 <Link
                   key={item._id}
-                  href={`/en/fatawa/${item.slug}`}
+                  href={`/en/fatawa/${
+                    item.englishSlug || item.slug
+                  }`}
                   className="
                     block
                     bg-white
@@ -462,9 +549,9 @@ const getEnglishCategory = (item) => {
 
         </section>
 
-        {/* =================================
+        {/* =========================================
             LATEST ARTICLES
-        ================================= */}
+        ========================================= */}
         <section>
 
           <div className="flex justify-between items-center mb-4">
@@ -491,7 +578,9 @@ const getEnglishCategory = (item) => {
                 <Link
                   key={item._id}
                   href={`/en/articles/${
-                    item.slug || item._id
+                    item.englishSlug ||
+                    item.slug ||
+                    item._id
                   }`}
                   className="
                     block
@@ -523,7 +612,6 @@ const getEnglishCategory = (item) => {
         </section>
 
       </div>
-
     </main>
   );
 }

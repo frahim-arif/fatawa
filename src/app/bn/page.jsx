@@ -5,38 +5,79 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Search, Mic } from "lucide-react";
 
+const backend = "https://f-backend-vdi1.onrender.com/api";
+
 export default function BanglaHomePage() {
   const [query, setQuery] = useState("");
   const [categories, setCategories] = useState([]);
   const [latestQuestions, setLatestQuestions] = useState([]);
-  const [majameen, setMajameen] = useState([]);
+  const [articles, setArticles] = useState([]);
   const [prayerTimes, setPrayerTimes] = useState(null);
 
-  const backend = "https://f-backend-vdi1.onrender.com/api";
+  // =========================================
+  // GET BANGLA CATEGORY
+  // =========================================
+  const getBanglaCategory = (item) => {
+    return (
+      item.banglaName ||
+      item.bnName ||
+      item.nameBn ||
+      null
+    );
+  };
 
-  // =========================
-  // Categories
-  // =========================
+  // =========================================
+  // GET BANGLA QUESTION
+  // =========================================
+  const getBanglaQuestion = (item) => {
+    return (
+      item.banglaQuestion ||
+      item.bnQuestion ||
+      item.questionBn ||
+      null
+    );
+  };
+
+  // =========================================
+  // GET BANGLA ARTICLE TITLE
+  // =========================================
+  const getBanglaArticleTitle = (item) => {
+    return (
+      item.banglaTitle ||
+      item.bnTitle ||
+      item.titleBn ||
+      null
+    );
+  };
+
+  // =========================================
+  // CATEGORIES
+  // =========================================
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const res = await fetch(`${backend}/categories`);
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch categories");
+        }
+
         const data = await res.json();
 
         if (data.success) {
-          setCategories(data.data);
+          setCategories(data.data || []);
         }
       } catch (error) {
-        console.error("Categories error:", error);
+        console.error("Categories fetch error:", error);
       }
     };
 
     fetchCategories();
   }, []);
 
-  // =========================
-  // Latest Bangla Questions
-  // =========================
+  // =========================================
+  // LATEST QUESTIONS
+  // =========================================
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
@@ -44,64 +85,73 @@ export default function BanglaHomePage() {
           `${backend}/admin/questions?limit=10`
         );
 
+        if (!res.ok) {
+          throw new Error("Failed to fetch questions");
+        }
+
         const data = await res.json();
 
         if (data.success) {
-          // ❗ Sirf Bangla questions
-          const banglaQuestions = data.data.filter(
-            (item) =>
-              item.banglaQuestion ||
-              item.bnQuestion ||
-              item.questionBn
+          const banglaQuestions = (data.data || []).filter(
+            (item) => getBanglaQuestion(item)
           );
 
-          setLatestQuestions(banglaQuestions.slice(0, 5));
+          setLatestQuestions(
+            banglaQuestions.slice(0, 5)
+          );
         }
       } catch (error) {
-        console.error("Questions error:", error);
+        console.error("Questions fetch error:", error);
       }
     };
 
     fetchQuestions();
   }, []);
 
-  // =========================
-  // Latest Bangla Articles
-  // =========================
+  // =========================================
+  // LATEST ARTICLES
+  // =========================================
   useEffect(() => {
     const fetchArticles = async () => {
       try {
         const res = await fetch(`${backend}/majameen`);
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch articles");
+        }
+
         const data = await res.json();
 
         if (data.success) {
-          // ❗ Sirf Bangla articles
-          const banglaArticles = data.data.filter(
-            (item) =>
-              item.banglaTitle ||
-              item.bnTitle ||
-              item.titleBn
+          const banglaArticles = (data.data || []).filter(
+            (item) => getBanglaArticleTitle(item)
           );
 
-          setMajameen(banglaArticles.slice(0, 5));
+          setArticles(
+            banglaArticles.slice(0, 5)
+          );
         }
       } catch (error) {
-        console.error("Articles error:", error);
+        console.error("Articles fetch error:", error);
       }
     };
 
     fetchArticles();
   }, []);
 
-  // =========================
-  // Prayer Times
-  // =========================
+  // =========================================
+  // PRAYER TIMES
+  // =========================================
   useEffect(() => {
     const fetchPrayerTimes = async () => {
       try {
         const res = await fetch(
           "https://api.aladhan.com/v1/timingsByCity?city=Guwahati&country=India&method=1"
         );
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch prayer times");
+        }
 
         const data = await res.json();
 
@@ -116,84 +166,82 @@ export default function BanglaHomePage() {
     fetchPrayerTimes();
   }, []);
 
-  // =========================
-  // Voice Search
-  // =========================
+  // =========================================
+  // VOICE SEARCH
+  // =========================================
   const startListening = () => {
     const SpeechRecognition =
       window.SpeechRecognition ||
       window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      alert("ভয়েস সার্চ এই ব্রাউজারে সমর্থিত নয়");
+      alert("ভয়েস সার্চ এই ব্রাউজারে সমর্থিত নয়।");
       return;
     }
 
     const recognition = new SpeechRecognition();
 
     recognition.lang = "bn-BD";
+    recognition.interimResults = false;
+    recognition.continuous = false;
 
     recognition.onresult = (event) => {
-      setQuery(event.results[0][0].transcript);
+      const transcript =
+        event.results[0][0].transcript;
+
+      setQuery(transcript);
+    };
+
+    recognition.onerror = (event) => {
+      console.error(
+        "Voice search error:",
+        event.error
+      );
     };
 
     recognition.start();
   };
 
-  // =========================
-  // Bangla Question
-  // =========================
-  const getBanglaQuestion = (item) => {
-    return (
-      item.banglaQuestion ||
-      item.bnQuestion ||
-      item.questionBn ||
-      null
-    );
-  };
+  // =========================================
+  // SEARCH QUESTIONS
+  // =========================================
+  const filteredQuestions = latestQuestions.filter(
+    (item) => {
+      const question = getBanglaQuestion(item);
 
-  // =========================
-  // Bangla Category
-  // =========================
-  const getBanglaCategory = (item) => {
-    return (
-      item.banglaName ||
-      item.bnName ||
-      item.nameBn ||
-      null
-    );
-  };
+      if (!question) {
+        return false;
+      }
 
-  // =========================
-  // Bangla Article
-  // =========================
-  const getBanglaArticleTitle = (item) => {
-    return (
-      item.banglaTitle ||
-      item.bnTitle ||
-      item.titleBn ||
-      null
-    );
-  };
+      return question
+        .toLowerCase()
+        .includes(query.toLowerCase());
+    }
+  );
 
-  // =========================
-  // Search
-  // =========================
-  const filteredQuestions = latestQuestions.filter((item) => {
-    const question = getBanglaQuestion(item);
+  // =========================================
+  // SEARCH ARTICLES
+  // =========================================
+  const filteredArticles = articles.filter(
+    (item) => {
+      const title = getBanglaArticleTitle(item);
 
-    return (
-      question &&
-      question.toLowerCase().includes(query.toLowerCase())
-    );
-  });
+      if (!title) {
+        return false;
+      }
+
+      return title
+        .toLowerCase()
+        .includes(query.toLowerCase());
+    }
+  );
 
   return (
     <main className="min-h-screen bg-[#f7f3e8]">
 
-      {/* =========================
+      {/* =========================================
           HERO
-      ========================= */}
+      ========================================= */}
       <section
         className="relative overflow-hidden py-10 px-4"
         style={{
@@ -218,32 +266,40 @@ export default function BanglaHomePage() {
         </div>
       </section>
 
-      {/* =========================
+      {/* =========================================
           PRAYER TIMES
-      ========================= */}
+      ========================================= */}
       <div className="bg-black border-b-2 border-[#75593f]">
 
-        <div className="max-w-6xl mx-auto py-2 px-3 text-center text-yellow-400 text-sm md:text-base">
+        <div className="max-w-6xl mx-auto py-2 px-3 text-center text-yellow-400 text-sm md:text-base overflow-x-auto whitespace-nowrap">
 
           {prayerTimes ? (
             <>
-              ফজর: {prayerTimes.Fajr.split(" ")[0]}
+              ফজর: {prayerTimes.Fajr?.split(" ")[0]}
 
-              <span className="mx-3">|</span>
+              <span className="mx-2 md:mx-3">
+                |
+              </span>
 
-              যোহর: {prayerTimes.Dhuhr.split(" ")[0]}
+              যোহর: {prayerTimes.Dhuhr?.split(" ")[0]}
 
-              <span className="mx-3">|</span>
+              <span className="mx-2 md:mx-3">
+                |
+              </span>
 
-              আসর: {prayerTimes.Asr.split(" ")[0]}
+              আসর: {prayerTimes.Asr?.split(" ")[0]}
 
-              <span className="mx-3">|</span>
+              <span className="mx-2 md:mx-3">
+                |
+              </span>
 
-              মাগরিব: {prayerTimes.Maghrib.split(" ")[0]}
+              মাগরিব: {prayerTimes.Maghrib?.split(" ")[0]}
 
-              <span className="mx-3">|</span>
+              <span className="mx-2 md:mx-3">
+                |
+              </span>
 
-              এশা: {prayerTimes.Isha.split(" ")[0]}
+              এশা: {prayerTimes.Isha?.split(" ")[0]}
             </>
           ) : (
             "নামাজের সময় লোড হচ্ছে..."
@@ -252,23 +308,28 @@ export default function BanglaHomePage() {
         </div>
       </div>
 
+      {/* =========================================
+          MAIN CONTENT
+      ========================================= */}
       <div className="max-w-6xl mx-auto px-3 py-8">
 
-        {/* =========================
+        {/* =========================================
             SEARCH
-        ========================= */}
-        <div className="relative mb-8">
+        ========================================= */}
+        <section className="mb-8">
 
           <div className="flex items-center bg-white border border-yellow-600 rounded-2xl shadow-md overflow-hidden">
 
-            <div className="px-3">
+            <div className="px-3 shrink-0">
               <Search className="w-5 h-5 text-yellow-600" />
             </div>
 
             <input
               type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) =>
+                setQuery(e.target.value)
+              }
               placeholder="প্রশ্ন খুঁজুন..."
               className="
                 w-full
@@ -280,8 +341,9 @@ export default function BanglaHomePage() {
             />
 
             <button
+              type="button"
               onClick={startListening}
-              className="px-4"
+              className="px-4 shrink-0"
               aria-label="ভয়েস সার্চ"
             >
               <Mic className="w-5 h-5 text-yellow-600" />
@@ -289,11 +351,11 @@ export default function BanglaHomePage() {
 
           </div>
 
-        </div>
+        </section>
 
-        {/* =========================
+        {/* =========================================
             CATEGORIES
-        ========================= */}
+        ========================================= */}
         <section className="mb-10">
 
           <div className="flex justify-between items-center mb-4">
@@ -304,7 +366,7 @@ export default function BanglaHomePage() {
 
             <Link
               href="/bn/categories"
-              className="text-yellow-700 font-semibold"
+              className="text-yellow-700 font-semibold hover:text-yellow-800"
             >
               সব দেখুন →
             </Link>
@@ -314,44 +376,52 @@ export default function BanglaHomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
 
             {categories
-              .filter((cat) => getBanglaCategory(cat))
+              .filter((cat) =>
+                getBanglaCategory(cat)
+              )
               .slice(0, 8)
-              .map((cat) => (
+              .map((cat) => {
 
-                <Link
-                  key={cat._id}
-                  href={`/bn/categories/${encodeURIComponent(
-                    cat.slug || cat.name
-                  )}`}
-                  className="
-                    flex items-center justify-center
-                    min-h-[80px]
-                    rounded-2xl
-                    border border-[#c8b27a]
-                    bg-gradient-to-b
-                    from-[#f6f0dd]
-                    via-[#e6d4a3]
-                    to-[#c9ab63]
-                    text-[#4b3415]
-                    text-center
-                    font-semibold
-                    shadow-md
-                    hover:scale-[1.02]
-                    transition
-                  "
-                >
-                  {getBanglaCategory(cat)}
-                </Link>
+                const categoryName =
+                  getBanglaCategory(cat);
 
-              ))}
+                return (
+                  <Link
+                    key={cat._id}
+                    href={`/bn/categories/${
+                      cat.slug || cat.name
+                    }`}
+                    className="
+                      flex items-center justify-center
+                      min-h-[80px]
+                      rounded-2xl
+                      border border-[#c8b27a]
+                      bg-gradient-to-b
+                      from-[#f6f0dd]
+                      via-[#e6d4a3]
+                      to-[#c9ab63]
+                      text-[#4b3415]
+                      text-center
+                      font-semibold
+                      shadow-md
+                      hover:scale-[1.02]
+                      hover:shadow-lg
+                      transition
+                      px-3
+                    "
+                  >
+                    {categoryName}
+                  </Link>
+                );
+              })}
 
           </div>
 
         </section>
 
-        {/* =========================
+        {/* =========================================
             QUICK LINKS
-        ========================= */}
+        ========================================= */}
         <section className="mb-10">
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -366,6 +436,7 @@ export default function BanglaHomePage() {
                 py-4
                 font-semibold
                 hover:bg-[#4a3a3a]
+                transition
               "
             >
               ফতোয়া
@@ -381,6 +452,7 @@ export default function BanglaHomePage() {
                 py-4
                 font-semibold
                 hover:bg-[#4a3a3a]
+                transition
               "
             >
               প্রবন্ধ
@@ -396,6 +468,7 @@ export default function BanglaHomePage() {
                 py-4
                 font-semibold
                 hover:bg-[#4a3a3a]
+                transition
               "
             >
               বিষয়সমূহ
@@ -411,6 +484,7 @@ export default function BanglaHomePage() {
                 py-4
                 font-semibold
                 hover:bg-[#4a3a3a]
+                transition
               "
             >
               ইসলামী ক্যালকুলেটর
@@ -420,9 +494,9 @@ export default function BanglaHomePage() {
 
         </section>
 
-        {/* =========================
+        {/* =========================================
             LATEST QUESTIONS
-        ========================= */}
+        ========================================= */}
         <section className="mb-10">
 
           <div className="flex justify-between items-center mb-4">
@@ -433,7 +507,7 @@ export default function BanglaHomePage() {
 
             <Link
               href="/bn/fatawa"
-              className="text-yellow-700 font-semibold"
+              className="text-yellow-700 font-semibold hover:text-yellow-800"
             >
               সব দেখুন →
             </Link>
@@ -444,35 +518,47 @@ export default function BanglaHomePage() {
 
             {filteredQuestions.length > 0 ? (
 
-              filteredQuestions.map((item) => (
+              filteredQuestions.map((item) => {
 
-                <Link
-                  key={item._id}
-                  href={`/bn/fatawa/${item.slug}`}
-                  className="
-                    block
-                    bg-white
-                    border border-yellow-200
-                    rounded-xl
-                    p-4
-                    shadow-sm
-                    hover:border-yellow-500
-                    hover:shadow-md
-                    transition
-                  "
-                >
-                  <h3 className="text-gray-800 font-semibold">
-                    {getBanglaQuestion(item)}
-                  </h3>
-                </Link>
+                const question =
+                  getBanglaQuestion(item);
 
-              ))
+                return (
+                  <Link
+                    key={item._id}
+                    href={`/bn/fatawa/${
+                      item.banglaSlug ||
+                      item.bnSlug ||
+                      item.slug
+                    }`}
+                    className="
+                      block
+                      bg-white
+                      border border-yellow-200
+                      rounded-xl
+                      p-4
+                      shadow-sm
+                      hover:border-yellow-500
+                      hover:shadow-md
+                      transition
+                    "
+                  >
+                    <h3 className="text-gray-800 font-semibold leading-7">
+                      {question}
+                    </h3>
+                  </Link>
+                );
+              })
 
             ) : (
 
-              <p className="text-center text-gray-500 py-4">
-                এখনো কোনো বাংলা প্রশ্ন পাওয়া যায়নি।
-              </p>
+              <div className="bg-white rounded-xl p-8 text-center">
+
+                <p className="text-gray-500">
+                  এখনো কোনো বাংলা প্রশ্ন পাওয়া যায়নি।
+                </p>
+
+              </div>
 
             )}
 
@@ -480,9 +566,9 @@ export default function BanglaHomePage() {
 
         </section>
 
-        {/* =========================
+        {/* =========================================
             LATEST ARTICLES
-        ========================= */}
+        ========================================= */}
         <section>
 
           <div className="flex justify-between items-center mb-4">
@@ -493,7 +579,7 @@ export default function BanglaHomePage() {
 
             <Link
               href="/bn/articles"
-              className="text-yellow-700 font-semibold"
+              className="text-yellow-700 font-semibold hover:text-yellow-800"
             >
               সব দেখুন →
             </Link>
@@ -502,36 +588,50 @@ export default function BanglaHomePage() {
 
           <div className="space-y-3">
 
-            {majameen.length > 0 ? (
+            {filteredArticles.length > 0 ? (
 
-              majameen.map((item) => (
+              filteredArticles.map((item) => {
 
-                <Link
-                  key={item._id}
-                  href={`/bn/articles/${
-                    item.slug || item._id
-                  }`}
-                  className="
-                    block
-                    bg-white
-                    border border-yellow-200
-                    rounded-xl
-                    p-4
-                    shadow-sm
-                    hover:border-yellow-500
-                    transition
-                  "
-                >
-                  {getBanglaArticleTitle(item)}
-                </Link>
+                const title =
+                  getBanglaArticleTitle(item);
 
-              ))
+                return (
+                  <Link
+                    key={item._id}
+                    href={`/bn/articles/${
+                      item.banglaSlug ||
+                      item.bnSlug ||
+                      item.slug ||
+                      item._id
+                    }`}
+                    className="
+                      block
+                      bg-white
+                      border border-yellow-200
+                      rounded-xl
+                      p-4
+                      shadow-sm
+                      hover:border-yellow-500
+                      hover:shadow-md
+                      transition
+                    "
+                  >
+                    <h3 className="text-gray-800 font-semibold leading-7">
+                      {title}
+                    </h3>
+                  </Link>
+                );
+              })
 
             ) : (
 
-              <p className="text-center text-gray-500 py-4">
-                এখনো কোনো বাংলা প্রবন্ধ পাওয়া যায়নি।
-              </p>
+              <div className="bg-white rounded-xl p-8 text-center">
+
+                <p className="text-gray-500">
+                  এখনো কোনো বাংলা প্রবন্ধ পাওয়া যায়নি।
+                </p>
+
+              </div>
 
             )}
 
@@ -544,3 +644,4 @@ export default function BanglaHomePage() {
     </main>
   );
 }
+

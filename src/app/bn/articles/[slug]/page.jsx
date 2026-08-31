@@ -1,129 +1,245 @@
-"use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
-export default function BanglaArticleDetail({ params }) {
-  const [article, setArticle] = useState(null);
-  const [loading, setLoading] = useState(true);
+const backend = "https://f-backend-vdi1.onrender.com/api";
 
-  const backend = "https://f-backend-vdi1.onrender.com/api";
+// =========================================
+// GET ARTICLE
+// =========================================
+async function getArticle(slug) {
+  try {
+    const res = await fetch(`${backend}/majameen`, {
+      next: {
+        revalidate: 60,
+      },
+    });
 
-  useEffect(() => {
-    const loadArticle = async () => {
-      try {
-        const resolvedParams = await params;
+    if (!res.ok) {
+      return null;
+    }
 
-        const slug = resolvedParams.slug;
+    const data = await res.json();
 
-        const res = await fetch(
-          `${backend}/majameen`
-        );
+    if (!data.success) {
+      return null;
+    }
 
-        const data = await res.json();
-
-        if (data.success) {
-          const found = data.data.find(
-            (item) =>
-              item.slug === slug ||
-              item._id === slug
-          );
-
-          setArticle(found || null);
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadArticle();
-  }, [params]);
-
-  const getTitle = (item) => {
-    return (
-      item?.banglaTitle ||
-      item?.bnTitle ||
-      item?.titleBn ||
-      item?.title
+    const article = (data.data || []).find(
+      (item) =>
+        item.slug === slug ||
+        item._id === slug
     );
-  };
 
-  const getContent = (item) => {
-    return (
-      item?.banglaContent ||
-      item?.bnContent ||
-      item?.contentBn ||
-      item?.content ||
-      item?.description
-    );
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        লোড হচ্ছে...
-      </div>
-    );
+    return article || null;
+  } catch (error) {
+    console.error("Bangla article fetch error:", error);
+    return null;
   }
+}
+
+// =========================================
+// BANGLA TITLE
+// =========================================
+function getBanglaTitle(article) {
+  return (
+    article?.banglaTitle ||
+    article?.bnTitle ||
+    article?.titleBn ||
+    null
+  );
+}
+
+// =========================================
+// BANGLA CONTENT
+// =========================================
+function getBanglaContent(article) {
+  return (
+    article?.banglaContent ||
+    article?.bnContent ||
+    article?.contentBn ||
+    null
+  );
+}
+
+// =========================================
+// REMOVE HTML
+// =========================================
+function stripHtml(text = "") {
+  return text
+    .replace(/<[^>]*>/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// =========================================
+// SEO METADATA
+// =========================================
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+
+  const article = await getArticle(slug);
 
   if (!article) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
+    return {
+      title: "প্রবন্ধ পাওয়া যায়নি | মাসলাকে দেওবন্দ",
 
-        <h1 className="text-2xl font-bold">
-          প্রবন্ধ পাওয়া যায়নি
-        </h1>
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
 
-        <Link
-          href="/bn/articles"
-          className="mt-4 text-yellow-700"
-        >
-          ← প্রবন্ধে ফিরে যান
-        </Link>
+  const title =
+    article.banglaMetaTitle ||
+    article.bnMetaTitle ||
+    getBanglaTitle(article) ||
+    "ইসলামী প্রবন্ধ";
 
-      </div>
-    );
+  const content = getBanglaContent(article) || "";
+
+  const description =
+    article.banglaMetaDescription ||
+    article.bnMetaDescription ||
+    article.metaDescriptionBn ||
+    stripHtml(content).slice(0, 155) ||
+    "কুরআন ও সুন্নাহর আলোকে ইসলামী প্রবন্ধ পড়ুন।";
+
+  const canonical =
+    `https://www.maslakedeoband.in/bn/articles/${article.slug || slug}`;
+
+  return {
+    title: `${title} | মাসলাকে দেওবন্দ`,
+
+    description,
+
+    keywords:
+      article.banglaKeywords ||
+      article.bnKeywords ||
+      article.keywordsBn ||
+      [],
+
+    alternates: {
+      canonical,
+
+      languages: {
+        ur: `https://www.maslakedeoband.in/articles/${
+          article.slug || slug
+        }`,
+
+        en: `https://www.maslakedeoband.in/en/articles/${
+          article.slug || slug
+        }`,
+
+        bn: canonical,
+      },
+    },
+
+    robots: {
+      index: true,
+      follow: true,
+    },
+
+    openGraph: {
+      title: `${title} | মাসলাকে দেওবন্দ`,
+      description,
+      url: canonical,
+      siteName: "Maslak-e-Deoband",
+      type: "article",
+    },
+  };
+}
+
+// =========================================
+// PAGE
+// =========================================
+export default async function BanglaArticleDetail({
+  params,
+}) {
+  const { slug } = await params;
+
+  const article = await getArticle(slug);
+
+  if (!article) {
+    notFound();
+  }
+
+  const title = getBanglaTitle(article);
+  const content = getBanglaContent(article);
+
+  // Bangla content না থাকলে অন্য ভাষার content দেখাবো না
+  if (!title || !content) {
+    notFound();
   }
 
   return (
-    <main className="min-h-screen bg-[#f7f3e8] py-8 px-4">
+    <main className="min-h-screen bg-[#f7f3e8]">
 
-      <article className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden border border-yellow-200">
+      {/* ARTICLE */}
+      <article className="max-w-4xl mx-auto px-4 py-10 md:py-14">
 
-        {/* TITLE */}
-        <div className="bg-[#3b2f2f] px-6 py-7">
+        <div className="bg-white rounded-2xl shadow-lg border border-yellow-200 overflow-hidden">
 
-          <h1 className="text-2xl md:text-4xl font-bold text-yellow-200">
+          {/* HEADER */}
+          <header className="bg-[#3b2f2f] px-6 py-8 md:px-10">
 
-            {getTitle(article)}
+            <p className="text-sm md:text-base text-yellow-400 font-semibold mb-3">
+              ইসলামী প্রবন্ধ
+            </p>
 
-          </h1>
+            <h1 className="text-2xl md:text-4xl font-bold text-yellow-200 leading-9 md:leading-[1.8]">
+              {title}
+            </h1>
+
+          </header>
+
+          {/* CONTENT */}
+          <div className="px-6 py-8 md:px-10 md:py-10">
+
+            <div
+              className="
+                prose
+                prose-lg
+                max-w-none
+                text-gray-700
+                leading-9
+                [&_p]:mb-5
+                [&_h2]:text-[#3b2f2f]
+                [&_h2]:font-bold
+                [&_h2]:mt-8
+                [&_h2]:mb-4
+                [&_h3]:text-[#3b2f2f]
+                [&_h3]:font-bold
+                [&_h3]:mt-6
+                [&_h3]:mb-3
+                [&_strong]:text-[#3b2f2f]
+                [&_a]:text-yellow-700
+              "
+              dangerouslySetInnerHTML={{
+                __html: content,
+              }}
+            />
+
+          </div>
 
         </div>
 
-        {/* CONTENT */}
-        <div
-          className="p-6 md:p-10 text-gray-700 leading-8"
-          dangerouslySetInnerHTML={{
-            __html: getContent(article),
-          }}
-        />
+        {/* BACK LINK */}
+        <div className="mt-6">
+
+          <Link
+            href="/bn/articles"
+            className="inline-flex items-center font-semibold text-[#75593f] hover:text-yellow-700 transition"
+          >
+            ← সব প্রবন্ধ দেখুন
+          </Link>
+
+        </div>
 
       </article>
-
-      <div className="max-w-4xl mx-auto mt-6">
-
-        <Link
-          href="/bn/articles"
-          className="font-semibold text-[#75593f]"
-        >
-          ← সব প্রবন্ধ
-        </Link>
-
-      </div>
 
     </main>
   );
 }
+

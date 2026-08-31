@@ -10,17 +10,30 @@ export default function EnglishCategoriesPage() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // =========================================
+  // FETCH CATEGORIES
+  // =========================================
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch(`${backend}/categories`);
+        const res = await fetch(`${backend}/categories`, {
+          cache: "no-store",
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch categories");
+        }
+
         const data = await res.json();
 
-        if (data.success) {
+        if (data.success && Array.isArray(data.data)) {
           setCategories(data.data);
+        } else {
+          setCategories([]);
         }
       } catch (error) {
         console.error("Failed to fetch categories:", error);
+        setCategories([]);
       } finally {
         setLoading(false);
       }
@@ -29,19 +42,46 @@ export default function EnglishCategoriesPage() {
     fetchCategories();
   }, []);
 
+  // =========================================
+  // ENGLISH CATEGORY NAME
+  // =========================================
   const getEnglishCategory = (category) => {
     return (
-      category.englishName ||
-      category.enName ||
-      category.nameEn ||
-      category.name
+      category?.englishName ||
+      category?.enName ||
+      category?.nameEn ||
+      ""
     );
   };
+
+  // =========================================
+  // ENGLISH CATEGORY SLUG
+  // =========================================
+  const getEnglishCategorySlug = (category) => {
+    return (
+      category?.englishSlug ||
+      category?.enSlug ||
+      category?.slugEn ||
+      ""
+    );
+  };
+
+  // =========================================
+  // ONLY ENGLISH CATEGORIES
+  // =========================================
+  const englishCategories = categories.filter((category) => {
+    const name = getEnglishCategory(category);
+    const slug = getEnglishCategorySlug(category);
+
+    return Boolean(name && slug);
+  });
 
   return (
     <main className="min-h-screen bg-[#f7f3e8]">
 
-      {/* HERO */}
+      {/* =========================================
+          HERO
+      ========================================= */}
       <section
         className="relative overflow-hidden py-10 px-4"
         style={{
@@ -66,7 +106,9 @@ export default function EnglishCategoriesPage() {
         </div>
       </section>
 
-      {/* CATEGORIES */}
+      {/* =========================================
+          CATEGORIES
+      ========================================= */}
       <section className="max-w-6xl mx-auto px-3 py-10">
 
         <div className="flex justify-between items-center mb-5">
@@ -84,55 +126,75 @@ export default function EnglishCategoriesPage() {
 
         </div>
 
+        {/* =========================================
+            LOADING
+        ========================================= */}
         {loading ? (
 
           <div className="text-center py-12 text-gray-500">
             Loading categories...
           </div>
 
-        ) : categories.length > 0 ? (
+        ) : englishCategories.length > 0 ? (
 
+          /* =========================================
+             CATEGORY GRID
+          ========================================= */
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
 
-            {categories.map((category) => (
+            {englishCategories.map((category) => {
 
-              <Link
-                key={category._id}
-                href={`/en/categories/${encodeURIComponent(
-                  category.slug || category.name
-                )}`}
-                className="
-                  flex items-center justify-center
-                  min-h-[80px]
-                  rounded-2xl
-                  border border-[#c8b27a]
-                  bg-gradient-to-b
-                  from-[#f6f0dd]
-                  via-[#e6d4a3]
-                  to-[#c9ab63]
-                  text-[#4b3415]
-                  text-center
-                  font-semibold
-                  shadow-md
-                  hover:scale-[1.02]
-                  hover:shadow-lg
-                  transition
-                  px-3
-                "
-              >
-                {getEnglishCategory(category)}
-              </Link>
+              const categoryName =
+                getEnglishCategory(category);
 
-            ))}
+              const categorySlug =
+                getEnglishCategorySlug(category);
+
+              return (
+                <Link
+                  key={category._id}
+                 href={`/en/categories/${encodeURIComponent(
+  category.englishSlug || category.slug || category.name
+)}`}
+                  className="
+                    flex items-center justify-center
+                    min-h-[80px]
+                    rounded-2xl
+                    border border-[#c8b27a]
+                    bg-gradient-to-b
+                    from-[#f6f0dd]
+                    via-[#e6d4a3]
+                    to-[#c9ab63]
+                    text-[#4b3415]
+                    text-center
+                    font-semibold
+                    shadow-md
+                    hover:scale-[1.02]
+                    hover:shadow-lg
+                    transition
+                    px-3
+                  "
+                >
+                  {categoryName}
+                </Link>
+              );
+            })}
 
           </div>
 
         ) : (
 
-          <div className="bg-white rounded-xl p-10 text-center shadow-sm">
+          /* =========================================
+             NO ENGLISH CATEGORIES
+          ========================================= */
+          <div className="bg-white rounded-xl p-10 text-center shadow-sm border border-gray-200">
 
             <p className="text-gray-500">
-              No categories found.
+              No English categories available.
+            </p>
+
+            <p className="text-sm text-gray-400 mt-2">
+              English category names and slugs have not been added yet.
             </p>
 
           </div>

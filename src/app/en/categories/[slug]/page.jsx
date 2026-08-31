@@ -3,6 +3,9 @@ import Link from "next/link";
 
 const backend = "https://f-backend-vdi1.onrender.com/api";
 
+// =========================================
+// GET CATEGORY
+// =========================================
 async function getCategory(slug) {
   try {
     const res = await fetch(
@@ -29,6 +32,9 @@ async function getCategory(slug) {
   }
 }
 
+// =========================================
+// GET ENGLISH QUESTIONS BY CATEGORY
+// =========================================
 async function getQuestions(slug) {
   try {
     const res = await fetch(
@@ -55,39 +61,62 @@ async function getQuestions(slug) {
   }
 }
 
-export async function generateMetadata({ params }) {
-  const { slug } = await params;
-
-  const category = await getCategory(slug);
-
-  const categoryName =
+// =========================================
+// GET ENGLISH CATEGORY NAME
+// =========================================
+function getEnglishCategoryName(category, slug) {
+  return (
     category?.englishName ||
     category?.enName ||
     category?.nameEn ||
-    category?.name ||
     slug
       .split("-")
       .map(
         (word) =>
           word.charAt(0).toUpperCase() + word.slice(1)
       )
-      .join(" ");
+      .join(" ")
+  );
+}
+
+// =========================================
+// SEO
+// =========================================
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+
+  const category = await getCategory(slug);
+
+  const categoryName = getEnglishCategoryName(
+    category,
+    slug
+  );
 
   return {
     title: `${categoryName} | Islamic Fatwas | Maslak-e-Deoband`,
+
     description: `Read authentic Islamic Fatwas and Articles related to ${categoryName} according to the Quran and Sunnah.`,
+
     alternates: {
       canonical: `https://www.maslakedeoband.in/en/categories/${slug}`,
+
       languages: {
-        ur: `https://www.maslakedeoband.in/categories/${slug}`,
-        bn: `https://www.maslakedeoband.in/bn/categories/${slug}`,
+        ur: `https://www.maslakedeoband.in/categories/${category?.slug || slug}`,
+
+        bn: `https://www.maslakedeoband.in/bn/categories/${category?.slug || slug}`,
+
         en: `https://www.maslakedeoband.in/en/categories/${slug}`,
       },
     },
   };
 }
 
-export default async function EnglishCategoryPage({ params }) {
+// =========================================
+// PAGE
+// =========================================
+export default async function EnglishCategoryPage({
+  params,
+}) {
   const { slug } = await params;
 
   const [category, questions] = await Promise.all([
@@ -95,25 +124,20 @@ export default async function EnglishCategoryPage({ params }) {
     getQuestions(slug),
   ]);
 
-  const categoryName =
-    category?.englishName ||
-    category?.enName ||
-    category?.nameEn ||
-    category?.name ||
+  const categoryName = getEnglishCategoryName(
+    category,
     slug
-      .split("-")
-      .map(
-        (word) =>
-          word.charAt(0).toUpperCase() + word.slice(1)
-      )
-      .join(" ");
+  );
 
   return (
     <main className="min-h-screen bg-[#faf9f6]">
 
       <section className="max-w-6xl mx-auto px-4 py-10 md:py-14">
 
-        {/* Breadcrumb */}
+        {/* ================================= */}
+        {/* BREADCRUMB */}
+        {/* ================================= */}
+
         <div className="mb-6 text-sm text-gray-500">
 
           <Link
@@ -138,7 +162,10 @@ export default async function EnglishCategoryPage({ params }) {
 
         </div>
 
-        {/* Category Header */}
+        {/* ================================= */}
+        {/* CATEGORY HEADER */}
+        {/* ================================= */}
+
         <div className="mb-8">
 
           <p className="text-sm text-yellow-700 font-semibold mb-3">
@@ -157,7 +184,10 @@ export default async function EnglishCategoryPage({ params }) {
 
         </div>
 
-        {/* Questions */}
+        {/* ================================= */}
+        {/* FATWAS */}
+        {/* ================================= */}
+
         <section>
 
           <div className="flex justify-between items-center mb-5">
@@ -181,13 +211,20 @@ export default async function EnglishCategoryPage({ params }) {
                 const question =
                   item.englishQuestion ||
                   item.enQuestion ||
-                  item.questionEn ||
-                  item.question;
+                  item.questionEn;
+
+                // English question hi show hogi
+                if (!question) {
+                  return null;
+                }
 
                 return (
                   <Link
                     key={item._id}
-                    href={`/en/fatawa/${item.slug}`}
+                    href={`/en/fatawa/${
+                      item.englishSlug ||
+                      item.slug
+                    }`}
                     className="
                       block
                       bg-white
@@ -221,7 +258,7 @@ export default async function EnglishCategoryPage({ params }) {
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-10 text-center">
 
               <p className="text-gray-500">
-                No Fatwas found in this category.
+                No English Fatwas found in this category.
               </p>
 
             </div>

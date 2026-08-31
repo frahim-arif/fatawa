@@ -12,6 +12,9 @@ export default function EnglishFatawaPage() {
 
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
+  // =========================================
+  // GET QUESTIONS
+  // =========================================
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
@@ -22,10 +25,14 @@ export default function EnglishFatawaPage() {
           }
         );
 
+        if (!res.ok) {
+          throw new Error("Failed to fetch questions");
+        }
+
         const data = await res.json();
 
         if (data.success) {
-          setQuestions(data.data);
+          setQuestions(data.data || []);
         }
       } catch (error) {
         console.error("Questions fetch error:", error);
@@ -37,26 +44,42 @@ export default function EnglishFatawaPage() {
     fetchQuestions();
   }, []);
 
+  // =========================================
+  // ENGLISH QUESTION ONLY
+  // =========================================
   const getEnglishQuestion = (item) => {
     return (
       item.englishQuestion ||
       item.enQuestion ||
       item.questionEn ||
-      item.question
+      ""
     );
   };
 
-  const filteredQuestions = questions.filter((item) =>
-    getEnglishQuestion(item)
-      ?.toLowerCase()
-      .includes(query.toLowerCase())
-  );
+  // =========================================
+  // FILTER ONLY ENGLISH QUESTIONS
+  // =========================================
+  const filteredQuestions = questions.filter((item) => {
+    const question = getEnglishQuestion(item);
+
+    if (!question) {
+      return false;
+    }
+
+    return question
+      .toLowerCase()
+      .includes(query.toLowerCase());
+  });
 
   return (
     <main className="min-h-screen bg-[#f7f3e8]">
 
+      {/* ================================= */}
       {/* HERO */}
+      {/* ================================= */}
+
       <section className="relative overflow-hidden py-12 px-4 bg-[#3b2f2f]">
+
         <div className="max-w-6xl mx-auto text-center">
 
           <h1 className="text-3xl md:text-5xl font-bold text-yellow-300">
@@ -69,11 +92,19 @@ export default function EnglishFatawaPage() {
           </p>
 
         </div>
+
       </section>
+
+      {/* ================================= */}
+      {/* CONTENT */}
+      {/* ================================= */}
 
       <section className="max-w-6xl mx-auto px-3 py-8">
 
+        {/* ================================= */}
         {/* SEARCH */}
+        {/* ================================= */}
+
         <div className="mb-8">
 
           <div className="flex items-center bg-white border border-yellow-600 rounded-2xl shadow-md overflow-hidden">
@@ -100,7 +131,10 @@ export default function EnglishFatawaPage() {
 
         </div>
 
+        {/* ================================= */}
         {/* QUESTIONS */}
+        {/* ================================= */}
+
         <section>
 
           <div className="flex justify-between items-center mb-5">
@@ -109,7 +143,15 @@ export default function EnglishFatawaPage() {
               Latest Fatwas
             </h2>
 
+            {!loading && (
+              <span className="text-sm text-gray-500">
+                {filteredQuestions.length} Results
+              </span>
+            )}
+
           </div>
+
+          {/* LOADING */}
 
           {loading ? (
 
@@ -121,40 +163,52 @@ export default function EnglishFatawaPage() {
 
             <div className="space-y-3">
 
-              {filteredQuestions.map((item) => (
+              {filteredQuestions.map((item) => {
 
-                <Link
-                  key={item._id}
-                  href={`/en/fatawa/${item.slug}`}
-                  className="
-                    block
-                    bg-white
-                    border border-yellow-200
-                    rounded-xl
-                    p-5
-                    shadow-sm
-                    hover:border-yellow-500
-                    hover:shadow-md
-                    transition
-                  "
-                >
+                const question = getEnglishQuestion(item);
 
-                  <h3 className="text-gray-800 font-semibold text-lg">
-                    {getEnglishQuestion(item)}
-                  </h3>
+                return (
+                  <Link
+                    key={item._id}
+                    href={`/en/fatawa/${
+                      item.englishSlug || item.slug
+                    }`}
+                    className="
+                      block
+                      bg-white
+                      border border-yellow-200
+                      rounded-xl
+                      p-5
+                      shadow-sm
+                      hover:border-yellow-500
+                      hover:shadow-md
+                      transition
+                    "
+                  >
 
-                </Link>
+                    <h3 className="text-gray-800 font-semibold text-lg leading-7">
+                      {question}
+                    </h3>
 
-              ))}
+                    <span className="inline-block mt-2 text-sm text-yellow-700 font-semibold">
+                      Read Fatwa →
+                    </span>
+
+                  </Link>
+                );
+
+              })}
 
             </div>
 
           ) : (
 
-            <div className="bg-white rounded-xl p-8 text-center">
+            <div className="bg-white rounded-xl p-8 text-center shadow-sm">
+
               <p className="text-gray-500">
-                No Islamic questions found.
+                No English Fatwas found.
               </p>
+
             </div>
 
           )}

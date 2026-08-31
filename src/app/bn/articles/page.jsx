@@ -1,30 +1,47 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Search } from "lucide-react";
 
+const backend = "https://f-backend-vdi1.onrender.com/api";
+
 export default function BanglaArticlesPage() {
   const [articles, setArticles] = useState([]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const backend = "https://f-backend-vdi1.onrender.com/api";
-
+  // =========================================
+  // FETCH BANGLA ARTICLES
+  // =========================================
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const res = await fetch(
-          `${backend}/majameen`
-        );
+        const res = await fetch(`${backend}/majameen`);
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch articles");
+        }
 
         const data = await res.json();
 
-        if (data.success) {
-          setArticles(data.data);
+        if (data.success && Array.isArray(data.data)) {
+          // শুধুমাত্র যেসব article-এ Bangla title আছে
+          const banglaArticles = data.data.filter(
+            (item) =>
+              item.banglaTitle ||
+              item.bnTitle ||
+              item.titleBn
+          );
+
+          setArticles(banglaArticles);
+        } else {
+          setArticles([]);
         }
       } catch (error) {
-        console.error(error);
+        console.error("Bangla articles fetch error:", error);
+        setArticles([]);
       } finally {
         setLoading(false);
       }
@@ -33,98 +50,269 @@ export default function BanglaArticlesPage() {
     fetchArticles();
   }, []);
 
-  const getTitle = (item) => {
+  // =========================================
+  // BANGLA ARTICLE TITLE
+  // =========================================
+  const getBanglaTitle = (item) => {
     return (
       item.banglaTitle ||
       item.bnTitle ||
       item.titleBn ||
-      item.title
+      null
     );
   };
 
-  const filteredArticles = articles.filter((item) =>
-    getTitle(item)
-      ?.toLowerCase()
-      .includes(query.toLowerCase())
-  );
+  // =========================================
+  // SEARCH
+  // =========================================
+  const filteredArticles = articles.filter((item) => {
+    const title = getBanglaTitle(item);
+
+    if (!title) {
+      return false;
+    }
+
+    return title
+      .toLowerCase()
+      .includes(query.trim().toLowerCase());
+  });
 
   return (
     <main className="min-h-screen bg-[#f7f3e8]">
 
-      <section className="bg-[#3b2f2f] py-10 px-4 text-center">
+      {/* =========================================
+          HERO
+      ========================================= */}
+      <section className="relative overflow-hidden bg-[#3b2f2f] py-10 px-4">
 
-        <h1 className="text-3xl md:text-4xl font-bold text-yellow-300">
-          ইসলামী প্রবন্ধ
-        </h1>
+        <div className="max-w-6xl mx-auto text-center">
 
-        <p className="text-yellow-100 mt-2">
-          নির্বাচিত ইসলামী প্রবন্ধসমূহ
-        </p>
+          <p className="text-sm md:text-base text-yellow-400 font-semibold mb-2">
+            ইসলামী জ্ঞান
+          </p>
 
-      </section>
+          <h1 className="text-3xl md:text-5xl font-bold text-yellow-300">
+            ইসলামী প্রবন্ধ
+          </h1>
 
-      <div className="max-w-5xl mx-auto px-4 py-8">
-
-        <div className="flex items-center bg-white border border-yellow-500 rounded-xl mb-6">
-
-          <Search className="ml-3 text-yellow-600" />
-
-          <input
-            type="text"
-            value={query}
-            onChange={(e) =>
-              setQuery(e.target.value)
-            }
-            placeholder="প্রবন্ধ খুঁজুন..."
-            className="w-full p-3 outline-none"
-          />
+          <p className="mt-3 text-yellow-100 text-base md:text-lg">
+            কুরআন ও সুন্নাহর আলোকে নির্বাচিত ইসলামী প্রবন্ধসমূহ
+          </p>
 
         </div>
 
-        {loading ? (
+      </section>
 
-          <p className="text-center">
-            লোড হচ্ছে...
-          </p>
+      {/* =========================================
+          CONTENT
+      ========================================= */}
+      <section className="max-w-6xl mx-auto px-4 py-8 md:py-10">
 
-        ) : (
+        {/* =========================================
+            SEARCH
+        ========================================= */}
+        <div className="max-w-3xl mx-auto mb-8">
 
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="
+            flex
+            items-center
+            bg-white
+            border
+            border-yellow-500
+            rounded-2xl
+            shadow-md
+            overflow-hidden
+            focus-within:ring-2
+            focus-within:ring-yellow-300
+          ">
 
-            {filteredArticles.map((item) => (
+            <div className="px-4">
 
-              <Link
-                key={item._id}
-                href={`/bn/articles/${
-                  item.slug || item._id
-                }`}
-                className="
-                  bg-white
-                  rounded-xl
-                  border border-yellow-200
-                  p-5
-                  shadow-sm
-                  hover:shadow-lg
-                  hover:border-yellow-500
-                  transition
-                "
-              >
-                <h2 className="text-xl font-bold text-[#3b2f2f]">
+              <Search
+                className="w-5 h-5 text-yellow-600"
+                aria-hidden="true"
+              />
 
-                  {getTitle(item)}
+            </div>
 
-                </h2>
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="প্রবন্ধ খুঁজুন..."
+              aria-label="প্রবন্ধ খুঁজুন"
+              className="
+                w-full
+                py-3.5
+                pr-4
+                outline-none
+                text-gray-800
+                bg-transparent
+                placeholder:text-gray-400
+              "
+            />
 
-              </Link>
+          </div>
 
-            ))}
+        </div>
+
+        {/* =========================================
+            HEADER
+        ========================================= */}
+        <div className="flex items-center justify-between gap-3 mb-5">
+
+          <h2 className="text-2xl md:text-3xl font-bold text-[#4b3415]">
+            ইসলামী প্রবন্ধসমূহ
+          </h2>
+
+          <span className="text-sm text-gray-500 whitespace-nowrap">
+            {query
+              ? `${filteredArticles.length} টি পাওয়া গেছে`
+              : `${articles.length} টি প্রবন্ধ`}
+          </span>
+
+        </div>
+
+        {/* =========================================
+            LOADING
+        ========================================= */}
+        {loading && (
+
+          <div className="
+            bg-white
+            rounded-2xl
+            border
+            border-yellow-200
+            p-10
+            text-center
+            shadow-sm
+          ">
+
+            <p className="text-gray-500">
+              প্রবন্ধ লোড হচ্ছে...
+            </p>
 
           </div>
 
         )}
 
-      </div>
+        {/* =========================================
+            ARTICLES
+        ========================================= */}
+        {!loading && filteredArticles.length > 0 && (
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+
+            {filteredArticles.map((item) => {
+
+              const title = getBanglaTitle(item);
+
+              const slug = item.slug || item._id;
+
+              return (
+                <Link
+                  key={item._id}
+                  href={`/bn/articles/${encodeURIComponent(slug)}`}
+                  className="
+                    group
+                    block
+                    bg-white
+                    rounded-2xl
+                    border
+                    border-yellow-200
+                    p-5
+                    shadow-sm
+                    hover:border-yellow-500
+                    hover:shadow-lg
+                    hover:-translate-y-1
+                    transition-all
+                    duration-200
+                  "
+                >
+
+                  <div className="flex flex-col h-full">
+
+                    <h3 className="
+                      text-lg
+                      md:text-xl
+                      font-bold
+                      text-[#3b2f2f]
+                      leading-8
+                      group-hover:text-yellow-700
+                      transition-colors
+                    ">
+                      {title}
+                    </h3>
+
+                    <div className="mt-4 text-sm font-semibold text-yellow-700">
+                      প্রবন্ধ পড়ুন →
+                    </div>
+
+                  </div>
+
+                </Link>
+              );
+            })}
+
+          </div>
+
+        )}
+
+        {/* =========================================
+            NO RESULT
+        ========================================= */}
+        {!loading && filteredArticles.length === 0 && (
+
+          <div className="
+            bg-white
+            rounded-2xl
+            border
+            border-yellow-200
+            p-10
+            text-center
+            shadow-sm
+          ">
+
+            <div className="text-4xl mb-4">
+              📚
+            </div>
+
+            <h3 className="text-xl font-bold text-[#3b2f2f]">
+              কোনো প্রবন্ধ পাওয়া যায়নি
+            </h3>
+
+            <p className="mt-2 text-gray-500">
+              {query
+                ? "আপনার অনুসন্ধানের সাথে মিলছে এমন কোনো প্রবন্ধ পাওয়া যায়নি।"
+                : "এখনো কোনো বাংলা প্রবন্ধ পাওয়া যায়নি।"}
+            </p>
+
+            {query && (
+              <button
+                onClick={() => setQuery("")}
+                className="
+                  mt-5
+                  px-5
+                  py-2.5
+                  rounded-xl
+                  bg-[#3b2f2f]
+                  text-yellow-200
+                  font-semibold
+                  hover:bg-[#4a3a3a]
+                  transition
+                "
+              >
+                অনুসন্ধান মুছে দিন
+              </button>
+            )}
+
+          </div>
+
+        )}
+
+      </section>
 
     </main>
   );
 }
+
