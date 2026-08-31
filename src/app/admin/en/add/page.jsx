@@ -16,47 +16,52 @@ export default function EnglishQuestionAddPage() {
   const [categories, setCategories] = useState([]);
 
   const [formData, setFormData] = useState({
-    englishQuestion: "",
-    englishAnswer: "",
-    englishHawala1: "",
-    englishHawala2: "",
-    englishHawala3: "",
-    englishSlug: "",
-    englishMetaTitle: "",
-    englishMetaDescription: "",
-    englishKeywords: "",
+    question: "",
+    answer: "",
+    hawala1: "",
+    hawala2: "",
+    hawala3: "",
+    slug: "",
+    metaTitle: "",
+    metaDescription: "",
+    keywords: "",
     category: "",
   });
 
-  // =========================================
+  // =====================================================
   // GET ENGLISH CATEGORIES
-  // =========================================
+  // =====================================================
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         setCategoriesLoading(true);
 
         const res = await axios.get(
-          `${backend}/categories`
+          `${backend}/en/categories`
         );
 
         if (res.data?.success) {
           setCategories(res.data.data || []);
         } else {
           setCategories([]);
+
           toast.error(
-            res.data?.message || "Failed to load categories"
+            res.data?.message ||
+              "Failed to load English categories"
           );
         }
       } catch (error) {
         console.error(
-          "Category fetch error:",
+          "English category fetch error:",
           error.response?.data || error.message
         );
 
         setCategories([]);
 
-        toast.error("Failed to load categories");
+        toast.error(
+          "Failed to load English categories"
+        );
       } finally {
         setCategoriesLoading(false);
       }
@@ -65,9 +70,10 @@ export default function EnglishQuestionAddPage() {
     fetchCategories();
   }, []);
 
-  // =========================================
+  // =====================================================
   // HANDLE INPUT
-  // =========================================
+  // =====================================================
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -77,77 +83,65 @@ export default function EnglishQuestionAddPage() {
     }));
   };
 
-  // =========================================
+  // =====================================================
   // GENERATE ENGLISH SLUG
-  // =========================================
+  // =====================================================
+
   const generateSlug = (text) => {
     return text
       .toLowerCase()
       .trim()
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-")
-      .replace(/-+/g, "-");
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
   };
 
-  // =========================================
+  // =====================================================
   // QUESTION CHANGE + AUTO SLUG
-  // =========================================
+  // =====================================================
+
   const handleQuestionChange = (e) => {
     const value = e.target.value;
 
     setFormData((prev) => {
       const oldGeneratedSlug = generateSlug(
-        prev.englishQuestion
+        prev.question
       );
 
       const shouldUpdateSlug =
-        prev.englishSlug === "" ||
-        prev.englishSlug === oldGeneratedSlug;
+        prev.slug === "" ||
+        prev.slug === oldGeneratedSlug;
 
       return {
         ...prev,
-        englishQuestion: value,
-        englishSlug: shouldUpdateSlug
+        question: value,
+        slug: shouldUpdateSlug
           ? generateSlug(value)
-          : prev.englishSlug,
+          : prev.slug,
       };
     });
   };
 
-  // =========================================
-  // GET CATEGORY ENGLISH NAME
-  // =========================================
-  const getEnglishCategoryName = (category) => {
-    return (
-      category.englishName ||
-      category.enName ||
-      category.nameEn ||
-      category.titleEn ||
-      category.name ||
-      category.title ||
-      category.categoryName ||
-      "Unnamed Category"
-    );
-  };
-
-  // =========================================
+  // =====================================================
   // SUBMIT
-  // =========================================
+  // =====================================================
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.englishQuestion.trim()) {
+    if (!formData.question.trim()) {
       toast.error("English question is required");
       return;
     }
 
-    if (!formData.englishAnswer.trim()) {
+    if (!formData.answer.trim()) {
       toast.error("English answer is required");
       return;
     }
 
     if (!formData.category) {
-      toast.error("Please select a category");
+      toast.error("Please select an English category");
       return;
     }
 
@@ -155,34 +149,32 @@ export default function EnglishQuestionAddPage() {
       setLoading(true);
 
       const payload = {
-        englishQuestion:
-          formData.englishQuestion.trim(),
+        question: formData.question.trim(),
 
-        englishAnswer:
-          formData.englishAnswer,
+        answer: formData.answer,
 
-        englishHawala1:
-          formData.englishHawala1.trim(),
+        hawala1:
+          formData.hawala1.trim(),
 
-        englishHawala2:
-          formData.englishHawala2.trim(),
+        hawala2:
+          formData.hawala2.trim(),
 
-        englishHawala3:
-          formData.englishHawala3.trim(),
+        hawala3:
+          formData.hawala3.trim(),
 
-        englishSlug:
-          formData.englishSlug.trim() ||
-          generateSlug(formData.englishQuestion),
+        slug:
+          formData.slug.trim() ||
+          generateSlug(formData.question),
 
-        englishMetaTitle:
-          formData.englishMetaTitle.trim() ||
-          formData.englishQuestion.trim(),
+        metaTitle:
+          formData.metaTitle.trim() ||
+          formData.question.trim(),
 
-        englishMetaDescription:
-          formData.englishMetaDescription.trim(),
+        metaDescription:
+          formData.metaDescription.trim(),
 
-        englishKeywords:
-          formData.englishKeywords.trim(),
+        keywords:
+          formData.keywords.trim(),
 
         category:
           formData.category,
@@ -200,19 +192,19 @@ export default function EnglishQuestionAddPage() {
         );
 
         setFormData({
-          englishQuestion: "",
-          englishAnswer: "",
-          englishHawala1: "",
-          englishHawala2: "",
-          englishHawala3: "",
-          englishSlug: "",
-          englishMetaTitle: "",
-          englishMetaDescription: "",
-          englishKeywords: "",
+          question: "",
+          answer: "",
+          hawala1: "",
+          hawala2: "",
+          hawala3: "",
+          slug: "",
+          metaTitle: "",
+          metaDescription: "",
+          keywords: "",
           category: "",
         });
 
-        // Question list par jana ho to uncomment karein
+        // Agar question list par jana ho:
         // router.push("/admin/en");
       } else {
         toast.error(
@@ -240,9 +232,9 @@ export default function EnglishQuestionAddPage() {
 
       <div className="mx-auto max-w-5xl">
 
-        {/* ========================================= */}
-        {/* HEADER */}
-        {/* ========================================= */}
+        {/* =====================================================
+            HEADER
+        ===================================================== */}
 
         <div className="mb-6 rounded-xl border bg-white p-6 shadow-sm">
 
@@ -254,8 +246,8 @@ export default function EnglishQuestionAddPage() {
               </h1>
 
               <p className="mt-1 text-sm text-gray-500">
-                Add English question, answer, references,
-                category and SEO details.
+                Add English question, answer,
+                references, category and SEO details.
               </p>
             </div>
 
@@ -284,18 +276,18 @@ export default function EnglishQuestionAddPage() {
 
         </div>
 
-        {/* ========================================= */}
-        {/* FORM */}
-        {/* ========================================= */}
+        {/* =====================================================
+            FORM
+        ===================================================== */}
 
         <form
           onSubmit={handleSubmit}
           className="space-y-6"
         >
 
-          {/* ========================================= */}
-          {/* ENGLISH CONTENT */}
-          {/* ========================================= */}
+          {/* =====================================================
+              ENGLISH CONTENT
+          ===================================================== */}
 
           <div className="rounded-xl border bg-white p-6 shadow-sm">
 
@@ -314,8 +306,8 @@ export default function EnglishQuestionAddPage() {
                 </label>
 
                 <textarea
-                  name="englishQuestion"
-                  value={formData.englishQuestion}
+                  name="question"
+                  value={formData.question}
                   onChange={handleQuestionChange}
                   rows={4}
                   placeholder="Enter English question"
@@ -347,8 +339,8 @@ export default function EnglishQuestionAddPage() {
                 </label>
 
                 <textarea
-                  name="englishAnswer"
-                  value={formData.englishAnswer}
+                  name="answer"
+                  value={formData.answer}
                   onChange={handleChange}
                   rows={12}
                   placeholder="Enter English answer"
@@ -375,9 +367,9 @@ export default function EnglishQuestionAddPage() {
 
           </div>
 
-          {/* ========================================= */}
-          {/* REFERENCES */}
-          {/* ========================================= */}
+          {/* =====================================================
+              HAWALA / REFERENCES
+          ===================================================== */}
 
           <div className="rounded-xl border bg-white p-6 shadow-sm">
 
@@ -396,8 +388,8 @@ export default function EnglishQuestionAddPage() {
                 </label>
 
                 <textarea
-                  name="englishHawala1"
-                  value={formData.englishHawala1}
+                  name="hawala1"
+                  value={formData.hawala1}
                   onChange={handleChange}
                   rows={3}
                   placeholder="Enter first reference"
@@ -427,8 +419,8 @@ export default function EnglishQuestionAddPage() {
                 </label>
 
                 <textarea
-                  name="englishHawala2"
-                  value={formData.englishHawala2}
+                  name="hawala2"
+                  value={formData.hawala2}
                   onChange={handleChange}
                   rows={3}
                   placeholder="Enter second reference"
@@ -458,8 +450,8 @@ export default function EnglishQuestionAddPage() {
                 </label>
 
                 <textarea
-                  name="englishHawala3"
-                  value={formData.englishHawala3}
+                  name="hawala3"
+                  value={formData.hawala3}
                   onChange={handleChange}
                   rows={3}
                   placeholder="Enter third reference"
@@ -484,9 +476,9 @@ export default function EnglishQuestionAddPage() {
 
           </div>
 
-          {/* ========================================= */}
-          {/* SEO */}
-          {/* ========================================= */}
+          {/* =====================================================
+              SEO
+          ===================================================== */}
 
           <div className="rounded-xl border bg-white p-6 shadow-sm">
 
@@ -506,8 +498,8 @@ export default function EnglishQuestionAddPage() {
 
                 <input
                   type="text"
-                  name="englishSlug"
-                  value={formData.englishSlug}
+                  name="slug"
+                  value={formData.slug}
                   onChange={handleChange}
                   placeholder="english-question-slug"
                   className="
@@ -542,8 +534,8 @@ export default function EnglishQuestionAddPage() {
 
                 <input
                   type="text"
-                  name="englishMetaTitle"
-                  value={formData.englishMetaTitle}
+                  name="metaTitle"
+                  value={formData.metaTitle}
                   onChange={handleChange}
                   placeholder="Enter SEO meta title"
                   className="
@@ -572,10 +564,8 @@ export default function EnglishQuestionAddPage() {
                 </label>
 
                 <textarea
-                  name="englishMetaDescription"
-                  value={
-                    formData.englishMetaDescription
-                  }
+                  name="metaDescription"
+                  value={formData.metaDescription}
                   onChange={handleChange}
                   rows={4}
                   maxLength={160}
@@ -611,8 +601,8 @@ export default function EnglishQuestionAddPage() {
 
                 <input
                   type="text"
-                  name="englishKeywords"
-                  value={formData.englishKeywords}
+                  name="keywords"
+                  value={formData.keywords}
                   onChange={handleChange}
                   placeholder="islam, namaz, roza, zakat"
                   className="
@@ -640,14 +630,14 @@ export default function EnglishQuestionAddPage() {
 
           </div>
 
-          {/* ========================================= */}
-          {/* CATEGORY */}
-          {/* ========================================= */}
+          {/* =====================================================
+              ENGLISH CATEGORY
+          ===================================================== */}
 
           <div className="rounded-xl border bg-white p-6 shadow-sm">
 
             <h2 className="mb-5 text-lg font-semibold text-gray-800">
-              Category
+              English Category
             </h2>
 
             <select
@@ -677,8 +667,8 @@ export default function EnglishQuestionAddPage() {
 
               <option value="">
                 {categoriesLoading
-                  ? "Loading categories..."
-                  : "Select Category"}
+                  ? "Loading English categories..."
+                  : "Select English Category"}
               </option>
 
               {!categoriesLoading &&
@@ -687,7 +677,7 @@ export default function EnglishQuestionAddPage() {
                     key={cat._id}
                     value={cat._id}
                   >
-                    {getEnglishCategoryName(cat)}
+                    {cat.name}
                   </option>
                 ))}
 
@@ -696,15 +686,15 @@ export default function EnglishQuestionAddPage() {
             {!categoriesLoading &&
               categories.length === 0 && (
                 <p className="mt-2 text-sm text-red-500">
-                  No categories found.
+                  No English categories found.
                 </p>
               )}
 
           </div>
 
-          {/* ========================================= */}
-          {/* SUBMIT */}
-          {/* ========================================= */}
+          {/* =====================================================
+              SUBMIT
+          ===================================================== */}
 
           <div className="flex justify-end rounded-xl border bg-white p-6 shadow-sm">
 
