@@ -1,275 +1,716 @@
+"use client";
 
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { Search, Mic } from "lucide-react";
 
-const backend = "https://f-backend-vdi1.onrender.com/api";
+export default function EnglishHomePage() {
+  const [query, setQuery] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [latestQuestions, setLatestQuestions] = useState([]);
+  const [majameen, setMajameen] = useState([]);
+  const [prayerTimes, setPrayerTimes] = useState(null);
 
-// =========================================
-// GET CATEGORY
-// =========================================
-async function getCategory(slug) {
-  try {
-    const res = await fetch(
-      `${backend}/categories/${encodeURIComponent(slug)}`,
-      {
-        cache: "no-store",
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [questionsLoading, setQuestionsLoading] = useState(true);
+  const [articlesLoading, setArticlesLoading] = useState(true);
+
+  const backend = "https://f-backend-vdi1.onrender.com/api";
+
+  // =========================================
+  // FETCH ENGLISH CATEGORIES
+  // =========================================
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setCategoriesLoading(true);
+
+        const res = await fetch(`${backend}/en/categories`, {
+          cache: "no-store",
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch English categories");
+        }
+
+        const data = await res.json();
+
+        if (data.success && Array.isArray(data.data)) {
+          setCategories(data.data);
+        } else {
+          setCategories([]);
+        }
+      } catch (error) {
+        console.error("English categories fetch error:", error);
+        setCategories([]);
+      } finally {
+        setCategoriesLoading(false);
       }
-    );
+    };
 
-    if (!res.ok) {
-      return null;
-    }
+    fetchCategories();
+  }, []);
 
-    const data = await res.json();
+  // =========================================
+  // FETCH LATEST ENGLISH QUESTIONS
+  // =========================================
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        setQuestionsLoading(true);
 
-    if (!data.success) {
-      return null;
-    }
+        const res = await fetch(
+          `${backend}/en/questions?limit=5`,
+          {
+            cache: "no-store",
+          }
+        );
 
-    return data.data;
-  } catch (error) {
-    console.error("Failed to fetch category:", error);
-    return null;
-  }
-}
+        if (!res.ok) {
+          throw new Error("Failed to fetch English questions");
+        }
 
-// =========================================
-// GET ENGLISH QUESTIONS BY CATEGORY
-// =========================================
-async function getQuestions(slug) {
-  try {
-    const res = await fetch(
-      `${backend}/questions/category/${encodeURIComponent(slug)}?limit=20`,
-      {
-        cache: "no-store",
+        const data = await res.json();
+
+        console.log("English questions:", data);
+
+        if (data.success && Array.isArray(data.data)) {
+          setLatestQuestions(data.data);
+        } else {
+          setLatestQuestions([]);
+        }
+      } catch (error) {
+        console.error("English questions fetch error:", error);
+        setLatestQuestions([]);
+      } finally {
+        setQuestionsLoading(false);
       }
-    );
+    };
 
-    if (!res.ok) {
-      return [];
+    fetchQuestions();
+  }, []);
+
+  // =========================================
+  // FETCH ARTICLES
+  // =========================================
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        setArticlesLoading(true);
+
+        const res = await fetch(`${backend}/majameen`, {
+          cache: "no-store",
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch articles");
+        }
+
+        const data = await res.json();
+
+        if (data.success && Array.isArray(data.data)) {
+          setMajameen(data.data.slice(0, 5));
+        } else {
+          setMajameen([]);
+        }
+      } catch (error) {
+        console.error("Articles fetch error:", error);
+        setMajameen([]);
+      } finally {
+        setArticlesLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
+  // =========================================
+  // PRAYER TIMES
+  // =========================================
+  useEffect(() => {
+    const fetchPrayerTimes = async () => {
+      try {
+        const res = await fetch(
+          "https://api.aladhan.com/v1/timingsByCity?city=Guwahati&country=India&method=1"
+        );
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch prayer times");
+        }
+
+        const data = await res.json();
+
+        if (data.code === 200) {
+          setPrayerTimes(data.data.timings);
+        }
+      } catch (error) {
+        console.error("Prayer time error:", error);
+      }
+    };
+
+    fetchPrayerTimes();
+  }, []);
+
+  // =========================================
+  // VOICE SEARCH
+  // =========================================
+  const startListening = () => {
+    const SpeechRecognition =
+      window.SpeechRecognition ||
+      window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Voice search is not supported in this browser.");
+      return;
     }
 
-    const data = await res.json();
+    const recognition = new SpeechRecognition();
 
-    if (!data.success) {
-      return [];
-    }
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.continuous = false;
 
-    return data.data || [];
-  } catch (error) {
-    console.error("Failed to fetch category questions:", error);
-    return [];
-  }
-}
+    recognition.onresult = (event) => {
+      const text = event.results[0][0].transcript;
+      setQuery(text);
+    };
 
-// =========================================
-// GET ENGLISH CATEGORY NAME
-// =========================================
-function getEnglishCategoryName(category, slug) {
-  return (
-    category?.englishName ||
-    category?.enName ||
-    category?.nameEn ||
-    slug
-      .split("-")
-      .map(
-        (word) =>
-          word.charAt(0).toUpperCase() + word.slice(1)
-      )
-      .join(" ")
-  );
-}
+    recognition.onerror = (event) => {
+      console.error("Voice search error:", event.error);
+    };
 
-// =========================================
-// SEO
-// =========================================
-export async function generateMetadata({ params }) {
-  const { slug } = await params;
-
-  const category = await getCategory(slug);
-
-  const categoryName = getEnglishCategoryName(
-    category,
-    slug
-  );
-
-  return {
-    title: `${categoryName} | Islamic Fatwas | Maslak-e-Deoband`,
-
-    description: `Read authentic Islamic Fatwas and Articles related to ${categoryName} according to the Quran and Sunnah.`,
-
-    alternates: {
-      canonical: `https://www.maslakedeoband.in/en/categories/${slug}`,
-
-      languages: {
-        ur: `https://www.maslakedeoband.in/categories/${category?.slug || slug}`,
-
-        bn: `https://www.maslakedeoband.in/bn/categories/${category?.slug || slug}`,
-
-        en: `https://www.maslakedeoband.in/en/categories/${slug}`,
-      },
-    },
+    recognition.start();
   };
-}
 
-// =========================================
-// PAGE
-// =========================================
-export default async function EnglishCategoryPage({
-  params,
-}) {
-  const { slug } = await params;
+  // =========================================
+  // ENGLISH QUESTION
+  // Backend:
+  // question
+  // slug
+  // =========================================
+  const getEnglishQuestion = (item) => {
+    return item?.question || "";
+  };
 
-  const [category, questions] = await Promise.all([
-    getCategory(slug),
-    getQuestions(slug),
-  ]);
+  // =========================================
+  // ENGLISH CATEGORY NAME
+  // =========================================
+  const getEnglishCategory = (item) => {
+    return (
+      item?.englishName ||
+      item?.enName ||
+      item?.nameEn ||
+      item?.name ||
+      ""
+    );
+  };
 
-  const categoryName = getEnglishCategoryName(
-    category,
-    slug
-  );
+  // =========================================
+  // ENGLISH CATEGORY SLUG
+  // =========================================
+  const getEnglishCategorySlug = (item) => {
+    return (
+      item?.englishSlug ||
+      item?.enSlug ||
+      item?.slugEn ||
+      item?.slug ||
+      ""
+    );
+  };
+
+  // =========================================
+  // ENGLISH ARTICLE TITLE
+  // =========================================
+  const getEnglishArticleTitle = (item) => {
+    return (
+      item?.englishTitle ||
+      item?.enTitle ||
+      item?.titleEn ||
+      ""
+    );
+  };
+
+  // =========================================
+  // FILTER ENGLISH CATEGORIES
+  // =========================================
+  const englishCategories = categories.filter((cat) => {
+    const name = getEnglishCategory(cat);
+    const slug = getEnglishCategorySlug(cat);
+
+    return Boolean(name && slug);
+  });
+
+  // =========================================
+  // FILTER QUESTIONS
+  // =========================================
+  const filteredQuestions = latestQuestions.filter((item) => {
+    const question = getEnglishQuestion(item);
+
+    if (!question) {
+      return false;
+    }
+
+    return question
+      .toLowerCase()
+      .includes(query.toLowerCase());
+  });
+
+  // =========================================
+  // FILTER ARTICLES
+  // =========================================
+  const filteredArticles = majameen.filter((item) => {
+    const title = getEnglishArticleTitle(item);
+
+    if (!title) {
+      return false;
+    }
+
+    return title
+      .toLowerCase()
+      .includes(query.toLowerCase());
+  });
 
   return (
-    <main className="min-h-screen bg-[#faf9f6]">
+    <main className="min-h-screen bg-[#f7f3e8]">
 
-      <section className="max-w-6xl mx-auto px-4 py-10 md:py-14">
+      {/* =========================================
+          HERO
+      ========================================= */}
+      <section
+        className="relative overflow-hidden px-4 py-12 md:py-16"
+        style={{
+          backgroundImage:
+            "url('/images/ramadan_15_03_2022_1.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="absolute inset-0 bg-black/60" />
 
-        {/* ================================= */}
-        {/* BREADCRUMB */}
-        {/* ================================= */}
-
-        <div className="mb-6 text-sm text-gray-500">
-
-          <Link
-            href="/en"
-            className="hover:text-yellow-700"
-          >
-            Home
-          </Link>
-
-          <span className="mx-2">/</span>
-
-          <Link
-            href="/en/categories"
-            className="hover:text-yellow-700"
-          >
-            Categories
-          </Link>
-
-          <span className="mx-2">/</span>
-
-          <span>{categoryName}</span>
-
-        </div>
-
-        {/* ================================= */}
-        {/* CATEGORY HEADER */}
-        {/* ================================= */}
-
-        <div className="mb-8">
-
-          <p className="text-sm text-yellow-700 font-semibold mb-3">
-            Islamic Category
+        <div className="relative mx-auto max-w-6xl text-center">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-yellow-300">
+            Maslak-e-Deoband
           </p>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-[#3b2f2f]">
-            {categoryName}
+          <h1 className="text-3xl font-bold text-yellow-300 md:text-5xl">
+            Islamic Questions & Answers
           </h1>
 
-          <p className="mt-3 text-gray-600 leading-7">
-            Explore authentic Islamic Fatwas and Articles
-            related to {categoryName} according to the Quran
-            and Sunnah.
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-yellow-100 md:text-lg">
+            Find authentic Islamic answers based on the Quran,
+            Sunnah and authentic Islamic scholarship.
           </p>
-
         </div>
+      </section>
 
-        {/* ================================= */}
-        {/* FATWAS */}
-        {/* ================================= */}
+      {/* =========================================
+          PRAYER TIMES
+      ========================================= */}
+      <div className="border-b-2 border-[#75593f] bg-black">
+        <div className="mx-auto max-w-6xl overflow-x-auto px-3 py-3 text-center text-sm text-yellow-400 md:text-base">
+          <div className="min-w-max">
+            {prayerTimes ? (
+              <>
+                <span>Fajr: {prayerTimes.Fajr?.split(" ")[0]}</span>
 
-        <section>
+                <span className="mx-3 text-gray-500">|</span>
 
-          <div className="flex justify-between items-center mb-5">
+                <span>Dhuhr: {prayerTimes.Dhuhr?.split(" ")[0]}</span>
 
-            <h2 className="text-2xl font-bold text-[#3b2f2f]">
-              Fatwas
-            </h2>
+                <span className="mx-3 text-gray-500">|</span>
 
-            <span className="text-sm text-gray-500">
-              {questions.length} Results
-            </span>
+                <span>Asr: {prayerTimes.Asr?.split(" ")[0]}</span>
 
+                <span className="mx-3 text-gray-500">|</span>
+
+                <span>
+                  Maghrib: {prayerTimes.Maghrib?.split(" ")[0]}
+                </span>
+
+                <span className="mx-3 text-gray-500">|</span>
+
+                <span>Isha: {prayerTimes.Isha?.split(" ")[0]}</span>
+              </>
+            ) : (
+              "Loading prayer times..."
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-6xl px-3 py-8 md:px-4">
+
+        {/* =========================================
+            SEARCH
+        ========================================= */}
+        <section className="mb-10">
+          <div className="mx-auto max-w-3xl">
+            <div className="flex items-center overflow-hidden rounded-2xl border border-yellow-600 bg-white shadow-md">
+
+              <div className="px-4">
+                <Search className="h-5 w-5 text-yellow-600" />
+              </div>
+
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search Islamic questions..."
+                className="
+                  w-full
+                  bg-transparent
+                  py-4
+                  text-gray-800
+                  outline-none
+                  placeholder:text-gray-400
+                "
+              />
+
+              <button
+                type="button"
+                onClick={startListening}
+                className="
+                  px-4
+                  py-4
+                  transition
+                  hover:bg-yellow-50
+                "
+                aria-label="Voice Search"
+              >
+                <Mic className="h-5 w-5 text-yellow-600" />
+              </button>
+
+            </div>
+          </div>
+        </section>
+
+        {/* =========================================
+            CATEGORIES
+        ========================================= */}
+        <section className="mb-12">
+
+          <div className="mb-5 flex items-center justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-yellow-700">
+                Explore
+              </p>
+
+              <h2 className="mt-1 text-2xl font-bold text-[#4b3415] md:text-3xl">
+                Categories
+              </h2>
+            </div>
+
+            <Link
+              href="/en/categories"
+              className="text-sm font-semibold text-yellow-700 transition hover:text-yellow-900"
+            >
+              View All →
+            </Link>
           </div>
 
-          {questions.length > 0 ? (
+          {categoriesLoading ? (
+            <div className="rounded-xl border border-yellow-200 bg-white p-8 text-center text-gray-500">
+              Loading categories...
+            </div>
+          ) : englishCategories.length > 0 ? (
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
 
-            <div className="space-y-3">
+              {englishCategories.slice(0, 8).map((cat) => {
+                const categoryName =
+                  getEnglishCategory(cat);
 
-              {questions.map((item) => {
-
-                const question =
-                  item.englishQuestion ||
-                  item.enQuestion ||
-                  item.questionEn;
-
-                // English question hi show hogi
-                if (!question) {
-                  return null;
-                }
+                const categorySlug =
+                  getEnglishCategorySlug(cat);
 
                 return (
                   <Link
-                    key={item._id}
-                    href={`/en/fatawa/${
-                      item.englishSlug ||
-                      item.slug
-                    }`}
+                    key={cat._id}
+                    href={`/en/categories/${encodeURIComponent(
+                      categorySlug
+                    )}`}
                     className="
-                      block
-                      bg-white
-                      border border-gray-200
-                      rounded-xl
-                      p-5
-                      shadow-sm
-                      hover:border-yellow-500
-                      hover:shadow-md
+                      flex
+                      min-h-[90px]
+                      items-center
+                      justify-center
+                      rounded-2xl
+                      border
+                      border-[#c8b27a]
+                      bg-gradient-to-b
+                      from-[#f6f0dd]
+                      via-[#e6d4a3]
+                      to-[#c9ab63]
+                      px-3
+                      text-center
+                      font-semibold
+                      text-[#4b3415]
+                      shadow-md
                       transition
+                      hover:-translate-y-0.5
+                      hover:shadow-lg
                     "
                   >
-
-                    <h3 className="text-lg font-semibold text-gray-800 leading-7">
-                      {question}
-                    </h3>
-
-                    <span className="inline-block mt-2 text-sm text-yellow-700 font-semibold">
-                      Read Fatwa →
-                    </span>
-
+                    {categoryName}
                   </Link>
                 );
-
               })}
 
             </div>
-
           ) : (
-
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-10 text-center">
-
-              <p className="text-gray-500">
-                No English Fatwas found in this category.
-              </p>
-
+            <div className="rounded-xl border border-yellow-200 bg-white p-8 text-center text-gray-500">
+              No English categories available.
             </div>
-
           )}
 
         </section>
 
-      </section>
+        {/* =========================================
+            QUICK LINKS
+        ========================================= */}
+        <section className="mb-12">
 
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+
+            <Link
+              href="/en/fatawa"
+              className="
+                rounded-xl
+                bg-[#3b2f2f]
+                px-3
+                py-4
+                text-center
+                font-semibold
+                text-yellow-200
+                shadow-sm
+                transition
+                hover:bg-[#4a3a3a]
+                hover:shadow-md
+              "
+            >
+              Fatwas
+            </Link>
+
+            <Link
+              href="/en/articles"
+              className="
+                rounded-xl
+                bg-[#3b2f2f]
+                px-3
+                py-4
+                text-center
+                font-semibold
+                text-yellow-200
+                shadow-sm
+                transition
+                hover:bg-[#4a3a3a]
+                hover:shadow-md
+              "
+            >
+              Articles
+            </Link>
+
+            <Link
+              href="/en/categories"
+              className="
+                rounded-xl
+                bg-[#3b2f2f]
+                px-3
+                py-4
+                text-center
+                font-semibold
+                text-yellow-200
+                shadow-sm
+                transition
+                hover:bg-[#4a3a3a]
+                hover:shadow-md
+              "
+            >
+              Categories
+            </Link>
+
+            <Link
+              href="/ozan-shariah-calculator"
+              className="
+                rounded-xl
+                bg-[#3b2f2f]
+                px-3
+                py-4
+                text-center
+                font-semibold
+                text-yellow-200
+                shadow-sm
+                transition
+                hover:bg-[#4a3a3a]
+                hover:shadow-md
+              "
+            >
+              Islamic Calculator
+            </Link>
+
+          </div>
+        </section>
+
+        {/* =========================================
+            LATEST QUESTIONS
+        ========================================= */}
+        <section className="mb-12">
+
+          <div className="mb-5 flex items-center justify-between">
+
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-yellow-700">
+                Recent
+              </p>
+
+              <h2 className="mt-1 text-2xl font-bold text-[#4b3415] md:text-3xl">
+                Latest Questions
+              </h2>
+            </div>
+
+            <Link
+              href="/en/fatawa"
+              className="text-sm font-semibold text-yellow-700 transition hover:text-yellow-900"
+            >
+              View All →
+            </Link>
+
+          </div>
+
+          {questionsLoading ? (
+            <div className="rounded-xl border border-yellow-200 bg-white p-8 text-center text-gray-500">
+              Loading latest questions...
+            </div>
+          ) : filteredQuestions.length > 0 ? (
+
+            <div className="space-y-3">
+
+              {filteredQuestions.map((item) => (
+                <Link
+                  key={item._id}
+                  href={`/en/fatawa/${encodeURIComponent(
+                    item.slug
+                  )}`}
+                  className="
+                    group
+                    block
+                    rounded-xl
+                    border
+                    border-yellow-200
+                    bg-white
+                    p-5
+                    shadow-sm
+                    transition
+                    hover:-translate-y-0.5
+                    hover:border-yellow-500
+                    hover:shadow-md
+                  "
+                >
+                  <h3 className="text-base font-semibold leading-7 text-gray-800 transition group-hover:text-[#5a421c] md:text-lg">
+                    {item.question}
+                  </h3>
+
+                  <span className="mt-2 inline-block text-sm font-semibold text-yellow-700">
+                    Read Fatwa →
+                  </span>
+                </Link>
+              ))}
+
+            </div>
+
+          ) : (
+            <div className="rounded-xl border border-yellow-200 bg-white p-8 text-center">
+              <p className="text-gray-500">
+                {query
+                  ? `No English questions found for "${query}".`
+                  : "No English questions available."}
+              </p>
+            </div>
+          )}
+
+        </section>
+
+        {/* =========================================
+            ARTICLES
+        ========================================= */}
+        <section>
+
+          <div className="mb-5 flex items-center justify-between">
+
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-yellow-700">
+                Knowledge
+              </p>
+
+              <h2 className="mt-1 text-2xl font-bold text-[#4b3415] md:text-3xl">
+                Selected Articles
+              </h2>
+            </div>
+
+            <Link
+              href="/en/articles"
+              className="text-sm font-semibold text-yellow-700 transition hover:text-yellow-900"
+            >
+              View All →
+            </Link>
+
+          </div>
+
+          {articlesLoading ? (
+            <div className="rounded-xl border border-yellow-200 bg-white p-8 text-center text-gray-500">
+              Loading articles...
+            </div>
+          ) : filteredArticles.length > 0 ? (
+
+            <div className="space-y-3">
+
+              {filteredArticles.map((item) => (
+                <Link
+                  key={item._id}
+                  href={`/en/articles/${
+                    item.englishSlug ||
+                    item.slug ||
+                    item._id
+                  }`}
+                  className="
+                    group
+                    block
+                    rounded-xl
+                    border
+                    border-yellow-200
+                    bg-white
+                    p-5
+                    shadow-sm
+                    transition
+                    hover:-translate-y-0.5
+                    hover:border-yellow-500
+                    hover:shadow-md
+                  "
+                >
+                  <h3 className="font-semibold leading-7 text-gray-800 group-hover:text-[#5a421c]">
+                    {getEnglishArticleTitle(item)}
+                  </h3>
+
+                  <span className="mt-2 inline-block text-sm font-semibold text-yellow-700">
+                    Read Article →
+                  </span>
+                </Link>
+              ))}
+
+            </div>
+
+          ) : (
+            <div className="rounded-xl border border-yellow-200 bg-white p-8 text-center">
+              <p className="text-gray-500">
+                {query
+                  ? `No English articles found for "${query}".`
+                  : "No English articles available."}
+              </p>
+            </div>
+          )}
+
+        </section>
+
+      </div>
     </main>
   );
 }
-

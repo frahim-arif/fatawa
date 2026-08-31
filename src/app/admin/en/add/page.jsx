@@ -1,704 +1,285 @@
-
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { toast } from "react-hot-toast";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { Search } from "lucide-react";
 
-export default function EnglishQuestionAddPage() {
-  const router = useRouter();
+const backend = "https://f-backend-vdi1.onrender.com/api";
 
-  const backend = "https://f-backend-vdi1.onrender.com/api";
+export default function EnglishFatawaPage() {
+const [query, setQuery] = useState("");
+const [questions, setQuestions] = useState([]);
+const [loading, setLoading] = useState(true);
 
-  const [loading, setLoading] = useState(false);
-  const [categoriesLoading, setCategoriesLoading] = useState(true);
-  const [categories, setCategories] = useState([]);
+useEffect(() => {
+const fetchQuestions = async () => {
+try {
+setLoading(true);
 
-  const [formData, setFormData] = useState({
-    question: "",
-    answer: "",
-    hawala1: "",
-    hawala2: "",
-    hawala3: "",
-    slug: "",
-    metaTitle: "",
-    metaDescription: "",
-    keywords: "",
-    category: "",
-  });
 
-  // =====================================================
-  // GET ENGLISH CATEGORIES
-  // =====================================================
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        setCategoriesLoading(true);
-
-        const res = await axios.get(
-          `${backend}/en/categories`
-        );
-
-        if (res.data?.success) {
-          setCategories(res.data.data || []);
-        } else {
-          setCategories([]);
-
-          toast.error(
-            res.data?.message ||
-              "Failed to load English categories"
-          );
-        }
-      } catch (error) {
-        console.error(
-          "English category fetch error:",
-          error.response?.data || error.message
-        );
-
-        setCategories([]);
-
-        toast.error(
-          error.response?.data?.message ||
-            "Failed to load English categories"
-        );
-      } finally {
-        setCategoriesLoading(false);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  // =====================================================
-  // HANDLE INPUT
-  // =====================================================
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  // =====================================================
-  // GENERATE SLUG
-  // =====================================================
-
-  const generateSlug = (text) => {
-    return text
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "");
-  };
-
-  // =====================================================
-  // QUESTION CHANGE + AUTO SLUG
-  // =====================================================
-
-  const handleQuestionChange = (e) => {
-    const value = e.target.value;
-
-    setFormData((prev) => {
-      const oldGeneratedSlug = generateSlug(
-        prev.question
-      );
-
-      const shouldUpdateSlug =
-        prev.slug === "" ||
-        prev.slug === oldGeneratedSlug;
-
-      return {
-        ...prev,
-        question: value,
-        slug: shouldUpdateSlug
-          ? generateSlug(value)
-          : prev.slug,
-      };
+    const res = await fetch(`${backend}/en/questions?limit=50`, {
+      cache: "no-store",
     });
-  };
 
-  // =====================================================
-  // SUBMIT
-  // =====================================================
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!formData.question.trim()) {
-      toast.error("English question is required");
-      return;
+    if (!res.ok) {
+      throw new Error("Failed to fetch English questions");
     }
 
-    if (!formData.answer.trim()) {
-      toast.error("English answer is required");
-      return;
+    const data = await res.json();
+
+    if (data.success && Array.isArray(data.data)) {
+      setQuestions(data.data);
+    } else {
+      setQuestions([]);
     }
+  } catch (error) {
+    console.error("English questions fetch error:", error);
+    setQuestions([]);
+  } finally {
+    setLoading(false);
+  }
+};
 
-    if (!formData.category) {
-      toast.error("Please select a category");
-      return;
-    }
+fetchQuestions();
 
-    try {
-      setLoading(true);
 
-      const payload = {
-        question: formData.question.trim(),
+}, []);
 
-        answer: formData.answer.trim(),
+const filteredQuestions = questions.filter((item) => {
+const question = item?.question || "";
 
-        hawala1: formData.hawala1.trim(),
 
-        hawala2: formData.hawala2.trim(),
+return question
+  .toLowerCase()
+  .includes(query.toLowerCase());
 
-        hawala3: formData.hawala3.trim(),
+});
 
-        slug:
-          formData.slug.trim() ||
-          generateSlug(formData.question),
+return ( <main className="min-h-screen bg-[#f7f3e8]">
 
-        metaTitle:
-          formData.metaTitle.trim() ||
-          formData.question.trim(),
+  <section className="relative overflow-hidden py-12 px-4 bg-[#3b2f2f]">
+    <div className="absolute inset-0 bg-black/10" />
 
-        metaDescription:
-          formData.metaDescription.trim(),
+    <div className="relative max-w-6xl mx-auto text-center">
+      <h1 className="text-3xl md:text-5xl font-bold text-yellow-300">
+        Islamic Fatwas
+      </h1>
 
-        keywords: formData.keywords.trim(),
+      <p className="mt-3 text-yellow-100 text-base md:text-lg max-w-2xl mx-auto">
+        Answers to Islamic questions according to the
+        Quran, Sunnah and authentic Islamic scholarship.
+      </p>
+    </div>
+  </section>
 
-        category: formData.category,
-      };
+  <section className="max-w-6xl mx-auto px-3 sm:px-4 py-8 md:py-10">
 
-      const res = await axios.post(
-        `${backend}/en/questions`,
-        payload
-      );
+    <div className="mb-5 text-sm text-gray-500">
+      <Link
+        href="/en"
+        className="hover:text-yellow-700 transition"
+      >
+        Home
+      </Link>
 
-      if (res.data?.success) {
-        toast.success(
-          res.data.message ||
-            "English question added successfully"
-        );
+      <span className="mx-2">/</span>
 
-        setFormData({
-          question: "",
-          answer: "",
-          hawala1: "",
-          hawala2: "",
-          hawala3: "",
-          slug: "",
-          metaTitle: "",
-          metaDescription: "",
-          keywords: "",
-          category: "",
-        });
-      } else {
-        toast.error(
-          res.data?.message ||
-            "Something went wrong"
-        );
-      }
-    } catch (error) {
-      console.error(
-        "English question submit error:",
-        error.response?.data || error.message
-      );
+      <span className="text-gray-700">
+        Fatwas
+      </span>
+    </div>
 
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to add English question"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+    <div className="mb-8">
+      <div className="flex items-center bg-white border border-yellow-600 rounded-2xl shadow-md overflow-hidden">
 
-  return (
-    <div className="min-h-screen bg-gray-50 px-4 py-8 md:px-8">
-      <div className="mx-auto max-w-5xl">
-
-        {/* =====================================================
-            HEADER
-        ===================================================== */}
-
-        <div className="mb-6 rounded-xl border bg-white p-6 shadow-sm">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800">
-                Add English Question
-              </h1>
-
-              <p className="mt-1 text-sm text-gray-500">
-                Add English question, answer,
-                references, category and SEO details.
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onClick={() =>
-                router.push("/admin/en")
-              }
-              className="
-                rounded-lg
-                border
-                border-gray-300
-                px-4
-                py-2
-                text-sm
-                font-medium
-                text-gray-700
-                transition
-                hover:bg-gray-50
-              "
-            >
-              Back
-            </button>
-
-          </div>
+        <div className="px-3">
+          <Search className="w-5 h-5 text-yellow-600" />
         </div>
 
-        {/* =====================================================
-            FORM
-        ===================================================== */}
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search Islamic questions..."
+          className="
+            w-full
+            py-3.5
+            px-1
+            outline-none
+            text-gray-800
+            bg-transparent
+          "
+        />
 
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-6"
-        >
-
-          {/* =====================================================
-              ENGLISH CONTENT
-          ===================================================== */}
-
-          <div className="rounded-xl border bg-white p-6 shadow-sm">
-
-            <h2 className="mb-5 text-lg font-semibold text-gray-800">
-              English Content
-            </h2>
-
-            <div className="space-y-5">
-
-              {/* QUESTION */}
-
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-gray-700">
-                  English Question *
-                </label>
-
-                <textarea
-                  name="question"
-                  value={formData.question}
-                  onChange={handleQuestionChange}
-                  rows={4}
-                  placeholder="Enter English question"
-                  className="
-                    w-full
-                    rounded-lg
-                    border
-                    border-gray-300
-                    px-4
-                    py-3
-                    text-sm
-                    outline-none
-                    transition
-                    focus:border-green-600
-                    focus:ring-2
-                    focus:ring-green-100
-                  "
-                  required
-                />
-              </div>
-
-              {/* ANSWER */}
-
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-gray-700">
-                  English Answer *
-                </label>
-
-                <textarea
-                  name="answer"
-                  value={formData.answer}
-                  onChange={handleChange}
-                  rows={12}
-                  placeholder="Enter English answer"
-                  className="
-                    w-full
-                    rounded-lg
-                    border
-                    border-gray-300
-                    px-4
-                    py-3
-                    text-sm
-                    outline-none
-                    transition
-                    focus:border-green-600
-                    focus:ring-2
-                    focus:ring-green-100
-                  "
-                  required
-                />
-              </div>
-
-            </div>
-          </div>
-
-          {/* =====================================================
-              REFERENCES
-          ===================================================== */}
-
-          <div className="rounded-xl border bg-white p-6 shadow-sm">
-
-            <h2 className="mb-5 text-lg font-semibold text-gray-800">
-              Hawala / References
-            </h2>
-
-            <div className="space-y-5">
-
-              {/* HAWALA 1 */}
-
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-gray-700">
-                  Hawala 1
-                </label>
-
-                <textarea
-                  name="hawala1"
-                  value={formData.hawala1}
-                  onChange={handleChange}
-                  rows={3}
-                  placeholder="Enter first reference"
-                  className="
-                    w-full
-                    rounded-lg
-                    border
-                    border-gray-300
-                    px-4
-                    py-3
-                    text-sm
-                    outline-none
-                    focus:border-green-600
-                    focus:ring-2
-                    focus:ring-green-100
-                  "
-                />
-              </div>
-
-              {/* HAWALA 2 */}
-
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-gray-700">
-                  Hawala 2
-                </label>
-
-                <textarea
-                  name="hawala2"
-                  value={formData.hawala2}
-                  onChange={handleChange}
-                  rows={3}
-                  placeholder="Enter second reference"
-                  className="
-                    w-full
-                    rounded-lg
-                    border
-                    border-gray-300
-                    px-4
-                    py-3
-                    text-sm
-                    outline-none
-                    focus:border-green-600
-                    focus:ring-2
-                    focus:ring-green-100
-                  "
-                />
-              </div>
-
-              {/* HAWALA 3 */}
-
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-gray-700">
-                  Hawala 3
-                </label>
-
-                <textarea
-                  name="hawala3"
-                  value={formData.hawala3}
-                  onChange={handleChange}
-                  rows={3}
-                  placeholder="Enter third reference"
-                  className="
-                    w-full
-                    rounded-lg
-                    border
-                    border-gray-300
-                    px-4
-                    py-3
-                    text-sm
-                    outline-none
-                    focus:border-green-600
-                    focus:ring-2
-                    focus:ring-green-100
-                  "
-                />
-              </div>
-
-            </div>
-          </div>
-
-          {/* =====================================================
-              SEO
-          ===================================================== */}
-
-          <div className="rounded-xl border bg-white p-6 shadow-sm">
-
-            <h2 className="mb-5 text-lg font-semibold text-gray-800">
-              SEO Settings
-            </h2>
-
-            <div className="space-y-5">
-
-              {/* SLUG */}
-
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-gray-700">
-                  English Slug
-                </label>
-
-                <input
-                  type="text"
-                  name="slug"
-                  value={formData.slug}
-                  onChange={handleChange}
-                  placeholder="english-question-slug"
-                  className="
-                    w-full
-                    rounded-lg
-                    border
-                    border-gray-300
-                    px-4
-                    py-3
-                    text-sm
-                    outline-none
-                    focus:border-green-600
-                    focus:ring-2
-                    focus:ring-green-100
-                  "
-                />
-
-                <p className="mt-1 text-xs text-gray-400">
-                  Slug is automatically generated
-                  from the English question.
-                </p>
-              </div>
-
-              {/* META TITLE */}
-
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-gray-700">
-                  Meta Title
-                </label>
-
-                <input
-                  type="text"
-                  name="metaTitle"
-                  value={formData.metaTitle}
-                  onChange={handleChange}
-                  placeholder="Enter SEO meta title"
-                  className="
-                    w-full
-                    rounded-lg
-                    border
-                    border-gray-300
-                    px-4
-                    py-3
-                    text-sm
-                    outline-none
-                    focus:border-green-600
-                    focus:ring-2
-                    focus:ring-green-100
-                  "
-                />
-              </div>
-
-              {/* META DESCRIPTION */}
-
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-gray-700">
-                  Meta Description
-                </label>
-
-                <textarea
-                  name="metaDescription"
-                  value={formData.metaDescription}
-                  onChange={handleChange}
-                  rows={4}
-                  maxLength={160}
-                  placeholder="Enter SEO meta description"
-                  className="
-                    w-full
-                    rounded-lg
-                    border
-                    border-gray-300
-                    px-4
-                    py-3
-                    text-sm
-                    outline-none
-                    focus:border-green-600
-                    focus:ring-2
-                    focus:ring-green-100
-                  "
-                />
-
-                <p className="mt-1 text-xs text-gray-400">
-                  Recommended: 150–160 characters.
-                </p>
-              </div>
-
-              {/* KEYWORDS */}
-
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-gray-700">
-                  Keywords
-                </label>
-
-                <input
-                  type="text"
-                  name="keywords"
-                  value={formData.keywords}
-                  onChange={handleChange}
-                  placeholder="islam, namaz, roza, zakat"
-                  className="
-                    w-full
-                    rounded-lg
-                    border
-                    border-gray-300
-                    px-4
-                    py-3
-                    text-sm
-                    outline-none
-                    focus:border-green-600
-                    focus:ring-2
-                    focus:ring-green-100
-                  "
-                />
-
-                <p className="mt-1 text-xs text-gray-400">
-                  Separate keywords with commas.
-                </p>
-              </div>
-
-            </div>
-          </div>
-
-          {/* =====================================================
-              ENGLISH CATEGORY
-          ===================================================== */}
-
-          <div className="rounded-xl border bg-white p-6 shadow-sm">
-
-            <h2 className="mb-5 text-lg font-semibold text-gray-800">
-              English Category
-            </h2>
-
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              disabled={categoriesLoading}
-              className="
-                w-full
-                rounded-lg
-                border
-                border-gray-300
-                bg-white
-                px-4
-                py-3
-                text-sm
-                outline-none
-                transition
-                focus:border-green-600
-                focus:ring-2
-                focus:ring-green-100
-                disabled:cursor-not-allowed
-                disabled:bg-gray-100
-              "
-              required
-            >
-
-              <option value="">
-                {categoriesLoading
-                  ? "Loading English categories..."
-                  : "Select English Category"}
-              </option>
-
-              {!categoriesLoading &&
-                categories.map((cat) => (
-                  <option
-                    key={cat._id}
-                    value={cat._id}
-                  >
-                    {cat.name}
-                  </option>
-                ))}
-
-            </select>
-
-            {!categoriesLoading &&
-              categories.length === 0 && (
-                <p className="mt-2 text-sm text-red-500">
-                  No English categories found.
-                </p>
-              )}
-
-          </div>
-
-          {/* =====================================================
-              SUBMIT
-          ===================================================== */}
-
-          <div className="flex justify-end rounded-xl border bg-white p-6 shadow-sm">
-
-            <button
-              type="submit"
-              disabled={
-                loading ||
-                categoriesLoading ||
-                categories.length === 0
-              }
-              className="
-                min-w-[200px]
-                rounded-lg
-                bg-green-600
-                px-6
-                py-3
-                text-sm
-                font-semibold
-                text-white
-                transition
-                hover:bg-green-700
-                disabled:cursor-not-allowed
-                disabled:opacity-60
-              "
-            >
-              {loading
-                ? "Adding..."
-                : "Add English Question"}
-            </button>
-
-          </div>
-
-        </form>
+        {query && (
+          <button
+            type="button"
+            onClick={() => setQuery("")}
+            className="
+              px-4
+              text-sm
+              text-gray-500
+              hover:text-gray-800
+            "
+          >
+            Clear
+          </button>
+        )}
       </div>
     </div>
-  );
-}
 
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-5">
+
+      <div>
+        <h2 className="text-2xl md:text-3xl font-bold text-[#4b3415]">
+          Latest Fatwas
+        </h2>
+
+        <p className="mt-1 text-sm text-gray-500">
+          Browse our latest Islamic questions and answers.
+        </p>
+      </div>
+
+      {!loading && (
+        <span className="text-sm text-gray-500">
+          {filteredQuestions.length} Results
+        </span>
+      )}
+    </div>
+
+    {loading && (
+      <div className="space-y-3">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div
+            key={index}
+            className="
+              bg-white
+              border
+              border-gray-200
+              rounded-xl
+              p-5
+              animate-pulse
+            "
+          >
+            <div className="h-5 bg-gray-200 rounded w-11/12" />
+            <div className="h-4 bg-gray-100 rounded w-28 mt-4" />
+          </div>
+        ))}
+      </div>
+    )}
+
+    {!loading && filteredQuestions.length > 0 && (
+      <div className="space-y-3">
+        {filteredQuestions.map((item) => {
+          const question = item?.question || "";
+          const slug = item?.slug || item?._id;
+
+          if (!question || !slug) {
+            return null;
+          }
+
+          return (
+            <Link
+              key={item._id}
+              href={`/en/fatawa/${encodeURIComponent(slug)}`}
+              className="
+                group
+                block
+                bg-white
+                border
+                border-yellow-200
+                rounded-xl
+                p-5
+                shadow-sm
+                hover:border-yellow-500
+                hover:shadow-md
+                hover:-translate-y-[1px]
+                transition-all
+                duration-200
+              "
+            >
+              <h3
+                className="
+                  text-gray-800
+                  font-semibold
+                  text-base
+                  md:text-lg
+                  leading-7
+                  group-hover:text-[#5b431b]
+                "
+              >
+                {question}
+              </h3>
+
+              <span
+                className="
+                  inline-block
+                  mt-2
+                  text-sm
+                  text-yellow-700
+                  font-semibold
+                "
+              >
+                Read Fatwa →
+              </span>
+            </Link>
+          );
+        })}
+      </div>
+    )}
+
+    {!loading && filteredQuestions.length === 0 && (
+      <div
+        className="
+          bg-white
+          rounded-2xl
+          p-10
+          md:p-14
+          text-center
+          shadow-sm
+          border
+          border-gray-200
+        "
+      >
+        <div className="text-4xl mb-4">
+          📚
+        </div>
+
+        <h3 className="text-xl font-semibold text-gray-700">
+          No English Fatwas Found
+        </h3>
+
+        <p className="mt-2 text-gray-500">
+          {query
+            ? `No fatwas match "${query}".`
+            : "No English fatwas are available yet."
+          }
+        </p>
+
+        {query && (
+          <button
+            type="button"
+            onClick={() => setQuery("")}
+            className="
+              mt-5
+              rounded-lg
+              bg-[#3b2f2f]
+              px-5
+              py-2.5
+              text-sm
+              font-semibold
+              text-yellow-200
+              hover:bg-[#4a3a3a]
+              transition
+            "
+          >
+            Show All Fatwas
+          </button>
+        )}
+      </div>
+    )}
+  </section>
+</main>
+
+);
+}

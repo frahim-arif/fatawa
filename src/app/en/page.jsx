@@ -15,17 +15,17 @@ export default function EnglishHomePage() {
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
   // =========================================
-  // FETCH CATEGORIES
+  // FETCH ENGLISH CATEGORIES
   // =========================================
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch(`${backend}/categories`, {
+        const res = await fetch(`${backend}/en/categories`, {
           cache: "no-store",
         });
 
         if (!res.ok) {
-          throw new Error("Failed to fetch categories");
+          throw new Error("Failed to fetch English categories");
         }
 
         const data = await res.json();
@@ -36,7 +36,11 @@ export default function EnglishHomePage() {
           setCategories([]);
         }
       } catch (error) {
-        console.error("Categories fetch error:", error);
+        console.error(
+          "English categories fetch error:",
+          error
+        );
+
         setCategories([]);
       }
     };
@@ -45,20 +49,22 @@ export default function EnglishHomePage() {
   }, []);
 
   // =========================================
-  // FETCH LATEST QUESTIONS
+  // FETCH LATEST ENGLISH QUESTIONS
   // =========================================
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
         const res = await fetch(
-          `${backend}/admin/questions?limit=5`,
+          `${backend}/en/questions?limit=5`,
           {
             cache: "no-store",
           }
         );
 
         if (!res.ok) {
-          throw new Error("Failed to fetch questions");
+          throw new Error(
+            "Failed to fetch English questions"
+          );
         }
 
         const data = await res.json();
@@ -69,7 +75,11 @@ export default function EnglishHomePage() {
           setLatestQuestions([]);
         }
       } catch (error) {
-        console.error("Questions fetch error:", error);
+        console.error(
+          "English questions fetch error:",
+          error
+        );
+
         setLatestQuestions([]);
       }
     };
@@ -99,7 +109,11 @@ export default function EnglishHomePage() {
           setMajameen([]);
         }
       } catch (error) {
-        console.error("Articles fetch error:", error);
+        console.error(
+          "Articles fetch error:",
+          error
+        );
+
         setMajameen([]);
       }
     };
@@ -123,7 +137,10 @@ export default function EnglishHomePage() {
           setPrayerTimes(data.data.timings);
         }
       } catch (error) {
-        console.error("Prayer time error:", error);
+        console.error(
+          "Prayer time error:",
+          error
+        );
       }
     };
 
@@ -139,7 +156,9 @@ export default function EnglishHomePage() {
       window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      alert("Voice search is not supported in this browser.");
+      alert(
+        "Voice search is not supported in this browser."
+      );
       return;
     }
 
@@ -148,7 +167,9 @@ export default function EnglishHomePage() {
     recognition.lang = "en-US";
 
     recognition.onresult = (event) => {
-      setQuery(event.results[0][0].transcript);
+      setQuery(
+        event.results[0][0].transcript
+      );
     };
 
     recognition.start();
@@ -158,36 +179,21 @@ export default function EnglishHomePage() {
   // ENGLISH QUESTION
   // =========================================
   const getEnglishQuestion = (item) => {
-    return (
-      item?.englishQuestion ||
-      item?.enQuestion ||
-      item?.questionEn ||
-      ""
-    );
+    return item?.question || "";
   };
 
   // =========================================
   // ENGLISH CATEGORY
   // =========================================
   const getEnglishCategory = (item) => {
-    return (
-      item?.englishName ||
-      item?.enName ||
-      item?.nameEn ||
-      ""
-    );
+    return item?.name || "";
   };
 
   // =========================================
   // ENGLISH CATEGORY SLUG
   // =========================================
   const getEnglishCategorySlug = (item) => {
-    return (
-      item?.englishSlug ||
-      item?.enSlug ||
-      item?.slugEn ||
-      ""
-    );
+    return item?.slug || "";
   };
 
   // =========================================
@@ -205,38 +211,48 @@ export default function EnglishHomePage() {
   // =========================================
   // FILTER ENGLISH CATEGORIES
   // =========================================
-  const englishCategories = categories.filter((cat) => {
-    const name = getEnglishCategory(cat);
-    const slug = getEnglishCategorySlug(cat);
+  const englishCategories = categories.filter(
+    (cat) => {
+      const name = getEnglishCategory(cat);
+      const slug = getEnglishCategorySlug(cat);
 
-    return Boolean(name && slug);
-  });
+      return Boolean(name && slug);
+    }
+  );
 
   // =========================================
   // FILTER ENGLISH QUESTIONS
   // =========================================
-  const filteredQuestions = latestQuestions.filter((item) => {
-    const question = getEnglishQuestion(item);
+  const filteredQuestions =
+    latestQuestions.filter((item) => {
+      const question =
+        getEnglishQuestion(item);
 
-    if (!question) return false;
+      if (!question) {
+        return false;
+      }
 
-    return question
-      .toLowerCase()
-      .includes(query.toLowerCase());
-  });
+      return question
+        .toLowerCase()
+        .includes(query.toLowerCase());
+    });
 
   // =========================================
   // FILTER ENGLISH ARTICLES
   // =========================================
-  const filteredArticles = majameen.filter((item) => {
-    const title = getEnglishArticleTitle(item);
+  const filteredArticles =
+    majameen.filter((item) => {
+      const title =
+        getEnglishArticleTitle(item);
 
-    if (!title) return false;
+      if (!title) {
+        return false;
+      }
 
-    return title
-      .toLowerCase()
-      .includes(query.toLowerCase());
-  });
+      return title
+        .toLowerCase()
+        .includes(query.toLowerCase());
+    });
 
   return (
     <main className="min-h-screen bg-[#f7f3e8]">
@@ -244,6 +260,7 @@ export default function EnglishHomePage() {
       {/* =========================================
           HERO
       ========================================= */}
+
       <section
         className="relative overflow-hidden py-10 px-4"
         style={{
@@ -256,6 +273,7 @@ export default function EnglishHomePage() {
         <div className="absolute inset-0 bg-black/55" />
 
         <div className="relative max-w-6xl mx-auto text-center">
+
           <h1 className="text-3xl md:text-5xl font-bold text-yellow-300">
             Islamic Questions & Answers
           </h1>
@@ -263,13 +281,16 @@ export default function EnglishHomePage() {
           <p className="mt-3 text-yellow-100 text-base md:text-lg">
             Islamic knowledge based on the Quran and Sunnah
           </p>
+
         </div>
       </section>
 
       {/* =========================================
           PRAYER TIMES
       ========================================= */}
+
       <div className="bg-black border-b-2 border-[#75593f]">
+
         <div className="max-w-6xl mx-auto py-2 px-3 text-center text-yellow-400 text-sm md:text-base">
 
           {prayerTimes ? (
@@ -297,6 +318,7 @@ export default function EnglishHomePage() {
           )}
 
         </div>
+
       </div>
 
       <div className="max-w-6xl mx-auto px-3 py-8">
@@ -304,6 +326,7 @@ export default function EnglishHomePage() {
         {/* =========================================
             SEARCH
         ========================================= */}
+
         <div className="relative mb-8">
 
           <div className="flex items-center bg-white border border-yellow-600 rounded-2xl shadow-md overflow-hidden">
@@ -315,7 +338,9 @@ export default function EnglishHomePage() {
             <input
               type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) =>
+                setQuery(e.target.value)
+              }
               placeholder="Search Islamic questions..."
               className="
                 w-full
@@ -340,8 +365,9 @@ export default function EnglishHomePage() {
         </div>
 
         {/* =========================================
-            CATEGORIES
+            ENGLISH CATEGORIES
         ========================================= */}
+
         <section className="mb-10">
 
           <div className="flex justify-between items-center mb-4">
@@ -417,6 +443,7 @@ export default function EnglishHomePage() {
         {/* =========================================
             QUICK LINKS
         ========================================= */}
+
         <section className="mb-10">
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -486,8 +513,9 @@ export default function EnglishHomePage() {
         </section>
 
         {/* =========================================
-            LATEST QUESTIONS
+            LATEST ENGLISH QUESTIONS
         ========================================= */}
+
         <section className="mb-10">
 
           <div className="flex justify-between items-center mb-4">
@@ -513,9 +541,7 @@ export default function EnglishHomePage() {
 
                 <Link
                   key={item._id}
-                  href={`/en/fatawa/${
-                    item.englishSlug || item.slug
-                  }`}
+                  href={`/en/fatawa/${item.slug}`}
                   className="
                     block
                     bg-white
@@ -552,6 +578,7 @@ export default function EnglishHomePage() {
         {/* =========================================
             LATEST ARTICLES
         ========================================= */}
+
         <section>
 
           <div className="flex justify-between items-center mb-4">
@@ -612,6 +639,7 @@ export default function EnglishHomePage() {
         </section>
 
       </div>
+
     </main>
   );
 }

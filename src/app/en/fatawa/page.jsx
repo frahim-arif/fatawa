@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -13,29 +12,38 @@ export default function EnglishFatawaPage() {
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
   // =========================================
-  // GET QUESTIONS
+  // GET ENGLISH QUESTIONS
   // =========================================
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
+        setLoading(true);
+
         const res = await fetch(
-          `${backend}/questions?limit=50`,
+          `${backend}/en/questions?limit=50`,
           {
             cache: "no-store",
           }
         );
 
         if (!res.ok) {
-          throw new Error("Failed to fetch questions");
+          throw new Error("Failed to fetch English questions");
         }
 
         const data = await res.json();
 
-        if (data.success) {
-          setQuestions(data.data || []);
+        if (data.success && Array.isArray(data.data)) {
+          setQuestions(data.data);
+        } else {
+          setQuestions([]);
         }
       } catch (error) {
-        console.error("Questions fetch error:", error);
+        console.error(
+          "English questions fetch error:",
+          error
+        );
+
+        setQuestions([]);
       } finally {
         setLoading(false);
       }
@@ -45,19 +53,14 @@ export default function EnglishFatawaPage() {
   }, []);
 
   // =========================================
-  // ENGLISH QUESTION ONLY
+  // ENGLISH QUESTION
   // =========================================
   const getEnglishQuestion = (item) => {
-    return (
-      item.englishQuestion ||
-      item.enQuestion ||
-      item.questionEn ||
-      ""
-    );
+    return item?.question || "";
   };
 
   // =========================================
-  // FILTER ONLY ENGLISH QUESTIONS
+  // FILTER QUESTIONS
   // =========================================
   const filteredQuestions = questions.filter((item) => {
     const question = getEnglishQuestion(item);
@@ -151,7 +154,9 @@ export default function EnglishFatawaPage() {
 
           </div>
 
+          {/* ================================= */}
           {/* LOADING */}
+          {/* ================================= */}
 
           {loading ? (
 
@@ -165,14 +170,13 @@ export default function EnglishFatawaPage() {
 
               {filteredQuestions.map((item) => {
 
-                const question = getEnglishQuestion(item);
+                const question =
+                  getEnglishQuestion(item);
 
                 return (
                   <Link
                     key={item._id}
-                    href={`/en/fatawa/${
-                      item.englishSlug || item.slug
-                    }`}
+                    href={`/en/fatawa/${item.slug}`}
                     className="
                       block
                       bg-white
@@ -220,4 +224,3 @@ export default function EnglishFatawaPage() {
     </main>
   );
 }
-

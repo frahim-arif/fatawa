@@ -11,9 +11,7 @@ async function getFatwa(slug) {
     const res = await fetch(
       `${backend}/en/questions/slug/${encodeURIComponent(slug)}`,
       {
-        next: {
-          revalidate: 60,
-        },
+        cache: "no-store",
       }
     );
 
@@ -63,21 +61,21 @@ export async function generateMetadata({ params }) {
   }
 
   const title =
-    item.englishMetaTitle ||
-    item.englishQuestion ||
+    item.metaTitle ||
+    item.question ||
     "Islamic Fatwa | Maslak-e-Deoband";
 
   const description =
-    item.englishMetaDescription ||
-    cleanHtml(item.englishAnswer || "").slice(0, 155) ||
+    item.metaDescription ||
+    cleanHtml(item.answer || "").slice(0, 155) ||
     "Read authentic Islamic Fatwas according to the Quran and Sunnah.";
 
   return {
     title,
-
     description,
-
-    keywords: item.englishKeywords || [],
+    keywords: Array.isArray(item.keywords)
+      ? item.keywords
+      : [],
 
     alternates: {
       canonical: `https://www.maslakedeoband.in/en/fatawa/${slug}`,
@@ -110,7 +108,6 @@ export default async function EnglishFatwaDetailPage({
     return (
       <main className="min-h-screen bg-[#faf9f6]">
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-10">
 
             <h1 className="text-2xl font-bold text-gray-800">
@@ -140,23 +137,21 @@ export default async function EnglishFatwaDetailPage({
             </Link>
 
           </div>
-
         </div>
       </main>
     );
   }
 
-  const question =
-    item.englishQuestion ||
-    item.enQuestion ||
-    item.questionEn ||
-    "";
+  // =========================================
+  // ACTUAL BACKEND FIELD NAMES
+  // =========================================
+  const question = item.question || "";
 
-  const answer =
-    item.englishAnswer ||
-    item.enAnswer ||
-    item.answerEn ||
-    "";
+  const answer = item.answer || "";
+
+  const hawala1 = item.hawala1 || "";
+  const hawala2 = item.hawala2 || "";
+  const hawala3 = item.hawala3 || "";
 
   return (
     <main className="min-h-screen bg-[#faf9f6]">
@@ -241,10 +236,7 @@ export default async function EnglishFatwaDetailPage({
 
           {/* REFERENCES */}
 
-          {(item.englishHawala1 ||
-            item.englishHawala2 ||
-            item.englishHawala3) && (
-
+          {(hawala1 || hawala2 || hawala3) && (
             <div className="mt-10 border-t border-gray-200 pt-8">
 
               <h2 className="text-xl md:text-2xl font-bold text-[#3b2f2f]">
@@ -253,16 +245,16 @@ export default async function EnglishFatwaDetailPage({
 
               <div className="mt-5 space-y-3 text-gray-600 leading-7">
 
-                {item.englishHawala1 && (
-                  <p>{item.englishHawala1}</p>
+                {hawala1 && (
+                  <p>{hawala1}</p>
                 )}
 
-                {item.englishHawala2 && (
-                  <p>{item.englishHawala2}</p>
+                {hawala2 && (
+                  <p>{hawala2}</p>
                 )}
 
-                {item.englishHawala3 && (
-                  <p>{item.englishHawala3}</p>
+                {hawala3 && (
+                  <p>{hawala3}</p>
                 )}
 
               </div>
@@ -277,4 +269,3 @@ export default async function EnglishFatwaDetailPage({
     </main>
   );
 }
-
