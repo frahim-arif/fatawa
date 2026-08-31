@@ -16,7 +16,6 @@ async function getArticle(slug) {
         },
       }
     );
-
     if (!res.ok) {
       return null;
     }
