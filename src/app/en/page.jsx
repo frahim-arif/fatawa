@@ -14,7 +14,9 @@ export default function EnglishHomePage() {
 
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
+  // ================================
   // Categories
+  // ================================
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -25,14 +27,16 @@ export default function EnglishHomePage() {
           setCategories(data.data);
         }
       } catch (error) {
-        console.error(error);
+        console.error("Categories fetch error:", error);
       }
     };
 
     fetchCategories();
   }, []);
 
+  // ================================
   // Latest Questions
+  // ================================
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
@@ -46,26 +50,36 @@ export default function EnglishHomePage() {
           setLatestQuestions(data.data);
         }
       } catch (error) {
-        console.error(error);
+        console.error("Questions fetch error:", error);
       }
     };
 
     fetchQuestions();
   }, []);
 
+  // ================================
   // Articles
+  // ================================
   useEffect(() => {
-    fetch(`${backend}/majameen`)
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchArticles = async () => {
+      try {
+        const res = await fetch(`${backend}/majameen`);
+        const data = await res.json();
+
         if (data.success) {
           setMajameen(data.data.slice(0, 5));
         }
-      })
-      .catch((error) => console.error(error));
+      } catch (error) {
+        console.error("Articles fetch error:", error);
+      }
+    };
+
+    fetchArticles();
   }, []);
 
-  // Prayer Time
+  // ================================
+  // Prayer Times
+  // ================================
   useEffect(() => {
     const fetchPrayerTimes = async () => {
       try {
@@ -79,27 +93,29 @@ export default function EnglishHomePage() {
           setPrayerTimes(data.data.timings);
         }
       } catch (error) {
-        console.error(error);
+        console.error("Prayer time error:", error);
       }
     };
 
     fetchPrayerTimes();
   }, []);
 
+  // ================================
   // Voice Search
+  // ================================
   const startListening = () => {
     const SpeechRecognition =
       window.SpeechRecognition ||
       window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      alert("Voice search is not supported in this browser");
+      alert("Voice search is not supported in this browser.");
       return;
     }
 
     const recognition = new SpeechRecognition();
 
-    recognition.lang = "en-IN";
+    recognition.lang = "en-US";
 
     recognition.onresult = (event) => {
       setQuery(event.results[0][0].transcript);
@@ -108,43 +124,76 @@ export default function EnglishHomePage() {
     recognition.start();
   };
 
+  // ================================
+  // English Question ONLY
+  // ================================
   const getEnglishQuestion = (item) => {
     return (
       item.englishQuestion ||
       item.enQuestion ||
       item.questionEn ||
-      item.question
+      ""
     );
   };
 
+  // ================================
+  // English Category ONLY
+  // ================================
   const getEnglishCategory = (item) => {
     return (
       item.englishName ||
       item.enName ||
       item.nameEn ||
-      item.name
+      ""
     );
   };
 
+  // ================================
+  // English Article Title ONLY
+  // ================================
   const getEnglishArticleTitle = (item) => {
     return (
       item.englishTitle ||
       item.enTitle ||
       item.titleEn ||
-      item.title
+      ""
     );
   };
 
-  const filteredQuestions = latestQuestions.filter((item) =>
-    getEnglishQuestion(item)
-      ?.toLowerCase()
-      .includes(query.toLowerCase())
-  );
+  // ================================
+  // Filter English Questions
+  // ================================
+  const filteredQuestions = latestQuestions.filter((item) => {
+    const question = getEnglishQuestion(item);
+
+    // English question nahi hai to show nahi hoga
+    if (!question) return false;
+
+    return question
+      .toLowerCase()
+      .includes(query.toLowerCase());
+  });
+
+  // ================================
+  // Filter English Articles
+  // ================================
+  const filteredArticles = majameen.filter((item) => {
+    const title = getEnglishArticleTitle(item);
+
+    // English title nahi hai to show nahi hoga
+    if (!title) return false;
+
+    return title
+      .toLowerCase()
+      .includes(query.toLowerCase());
+  });
 
   return (
     <main className="min-h-screen bg-[#f7f3e8]">
 
-      {/* HERO */}
+      {/* =================================
+          HERO
+      ================================= */}
       <section
         className="relative overflow-hidden py-10 px-4"
         style={{
@@ -163,28 +212,35 @@ export default function EnglishHomePage() {
           </h1>
 
           <p className="mt-3 text-yellow-100 text-base md:text-lg">
-            Islamic Knowledge in the Light of the Quran & Sunnah
+            Islamic knowledge based on the Quran and Sunnah
           </p>
 
         </div>
       </section>
 
-      {/* PRAYER TIMES */}
+      {/* =================================
+          PRAYER TIMES
+      ================================= */}
       <div className="bg-black border-b-2 border-[#75593f]">
+
         <div className="max-w-6xl mx-auto py-2 px-3 text-center text-yellow-400 text-sm md:text-base">
 
           {prayerTimes ? (
             <>
               Fajr: {prayerTimes.Fajr.split(" ")[0]}
+
               <span className="mx-3">|</span>
 
               Dhuhr: {prayerTimes.Dhuhr.split(" ")[0]}
+
               <span className="mx-3">|</span>
 
               Asr: {prayerTimes.Asr.split(" ")[0]}
+
               <span className="mx-3">|</span>
 
               Maghrib: {prayerTimes.Maghrib.split(" ")[0]}
+
               <span className="mx-3">|</span>
 
               Isha: {prayerTimes.Isha.split(" ")[0]}
@@ -198,7 +254,9 @@ export default function EnglishHomePage() {
 
       <div className="max-w-6xl mx-auto px-3 py-8">
 
-        {/* SEARCH */}
+        {/* =================================
+            SEARCH
+        ================================= */}
         <div className="relative mb-8">
 
           <div className="flex items-center bg-white border border-yellow-600 rounded-2xl shadow-md overflow-hidden">
@@ -211,7 +269,7 @@ export default function EnglishHomePage() {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search questions..."
+              placeholder="Search Islamic questions..."
               className="
                 w-full
                 py-3
@@ -224,6 +282,8 @@ export default function EnglishHomePage() {
             <button
               onClick={startListening}
               className="px-4"
+              type="button"
+              aria-label="Voice Search"
             >
               <Mic className="w-5 h-5 text-yellow-600" />
             </button>
@@ -232,7 +292,9 @@ export default function EnglishHomePage() {
 
         </div>
 
-        {/* CATEGORIES */}
+        {/* =================================
+            CATEGORIES
+        ================================= */}
         <section className="mb-10">
 
           <div className="flex justify-between items-center mb-4">
@@ -252,68 +314,105 @@ export default function EnglishHomePage() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
 
-            {categories.slice(0, 8).map((cat) => (
+            {categories
+              .filter((cat) => getEnglishCategory(cat))
+              .slice(0, 8)
+              .map((cat) => (
 
-              <Link
-                key={cat._id}
-                href={`/en/categories/${encodeURIComponent(
-                  cat.slug || cat.name
-                )}`}
-                className="
-                  flex items-center justify-center
-                  min-h-[80px]
-                  rounded-2xl
-                  border border-[#c8b27a]
-                  bg-gradient-to-b
-                  from-[#f6f0dd]
-                  via-[#e6d4a3]
-                  to-[#c9ab63]
-                  text-[#4b3415]
-                  text-center
-                  font-semibold
-                  shadow-md
-                  hover:scale-[1.02]
-                  transition
-                "
-              >
-                {getEnglishCategory(cat)}
-              </Link>
+                <Link
+                  key={cat._id}
+                  href={`/en/categories/${encodeURIComponent(
+                    cat.slug || cat.name
+                  )}`}
+                  className="
+                    flex items-center justify-center
+                    min-h-[80px]
+                    rounded-2xl
+                    border border-[#c8b27a]
+                    bg-gradient-to-b
+                    from-[#f6f0dd]
+                    via-[#e6d4a3]
+                    to-[#c9ab63]
+                    text-[#4b3415]
+                    text-center
+                    font-semibold
+                    shadow-md
+                    hover:scale-[1.02]
+                    transition
+                  "
+                >
+                  {getEnglishCategory(cat)}
+                </Link>
 
-            ))}
+              ))}
 
           </div>
 
         </section>
 
-        {/* QUICK LINKS */}
+        {/* =================================
+            QUICK LINKS
+        ================================= */}
         <section className="mb-10">
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
 
             <Link
               href="/en/fatawa"
-              className="rounded-xl bg-[#3b2f2f] text-yellow-200 text-center py-4 font-semibold hover:bg-[#4a3a3a]"
+              className="
+                rounded-xl
+                bg-[#3b2f2f]
+                text-yellow-200
+                text-center
+                py-4
+                font-semibold
+                hover:bg-[#4a3a3a]
+              "
             >
               Fatwas
             </Link>
 
             <Link
               href="/en/articles"
-              className="rounded-xl bg-[#3b2f2f] text-yellow-200 text-center py-4 font-semibold hover:bg-[#4a3a3a]"
+              className="
+                rounded-xl
+                bg-[#3b2f2f]
+                text-yellow-200
+                text-center
+                py-4
+                font-semibold
+                hover:bg-[#4a3a3a]
+              "
             >
               Articles
             </Link>
 
             <Link
               href="/en/categories"
-              className="rounded-xl bg-[#3b2f2f] text-yellow-200 text-center py-4 font-semibold hover:bg-[#4a3a3a]"
+              className="
+                rounded-xl
+                bg-[#3b2f2f]
+                text-yellow-200
+                text-center
+                py-4
+                font-semibold
+                hover:bg-[#4a3a3a]
+              "
             >
               Categories
             </Link>
 
             <Link
               href="/ozan-shariah-calculator"
-              className="rounded-xl bg-[#3b2f2f] text-yellow-200 text-center py-4 font-semibold hover:bg-[#4a3a3a]"
+              className="
+                rounded-xl
+                bg-[#3b2f2f]
+                text-yellow-200
+                text-center
+                py-4
+                font-semibold
+                hover:bg-[#4a3a3a]
+              "
             >
               Islamic Calculator
             </Link>
@@ -322,7 +421,9 @@ export default function EnglishHomePage() {
 
         </section>
 
-        {/* LATEST QUESTIONS */}
+        {/* =================================
+            LATEST QUESTIONS
+        ================================= */}
         <section className="mb-10">
 
           <div className="flex justify-between items-center mb-4">
@@ -361,17 +462,19 @@ export default function EnglishHomePage() {
                     transition
                   "
                 >
+
                   <h3 className="text-gray-800 font-semibold">
                     {getEnglishQuestion(item)}
                   </h3>
+
                 </Link>
 
               ))
 
             ) : (
 
-              <p className="text-center text-gray-500">
-                No questions found.
+              <p className="text-center text-gray-500 py-5">
+                No English questions found.
               </p>
 
             )}
@@ -380,13 +483,15 @@ export default function EnglishHomePage() {
 
         </section>
 
-        {/* LATEST ARTICLES */}
+        {/* =================================
+            LATEST ARTICLES
+        ================================= */}
         <section>
 
           <div className="flex justify-between items-center mb-4">
 
             <h2 className="text-2xl font-bold text-[#4b3415]">
-              Featured Articles
+              Selected Articles
             </h2>
 
             <Link
@@ -400,28 +505,39 @@ export default function EnglishHomePage() {
 
           <div className="space-y-3">
 
-            {majameen.map((item) => (
+            {filteredArticles.length > 0 ? (
 
-              <Link
-                key={item._id}
-                href={`/en/articles/${
-                  item.slug || item._id
-                }`}
-                className="
-                  block
-                  bg-white
-                  border border-yellow-200
-                  rounded-xl
-                  p-4
-                  shadow-sm
-                  hover:border-yellow-500
-                  transition
-                "
-              >
-                {getEnglishArticleTitle(item)}
-              </Link>
+              filteredArticles.map((item) => (
 
-            ))}
+                <Link
+                  key={item._id}
+                  href={`/en/articles/${
+                    item.slug || item._id
+                  }`}
+                  className="
+                    block
+                    bg-white
+                    border border-yellow-200
+                    rounded-xl
+                    p-4
+                    shadow-sm
+                    hover:border-yellow-500
+                    hover:shadow-md
+                    transition
+                  "
+                >
+                  {getEnglishArticleTitle(item)}
+                </Link>
+
+              ))
+
+            ) : (
+
+              <p className="text-center text-gray-500 py-5">
+                No English articles found.
+              </p>
+
+            )}
 
           </div>
 
