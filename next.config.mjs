@@ -1,16 +1,12 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {};
-
-// export default nextConfig;
-
-
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   reactStrictMode: false,
+
   async redirects() {
     return [
       {
-        source: "/:year/:month/:slug",
+        source: "/:year(\\d{4})/:month(\\d{2})/:slug",
         destination: "/questions/:slug",
         permanent: true,
       },
