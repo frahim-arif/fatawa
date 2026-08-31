@@ -295,60 +295,39 @@ export default function EnglishHomePage() {
         {/* =================================
             CATEGORIES
         ================================= */}
-        <section className="mb-10">
+      const englishCategoryNames = {
+  "جدید مسائل": "New Issues",
+  "نماز": "Prayer",
+  "حج": "Hajj",
+  "زکوٰۃ": "Zakat",
+  "عقیقہ": "Aqiqah",
+  "طہارت": "Purification",
+  "رمضان": "Ramadan",
+  "قربانی": "Qurbani",
+  "نکاح": "Marriage",
+  "بیوع": "Business & Trade",
+};
 
-          <div className="flex justify-between items-center mb-4">
+// ================================
+// English Category
+// ================================
+const getEnglishCategory = (item) => {
+  // Agar backend mein English name already hai
+  if (item.englishName) {
+    return item.englishName;
+  }
 
-            <h2 className="text-2xl font-bold text-[#4b3415]">
-              Categories
-            </h2>
+  if (item.enName) {
+    return item.enName;
+  }
 
-            <Link
-              href="/en/categories"
-              className="text-yellow-700 font-semibold"
-            >
-              View All →
-            </Link>
+  if (item.nameEn) {
+    return item.nameEn;
+  }
 
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-
-            {categories
-              .filter((cat) => getEnglishCategory(cat))
-              .slice(0, 8)
-              .map((cat) => (
-
-                <Link
-                  key={cat._id}
-                  href={`/en/categories/${encodeURIComponent(
-                    cat.slug || cat.name
-                  )}`}
-                  className="
-                    flex items-center justify-center
-                    min-h-[80px]
-                    rounded-2xl
-                    border border-[#c8b27a]
-                    bg-gradient-to-b
-                    from-[#f6f0dd]
-                    via-[#e6d4a3]
-                    to-[#c9ab63]
-                    text-[#4b3415]
-                    text-center
-                    font-semibold
-                    shadow-md
-                    hover:scale-[1.02]
-                    transition
-                  "
-                >
-                  {getEnglishCategory(cat)}
-                </Link>
-
-              ))}
-
-          </div>
-
-        </section>
+  // Existing Urdu category ka English name
+  return englishCategoryNames[item.name] || "";
+};
 
         {/* =================================
             QUICK LINKS
