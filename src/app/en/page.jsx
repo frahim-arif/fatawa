@@ -368,77 +368,84 @@ export default function EnglishHomePage() {
             ENGLISH CATEGORIES
         ========================================= */}
 
-        <section className="mb-10">
+        
+<section className="mb-10">
 
-          <div className="flex justify-between items-center mb-4">
+  <div className="flex justify-between items-center mb-4">
 
-            <h2 className="text-2xl font-bold text-[#4b3415]">
-              Categories
-            </h2>
+    <h2 className="text-2xl font-bold text-[#4b3415]">
+      Categories
+    </h2>
 
+    <Link
+      href="/en/categories"
+      className="text-yellow-700 font-semibold"
+    >
+      View All →
+    </Link>
+
+  </div>
+
+  {englishCategories.length > 0 ? (
+
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+      {englishCategories
+        .map((cat) => {
+
+          const categoryName =
+            getEnglishCategory(cat);
+
+          const categorySlug =
+            getEnglishCategorySlug(cat);
+
+          if (!categoryName || !categorySlug) {
+            return null;
+          }
+
+          return (
             <Link
-              href="/en/categories"
-              className="text-yellow-700 font-semibold"
+              key={cat._id}
+              href={`/en/categories/${encodeURIComponent(
+                categorySlug
+              )}`}
+              className="
+                flex items-center justify-center
+                min-h-[80px]
+                rounded-2xl
+                border border-[#c8b27a]
+                bg-gradient-to-b
+                from-[#f6f0dd]
+                via-[#e6d4a3]
+                to-[#c9ab63]
+                text-[#4b3415]
+                text-center
+                font-semibold
+                shadow-md
+                hover:scale-[1.02]
+                hover:shadow-lg
+                transition
+                px-3
+              "
             >
-              View All →
+              {categoryName}
             </Link>
+          );
+        })}
 
-          </div>
+    </div>
 
-          {englishCategories.length > 0 ? (
+  ) : (
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+    <div className="rounded-xl border border-yellow-200 bg-white p-6 text-center text-gray-500">
+      No English categories available.
+    </div>
 
-              {englishCategories
-                .slice(0, 8)
-                .map((cat) => {
+  )}
 
-                  const categoryName =
-                    getEnglishCategory(cat);
+</section>
 
-                  const categorySlug =
-                    getEnglishCategorySlug(cat);
 
-                  return (
-                    <Link
-                      key={cat._id}
-                      href={`/en/categories/${encodeURIComponent(
-                        categorySlug
-                      )}`}
-                      className="
-                        flex items-center justify-center
-                        min-h-[80px]
-                        rounded-2xl
-                        border border-[#c8b27a]
-                        bg-gradient-to-b
-                        from-[#f6f0dd]
-                        via-[#e6d4a3]
-                        to-[#c9ab63]
-                        text-[#4b3415]
-                        text-center
-                        font-semibold
-                        shadow-md
-                        hover:scale-[1.02]
-                        transition
-                        px-3
-                      "
-                    >
-                      {categoryName}
-                    </Link>
-                  );
-                })}
-
-            </div>
-
-          ) : (
-
-            <div className="rounded-xl border border-yellow-200 bg-white p-6 text-center text-gray-500">
-              No English categories available.
-            </div>
-
-          )}
-
-        </section>
 
         {/* =========================================
             QUICK LINKS
