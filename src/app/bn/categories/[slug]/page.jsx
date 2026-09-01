@@ -4,16 +4,20 @@ import { notFound } from "next/navigation";
 
 const backend = "https://f-backend-vdi1.onrender.com/api";
 
-// =========================================
-// GET CATEGORY
-// =========================================
+// =====================================================
+// GET SINGLE BANGLA CATEGORY
+// =====================================================
+
 async function getCategory(slug) {
   try {
-    const res = await fetch(`${backend}/categories`, {
-      next: {
-        revalidate: 60,
-      },
-    });
+    const res = await fetch(
+      `${backend}/bn/categories/${encodeURIComponent(slug)}`,
+      {
+        next: {
+          revalidate: 60,
+        },
+      }
+    );
 
     if (!res.ok) {
       return null;
@@ -21,36 +25,25 @@ async function getCategory(slug) {
 
     const data = await res.json();
 
-    if (!data.success) {
+    if (!data.success || !data.data) {
       return null;
     }
 
-    const categories = data.data || [];
-
-    const decodedSlug = decodeURIComponent(slug);
-
-    return (
-      categories.find(
-        (item) =>
-          item.slug === decodedSlug ||
-          item.name === decodedSlug
-      ) || null
-    );
+    return data.data;
   } catch (error) {
     console.error("Bangla category fetch error:", error);
     return null;
   }
 }
 
-// =========================================
-// GET QUESTIONS BY CATEGORY
-// =========================================
-async function getQuestions(categoryName) {
+// =====================================================
+// GET BANGLA QUESTIONS
+// =====================================================
+
+async function getQuestions(categoryId) {
   try {
     const res = await fetch(
-      `${backend}/admin/questions/category/${encodeURIComponent(
-        categoryName
-      )}?skip=0&limit=5000`,
+      `${backend}/bn/questions?limit=5000&skip=0`,
       {
         next: {
           revalidate: 60,
@@ -68,13 +61,15 @@ async function getQuestions(categoryName) {
       return [];
     }
 
-    // শুধুমাত্র বাংলা প্রশ্ন
-    return (data.data || []).filter(
-      (item) =>
-        item.banglaQuestion ||
-        item.bnQuestion ||
-        item.questionBn
-    );
+    const questions = data.data || [];
+
+    // Category ID অনুযায়ী filter
+    return questions.filter((item) => {
+      const itemCategory =
+        item.category?._id || item.category;
+
+      return String(itemCategory) === String(categoryId);
+    });
   } catch (error) {
     console.error(
       "Bangla category questions fetch error:",
@@ -85,69 +80,45 @@ async function getQuestions(categoryName) {
   }
 }
 
-// =========================================
-// BANGLA CATEGORY NAME
-// =========================================
-function getBanglaCategoryName(category, slug) {
-  return (
-    category?.banglaName ||
-    category?.bnName ||
-    category?.nameBn ||
-    decodeURIComponent(slug)
-      .split("-")
-      .map(
-        (word) =>
-          word.charAt(0).toUpperCase() + word.slice(1)
-      )
-      .join(" ")
-  );
-}
-
-// =========================================
-// BANGLA QUESTION
-// =========================================
-function getBanglaQuestion(item) {
-  return (
-    item.banglaQuestion ||
-    item.bnQuestion ||
-    item.questionBn ||
-    ""
-  );
-}
-
-// =========================================
+// =====================================================
 // SEO METADATA
-// =========================================
+// =====================================================
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
 
   const category = await getCategory(slug);
 
-  const categoryName = getBanglaCategoryName(
-    category,
-    slug
-  );
+  if (!category) {
+    return {
+      title: "বিষয় পাওয়া যায়নি | Maslak-e-Deoband",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
 
-  const canonical = `https://www.maslakedeoband.in/bn/categories/${slug}`;
+  const categoryName = category.name || "ইসলামী বিষয়";
+
+  const canonical =
+    `https://www.maslakedeoband.in/bn/categories/${category.slug}`;
 
   return {
     title: `${categoryName} | ইসলামী ফতোয়া | Maslak-e-Deoband`,
 
-    description: `কুরআন ও সুন্নাহর আলোকে ${categoryName} সম্পর্কিত প্রামাণিক ইসলামী ফতোয়া ও প্রশ্নোত্তর পড়ুন।`,
+    description:
+      `কুরআন ও সুন্নাহর আলোকে ${categoryName} সম্পর্কিত প্রামাণিক ইসলামী ফতোয়া ও প্রশ্নোত্তর পড়ুন।`,
 
     alternates: {
       canonical,
 
       languages: {
-        ur: `https://www.maslakedeoband.in/categories/${
-          category?.slug || slug
-        }`,
+        ur: `https://www.maslakedeoband.in/categories/${category.slug}`,
 
         bn: canonical,
 
-        en: `https://www.maslakedeoband.in/en/categories/${
-          category?.slug || slug
-        }`,
+        en: `https://www.maslakedeoband.in/en/categories/${category.slug}`,
       },
     },
 
@@ -158,22 +129,43 @@ export async function generateMetadata({ params }) {
 
     openGraph: {
       title: `${categoryName} | ইসলামী ফতোয়া | Maslak-e-Deoband`,
-      description: `কুরআন ও সুন্নাহর আলোকে ${categoryName} সম্পর্কিত প্রামাণিক ইসলামী ফতোয়া ও প্রশ্নোত্তর।`,
+
+      description:
+        `কুরআন ও সুন্নাহর আলোকে ${categoryName} সম্পর্কিত প্রামাণিক ইসলামী ফতোয়া ও প্রশ্নোত্তর।`,
+
       url: canonical,
+
       siteName: "Maslak-e-Deoband",
+
       type: "website",
+
       locale: "bn_BD",
+    },
+
+    twitter: {
+      card: "summary",
+
+      title:
+        `${categoryName} | ইসলামী ফতোয়া | Maslak-e-Deoband`,
+
+      description:
+        `কুরআন ও সুন্নাহর আলোকে ${categoryName} সম্পর্কিত প্রামাণিক ইসলামী ফতোয়া ও প্রশ্নোত্তর।`,
     },
   };
 }
 
-// =========================================
+// =====================================================
 // PAGE
-// =========================================
+// =====================================================
+
 export default async function BanglaCategoryDetail({
   params,
 }) {
   const { slug } = await params;
+
+  // ---------------------------------------------------
+  // CATEGORY
+  // ---------------------------------------------------
 
   const category = await getCategory(slug);
 
@@ -181,33 +173,37 @@ export default async function BanglaCategoryDetail({
     notFound();
   }
 
-  const categoryName = getBanglaCategoryName(
-    category,
-    slug
-  );
+  const categoryName =
+    category.name || "ইসলামী বিষয়";
 
-  const questions = await getQuestions(category.name);
+  // ---------------------------------------------------
+  // QUESTIONS
+  // ---------------------------------------------------
+
+  const questions = await getQuestions(
+    category._id
+  );
 
   return (
     <main className="min-h-screen bg-[#f7f3e8]">
 
-      {/* ================================= */}
+      {/* ================================================= */}
       {/* HERO */}
-      {/* ================================= */}
+      {/* ================================================= */}
 
-      <section className="relative overflow-hidden bg-[#3b2f2f] py-10 px-4">
+      <section className="relative overflow-hidden bg-[#3b2f2f] px-4 py-10">
 
-        <div className="max-w-6xl mx-auto text-center">
+        <div className="mx-auto max-w-6xl text-center">
 
-          <p className="text-sm md:text-base text-yellow-300 font-semibold mb-2">
+          <p className="mb-2 text-sm font-semibold text-yellow-300 md:text-base">
             ইসলামী বিষয়
           </p>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-white leading-relaxed">
+          <h1 className="text-3xl font-bold leading-relaxed text-white md:text-4xl">
             {categoryName}
           </h1>
 
-          <p className="mt-3 text-yellow-100 text-sm md:text-base">
+          <p className="mt-3 text-sm text-yellow-100 md:text-base">
             {categoryName} সম্পর্কিত ইসলামী ফতোয়া ও প্রশ্নোত্তর
           </p>
 
@@ -215,21 +211,21 @@ export default async function BanglaCategoryDetail({
 
       </section>
 
-      {/* ================================= */}
+      {/* ================================================= */}
       {/* CONTENT */}
-      {/* ================================= */}
+      {/* ================================================= */}
 
-      <section className="max-w-5xl mx-auto px-4 py-8 md:py-10">
+      <section className="mx-auto max-w-5xl px-4 py-8 md:py-10">
 
-        {/* ================================= */}
+        {/* ================================================= */}
         {/* BREADCRUMB */}
-        {/* ================================= */}
+        {/* ================================================= */}
 
         <div className="mb-6 text-sm text-gray-500">
 
           <Link
             href="/bn"
-            className="hover:text-yellow-700"
+            className="transition hover:text-yellow-700"
           >
             হোম
           </Link>
@@ -238,7 +234,7 @@ export default async function BanglaCategoryDetail({
 
           <Link
             href="/bn/categories"
-            className="hover:text-yellow-700"
+            className="transition hover:text-yellow-700"
           >
             বিষয়সমূহ
           </Link>
@@ -251,25 +247,25 @@ export default async function BanglaCategoryDetail({
 
         </div>
 
-        {/* ================================= */}
-        {/* SECTION HEADER */}
-        {/* ================================= */}
+        {/* ================================================= */}
+        {/* HEADER */}
+        {/* ================================================= */}
 
-        <div className="flex items-center justify-between mb-5">
+        <div className="mb-5 flex items-center justify-between gap-3">
 
-          <h2 className="text-2xl md:text-3xl font-bold text-[#4b3415]">
+          <h2 className="text-2xl font-bold text-[#4b3415] md:text-3xl">
             {categoryName} - ফতোয়া
           </h2>
 
-          <span className="text-sm text-gray-500">
-            {questions.length} টি ফলাফল
+          <span className="shrink-0 text-sm text-gray-500">
+            {questions.length} টি
           </span>
 
         </div>
 
-        {/* ================================= */}
+        {/* ================================================= */}
         {/* QUESTIONS */}
-        {/* ================================= */}
+        {/* ================================================= */}
 
         {questions.length > 0 ? (
 
@@ -278,54 +274,57 @@ export default async function BanglaCategoryDetail({
             {questions.map((item) => {
 
               const question =
-                getBanglaQuestion(item);
+                item.question || "";
 
-              const slug =
+              const questionSlug =
                 item.slug || item._id;
 
               return (
-
                 <Link
                   key={item._id}
                   href={`/bn/fatawa/${encodeURIComponent(
-                    slug
+                    questionSlug
                   )}`}
                   className="
                     block
-                    bg-white
-                    border border-yellow-200
                     rounded-xl
+                    border
+                    border-yellow-200
+                    bg-white
                     p-5
                     shadow-sm
+                    transition
+                    hover:-translate-y-[1px]
                     hover:border-yellow-500
                     hover:shadow-md
-                    hover:-translate-y-[1px]
-                    transition
                   "
                 >
 
-                  <h3 className="
-                    text-lg
-                    md:text-xl
-                    font-semibold
-                    text-[#3b2f2f]
-                    leading-8
-                  ">
+                  <h3
+                    className="
+                      text-lg
+                      font-semibold
+                      leading-8
+                      text-[#3b2f2f]
+                      md:text-xl
+                    "
+                  >
                     {question}
                   </h3>
 
-                  <span className="
-                    inline-block
-                    mt-3
-                    text-sm
-                    text-yellow-700
-                    font-semibold
-                  ">
+                  <span
+                    className="
+                      mt-3
+                      inline-block
+                      text-sm
+                      font-semibold
+                      text-yellow-700
+                    "
+                  >
                     ফতোয়া পড়ুন →
                   </span>
 
                 </Link>
-
               );
             })}
 
@@ -333,16 +332,23 @@ export default async function BanglaCategoryDetail({
 
         ) : (
 
-          <div className="
-            bg-white
-            border border-yellow-200
-            rounded-2xl
-            shadow-sm
-            p-10
-            text-center
-          ">
+          <div
+            className="
+              rounded-2xl
+              border
+              border-yellow-200
+              bg-white
+              p-10
+              text-center
+              shadow-sm
+            "
+          >
 
-            <p className="text-gray-500 text-lg">
+            <div className="mb-4 text-4xl">
+              📚
+            </div>
+
+            <p className="text-lg text-gray-500">
               এই বিভাগে কোনো বাংলা ফতোয়া পাওয়া যায়নি।
             </p>
 
@@ -350,19 +356,19 @@ export default async function BanglaCategoryDetail({
 
         )}
 
-        {/* ================================= */}
-        {/* BACK TO CATEGORIES */}
-        {/* ================================= */}
+        {/* ================================================= */}
+        {/* BACK */}
+        {/* ================================================= */}
 
         <div className="mt-8">
 
           <Link
             href="/bn/categories"
             className="
-              text-[#75593f]
               font-semibold
-              hover:text-yellow-700
+              text-[#75593f]
               transition
+              hover:text-yellow-700
             "
           >
             ← সব বিষয় দেখুন

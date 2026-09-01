@@ -35,6 +35,18 @@ async function getFatwa(slug) {
 }
 
 // =========================================
+// REMOVE HTML
+// =========================================
+function stripHtml(text = "") {
+  return text
+    .replace(/<[^>]*>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// =========================================
 // SEO METADATA
 // =========================================
 export async function generateMetadata({ params }) {
@@ -53,37 +65,28 @@ export async function generateMetadata({ params }) {
   }
 
   const title =
-    fatwa.banglaMetaTitle ||
-    fatwa.bnMetaTitle ||
-    fatwa.metaTitleBn ||
-    fatwa.banglaQuestion ||
-    fatwa.bnQuestion ||
-    fatwa.questionBn ||
+    fatwa.metaTitle ||
+    fatwa.question ||
     "ইসলামী ফতোয়া";
 
   const description =
-    fatwa.banglaMetaDescription ||
-    fatwa.bnMetaDescription ||
-    fatwa.metaDescriptionBn ||
-    fatwa.banglaAnswer
-      ?.replace(/<[^>]*>/g, "")
-      .replace(/\s+/g, " ")
-      .trim()
-      .slice(0, 155) ||
+    fatwa.metaDescription ||
+    stripHtml(fatwa.answer).slice(0, 155) ||
     "কুরআন ও সুন্নাহর আলোকে প্রামাণিক ইসলামী ফতোয়া ও প্রশ্নোত্তর।";
 
-  const canonical = `https://www.maslakedeoband.in/bn/fatawa/${slug}`;
+  const keywords = Array.isArray(fatwa.keywords)
+    ? fatwa.keywords
+    : [];
+
+  const canonical =
+    `https://www.maslakedeoband.in/bn/fatawa/${fatwa.slug || slug}`;
 
   return {
     title: `${title} | Maslak-e-Deoband`,
 
     description,
 
-    keywords:
-      fatwa.banglaKeywords ||
-      fatwa.bnKeywords ||
-      fatwa.keywordsBn ||
-      [],
+    keywords,
 
     alternates: {
       canonical,
@@ -93,9 +96,7 @@ export async function generateMetadata({ params }) {
 
         bn: canonical,
 
-        en: `https://www.maslakedeoband.in/en/fatawa/${
-          fatwa.englishSlug || fatwa.slug || slug
-        }`,
+        en: `https://www.maslakedeoband.in/en/fatawa/${fatwa.slug || slug}`,
       },
     },
 
@@ -138,48 +139,28 @@ export default async function BanglaFatwaDetailPage({
   // =========================================
   // BANGLA QUESTION
   // =========================================
-  const question =
-    fatwa.banglaQuestion ||
-    fatwa.bnQuestion ||
-    fatwa.questionBn ||
-    "";
+  const question = fatwa.question || "";
 
   // =========================================
   // BANGLA ANSWER
   // =========================================
-  const answer =
-    fatwa.banglaAnswer ||
-    fatwa.bnAnswer ||
-    fatwa.answerBn ||
-    "";
+  const answer = fatwa.answer || "";
 
   // =========================================
-  // BANGLA REFERENCES
+  // REFERENCES
   // =========================================
-  const hawala1 =
-    fatwa.banglaHawala1 ||
-    fatwa.bnHawala1 ||
-    fatwa.hawalaBn1 ||
-    "";
-
-  const hawala2 =
-    fatwa.banglaHawala2 ||
-    fatwa.bnHawala2 ||
-    fatwa.hawalaBn2 ||
-    "";
-
-  const hawala3 =
-    fatwa.banglaHawala3 ||
-    fatwa.bnHawala3 ||
-    fatwa.hawalaBn3 ||
-    "";
+  const hawala1 = fatwa.hawala1 || "";
+  const hawala2 = fatwa.hawala2 || "";
+  const hawala3 = fatwa.hawala3 || "";
 
   return (
-    <main className="min-h-screen bg-[#f7f3e8]">
+    <main
+      className="min-h-screen bg-[#f7f3e8]"
+      dir="ltr"
+    >
+      <article className="mx-auto max-w-4xl px-4 py-8 md:py-12">
 
-      <article className="max-w-4xl mx-auto px-4 py-8 md:py-12">
-
-        <div className="bg-white rounded-2xl shadow-lg border border-yellow-200 overflow-hidden">
+        <div className="overflow-hidden rounded-2xl border border-yellow-200 bg-white shadow-lg">
 
           {/* ================================= */}
           {/* HEADER */}
@@ -187,11 +168,20 @@ export default async function BanglaFatwaDetailPage({
 
           <div className="bg-[#3b2f2f] px-6 py-7 md:px-10 md:py-9">
 
-            <p className="text-sm md:text-base text-yellow-400 font-semibold mb-3">
+            <p className="mb-3 text-sm font-semibold text-yellow-400 md:text-base">
               ইসলামী ফতোয়া
             </p>
 
-            <h1 className="text-2xl md:text-4xl font-bold text-white leading-relaxed">
+            <h1
+              className="
+                text-2xl
+                font-bold
+                leading-relaxed
+                text-white
+                md:text-4xl
+              "
+              dir="ltr"
+            >
               {question}
             </h1>
 
@@ -204,9 +194,10 @@ export default async function BanglaFatwaDetailPage({
           <div className="px-6 py-7 md:px-10 md:py-10">
 
             {/* QUESTION */}
+
             <section>
 
-              <h2 className="text-xl md:text-2xl font-bold text-[#4b3415] mb-4">
+              <h2 className="mb-4 text-xl font-bold text-[#4b3415] md:text-2xl">
                 প্রশ্ন
               </h2>
 
@@ -214,11 +205,12 @@ export default async function BanglaFatwaDetailPage({
                 className="
                   prose
                   max-w-none
-                  text-gray-700
-                  leading-8
                   text-base
+                  leading-8
+                  text-gray-700
                   md:text-lg
                 "
+                dir="ltr"
                 dangerouslySetInnerHTML={{
                   __html: question,
                 }}
@@ -227,9 +219,10 @@ export default async function BanglaFatwaDetailPage({
             </section>
 
             {/* ANSWER */}
+
             <section className="mt-10 border-t border-yellow-200 pt-8">
 
-              <h2 className="text-xl md:text-2xl font-bold text-[#4b3415] mb-5">
+              <h2 className="mb-5 text-xl font-bold text-[#4b3415] md:text-2xl">
                 উত্তর
               </h2>
 
@@ -237,11 +230,12 @@ export default async function BanglaFatwaDetailPage({
                 className="
                   prose
                   max-w-none
-                  text-gray-700
-                  leading-8
                   text-base
+                  leading-8
+                  text-gray-700
                   md:text-lg
                 "
+                dir="ltr"
                 dangerouslySetInnerHTML={{
                   __html: answer,
                 }}
@@ -250,14 +244,22 @@ export default async function BanglaFatwaDetailPage({
             </section>
 
             {/* REFERENCES */}
+
             {(hawala1 || hawala2 || hawala3) && (
               <section className="mt-10 border-t border-yellow-200 pt-8">
 
-                <h2 className="text-xl md:text-2xl font-bold text-[#4b3415] mb-5">
+                <h2 className="mb-5 text-xl font-bold text-[#4b3415] md:text-2xl">
                   তথ্যসূত্র
                 </h2>
 
-                <div className="space-y-3 text-gray-600 leading-7">
+                <div
+                  className="
+                    space-y-3
+                    leading-7
+                    text-gray-600
+                  "
+                  dir="ltr"
+                >
 
                   {hawala1 && (
                     <div
@@ -300,7 +302,12 @@ export default async function BanglaFatwaDetailPage({
 
           <a
             href="/bn/fatawa"
-            className="text-[#75593f] font-semibold hover:text-yellow-700 transition"
+            className="
+              font-semibold
+              text-[#75593f]
+              transition
+              hover:text-yellow-700
+            "
           >
             ← সব ফতোয়া দেখুন
           </a>
@@ -308,7 +315,7 @@ export default async function BanglaFatwaDetailPage({
         </div>
 
       </article>
-
     </main>
   );
 }
+

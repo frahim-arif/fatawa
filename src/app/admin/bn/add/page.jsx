@@ -11,37 +11,29 @@ export default function BanglaQuestionAddPage() {
 
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
-  // =========================================
-  // STATES
-  // =========================================
   const [loading, setLoading] = useState(false);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [categories, setCategories] = useState([]);
 
   const [formData, setFormData] = useState({
-    banglaQuestion: "",
-    banglaAnswer: "",
-    banglaHawala1: "",
-    banglaHawala2: "",
-    banglaHawala3: "",
-    banglaSlug: "",
-    banglaMetaTitle: "",
-    banglaMetaDescription: "",
-    banglaKeywords: "",
+    question: "",
+    answer: "",
+    hawala1: "",
+    hawala2: "",
+    hawala3: "",
+    slug: "",
+    metaTitle: "",
+    metaDescription: "",
+    keywords: "",
     category: "",
   });
 
-  // =========================================
-  // GET CATEGORIES
-  // =========================================
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         setCategoriesLoading(true);
 
-        const res = await axios.get(`${backend}/categories`);
-
-        console.log("Categories response:", res.data);
+        const res = await axios.get(`${backend}/bn/categories`);
 
         if (res.data?.success) {
           setCategories(res.data.data || []);
@@ -49,12 +41,12 @@ export default function BanglaQuestionAddPage() {
           setCategories([]);
 
           toast.error(
-            res.data?.message || "Failed to load categories"
+            res.data?.message || "Failed to load Bangla categories"
           );
         }
       } catch (error) {
         console.error(
-          "Category fetch error:",
+          "Bangla category fetch error:",
           error.response?.data || error.message
         );
 
@@ -62,7 +54,7 @@ export default function BanglaQuestionAddPage() {
 
         toast.error(
           error.response?.data?.message ||
-            "Failed to load categories"
+            "Failed to load Bangla categories"
         );
       } finally {
         setCategoriesLoading(false);
@@ -72,25 +64,6 @@ export default function BanglaQuestionAddPage() {
     fetchCategories();
   }, []);
 
-  // =========================================
-  // GET BANGLA CATEGORY NAME
-  // =========================================
-  const getBanglaCategoryName = (category) => {
-    return (
-      category?.banglaName ||
-      category?.bnName ||
-      category?.nameBn ||
-      category?.titleBn ||
-      category?.name ||
-      category?.title ||
-      category?.categoryName ||
-      "Unnamed Category"
-    );
-  };
-
-  // =========================================
-  // HANDLE INPUT
-  // =========================================
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -100,58 +73,51 @@ export default function BanglaQuestionAddPage() {
     }));
   };
 
-  // =========================================
-  // GENERATE SLUG
-  // =========================================
   const generateSlug = (text) => {
     return text
+      .toString()
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase()
       .trim()
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-")
-      .replace(/-+/g, "-");
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "")
+      .split("-")
+      .filter(Boolean)
+      .slice(0, 12)
+      .join("-");
   };
 
-  // =========================================
-  // QUESTION CHANGE + AUTO SLUG
-  // =========================================
   const handleQuestionChange = (e) => {
     const value = e.target.value;
 
     setFormData((prev) => {
-      const oldGeneratedSlug = generateSlug(
-        prev.banglaQuestion
-      );
+      const oldGeneratedSlug = generateSlug(prev.question);
 
       const shouldUpdateSlug =
-        prev.banglaSlug === "" ||
-        prev.banglaSlug === oldGeneratedSlug;
+        prev.slug === "" || prev.slug === oldGeneratedSlug;
 
       return {
         ...prev,
-        banglaQuestion: value,
-        banglaSlug: shouldUpdateSlug
+        question: value,
+        slug: shouldUpdateSlug
           ? generateSlug(value)
-          : prev.banglaSlug,
+          : prev.slug,
       };
     });
   };
 
-  // =========================================
-  // SUBMIT
-  // =========================================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // -------------------------------
-    // VALIDATION
-    // -------------------------------
-    if (!formData.banglaQuestion.trim()) {
+    if (!formData.question.trim()) {
       toast.error("Bangla question is required");
       return;
     }
 
-    if (!formData.banglaAnswer.trim()) {
+    if (!formData.answer.trim()) {
       toast.error("Bangla answer is required");
       return;
     }
@@ -164,81 +130,47 @@ export default function BanglaQuestionAddPage() {
     try {
       setLoading(true);
 
-      // =========================================
-      // PAYLOAD
-      // =========================================
       const payload = {
-        banglaQuestion:
-          formData.banglaQuestion.trim(),
-
-        banglaAnswer:
-          formData.banglaAnswer.trim(),
-
-        banglaHawala1:
-          formData.banglaHawala1.trim(),
-
-        banglaHawala2:
-          formData.banglaHawala2.trim(),
-
-        banglaHawala3:
-          formData.banglaHawala3.trim(),
-
-        banglaSlug:
-          formData.banglaSlug.trim() ||
-          generateSlug(formData.banglaQuestion),
-
-        banglaMetaTitle:
-          formData.banglaMetaTitle.trim() ||
-          formData.banglaQuestion.trim(),
-
-        banglaMetaDescription:
-          formData.banglaMetaDescription.trim(),
-
-        banglaKeywords:
-          formData.banglaKeywords.trim(),
-
+        question: formData.question.trim(),
+        answer: formData.answer.trim(),
+        hawala1: formData.hawala1.trim(),
+        hawala2: formData.hawala2.trim(),
+        hawala3: formData.hawala3.trim(),
+        slug:
+          formData.slug.trim() ||
+          generateSlug(formData.question),
+        metaTitle:
+          formData.metaTitle.trim() ||
+          formData.question.trim(),
+        metaDescription:
+          formData.metaDescription.trim(),
+        keywords: formData.keywords.trim(),
         category: formData.category,
       };
 
-      console.log("Bangla payload:", payload);
-
-      // =========================================
-      // API REQUEST
-      // =========================================
       const res = await axios.post(
         `${backend}/bn/questions`,
         payload
       );
 
-      console.log("Bangla question response:", res.data);
-
-      // =========================================
-      // SUCCESS
-      // =========================================
       if (res.data?.success) {
         toast.success(
           res.data.message ||
             "Bangla question added successfully"
         );
 
-        // Form reset
         setFormData({
-          banglaQuestion: "",
-          banglaAnswer: "",
-          banglaHawala1: "",
-          banglaHawala2: "",
-          banglaHawala3: "",
-          banglaSlug: "",
-          banglaMetaTitle: "",
-          banglaMetaDescription: "",
-          banglaKeywords: "",
+          question: "",
+          answer: "",
+          hawala1: "",
+          hawala2: "",
+          hawala3: "",
+          slug: "",
+          metaTitle: "",
+          metaDescription: "",
+          keywords: "",
           category: "",
         });
-
-        // Home / Bangla admin page par redirect
-        setTimeout(() => {
-          router.push("/admin/bn");
-        }, 800);
       } else {
         toast.error(
           res.data?.message ||
@@ -260,16 +192,9 @@ export default function BanglaQuestionAddPage() {
     }
   };
 
-  // =========================================
-  // RENDER
-  // =========================================
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-8 md:px-8">
       <div className="mx-auto max-w-5xl">
-
-        {/* ========================================= */}
-        {/* HEADER */}
-        {/* ========================================= */}
 
         <div className="mb-6 rounded-xl border bg-white p-6 shadow-sm">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -310,18 +235,10 @@ export default function BanglaQuestionAddPage() {
           </div>
         </div>
 
-        {/* ========================================= */}
-        {/* FORM */}
-        {/* ========================================= */}
-
         <form
           onSubmit={handleSubmit}
           className="space-y-6"
         >
-
-          {/* ========================================= */}
-          {/* BANGLA CONTENT */}
-          {/* ========================================= */}
 
           <div className="rounded-xl border bg-white p-6 shadow-sm">
 
@@ -331,16 +248,14 @@ export default function BanglaQuestionAddPage() {
 
             <div className="space-y-5">
 
-              {/* QUESTION */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Bangla Question *
                 </label>
 
                 <textarea
-                  name="banglaQuestion"
-                  value={formData.banglaQuestion}
+                  name="question"
+                  value={formData.question}
                   onChange={handleQuestionChange}
                   rows={4}
                   dir="ltr"
@@ -363,16 +278,14 @@ export default function BanglaQuestionAddPage() {
                 />
               </div>
 
-              {/* ANSWER */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Bangla Answer *
                 </label>
 
                 <textarea
-                  name="banglaAnswer"
-                  value={formData.banglaAnswer}
+                  name="answer"
+                  value={formData.answer}
                   onChange={handleChange}
                   rows={12}
                   dir="ltr"
@@ -398,10 +311,6 @@ export default function BanglaQuestionAddPage() {
             </div>
           </div>
 
-          {/* ========================================= */}
-          {/* REFERENCES */}
-          {/* ========================================= */}
-
           <div className="rounded-xl border bg-white p-6 shadow-sm">
 
             <h2 className="mb-5 text-lg font-semibold text-gray-800">
@@ -410,16 +319,14 @@ export default function BanglaQuestionAddPage() {
 
             <div className="space-y-5">
 
-              {/* HAWALA 1 */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Hawala 1
                 </label>
 
                 <textarea
-                  name="banglaHawala1"
-                  value={formData.banglaHawala1}
+                  name="hawala1"
+                  value={formData.hawala1}
                   onChange={handleChange}
                   rows={3}
                   dir="ltr"
@@ -440,16 +347,14 @@ export default function BanglaQuestionAddPage() {
                 />
               </div>
 
-              {/* HAWALA 2 */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Hawala 2
                 </label>
 
                 <textarea
-                  name="banglaHawala2"
-                  value={formData.banglaHawala2}
+                  name="hawala2"
+                  value={formData.hawala2}
                   onChange={handleChange}
                   rows={3}
                   dir="ltr"
@@ -470,16 +375,14 @@ export default function BanglaQuestionAddPage() {
                 />
               </div>
 
-              {/* HAWALA 3 */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Hawala 3
                 </label>
 
                 <textarea
-                  name="banglaHawala3"
-                  value={formData.banglaHawala3}
+                  name="hawala3"
+                  value={formData.hawala3}
                   onChange={handleChange}
                   rows={3}
                   dir="ltr"
@@ -503,10 +406,6 @@ export default function BanglaQuestionAddPage() {
             </div>
           </div>
 
-          {/* ========================================= */}
-          {/* SEO */}
-          {/* ========================================= */}
-
           <div className="rounded-xl border bg-white p-6 shadow-sm">
 
             <h2 className="mb-5 text-lg font-semibold text-gray-800">
@@ -515,8 +414,6 @@ export default function BanglaQuestionAddPage() {
 
             <div className="space-y-5">
 
-              {/* SLUG */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Bangla Slug
@@ -524,8 +421,8 @@ export default function BanglaQuestionAddPage() {
 
                 <input
                   type="text"
-                  name="banglaSlug"
-                  value={formData.banglaSlug}
+                  name="slug"
+                  value={formData.slug}
                   onChange={handleChange}
                   placeholder="bangla-question-slug"
                   className="
@@ -549,8 +446,6 @@ export default function BanglaQuestionAddPage() {
                 </p>
               </div>
 
-              {/* META TITLE */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Meta Title
@@ -558,8 +453,8 @@ export default function BanglaQuestionAddPage() {
 
                 <input
                   type="text"
-                  name="banglaMetaTitle"
-                  value={formData.banglaMetaTitle}
+                  name="metaTitle"
+                  value={formData.metaTitle}
                   onChange={handleChange}
                   placeholder="SEO meta title লিখুন"
                   className="
@@ -578,16 +473,14 @@ export default function BanglaQuestionAddPage() {
                 />
               </div>
 
-              {/* META DESCRIPTION */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Meta Description
                 </label>
 
                 <textarea
-                  name="banglaMetaDescription"
-                  value={formData.banglaMetaDescription}
+                  name="metaDescription"
+                  value={formData.metaDescription}
                   onChange={handleChange}
                   rows={4}
                   maxLength={160}
@@ -613,8 +506,6 @@ export default function BanglaQuestionAddPage() {
                 </p>
               </div>
 
-              {/* KEYWORDS */}
-
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Keywords
@@ -622,8 +513,8 @@ export default function BanglaQuestionAddPage() {
 
                 <input
                   type="text"
-                  name="banglaKeywords"
-                  value={formData.banglaKeywords}
+                  name="keywords"
+                  value={formData.keywords}
                   onChange={handleChange}
                   placeholder="নামাজ, রোজা, যাকাত, ইসলাম"
                   className="
@@ -649,14 +540,10 @@ export default function BanglaQuestionAddPage() {
             </div>
           </div>
 
-          {/* ========================================= */}
-          {/* CATEGORY */}
-          {/* ========================================= */}
-
           <div className="rounded-xl border bg-white p-6 shadow-sm">
 
             <h2 className="mb-5 text-lg font-semibold text-gray-800">
-              Category
+              Bangla Category
             </h2>
 
             <select
@@ -685,8 +572,8 @@ export default function BanglaQuestionAddPage() {
             >
               <option value="">
                 {categoriesLoading
-                  ? "Loading categories..."
-                  : "Select Category"}
+                  ? "Loading Bangla categories..."
+                  : "Select Bangla Category"}
               </option>
 
               {!categoriesLoading &&
@@ -695,7 +582,7 @@ export default function BanglaQuestionAddPage() {
                     key={cat._id}
                     value={cat._id}
                   >
-                    {getBanglaCategoryName(cat)}
+                    {cat.name}
                   </option>
                 ))}
             </select>
@@ -703,15 +590,11 @@ export default function BanglaQuestionAddPage() {
             {!categoriesLoading &&
               categories.length === 0 && (
                 <p className="mt-2 text-sm text-red-500">
-                  No categories found.
+                  No Bangla categories found.
                 </p>
               )}
 
           </div>
-
-          {/* ========================================= */}
-          {/* SUBMIT */}
-          {/* ========================================= */}
 
           <div className="flex justify-end rounded-xl border bg-white p-6 shadow-sm">
 
