@@ -234,46 +234,47 @@ export default async function EnglishFatwaDetailPage({
             </div>
           )}
 
-          {/* REFERENCES */}
+         {/* REFERENCES */}
 
-          {(hawala1 || hawala2 || hawala3) && (
-            <div className="mt-10 border-t border-gray-200 pt-8">
+{(hawala1 || hawala2 || hawala3) && (
+  <div className="mt-10 border-t border-gray-200 pt-8">
 
-              <h2 className="text-xl md:text-2xl font-bold text-[#3b2f2f]">
-                References
-              </h2>
+    <h2 className="text-xl md:text-2xl font-bold text-[#3b2f2f]">
+      References
+    </h2>
 
-              <div className="mt-5 space-y-4 text-gray-600 leading-8">
-  {hawala1 && (
-    <p
-      dir="rtl"
-      className="font-amiri text-right text-lg leading-[2.2]"
-    >
-      {hawala1}
-    </p>
-  )}
+    <div className="mt-5 space-y-4 text-gray-600">
 
-  {hawala2 && (
-    <p
-      dir="rtl"
-      className="font-amiri text-right text-lg leading-[2.2]"
-    >
-      {hawala2}
-    </p>
-  )}
+      {hawala1 && (
+        <p
+          dir="rtl"
+          className="font-amiri text-right text-lg leading-[2.2]"
+        >
+          {hawala1}
+        </p>
+      )}
 
-  {hawala3 && (
-    <p
-      dir="rtl"
-      className="font-amiri text-right text-lg leading-[2.2]"
-    >
-      {hawala3}
-    </p>
-  )}
-</div>
+      {hawala2 && (
+        <p
+          dir="rtl"
+          className="font-amiri text-right text-lg leading-[2.2]"
+        >
+          {hawala2}
+        </p>
+      )}
 
-            </div>
-          )}
+      {hawala3 && (
+        <p
+          dir="rtl"
+          className="font-amiri text-right text-lg leading-[2.2]"
+        >
+          {hawala3}
+        </p>
+      )}
+
+    </div>
+  </div>
+)}
 
         </div>
 
