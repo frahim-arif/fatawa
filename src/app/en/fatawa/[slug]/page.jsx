@@ -243,21 +243,34 @@ export default async function EnglishFatwaDetailPage({
                 References
               </h2>
 
-              <div className="mt-5 space-y-3 text-gray-600 leading-7">
+              <div className="mt-5 space-y-4 text-gray-600 leading-8">
+  {hawala1 && (
+    <p
+      dir="rtl"
+      className="font-amiri text-right text-lg leading-[2.2]"
+    >
+      {hawala1}
+    </p>
+  )}
 
-                {hawala1 && (
-                  <p>{hawala1}</p>
-                )}
+  {hawala2 && (
+    <p
+      dir="rtl"
+      className="font-amiri text-right text-lg leading-[2.2]"
+    >
+      {hawala2}
+    </p>
+  )}
 
-                {hawala2 && (
-                  <p>{hawala2}</p>
-                )}
-
-                {hawala3 && (
-                  <p>{hawala3}</p>
-                )}
-
-              </div>
+  {hawala3 && (
+    <p
+      dir="rtl"
+      className="font-amiri text-right text-lg leading-[2.2]"
+    >
+      {hawala3}
+    </p>
+  )}
+</div>
 
             </div>
           )}
