@@ -18,8 +18,6 @@ export default function EnglishCategoriesPage() {
       try {
         setLoading(true);
 
-        // IMPORTANT:
-        // English categories API
         const res = await fetch(`${backend}/en/categories`, {
           cache: "no-store",
         });
@@ -38,7 +36,7 @@ export default function EnglishCategoriesPage() {
           setCategories([]);
         }
       } catch (error) {
-        console.error("English categories fetch error:", error);
+        console.error("English categories error:", error);
         setCategories([]);
       } finally {
         setLoading(false);
@@ -49,9 +47,9 @@ export default function EnglishCategoriesPage() {
   }, []);
 
   // =========================================
-  // GET ENGLISH CATEGORY NAME
+  // CATEGORY NAME
   // =========================================
-  const getEnglishCategory = (category) => {
+  const getCategoryName = (category) => {
     return (
       category?.englishName ||
       category?.enName ||
@@ -62,9 +60,9 @@ export default function EnglishCategoriesPage() {
   };
 
   // =========================================
-  // GET ENGLISH CATEGORY SLUG
+  // CATEGORY SLUG
   // =========================================
-  const getEnglishCategorySlug = (category) => {
+  const getCategorySlug = (category) => {
     return (
       category?.englishSlug ||
       category?.enSlug ||
@@ -75,11 +73,11 @@ export default function EnglishCategoriesPage() {
   };
 
   // =========================================
-  // ONLY VALID ENGLISH CATEGORIES
+  // CLEAN CATEGORIES
   // =========================================
   const englishCategories = categories.filter((category) => {
-    const name = getEnglishCategory(category);
-    const slug = getEnglishCategorySlug(category);
+    const name = getCategoryName(category);
+    const slug = getCategorySlug(category);
 
     return Boolean(name && slug);
   });
@@ -91,7 +89,7 @@ export default function EnglishCategoriesPage() {
           HERO
       ========================================= */}
       <section
-        className="relative overflow-hidden px-4 py-12 md:py-16"
+        className="relative overflow-hidden px-4 py-12"
         style={{
           backgroundImage:
             "url('/images/ramadan_15_03_2022_1.jpg')",
@@ -102,48 +100,34 @@ export default function EnglishCategoriesPage() {
         <div className="absolute inset-0 bg-black/60" />
 
         <div className="relative mx-auto max-w-6xl text-center">
-
-          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-yellow-300">
-            Maslak-e-Deoband
-          </p>
-
           <h1 className="text-3xl font-bold text-yellow-300 md:text-5xl">
             Islamic Categories
           </h1>
 
-          <p className="mx-auto mt-3 max-w-2xl text-base text-yellow-100 md:text-lg">
-            Explore Islamic knowledge by different subjects
+          <p className="mt-3 text-base text-yellow-100 md:text-lg">
+            Explore Islamic questions by category
           </p>
-
         </div>
       </section>
 
       {/* =========================================
           CONTENT
       ========================================= */}
-      <section className="mx-auto max-w-6xl px-3 py-8 md:px-4 md:py-10">
+      <section className="mx-auto max-w-6xl px-3 py-10 md:px-4">
 
-        {/* =========================================
-            HEADER
-        ========================================= */}
+        {/* HEADER */}
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
           <div>
-
-            <p className="text-xs font-semibold uppercase tracking-wider text-yellow-700">
-              Explore
-            </p>
-
-            <h2 className="mt-1 text-2xl font-bold text-[#4b3415] md:text-3xl">
+            <h2 className="text-2xl font-bold text-[#4b3415] md:text-3xl">
               Categories
             </h2>
 
             {!loading && englishCategories.length > 0 && (
               <p className="mt-1 text-sm text-gray-500">
-                {englishCategories.length} Islamic categories
+                {englishCategories.length} categories available
               </p>
             )}
-
           </div>
 
           <Link
@@ -179,11 +163,11 @@ export default function EnglishCategoriesPage() {
                 key={index}
                 className="
                   min-h-[90px]
+                  animate-pulse
                   rounded-2xl
                   border
                   border-gray-200
                   bg-white
-                  animate-pulse
                 "
               />
             ))}
@@ -192,31 +176,21 @@ export default function EnglishCategoriesPage() {
         )}
 
         {/* =========================================
-            CATEGORY GRID
+            CATEGORIES
         ========================================= */}
         {!loading && englishCategories.length > 0 && (
           <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
 
             {englishCategories.map((category) => {
-
-              const categoryName =
-                getEnglishCategory(category);
-
-              const categorySlug =
-                getEnglishCategorySlug(category);
-
-              const categoryHref =
-                `/en/categories/${encodeURIComponent(
-                  categorySlug
-                )}`;
+              const categoryName = getCategoryName(category);
+              const categorySlug = getCategorySlug(category);
 
               return (
                 <Link
-                  key={
-                    category?._id ||
+                  key={category?._id || categorySlug}
+                  href={`/en/categories/${encodeURIComponent(
                     categorySlug
-                  }
-                  href={categoryHref}
+                  )}`}
                   className="
                     group
                     flex
@@ -240,9 +214,8 @@ export default function EnglishCategoriesPage() {
                     transition-all
                     duration-200
                     hover:-translate-y-1
-                    hover:border-[#a88942]
+                    hover:border-yellow-600
                     hover:shadow-lg
-                    md:min-h-[105px]
                     md:text-base
                   "
                 >
@@ -257,21 +230,10 @@ export default function EnglishCategoriesPage() {
         )}
 
         {/* =========================================
-            NO CATEGORIES
+            EMPTY
         ========================================= */}
         {!loading && englishCategories.length === 0 && (
-          <div
-            className="
-              rounded-2xl
-              border
-              border-yellow-200
-              bg-white
-              px-6
-              py-12
-              text-center
-              shadow-sm
-            "
-          >
+          <div className="rounded-2xl border border-yellow-200 bg-white px-6 py-12 text-center shadow-sm">
 
             <div className="mb-3 text-4xl">
               📚
@@ -282,7 +244,7 @@ export default function EnglishCategoriesPage() {
             </h3>
 
             <p className="mt-2 text-sm text-gray-500">
-              No English categories were found.
+              No English categories were returned by the server.
             </p>
 
             <Link
@@ -308,7 +270,6 @@ export default function EnglishCategoriesPage() {
         )}
 
       </section>
-
     </main>
   );
 }
