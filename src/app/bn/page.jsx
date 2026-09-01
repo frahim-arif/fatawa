@@ -427,85 +427,89 @@ export default function BanglaHomePage() {
             BANGLA CATEGORIES
         ================================================= */}
 
-        <section className="mb-10">
+        
+<section className="mb-10">
 
-          <div className="mb-4 flex items-center justify-between">
+  <div className="mb-4 flex items-center justify-between">
 
-            <h2 className="text-2xl font-bold text-[#4b3415]">
-              বিষয়সমূহ
-            </h2>
+    <h2 className="text-2xl font-bold text-[#4b3415]">
+      বিষয়সমূহ
+    </h2>
 
-            <Link
-              href="/bn/categories"
-              className="font-semibold text-yellow-700 hover:text-yellow-800"
-            >
-              সব দেখুন →
-            </Link>
+    <Link
+      href="/bn/categories"
+      className="font-semibold text-yellow-700 hover:text-yellow-800"
+    >
+      সব দেখুন →
+    </Link>
 
-          </div>
+  </div>
 
-          {categories.length > 0 ? (
+  {categories.length > 0 ? (
 
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+    <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
 
-              {categories
-                .filter(
-                  (cat) =>
-                    cat?.name &&
-                    cat?.slug
-                )
-                .slice(0, 8)
-                .map((cat) => (
+      {categories
+        .filter(
+          (cat) =>
+            cat?.name &&
+            cat?.slug &&
+            cat.slug !== "aqiqah"
+        )
+        .slice(0, 8)
+        .map((cat) => (
 
-                  <Link
-                    key={cat._id}
-                    href={`/bn/categories/${encodeURIComponent(
-                      cat.slug
-                    )}`}
-                    className="
-                      flex
-                      min-h-[90px]
-                      items-center
-                      justify-center
-                      rounded-2xl
-                      border
-                      border-[#c8b27a]
-                      bg-gradient-to-b
-                      from-[#f6f0dd]
-                      via-[#e6d4a3]
-                      to-[#c9ab63]
-                      px-3
-                      text-center
-                      font-semibold
-                      text-[#4b3415]
-                      shadow-md
-                      transition
-                      hover:scale-[1.02]
-                      hover:shadow-lg
-                    "
-                  >
-                    <span className="text-base leading-6 md:text-lg">
-                      {cat.name}
-                    </span>
-                  </Link>
+          <Link
+            key={cat._id}
+            href={`/bn/categories/${encodeURIComponent(
+              cat.slug
+            )}`}
+            className="
+              flex
+              min-h-[90px]
+              items-center
+              justify-center
+              rounded-2xl
+              border
+              border-[#c8b27a]
+              bg-gradient-to-b
+              from-[#f6f0dd]
+              via-[#e6d4a3]
+              to-[#c9ab63]
+              px-3
+              text-center
+              font-semibold
+              text-[#4b3415]
+              shadow-md
+              transition
+              hover:scale-[1.02]
+              hover:shadow-lg
+            "
+          >
+            <span className="text-base leading-6 md:text-lg">
+              {cat.name}
+            </span>
+          </Link>
 
-                ))}
+        ))}
 
-            </div>
+    </div>
 
-          ) : (
+  ) : (
 
-            <div className="rounded-xl border border-yellow-200 bg-white p-8 text-center">
+    <div className="rounded-xl border border-yellow-200 bg-white p-8 text-center">
 
-              <p className="text-gray-500">
-                কোনো ইসলামী বিষয় পাওয়া যায়নি।
-              </p>
+      <p className="text-gray-500">
+        কোনো ইসলামী বিষয় পাওয়া যায়নি।
+      </p>
 
-            </div>
+    </div>
 
-          )}
+  )}
 
-        </section>
+</section>
+
+
 
         {/* =================================================
             QUICK LINKS
