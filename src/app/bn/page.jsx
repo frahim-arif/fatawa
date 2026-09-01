@@ -442,7 +442,6 @@ export default function BanglaHomePage() {
     >
       সব দেখুন →
     </Link>
-
   </div>
 
   {categories.length > 0 ? (
@@ -453,10 +452,8 @@ export default function BanglaHomePage() {
         .filter(
           (cat) =>
             cat?.name &&
-            cat?.slug &&
-            cat.slug !== "aqiqah"
+            cat?.slug
         )
-        .slice(0, 8)
         .map((cat) => (
 
           <Link
