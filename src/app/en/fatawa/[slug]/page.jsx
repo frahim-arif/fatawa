@@ -4,22 +4,25 @@ import Link from "next/link";
 const backend = "https://f-backend-vdi1.onrender.com/api";
 
 // =========================================
-// GET ENGLISH FATWA
+// GET ENGLISH CATEGORY
 // =========================================
-async function getFatwa(slug) {
+async function getCategory(slug) {
   try {
     const res = await fetch(
-      `${backend}/en/questions/slug/${encodeURIComponent(slug)}`,
+      `${backend}/en/categories/slug/${encodeURIComponent(slug)}`,
       {
         cache: "no-store",
       }
     );
 
     if (!res.ok) {
+      console.error("Category API error:", res.status);
       return null;
     }
 
     const data = await res.json();
+
+    console.log("English Category:", data);
 
     if (!data.success || !data.data) {
       return null;
@@ -27,21 +30,40 @@ async function getFatwa(slug) {
 
     return data.data;
   } catch (error) {
-    console.error("Failed to fetch English Fatwa:", error);
+    console.error("Failed to fetch English category:", error);
     return null;
   }
 }
 
 // =========================================
-// CLEAN HTML FOR META DESCRIPTION
+// GET QUESTIONS OF CATEGORY
 // =========================================
-function cleanHtml(text = "") {
-  return text
-    .replace(/<[^>]*>/g, "")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/\s+/g, " ")
-    .trim();
+async function getCategoryQuestions(slug) {
+  try {
+    const res = await fetch(
+      `${backend}/en/categories/slug/${encodeURIComponent(slug)}/questions`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!res.ok) {
+      return [];
+    }
+
+    const data = await res.json();
+
+    console.log("Category Questions:", data);
+
+    if (data.success && Array.isArray(data.data)) {
+      return data.data;
+    }
+
+    return [];
+  } catch (error) {
+    console.error("Failed to fetch category questions:", error);
+    return [];
+  }
 }
 
 // =========================================
@@ -50,42 +72,36 @@ function cleanHtml(text = "") {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
 
-  const item = await getFatwa(slug);
+  const category = await getCategory(slug);
 
-  if (!item) {
+  if (!category) {
     return {
-      title: "Islamic Fatwa | Maslak-e-Deoband",
+      title: "Islamic Category | Maslak-e-Deoband",
       description:
-        "Read authentic Islamic Fatwas according to the Quran and Sunnah.",
+        "Browse authentic Islamic questions and answers according to the Quran and Sunnah.",
     };
   }
 
-  const title =
-    item.metaTitle ||
-    item.question ||
-    "Islamic Fatwa | Maslak-e-Deoband";
-
-  const description =
-    item.metaDescription ||
-    cleanHtml(item.answer || "").slice(0, 155) ||
-    "Read authentic Islamic Fatwas according to the Quran and Sunnah.";
+  const name =
+    category.englishName ||
+    category.enName ||
+    category.nameEn ||
+    category.name ||
+    "Islamic Category";
 
   return {
-    title,
-    description,
-    keywords: Array.isArray(item.keywords)
-      ? item.keywords
-      : [],
+    title: `${name} | Maslak-e-Deoband`,
+    description: `Read Islamic questions and answers about ${name} according to the Quran and Sunnah.`,
 
     alternates: {
-      canonical: `https://www.maslakedeoband.in/en/fatawa/${slug}`,
+      canonical: `https://www.maslakedeoband.in/en/categories/${slug}`,
     },
 
     openGraph: {
-      title,
-      description,
-      type: "article",
-      url: `https://www.maslakedeoband.in/en/fatawa/${slug}`,
+      title: `${name} | Maslak-e-Deoband`,
+      description: `Read Islamic questions and answers about ${name}.`,
+      type: "website",
+      url: `https://www.maslakedeoband.in/en/categories/${slug}`,
       siteName: "Maslak-e-Deoband",
     },
   };
@@ -94,46 +110,45 @@ export async function generateMetadata({ params }) {
 // =========================================
 // PAGE
 // =========================================
-export default async function EnglishFatwaDetailPage({
-  params,
-}) {
+export default async function EnglishCategoryPage({ params }) {
   const { slug } = await params;
 
-  const item = await getFatwa(slug);
+  // Get category
+  const category = await getCategory(slug);
 
   // =========================================
   // NOT FOUND
   // =========================================
-  if (!item) {
+  if (!category) {
     return (
       <main className="min-h-screen bg-[#faf9f6]">
-        <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-10">
+        <div className="mx-auto max-w-4xl px-4 py-16 text-center">
+          <div className="rounded-xl border border-gray-200 bg-white p-10 shadow-sm">
 
             <h1 className="text-2xl font-bold text-gray-800">
-              Fatwa Not Found
+              Category Not Found
             </h1>
 
             <p className="mt-3 text-gray-500">
-              The requested Islamic Fatwa could not be found.
+              The requested Islamic category could not be found.
             </p>
 
             <Link
-              href="/en/fatawa"
+              href="/en/categories"
               className="
-                inline-block
                 mt-6
+                inline-block
                 rounded-lg
                 bg-[#3b2f2f]
                 px-5
                 py-3
-                text-yellow-200
                 font-semibold
-                hover:bg-[#4a3a3a]
+                text-yellow-200
                 transition
+                hover:bg-[#4a3a3a]
               "
             >
-              Browse Fatwas
+              Browse Categories
             </Link>
 
           </div>
@@ -143,30 +158,33 @@ export default async function EnglishFatwaDetailPage({
   }
 
   // =========================================
-  // ACTUAL BACKEND FIELD NAMES
+  // CATEGORY NAME
   // =========================================
-  const question = item.question || "";
+  const categoryName =
+    category.englishName ||
+    category.enName ||
+    category.nameEn ||
+    category.name ||
+    "Islamic Category";
 
-  const answer = item.answer || "";
-
-  const hawala1 = item.hawala1 || "";
-  const hawala2 = item.hawala2 || "";
-  const hawala3 = item.hawala3 || "";
+  // =========================================
+  // QUESTIONS
+  // =========================================
+  const questions = await getCategoryQuestions(slug);
 
   return (
     <main className="min-h-screen bg-[#faf9f6]">
 
-      <article className="max-w-4xl mx-auto px-4 py-8 md:py-14">
+      <div className="mx-auto max-w-6xl px-4 py-8 md:py-12">
 
-        {/* ================================= */}
-        {/* BREADCRUMB */}
-        {/* ================================= */}
-
+        {/* =========================================
+            BREADCRUMB
+        ========================================= */}
         <div className="mb-6 text-sm text-gray-500">
 
           <Link
             href="/en"
-            className="hover:text-yellow-700 transition"
+            className="transition hover:text-yellow-700"
           >
             Home
           </Link>
@@ -174,98 +192,179 @@ export default async function EnglishFatwaDetailPage({
           <span className="mx-2">/</span>
 
           <Link
-            href="/en/fatawa"
-            className="hover:text-yellow-700 transition"
+            href="/en/categories"
+            className="transition hover:text-yellow-700"
           >
-            Fatwas
+            Categories
           </Link>
 
           <span className="mx-2">/</span>
 
           <span className="text-gray-700">
-            Islamic Fatwa
+            {categoryName}
           </span>
 
         </div>
 
-        {/* ================================= */}
-        {/* FATWA CONTENT */}
-        {/* ================================= */}
+        {/* =========================================
+            CATEGORY HEADER
+        ========================================= */}
+        <section className="mb-10 rounded-2xl border border-yellow-200 bg-white p-6 shadow-sm md:p-10">
 
-        <div className="bg-white rounded-xl shadow-md border border-gray-100 p-6 md:p-10">
-
-          {/* LABEL */}
-
-          <p className="text-sm text-yellow-700 font-semibold mb-4">
-            Islamic Fatwa
+          <p className="text-sm font-semibold uppercase tracking-wider text-yellow-700">
+            Islamic Category
           </p>
 
-          {/* QUESTION */}
-
-          <h1 className="text-2xl md:text-4xl font-bold text-[#3b2f2f] leading-relaxed">
-            {question}
+          <h1 className="mt-2 text-3xl font-bold leading-tight text-[#3b2f2f] md:text-5xl">
+            {categoryName}
           </h1>
 
-          {/* ANSWER */}
+          <p className="mt-4 max-w-3xl text-base leading-7 text-gray-600 md:text-lg">
+            Browse authentic Islamic questions and answers related to{" "}
+            <strong>{categoryName}</strong>.
+          </p>
 
-          {answer && (
-            <div className="mt-10 border-t border-gray-200 pt-8">
+        </section>
 
-              <h2 className="text-xl md:text-2xl font-bold text-[#3b2f2f]">
-                Answer
+        {/* =========================================
+            QUESTIONS
+        ========================================= */}
+        <section>
+
+          <div className="mb-5 flex items-center justify-between">
+
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-yellow-700">
+                Questions & Answers
+              </p>
+
+              <h2 className="mt-1 text-2xl font-bold text-[#4b3415] md:text-3xl">
+                {categoryName} Fatwas
               </h2>
+            </div>
 
-              <div
+            <span className="text-sm text-gray-500">
+              {questions.length} Questions
+            </span>
+
+          </div>
+
+          {questions.length > 0 ? (
+
+            <div className="space-y-4">
+
+              {questions.map((item) => {
+
+                const question =
+                  item?.question ||
+                  item?.englishQuestion ||
+                  item?.enQuestion ||
+                  item?.questionEn ||
+                  "";
+
+                const questionSlug =
+                  item?.slug ||
+                  item?._id;
+
+                if (!question || !questionSlug) {
+                  return null;
+                }
+
+                return (
+                  <Link
+                    key={item?._id || questionSlug}
+                    href={`/en/fatawa/${encodeURIComponent(
+                      questionSlug
+                    )}`}
+                    className="
+                      group
+                      block
+                      rounded-xl
+                      border
+                      border-yellow-200
+                      bg-white
+                      p-5
+                      shadow-sm
+                      transition-all
+                      duration-200
+                      hover:-translate-y-0.5
+                      hover:border-yellow-500
+                      hover:shadow-md
+                    "
+                  >
+
+                    <h3
+                      className="
+                        text-base
+                        font-semibold
+                        leading-7
+                        text-gray-800
+                        transition
+                        group-hover:text-[#5a421c]
+                        md:text-lg
+                      "
+                    >
+                      {question}
+                    </h3>
+
+                    <span
+                      className="
+                        mt-3
+                        inline-block
+                        text-sm
+                        font-semibold
+                        text-yellow-700
+                      "
+                    >
+                      Read Fatwa →
+                    </span>
+
+                  </Link>
+                );
+              })}
+
+            </div>
+
+          ) : (
+
+            <div className="rounded-xl border border-yellow-200 bg-white p-10 text-center">
+
+              <h3 className="text-xl font-semibold text-gray-800">
+                No Questions Found
+              </h3>
+
+              <p className="mt-2 text-gray-500">
+                There are currently no English questions available
+                in this category.
+              </p>
+
+              <Link
+                href="/en/fatawa"
                 className="
                   mt-5
-                  text-gray-700
-                  leading-8
-                  prose
-                  prose-lg
-                  max-w-none
-                  prose-headings:text-[#3b2f2f]
-                  prose-a:text-yellow-700
+                  inline-block
+                  rounded-lg
+                  bg-[#3b2f2f]
+                  px-5
+                  py-3
+                  font-semibold
+                  text-yellow-200
+                  transition
+                  hover:bg-[#4a3a3a]
                 "
-                dangerouslySetInnerHTML={{
-                  __html: answer,
-                }}
-              />
+              >
+                Browse All Fatwas
+              </Link>
 
             </div>
+
           )}
 
-          {/* REFERENCES */}
+        </section>
 
-          {(hawala1 || hawala2 || hawala3) && (
-            <div className="mt-10 border-t border-gray-200 pt-8">
-
-              <h2 className="text-xl md:text-2xl font-bold text-[#3b2f2f]">
-                References
-              </h2>
-
-              <div className="mt-5 space-y-3 text-gray-600 leading-7">
-
-                {hawala1 && (
-                  <p>{hawala1}</p>
-                )}
-
-                {hawala2 && (
-                  <p>{hawala2}</p>
-                )}
-
-                {hawala3 && (
-                  <p>{hawala3}</p>
-                )}
-
-              </div>
-
-            </div>
-          )}
-
-        </div>
-
-      </article>
+      </div>
 
     </main>
   );
 }
+
