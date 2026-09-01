@@ -488,47 +488,47 @@ export default function EnglishHomePage() {
 
           <div className="space-y-3">
 
-            {filteredQuestions.length > 0 ? (
+           {filteredQuestions.length > 0 ? (
 
-              filteredQuestions.map((item) => {
+  filteredQuestions.slice(0, 5).map((item) => {
 
-                const question = getQuestion(item);
+    const question = getQuestion(item);
 
-                return (
-                  <Link
-                    key={item._id}
-                    href={`/en/fatawa/${encodeURIComponent(item.slug)}`}
-                    className="
-                      block
-                      rounded-2xl
-                      border
-                      border-yellow-200
-                      bg-white
-                      p-5
-                      shadow-sm
-                      transition
-                      hover:border-yellow-500
-                      hover:shadow-md
-                    "
-                  >
-                    <h3 className="font-semibold leading-7 text-gray-800">
-                      {question}
-                    </h3>
+    return (
+      <Link
+        key={item._id}
+        href={`/en/fatawa/${encodeURIComponent(item.slug)}`}
+        className="
+          block
+          rounded-2xl
+          border
+          border-yellow-200
+          bg-white
+          p-5
+          shadow-sm
+          transition
+          hover:border-yellow-500
+          hover:shadow-md
+        "
+      >
+        <h3 className="font-semibold leading-7 text-gray-800">
+          {question}
+        </h3>
 
-                    <span className="mt-2 inline-block text-sm font-semibold text-yellow-700">
-                      Read Fatwa →
-                    </span>
-                  </Link>
-                );
-              })
+        <span className="mt-2 inline-block text-sm font-semibold text-yellow-700">
+          Read Fatwa →
+        </span>
+      </Link>
+    );
+  })
 
-            ) : (
+) : (
 
-              <p className="py-5 text-center text-gray-500">
-                No English questions found.
-              </p>
+  <p className="py-5 text-center text-gray-500">
+    No English questions found.
+  </p>
 
-            )}
+)}
 
           </div>
 
