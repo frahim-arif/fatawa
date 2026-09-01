@@ -245,50 +245,50 @@ export default async function BanglaFatwaDetailPage({
 
             {/* REFERENCES */}
 
-            {(hawala1 || hawala2 || hawala3) && (
-              <section className="mt-10 border-t border-yellow-200 pt-8">
+            
+{(hawala1 || hawala2 || hawala3) && (
+  <div className="mt-10 border-t border-gray-200 pt-8">
 
-                <h2 className="mb-5 text-xl font-bold text-[#4b3415] md:text-2xl">
-                  তথ্যসূত্র
-                </h2>
+    <h2 className="text-xl font-bold text-[#3b2f2f] md:text-2xl">
+      তথ্যসূত্র
+    </h2>
 
-                <div
-                  className="
-                    space-y-3
-                    leading-7
-                    text-gray-600
-                  "
-                  dir="ltr"
-                >
+    <div
+      className="mt-5 space-y-4 text-gray-600"
+      dir="ltr"
+    >
 
-                  {hawala1 && (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: hawala1,
-                      }}
-                    />
-                  )}
+      {hawala1 && (
+        <div
+          className="text-right text-lg leading-[2.2]"
+          dangerouslySetInnerHTML={{
+            __html: hawala1,
+          }}
+        />
+      )}
 
-                  {hawala2 && (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: hawala2,
-                      }}
-                    />
-                  )}
+      {hawala2 && (
+        <div
+          className="text-right text-lg leading-[2.2]"
+          dangerouslySetInnerHTML={{
+            __html: hawala2,
+          }}
+        />
+      )}
 
-                  {hawala3 && (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: hawala3,
-                      }}
-                    />
-                  )}
+      {hawala3 && (
+        <div
+          className="text-right text-lg leading-[2.2]"
+          dangerouslySetInnerHTML={{
+            __html: hawala3,
+          }}
+        />
+      )}
 
-                </div>
+    </div>
+  </div>
+)}
 
-              </section>
-            )}
 
           </div>
 
