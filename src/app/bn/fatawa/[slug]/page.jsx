@@ -246,6 +246,7 @@ export default async function BanglaFatwaDetailPage({
             {/* REFERENCES */}
 
             
+
 {(hawala1 || hawala2 || hawala3) && (
   <div className="mt-10 border-t border-gray-200 pt-8">
 
@@ -253,14 +254,12 @@ export default async function BanglaFatwaDetailPage({
       তথ্যসূত্র
     </h2>
 
-    <div
-      className="mt-5 space-y-4 text-gray-600"
-      dir="ltr"
-    >
+    <div className="mt-5 space-y-4 text-gray-600">
 
       {hawala1 && (
         <div
-          className="text-right text-lg leading-[2.2]"
+          dir="rtl"
+          className="font-amiri text-right text-lg leading-[2.2]"
           dangerouslySetInnerHTML={{
             __html: hawala1,
           }}
@@ -269,7 +268,8 @@ export default async function BanglaFatwaDetailPage({
 
       {hawala2 && (
         <div
-          className="text-right text-lg leading-[2.2]"
+          dir="rtl"
+          className="font-amiri text-right text-lg leading-[2.2]"
           dangerouslySetInnerHTML={{
             __html: hawala2,
           }}
@@ -278,7 +278,8 @@ export default async function BanglaFatwaDetailPage({
 
       {hawala3 && (
         <div
-          className="text-right text-lg leading-[2.2]"
+          dir="rtl"
+          className="font-amiri text-right text-lg leading-[2.2]"
           dangerouslySetInnerHTML={{
             __html: hawala3,
           }}
@@ -288,6 +289,8 @@ export default async function BanglaFatwaDetailPage({
     </div>
   </div>
 )}
+
+
 
 
           </div>
