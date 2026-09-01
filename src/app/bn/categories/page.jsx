@@ -9,22 +9,29 @@ const backend = "https://f-backend-vdi1.onrender.com/api";
 
 async function getCategories() {
   try {
-    const res = await fetch(
-      `${backend}/bn/categories`,
-      {
-        next: {
-          revalidate: 60,
-        },
-      }
-    );
+    const res = await fetch(`${backend}/bn/categories`, {
+      next: {
+        revalidate: 60,
+      },
+    });
 
     if (!res.ok) {
+      console.error(
+        "Bangla categories API error:",
+        res.status
+      );
+
       return [];
     }
 
     const data = await res.json();
 
     if (!data.success) {
+      console.error(
+        "Bangla categories API failed:",
+        data.message
+      );
+
       return [];
     }
 
@@ -40,77 +47,46 @@ async function getCategories() {
 }
 
 // =====================================================
-// GET BANGLA QUESTIONS
-// =====================================================
-
-async function getQuestions() {
-  try {
-    const res = await fetch(
-      `${backend}/bn/questions?limit=20&skip=0`,
-      {
-        next: {
-          revalidate: 60,
-        },
-      }
-    );
-
-    if (!res.ok) {
-      return [];
-    }
-
-    const data = await res.json();
-
-    if (!data.success) {
-      return [];
-    }
-
-    return data.data || [];
-  } catch (error) {
-    console.error(
-      "Bangla questions fetch error:",
-      error
-    );
-
-    return [];
-  }
-}
-
-// =====================================================
 // SEO
 // =====================================================
 
 export const metadata = {
   title:
-    "মাসলাকে দেওবন্দ | বাংলা ইসলামী ফতোয়া ও প্রশ্নোত্তর",
+    "ইসলামী বিষয়সমূহ | বাংলা ইসলামী ফতোয়া | মাসলাকে দেওবন্দ",
 
   description:
-    "কুরআন ও সুন্নাহর আলোকে বাংলা ভাষায় প্রামাণিক ইসলামী ফতোয়া, প্রশ্নোত্তর ও ইসলামী বিষয়সমূহ পড়ুন।",
+    "কুরআন ও সুন্নাহর আলোকে নামাজ, রোজা, যাকাত, হজ, নিকাহসহ বিভিন্ন ইসলামী বিষয়ের বাংলা ফতোয়া ও প্রশ্নোত্তর পড়ুন।",
 
   alternates: {
     canonical:
-      "https://www.maslakedeoband.in/bn",
+      "https://www.maslakedeoband.in/bn/categories",
 
     languages: {
       ur:
-        "https://www.maslakedeoband.in",
+        "https://www.maslakedeoband.in/categories",
 
       en:
-        "https://www.maslakedeoband.in/en",
+        "https://www.maslakedeoband.in/en/categories",
 
       bn:
-        "https://www.maslakedeoband.in/bn",
+        "https://www.maslakedeoband.in/bn/categories",
     },
+  },
+
+  robots: {
+    index: true,
+    follow: true,
   },
 
   openGraph: {
     title:
-      "মাসলাকে দেওবন্দ | বাংলা ইসলামী ফতোয়া",
+      "ইসলামী বিষয়সমূহ | বাংলা ইসলামী ফতোয়া | মাসলাকে দেওবন্দ",
 
     description:
-      "কুরআন ও সুন্নাহর আলোকে বাংলা ভাষায় প্রামাণিক ইসলামী ফতোয়া ও প্রশ্নোত্তর।",
+      "কুরআন ও সুন্নাহর আলোকে বিভিন্ন ইসলামী বিষয়ের বাংলা ফতোয়া ও প্রশ্নোত্তর।",
 
     url:
-      "https://www.maslakedeoband.in/bn",
+      "https://www.maslakedeoband.in/bn/categories",
 
     siteName:
       "Maslak-e-Deoband",
@@ -121,21 +97,24 @@ export const metadata = {
     locale:
       "bn_BD",
   },
+
+  twitter: {
+    card: "summary",
+
+    title:
+      "ইসলামী বিষয়সমূহ | বাংলা ইসলামী ফতোয়া",
+
+    description:
+      "কুরআন ও সুন্নাহর আলোকে বিভিন্ন ইসলামী বিষয়ের বাংলা ফতোয়া ও প্রশ্নোত্তর।",
+  },
 };
 
 // =====================================================
 // PAGE
 // =====================================================
 
-export default async function BanglaHomePage() {
-
-  const [
-    categories,
-    questions,
-  ] = await Promise.all([
-    getCategories(),
-    getQuestions(),
-  ]);
+export default async function BanglaCategoriesPage() {
+  const categories = await getCategories();
 
   return (
     <main className="min-h-screen bg-[#f7f3e8]">
@@ -148,14 +127,27 @@ export default async function BanglaHomePage() {
         className="
           relative
           overflow-hidden
-          bg-[#3b2f2f]
           px-4
-          py-16
+          py-14
           md:py-20
         "
+        style={{
+          backgroundImage:
+            "url('/images/ramadan_15_03_2022_1.jpg')",
+
+          backgroundSize: "cover",
+
+          backgroundPosition: "center",
+        }}
       >
 
-        <div className="mx-auto max-w-6xl text-center">
+        {/* OVERLAY */}
+
+        <div className="absolute inset-0 bg-black/60" />
+
+        {/* CONTENT */}
+
+        <div className="relative mx-auto max-w-6xl text-center">
 
           <p className="mb-3 text-sm font-semibold text-yellow-300 md:text-base">
             মাসলাকে দেওবন্দ
@@ -170,7 +162,7 @@ export default async function BanglaHomePage() {
               md:text-5xl
             "
           >
-            বাংলা ইসলামী ফতোয়া
+            ইসলামী বিষয়সমূহ
           </h1>
 
           <p
@@ -184,48 +176,9 @@ export default async function BanglaHomePage() {
               md:text-lg
             "
           >
-            কুরআন ও সুন্নাহর আলোকে প্রামাণিক
-            ইসলামী প্রশ্ন ও উত্তর
+            ইসলামী বিষয় অনুযায়ী বাংলা প্রশ্ন,
+            উত্তর ও ফতোয়া পড়ুন
           </p>
-
-          {/* BUTTONS */}
-
-          <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
-
-            <Link
-              href="/bn/fatawa"
-              className="
-                rounded-xl
-                bg-yellow-500
-                px-6
-                py-3
-                font-bold
-                text-[#3b2f2f]
-                transition
-                hover:bg-yellow-400
-              "
-            >
-              সকল ফতোয়া দেখুন
-            </Link>
-
-            <Link
-              href="/bn/categories"
-              className="
-                rounded-xl
-                border
-                border-yellow-300
-                px-6
-                py-3
-                font-bold
-                text-yellow-200
-                transition
-                hover:bg-white/10
-              "
-            >
-              ইসলামী বিষয়সমূহ
-            </Link>
-
-          </div>
 
         </div>
 
@@ -235,255 +188,224 @@ export default async function BanglaHomePage() {
       {/* CONTENT */}
       {/* ================================================= */}
 
-      <section className="mx-auto max-w-6xl px-4 py-10">
+      <section
+        className="
+          mx-auto
+          max-w-6xl
+          px-4
+          py-10
+          md:py-12
+        "
+      >
+
+        {/* ================================================= */}
+        {/* HEADER */}
+        {/* ================================================= */}
+
+        <div
+          className="
+            mb-7
+            flex
+            items-center
+            justify-between
+            gap-4
+          "
+        >
+
+          <div>
+
+            <h2
+              className="
+                text-2xl
+                font-bold
+                text-[#4b3415]
+                md:text-3xl
+              "
+            >
+              বিষয়সমূহ
+            </h2>
+
+            <p className="mt-1 text-sm text-gray-500">
+              আপনার প্রয়োজনীয় ইসলামী বিষয় নির্বাচন করুন
+            </p>
+
+          </div>
+
+          <Link
+            href="/bn"
+            className="
+              shrink-0
+              rounded-lg
+              border
+              border-yellow-300
+              bg-white
+              px-4
+              py-2
+              text-sm
+              font-semibold
+              text-yellow-700
+              transition
+              hover:bg-yellow-50
+            "
+          >
+            হোম →
+          </Link>
+
+        </div>
 
         {/* ================================================= */}
         {/* CATEGORIES */}
         {/* ================================================= */}
 
-        <div className="mb-10">
+        {categories.length > 0 ? (
 
-          <div className="mb-5 flex items-center justify-between gap-3">
+          <div
+            className="
+              grid
+              grid-cols-2
+              gap-4
+              sm:grid-cols-3
+              md:grid-cols-4
+            "
+          >
 
-            <h2
-              className="
-                text-2xl
-                font-bold
-                text-[#4b3415]
-                md:text-3xl
-              "
-            >
-              ইসলামী বিষয়সমূহ
-            </h2>
+            {categories.map((category) => {
 
-            <Link
-              href="/bn/categories"
-              className="
-                shrink-0
-                text-sm
-                font-semibold
-                text-yellow-700
-                hover:text-yellow-900
-              "
-            >
-              সব দেখুন →
-            </Link>
+              const categoryName =
+                category?.name || "ইসলামী বিষয়";
 
-          </div>
+              const categorySlug =
+                category?.slug || category?._id;
 
-          {categories.length > 0 ? (
+              return (
 
-            <div
-              className="
-                grid
-                grid-cols-2
-                gap-4
-                md:grid-cols-4
-              "
-            >
+                <Link
+                  key={category._id}
+                  href={`/bn/categories/${encodeURIComponent(
+                    categorySlug
+                  )}`}
+                  className="
+                    group
+                    flex
+                    min-h-[110px]
+                    items-center
+                    justify-center
+                    rounded-2xl
+                    border
+                    border-[#c8b27a]
+                    bg-gradient-to-b
+                    from-[#f8f3e3]
+                    via-[#e8d7aa]
+                    to-[#c9ab63]
+                    px-4
+                    py-5
+                    text-center
+                    shadow-md
+                    transition
+                    duration-200
+                    hover:-translate-y-1
+                    hover:shadow-xl
+                  "
+                >
 
-              {categories
-                .slice(0, 8)
-                .map((category) => (
+                  <div>
 
-                  <Link
-                    key={category._id}
-                    href={`/bn/categories/${encodeURIComponent(
-                      category.slug
-                    )}`}
-                    className="
-                      flex
-                      min-h-[100px]
-                      items-center
-                      justify-center
-                      rounded-2xl
-                      border
-                      border-[#c8b27a]
-                      bg-gradient-to-b
-                      from-[#f6f0dd]
-                      via-[#e6d4a3]
-                      to-[#c9ab63]
-                      px-4
-                      text-center
-                      font-bold
-                      text-[#4b3415]
-                      shadow-md
-                      transition
-                      hover:scale-[1.02]
-                      hover:shadow-lg
-                    "
-                  >
-                    {category.name}
-                  </Link>
-
-                ))}
-
-            </div>
-
-          ) : (
-
-            <div className="rounded-xl bg-white p-8 text-center shadow-sm">
-
-              <p className="text-gray-500">
-                কোনো বিষয় পাওয়া যায়নি।
-              </p>
-
-            </div>
-
-          )}
-
-        </div>
-
-        {/* ================================================= */}
-        {/* LATEST FATWAS */}
-        {/* ================================================= */}
-
-        <div>
-
-          <div className="mb-5 flex items-center justify-between gap-3">
-
-            <h2
-              className="
-                text-2xl
-                font-bold
-                text-[#4b3415]
-                md:text-3xl
-              "
-            >
-              সর্বশেষ ফতোয়া
-            </h2>
-
-            <Link
-              href="/bn/fatawa"
-              className="
-                shrink-0
-                text-sm
-                font-semibold
-                text-yellow-700
-                hover:text-yellow-900
-              "
-            >
-              সব ফতোয়া →
-            </Link>
-
-          </div>
-
-          {questions.length > 0 ? (
-
-            <div className="space-y-3">
-
-              {questions.map((item) => {
-
-                const question =
-                  item.question || "";
-
-                const slug =
-                  item.slug || item._id;
-
-                return (
-
-                  <Link
-                    key={item._id}
-                    href={`/bn/fatawa/${encodeURIComponent(
-                      slug
-                    )}`}
-                    className="
-                      block
-                      rounded-xl
-                      border
-                      border-yellow-200
-                      bg-white
-                      p-5
-                      shadow-sm
-                      transition
-                      hover:-translate-y-[1px]
-                      hover:border-yellow-500
-                      hover:shadow-md
-                    "
-                  >
-
-                    <h3
+                    <div
                       className="
-                        text-lg
-                        font-semibold
-                        leading-8
-                        text-[#3b2f2f]
-                        md:text-xl
+                        text-base
+                        font-bold
+                        leading-7
+                        text-[#4b3415]
+                        transition
+                        group-hover:text-[#2f2418]
+                        md:text-lg
                       "
                     >
-                      {question}
-                    </h3>
-
-                    <div className="mt-3 flex items-center justify-between">
-
-                      <span
-                        className="
-                          text-sm
-                          font-semibold
-                          text-yellow-700
-                        "
-                      >
-                        ফতোয়া পড়ুন →
-                      </span>
-
-                      {item.category?.name && (
-                        <span
-                          className="
-                            rounded-full
-                            bg-[#f7f3e8]
-                            px-3
-                            py-1
-                            text-xs
-                            text-gray-600
-                          "
-                        >
-                          {item.category.name}
-                        </span>
-                      )}
-
+                      {categoryName}
                     </div>
 
-                  </Link>
+                    <div
+                      className="
+                        mt-2
+                        text-xs
+                        font-semibold
+                        text-[#75593f]
+                        opacity-80
+                      "
+                    >
+                      ফতোয়া পড়ুন →
+                    </div>
 
-                );
-              })}
+                  </div>
 
+                </Link>
+
+              );
+            })}
+
+          </div>
+
+        ) : (
+
+          /* ================================================= */
+          /* EMPTY STATE */
+          /* ================================================= */
+
+          <div
+            className="
+              rounded-2xl
+              border
+              border-yellow-200
+              bg-white
+              p-10
+              text-center
+              shadow-sm
+            "
+          >
+
+            <div className="mb-4 text-4xl">
+              📚
             </div>
 
-          ) : (
-
-            <div
+            <h3
               className="
-                rounded-2xl
-                border
-                border-yellow-200
-                bg-white
-                p-10
-                text-center
-                shadow-sm
+                text-xl
+                font-bold
+                text-[#3b2f2f]
               "
             >
+              কোনো ইসলামী বিষয় পাওয়া যায়নি
+            </h3>
 
-              <div className="mb-4 text-4xl">
-                📚
-              </div>
+            <p className="mt-2 text-gray-500">
+              বর্তমানে কোনো বাংলা ইসলামী বিষয় উপলব্ধ নেই।
+            </p>
 
-              <h3 className="text-xl font-bold text-[#3b2f2f]">
-                কোনো বাংলা ফতোয়া পাওয়া যায়নি
-              </h3>
+            <Link
+              href="/bn"
+              className="
+                mt-5
+                inline-block
+                rounded-lg
+                bg-yellow-600
+                px-5
+                py-2.5
+                font-semibold
+                text-white
+                transition
+                hover:bg-yellow-700
+              "
+            >
+              বাংলা হোমে ফিরে যান
+            </Link>
 
-              <p className="mt-2 text-gray-500">
-                শীঘ্রই এখানে বাংলা ফতোয়া প্রকাশ করা হবে।
-              </p>
+          </div>
 
-            </div>
-
-          )}
-
-        </div>
+        )}
 
       </section>
 
     </main>
   );
+}
 
