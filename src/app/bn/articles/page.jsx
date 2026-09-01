@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -13,26 +12,78 @@ export default function BanglaArticlesPage() {
   const [loading, setLoading] = useState(true);
 
   // =========================================
-  // FETCH BANGLA ARTICLES
+  // GET BANGLA TITLE
+  // =========================================
+  const getBanglaTitle = (item) => {
+    return (
+      item?.banglaTitle ||
+      item?.bnTitle ||
+      item?.titleBn ||
+      ""
+    );
+  };
+
+  // =========================================
+  // GET BANGLA CONTENT
+  // =========================================
+  const getBanglaContent = (item) => {
+    return (
+      item?.banglaContent ||
+      item?.bnContent ||
+      item?.contentBn ||
+      ""
+    );
+  };
+
+  // =========================================
+  // FETCH ARTICLES
   // =========================================
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const res = await fetch(`${backend}/majameen`);
+        setLoading(true);
+
+        const res = await fetch(
+          `${backend}/majameen`,
+          {
+            cache: "no-store",
+          }
+        );
 
         if (!res.ok) {
-          throw new Error("Failed to fetch articles");
+          throw new Error(
+            `Articles API error: ${res.status}`
+          );
         }
 
         const data = await res.json();
 
-        if (data.success && Array.isArray(data.data)) {
-          // শুধুমাত্র যেসব article-এ Bangla title আছে
-          const banglaArticles = data.data.filter(
-            (item) =>
-              item.banglaTitle ||
-              item.bnTitle ||
-              item.titleBn
+        console.log(
+          "BANGLA ARTICLES API RESPONSE:",
+          data
+        );
+
+        if (
+          data.success &&
+          Array.isArray(data.data)
+        ) {
+          const banglaArticles =
+            data.data.filter((item) => {
+              const title =
+                getBanglaTitle(item);
+
+              const content =
+                getBanglaContent(item);
+
+              return (
+                title.trim() &&
+                content.trim()
+              );
+            });
+
+          console.log(
+            "BANGLA ARTICLES:",
+            banglaArticles
           );
 
           setArticles(banglaArticles);
@@ -40,7 +91,11 @@ export default function BanglaArticlesPage() {
           setArticles([]);
         }
       } catch (error) {
-        console.error("Bangla articles fetch error:", error);
+        console.error(
+          "Bangla articles fetch error:",
+          error
+        );
+
         setArticles([]);
       } finally {
         setLoading(false);
@@ -51,31 +106,19 @@ export default function BanglaArticlesPage() {
   }, []);
 
   // =========================================
-  // BANGLA ARTICLE TITLE
-  // =========================================
-  const getBanglaTitle = (item) => {
-    return (
-      item.banglaTitle ||
-      item.bnTitle ||
-      item.titleBn ||
-      null
-    );
-  };
-
-  // =========================================
   // SEARCH
   // =========================================
-  const filteredArticles = articles.filter((item) => {
-    const title = getBanglaTitle(item);
+  const filteredArticles =
+    articles.filter((item) => {
+      const title =
+        getBanglaTitle(item);
 
-    if (!title) {
-      return false;
-    }
-
-    return title
-      .toLowerCase()
-      .includes(query.trim().toLowerCase());
-  });
+      return title
+        .toLowerCase()
+        .includes(
+          query.trim().toLowerCase()
+        );
+    });
 
   return (
     <main className="min-h-screen bg-[#f7f3e8]">
@@ -108,37 +151,37 @@ export default function BanglaArticlesPage() {
       ========================================= */}
       <section className="max-w-6xl mx-auto px-4 py-8 md:py-10">
 
-        {/* =========================================
-            SEARCH
-        ========================================= */}
+        {/* SEARCH */}
         <div className="max-w-3xl mx-auto mb-8">
 
-          <div className="
-            flex
-            items-center
-            bg-white
-            border
-            border-yellow-500
-            rounded-2xl
-            shadow-md
-            overflow-hidden
-            focus-within:ring-2
-            focus-within:ring-yellow-300
-          ">
+          <div
+            className="
+              flex
+              items-center
+              bg-white
+              border
+              border-yellow-500
+              rounded-2xl
+              shadow-md
+              overflow-hidden
+              focus-within:ring-2
+              focus-within:ring-yellow-300
+            "
+          >
 
-            <div className="px-4">
-
+            <div className="px-4 shrink-0">
               <Search
                 className="w-5 h-5 text-yellow-600"
                 aria-hidden="true"
               />
-
             </div>
 
             <input
               type="search"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) =>
+                setQuery(e.target.value)
+              }
               placeholder="প্রবন্ধ খুঁজুন..."
               aria-label="প্রবন্ধ খুঁজুন"
               className="
@@ -156,163 +199,171 @@ export default function BanglaArticlesPage() {
 
         </div>
 
-        {/* =========================================
-            HEADER
-        ========================================= */}
+        {/* HEADER */}
         <div className="flex items-center justify-between gap-3 mb-5">
 
           <h2 className="text-2xl md:text-3xl font-bold text-[#4b3415]">
             ইসলামী প্রবন্ধসমূহ
           </h2>
 
-          <span className="text-sm text-gray-500 whitespace-nowrap">
-            {query
-              ? `${filteredArticles.length} টি পাওয়া গেছে`
-              : `${articles.length} টি প্রবন্ধ`}
-          </span>
+          {!loading && (
+            <span className="text-sm text-gray-500 whitespace-nowrap">
+              {query
+                ? `${filteredArticles.length} টি পাওয়া গেছে`
+                : `${articles.length} টি প্রবন্ধ`}
+            </span>
+          )}
 
         </div>
 
-        {/* =========================================
-            LOADING
-        ========================================= */}
+        {/* LOADING */}
         {loading && (
-
-          <div className="
-            bg-white
-            rounded-2xl
-            border
-            border-yellow-200
-            p-10
-            text-center
-            shadow-sm
-          ">
-
+          <div
+            className="
+              bg-white
+              rounded-2xl
+              border
+              border-yellow-200
+              p-10
+              text-center
+              shadow-sm
+            "
+          >
             <p className="text-gray-500">
               প্রবন্ধ লোড হচ্ছে...
             </p>
-
           </div>
-
         )}
 
-        {/* =========================================
-            ARTICLES
-        ========================================= */}
-        {!loading && filteredArticles.length > 0 && (
+        {/* ARTICLES */}
+        {!loading &&
+          filteredArticles.length > 0 && (
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
 
-            {filteredArticles.map((item) => {
+              {filteredArticles.map((item) => {
 
-              const title = getBanglaTitle(item);
+                const title =
+                  getBanglaTitle(item);
 
-              const slug = item.slug || item._id;
+                const slug =
+                  item?.slug ||
+                  item?._id;
 
-              return (
-                <Link
-                  key={item._id}
-                  href={`/bn/articles/${encodeURIComponent(slug)}`}
-                  className="
-                    group
-                    block
-                    bg-white
-                    rounded-2xl
-                    border
-                    border-yellow-200
-                    p-5
-                    shadow-sm
-                    hover:border-yellow-500
-                    hover:shadow-lg
-                    hover:-translate-y-1
-                    transition-all
-                    duration-200
-                  "
-                >
+                return (
+                  <Link
+                    key={item._id}
+                    href={`/bn/articles/${encodeURIComponent(
+                      slug
+                    )}`}
+                    className="
+                      group
+                      block
+                      bg-white
+                      rounded-2xl
+                      border
+                      border-yellow-200
+                      p-5
+                      shadow-sm
+                      hover:border-yellow-500
+                      hover:shadow-lg
+                      hover:-translate-y-1
+                      transition-all
+                      duration-200
+                    "
+                  >
 
-                  <div className="flex flex-col h-full">
+                    <div className="flex flex-col h-full">
 
-                    <h3 className="
-                      text-lg
-                      md:text-xl
-                      font-bold
-                      text-[#3b2f2f]
-                      leading-8
-                      group-hover:text-yellow-700
-                      transition-colors
-                    ">
-                      {title}
-                    </h3>
+                      <h3
+                        className="
+                          text-lg
+                          md:text-xl
+                          font-bold
+                          text-[#3b2f2f]
+                          leading-8
+                          group-hover:text-yellow-700
+                          transition-colors
+                        "
+                      >
+                        {title}
+                      </h3>
 
-                    <div className="mt-4 text-sm font-semibold text-yellow-700">
-                      প্রবন্ধ পড়ুন →
+                      <div
+                        className="
+                          mt-4
+                          text-sm
+                          font-semibold
+                          text-yellow-700
+                        "
+                      >
+                        প্রবন্ধ পড়ুন →
+                      </div>
+
                     </div>
 
-                  </div>
+                  </Link>
+                );
+              })}
 
-                </Link>
-              );
-            })}
-
-          </div>
-
-        )}
-
-        {/* =========================================
-            NO RESULT
-        ========================================= */}
-        {!loading && filteredArticles.length === 0 && (
-
-          <div className="
-            bg-white
-            rounded-2xl
-            border
-            border-yellow-200
-            p-10
-            text-center
-            shadow-sm
-          ">
-
-            <div className="text-4xl mb-4">
-              📚
             </div>
+          )}
 
-            <h3 className="text-xl font-bold text-[#3b2f2f]">
-              কোনো প্রবন্ধ পাওয়া যায়নি
-            </h3>
+        {/* NO RESULT */}
+        {!loading &&
+          filteredArticles.length === 0 && (
 
-            <p className="mt-2 text-gray-500">
-              {query
-                ? "আপনার অনুসন্ধানের সাথে মিলছে এমন কোনো প্রবন্ধ পাওয়া যায়নি।"
-                : "এখনো কোনো বাংলা প্রবন্ধ পাওয়া যায়নি।"}
-            </p>
+            <div
+              className="
+                bg-white
+                rounded-2xl
+                border
+                border-yellow-200
+                p-10
+                text-center
+                shadow-sm
+              "
+            >
 
-            {query && (
-              <button
-                onClick={() => setQuery("")}
-                className="
-                  mt-5
-                  px-5
-                  py-2.5
-                  rounded-xl
-                  bg-[#3b2f2f]
-                  text-yellow-200
-                  font-semibold
-                  hover:bg-[#4a3a3a]
-                  transition
-                "
-              >
-                অনুসন্ধান মুছে দিন
-              </button>
-            )}
+              <div className="text-4xl mb-4">
+                📚
+              </div>
 
-          </div>
+              <h3 className="text-xl font-bold text-[#3b2f2f]">
+                কোনো প্রবন্ধ পাওয়া যায়নি
+              </h3>
 
-        )}
+              <p className="mt-2 text-gray-500">
+                {query
+                  ? "আপনার অনুসন্ধানের সাথে মিলছে এমন কোনো প্রবন্ধ পাওয়া যায়নি।"
+                  : "এখনো কোনো বাংলা প্রবন্ধ পাওয়া যায়নি।"}
+              </p>
+
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setQuery("")}
+                  className="
+                    mt-5
+                    px-5
+                    py-2.5
+                    rounded-xl
+                    bg-[#3b2f2f]
+                    text-yellow-200
+                    font-semibold
+                    hover:bg-[#4a3a3a]
+                    transition
+                  "
+                >
+                  অনুসন্ধান মুছে দিন
+                </button>
+              )}
+
+            </div>
+          )}
 
       </section>
 
     </main>
   );
 }
-
