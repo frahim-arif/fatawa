@@ -366,7 +366,7 @@ export default function EnglishHomePage() {
 
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
 
-              {englishCategories.slice(0, 8).map((category) => {
+              {englishCategories.slice(0, 10).map((category) => {
 
                 const name = getCategoryName(category);
                 const slug = getCategorySlug(category);
