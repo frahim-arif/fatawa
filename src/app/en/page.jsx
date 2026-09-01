@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Search, Mic } from "lucide-react";
 
@@ -9,10 +9,15 @@ const backend = "https://f-backend-vdi1.onrender.com/api";
 
 export default function EnglishHomePage() {
   const [query, setQuery] = useState("");
+
   const [categories, setCategories] = useState([]);
   const [latestQuestions, setLatestQuestions] = useState([]);
   const [majameen, setMajameen] = useState([]);
   const [prayerTimes, setPrayerTimes] = useState(null);
+
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [questionsLoading, setQuestionsLoading] = useState(true);
+  const [articlesLoading, setArticlesLoading] = useState(true);
 
   // =========================================
   // FETCH ENGLISH CATEGORIES
@@ -20,6 +25,8 @@ export default function EnglishHomePage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        setCategoriesLoading(true);
+
         const res = await fetch(`${backend}/en/categories`, {
           cache: "no-store",
         });
@@ -30,6 +37,8 @@ export default function EnglishHomePage() {
 
         const data = await res.json();
 
+        console.log("English Categories:", data);
+
         if (data.success && Array.isArray(data.data)) {
           setCategories(data.data);
         } else {
@@ -38,6 +47,8 @@ export default function EnglishHomePage() {
       } catch (error) {
         console.error("English categories fetch error:", error);
         setCategories([]);
+      } finally {
+        setCategoriesLoading(false);
       }
     };
 
@@ -50,6 +61,8 @@ export default function EnglishHomePage() {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
+        setQuestionsLoading(true);
+
         const res = await fetch(
           `${backend}/en/questions?limit=5`,
           {
@@ -63,14 +76,18 @@ export default function EnglishHomePage() {
 
         const data = await res.json();
 
+        console.log("English Questions:", data);
+
         if (data.success && Array.isArray(data.data)) {
-          setLatestQuestions(data.data.slice(0, 5));
+          setLatestQuestions(data.data);
         } else {
           setLatestQuestions([]);
         }
       } catch (error) {
         console.error("English questions fetch error:", error);
         setLatestQuestions([]);
+      } finally {
+        setQuestionsLoading(false);
       }
     };
 
@@ -78,11 +95,13 @@ export default function EnglishHomePage() {
   }, []);
 
   // =========================================
-  // FETCH ARTICLES
+  // FETCH ENGLISH ARTICLES
   // =========================================
   useEffect(() => {
     const fetchArticles = async () => {
       try {
+        setArticlesLoading(true);
+
         const res = await fetch(`${backend}/majameen`, {
           cache: "no-store",
         });
@@ -93,14 +112,18 @@ export default function EnglishHomePage() {
 
         const data = await res.json();
 
+        console.log("Articles:", data);
+
         if (data.success && Array.isArray(data.data)) {
-          setMajameen(data.data.slice(0, 5));
+          setMajameen(data.data);
         } else {
           setMajameen([]);
         }
       } catch (error) {
         console.error("Articles fetch error:", error);
         setMajameen([]);
+      } finally {
+        setArticlesLoading(false);
       }
     };
 
@@ -143,7 +166,9 @@ export default function EnglishHomePage() {
       window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      alert("Voice search is not supported in this browser.");
+      alert(
+        "Voice search is not supported in this browser."
+      );
       return;
     }
 
@@ -154,56 +179,63 @@ export default function EnglishHomePage() {
     recognition.continuous = false;
 
     recognition.onresult = (event) => {
-      setQuery(event.results[0][0].transcript);
+      const text =
+        event.results[0][0].transcript;
+
+      setQuery(text);
     };
 
     recognition.onerror = (event) => {
-      console.error("Voice search error:", event.error);
+      console.error(
+        "Voice search error:",
+        event.error
+      );
     };
 
     recognition.start();
   };
 
   // =========================================
-  // GET ENGLISH QUESTION
+  // ENGLISH QUESTION
   // =========================================
   const getEnglishQuestion = (item) => {
     return (
+      item?.question ||
       item?.englishQuestion ||
       item?.enQuestion ||
-      item?.question ||
+      item?.questionEn ||
       ""
     );
   };
 
   // =========================================
-  // GET ENGLISH CATEGORY NAME
+  // ENGLISH CATEGORY NAME
   // =========================================
   const getEnglishCategory = (item) => {
     return (
-      item?.name ||
       item?.englishName ||
       item?.enName ||
       item?.nameEn ||
+      item?.name ||
       ""
     );
   };
 
   // =========================================
-  // GET ENGLISH CATEGORY SLUG
+  // ENGLISH CATEGORY SLUG
   // =========================================
   const getEnglishCategorySlug = (item) => {
     return (
-      item?.slug ||
       item?.englishSlug ||
       item?.enSlug ||
       item?.slugEn ||
+      item?.slug ||
       ""
     );
   };
 
   // =========================================
-  // GET ENGLISH ARTICLE TITLE
+  // ENGLISH ARTICLE TITLE
   // =========================================
   const getEnglishArticleTitle = (item) => {
     return (
@@ -215,44 +247,58 @@ export default function EnglishHomePage() {
   };
 
   // =========================================
-  // ENGLISH CATEGORIES
+  // CLEAN ENGLISH CATEGORIES
   // =========================================
-  const englishCategories = categories.filter((cat) => {
-    const name = getEnglishCategory(cat);
-    const slug = getEnglishCategorySlug(cat);
+  const englishCategories = useMemo(() => {
+    return categories.filter((cat) => {
+      const name = getEnglishCategory(cat);
+      const slug = getEnglishCategorySlug(cat);
 
-    return Boolean(name && slug);
-  });
+      return Boolean(name && slug);
+    });
+  }, [categories]);
 
   // =========================================
-  // FILTER QUESTIONS
+  // SEARCH QUESTIONS
   // =========================================
-  const filteredQuestions = latestQuestions.filter((item) => {
-    const question = getEnglishQuestion(item);
+  const filteredQuestions = useMemo(() => {
+    const search = query.trim().toLowerCase();
 
-    if (!question) {
-      return false;
+    if (!search) {
+      return latestQuestions;
     }
 
-    return question
-      .toLowerCase()
-      .includes(query.trim().toLowerCase());
-  });
+    return latestQuestions.filter((item) => {
+      const question =
+        getEnglishQuestion(item).toLowerCase();
+
+      return question.includes(search);
+    });
+  }, [latestQuestions, query]);
 
   // =========================================
-  // FILTER ARTICLES
+  // SEARCH ARTICLES
   // =========================================
-  const filteredArticles = majameen.filter((item) => {
-    const title = getEnglishArticleTitle(item);
+  const filteredArticles = useMemo(() => {
+    const search = query.trim().toLowerCase();
 
-    if (!title) {
-      return false;
+    const englishArticles = majameen.filter((item) => {
+      return Boolean(getEnglishArticleTitle(item));
+    });
+
+    if (!search) {
+      return englishArticles.slice(0, 5);
     }
 
-    return title
-      .toLowerCase()
-      .includes(query.trim().toLowerCase());
-  });
+    return englishArticles
+      .filter((item) => {
+        const title =
+          getEnglishArticleTitle(item).toLowerCase();
+
+        return title.includes(search);
+      })
+      .slice(0, 5);
+  }, [majameen, query]);
 
   return (
     <main className="min-h-screen bg-[#f7f3e8]">
@@ -261,7 +307,7 @@ export default function EnglishHomePage() {
           HERO
       ========================================= */}
       <section
-        className="relative overflow-hidden px-4 py-10"
+        className="relative overflow-hidden px-4 py-12 md:py-16"
         style={{
           backgroundImage:
             "url('/images/ramadan_15_03_2022_1.jpg')",
@@ -269,16 +315,23 @@ export default function EnglishHomePage() {
           backgroundPosition: "center",
         }}
       >
-        <div className="absolute inset-0 bg-black/55" />
+        <div className="absolute inset-0 bg-black/60" />
 
         <div className="relative mx-auto max-w-6xl text-center">
+
+          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-yellow-300">
+            Maslak-e-Deoband
+          </p>
+
           <h1 className="text-3xl font-bold text-yellow-300 md:text-5xl">
             Islamic Questions & Answers
           </h1>
 
-          <p className="mt-3 text-base text-yellow-100 md:text-lg">
-            Islamic knowledge based on the Quran and Sunnah
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-yellow-100 md:text-lg">
+            Find authentic Islamic answers based on the Quran,
+            Sunnah and authentic Islamic scholarship.
           </p>
+
         </div>
       </section>
 
@@ -286,100 +339,168 @@ export default function EnglishHomePage() {
           PRAYER TIMES
       ========================================= */}
       <div className="border-b-2 border-[#75593f] bg-black">
-        <div className="mx-auto max-w-6xl overflow-x-auto whitespace-nowrap px-3 py-2 text-center text-sm text-yellow-400 md:text-base">
-          {prayerTimes ? (
-            <>
-              Fajr: {prayerTimes.Fajr?.split(" ")[0]}
 
-              <span className="mx-3">|</span>
+        <div className="mx-auto max-w-6xl overflow-x-auto px-3 py-3 text-center text-sm text-yellow-400 md:text-base">
 
-              Dhuhr: {prayerTimes.Dhuhr?.split(" ")[0]}
+          <div className="min-w-max">
 
-              <span className="mx-3">|</span>
+            {prayerTimes ? (
+              <>
 
-              Asr: {prayerTimes.Asr?.split(" ")[0]}
+                <span>
+                  Fajr:{" "}
+                  {prayerTimes.Fajr?.split(" ")[0]}
+                </span>
 
-              <span className="mx-3">|</span>
+                <span className="mx-3 text-gray-500">
+                  |
+                </span>
 
-              Maghrib: {prayerTimes.Maghrib?.split(" ")[0]}
+                <span>
+                  Dhuhr:{" "}
+                  {prayerTimes.Dhuhr?.split(" ")[0]}
+                </span>
 
-              <span className="mx-3">|</span>
+                <span className="mx-3 text-gray-500">
+                  |
+                </span>
 
-              Isha: {prayerTimes.Isha?.split(" ")[0]}
-            </>
-          ) : (
-            "Loading prayer times..."
-          )}
+                <span>
+                  Asr:{" "}
+                  {prayerTimes.Asr?.split(" ")[0]}
+                </span>
+
+                <span className="mx-3 text-gray-500">
+                  |
+                </span>
+
+                <span>
+                  Maghrib:{" "}
+                  {prayerTimes.Maghrib?.split(" ")[0]}
+                </span>
+
+                <span className="mx-3 text-gray-500">
+                  |
+                </span>
+
+                <span>
+                  Isha:{" "}
+                  {prayerTimes.Isha?.split(" ")[0]}
+                </span>
+
+              </>
+            ) : (
+              "Loading prayer times..."
+            )}
+
+          </div>
+
         </div>
+
       </div>
 
-      {/* =========================================
-          MAIN
-      ========================================= */}
-      <div className="mx-auto max-w-6xl px-3 py-8">
+      <div className="mx-auto max-w-6xl px-3 py-8 md:px-4">
 
         {/* =========================================
             SEARCH
         ========================================= */}
-        <section className="mb-8">
-          <div className="flex items-center overflow-hidden rounded-2xl border border-yellow-600 bg-white shadow-md">
+        <section className="mb-10">
 
-            <div className="shrink-0 px-3">
-              <Search className="h-5 w-5 text-yellow-600" />
+          <div className="mx-auto max-w-3xl">
+
+            <div className="flex items-center overflow-hidden rounded-2xl border border-yellow-600 bg-white shadow-md">
+
+              <div className="px-4">
+                <Search className="h-5 w-5 text-yellow-600" />
+              </div>
+
+              <input
+                type="text"
+                value={query}
+                onChange={(e) =>
+                  setQuery(e.target.value)
+                }
+                placeholder="Search Islamic questions..."
+                className="
+                  w-full
+                  bg-transparent
+                  py-4
+                  text-gray-800
+                  outline-none
+                  placeholder:text-gray-400
+                "
+              />
+
+              <button
+                type="button"
+                onClick={startListening}
+                className="
+                  px-4
+                  py-4
+                  transition
+                  hover:bg-yellow-50
+                "
+                aria-label="Voice Search"
+              >
+                <Mic className="h-5 w-5 text-yellow-600" />
+              </button>
+
             </div>
 
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search Islamic questions..."
-              aria-label="Search Islamic questions"
-              className="
-                w-full
-                bg-transparent
-                py-3
-                text-gray-800
-                outline-none
-              "
-            />
-
-            <button
-              type="button"
-              onClick={startListening}
-              className="shrink-0 px-4"
-              aria-label="Voice Search"
-            >
-              <Mic className="h-5 w-5 text-yellow-600" />
-            </button>
-
           </div>
+
         </section>
 
         {/* =========================================
-            ENGLISH CATEGORIES
+            CATEGORIES
         ========================================= */}
-        <section className="mb-10">
+        <section className="mb-12">
 
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-[#4b3415]">
-              Categories
-            </h2>
+          <div className="mb-5 flex items-center justify-between">
+
+            <div>
+
+              <p className="text-xs font-semibold uppercase tracking-wider text-yellow-700">
+                Explore
+              </p>
+
+              <h2 className="mt-1 text-2xl font-bold text-[#4b3415] md:text-3xl">
+                Categories
+              </h2>
+
+            </div>
 
             <Link
               href="/en/categories"
-              className="font-semibold text-yellow-700 hover:text-yellow-800"
+              className="
+                text-sm
+                font-semibold
+                text-yellow-700
+                transition
+                hover:text-yellow-900
+              "
             >
               View All →
             </Link>
+
           </div>
 
-          {englishCategories.length > 0 ? (
+          {/* LOADING */}
+          {categoriesLoading && (
 
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            <div className="rounded-xl border border-yellow-200 bg-white p-8 text-center text-gray-500">
+              Loading categories...
+            </div>
 
-              {englishCategories
-                .slice(0, 10)
-                .map((cat) => {
+          )}
+
+          {/* CATEGORIES */}
+          {!categoriesLoading &&
+            englishCategories.length > 0 && (
+
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+
+                {englishCategories.map((cat) => {
 
                   const categoryName =
                     getEnglishCategory(cat);
@@ -387,13 +508,32 @@ export default function EnglishHomePage() {
                   const categorySlug =
                     getEnglishCategorySlug(cat);
 
+                  /*
+                    IMPORTANT:
+                    Har category apne hi slug par jayegi.
+                    
+                    Example:
+                    Modern Issues
+                    → /en/categories/modern-issues
+
+                    Namaz
+                    → /en/categories/namaz
+                  */
+
+                  const categoryHref =
+                    `/en/categories/${encodeURIComponent(
+                      categorySlug
+                    )}`;
+
                   return (
                     <Link
-                      key={cat._id}
-                      href={`/en/categories/${encodeURIComponent(
+                      key={
+                        cat?._id ||
                         categorySlug
-                      )}`}
+                      }
+                      href={categoryHref}
                       className="
+                        group
                         flex
                         min-h-[90px]
                         items-center
@@ -410,62 +550,121 @@ export default function EnglishHomePage() {
                         font-semibold
                         text-[#4b3415]
                         shadow-md
-                        transition
-                        hover:-translate-y-0.5
-                        hover:scale-[1.02]
+                        transition-all
+                        duration-200
+                        hover:-translate-y-1
+                        hover:border-yellow-600
                         hover:shadow-lg
                       "
                     >
-                      <span className="text-base leading-6 md:text-lg">
+
+                      <span className="
+                        text-base
+                        leading-6
+                        md:text-lg
+                      ">
                         {categoryName}
                       </span>
+
                     </Link>
                   );
                 })}
 
-            </div>
+              </div>
 
-          ) : (
+            )}
 
-            <div className="rounded-xl border border-yellow-200 bg-white p-6 text-center text-gray-500">
-              No English categories available.
-            </div>
+          {/* EMPTY */}
+          {!categoriesLoading &&
+            englishCategories.length === 0 && (
 
-          )}
+              <div className="rounded-xl border border-yellow-200 bg-white p-8 text-center text-gray-500">
+                No English categories available.
+              </div>
+
+            )}
 
         </section>
 
         {/* =========================================
             QUICK LINKS
         ========================================= */}
-        <section className="mb-10">
+        <section className="mb-12">
 
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
 
             <Link
               href="/en/fatawa"
-              className="rounded-xl bg-[#3b2f2f] py-4 text-center font-semibold text-yellow-200 transition hover:bg-[#4a3a3a]"
+              className="
+                rounded-xl
+                bg-[#3b2f2f]
+                px-3
+                py-4
+                text-center
+                font-semibold
+                text-yellow-200
+                shadow-sm
+                transition
+                hover:bg-[#4a3a3a]
+                hover:shadow-md
+              "
             >
               Fatwas
             </Link>
 
             <Link
               href="/en/articles"
-              className="rounded-xl bg-[#3b2f2f] py-4 text-center font-semibold text-yellow-200 transition hover:bg-[#4a3a3a]"
+              className="
+                rounded-xl
+                bg-[#3b2f2f]
+                px-3
+                py-4
+                text-center
+                font-semibold
+                text-yellow-200
+                shadow-sm
+                transition
+                hover:bg-[#4a3a3a]
+                hover:shadow-md
+              "
             >
               Articles
             </Link>
 
             <Link
               href="/en/categories"
-              className="rounded-xl bg-[#3b2f2f] py-4 text-center font-semibold text-yellow-200 transition hover:bg-[#4a3a3a]"
+              className="
+                rounded-xl
+                bg-[#3b2f2f]
+                px-3
+                py-4
+                text-center
+                font-semibold
+                text-yellow-200
+                shadow-sm
+                transition
+                hover:bg-[#4a3a3a]
+                hover:shadow-md
+              "
             >
               Categories
             </Link>
 
             <Link
               href="/ozan-shariah-calculator"
-              className="rounded-xl bg-[#3b2f2f] py-4 text-center font-semibold text-yellow-200 transition hover:bg-[#4a3a3a]"
+              className="
+                rounded-xl
+                bg-[#3b2f2f]
+                px-3
+                py-4
+                text-center
+                font-semibold
+                text-yellow-200
+                shadow-sm
+                transition
+                hover:bg-[#4a3a3a]
+                hover:shadow-md
+              "
             >
               Islamic Calculator
             </Link>
@@ -477,154 +676,242 @@ export default function EnglishHomePage() {
         {/* =========================================
             LATEST QUESTIONS
         ========================================= */}
-        <section className="mb-10">
+        <section className="mb-12">
 
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-5 flex items-center justify-between">
 
-            <h2 className="text-2xl font-bold text-[#4b3415]">
-              Latest Questions
-            </h2>
+            <div>
+
+              <p className="text-xs font-semibold uppercase tracking-wider text-yellow-700">
+                Recent
+              </p>
+
+              <h2 className="mt-1 text-2xl font-bold text-[#4b3415] md:text-3xl">
+                Latest Questions
+              </h2>
+
+            </div>
 
             <Link
               href="/en/fatawa"
-              className="font-semibold text-yellow-700 hover:text-yellow-800"
+              className="
+                text-sm
+                font-semibold
+                text-yellow-700
+                transition
+                hover:text-yellow-900
+              "
             >
               View All →
             </Link>
 
           </div>
 
-          <div className="space-y-3">
+          {questionsLoading ? (
 
-            {filteredQuestions.length > 0 ? (
+            <div className="rounded-xl border border-yellow-200 bg-white p-8 text-center text-gray-500">
+              Loading latest questions...
+            </div>
 
-              filteredQuestions.map((item) => {
+          ) : filteredQuestions.length > 0 ? (
+
+            <div className="space-y-3">
+
+              {filteredQuestions.map((item) => {
 
                 const question =
                   getEnglishQuestion(item);
 
+                const questionSlug =
+                  item?.slug || item?._id;
+
                 return (
                   <Link
-                    key={item._id}
+                    key={item?._id || questionSlug}
                     href={`/en/fatawa/${encodeURIComponent(
-                      item.slug || item._id
+                      questionSlug
                     )}`}
                     className="
+                      group
                       block
                       rounded-xl
                       border
                       border-yellow-200
                       bg-white
-                      p-4
+                      p-5
                       shadow-sm
                       transition
+                      hover:-translate-y-0.5
                       hover:border-yellow-500
                       hover:shadow-md
                     "
                   >
-                    <h3 className="font-semibold leading-7 text-gray-800">
+
+                    <h3 className="
+                      text-base
+                      font-semibold
+                      leading-7
+                      text-gray-800
+                      transition
+                      group-hover:text-[#5a421c]
+                      md:text-lg
+                    ">
                       {question}
                     </h3>
 
-                    <span className="mt-2 inline-block text-sm font-semibold text-yellow-700">
+                    <span className="
+                      mt-2
+                      inline-block
+                      text-sm
+                      font-semibold
+                      text-yellow-700
+                    ">
                       Read Fatwa →
                     </span>
+
                   </Link>
                 );
-              })
+              })}
 
-            ) : (
+            </div>
 
-              <div className="rounded-xl bg-white p-8 text-center">
-                <p className="text-gray-500">
-                  {query
-                    ? "No questions found."
-                    : "No English questions available yet."}
-                </p>
-              </div>
+          ) : (
 
-            )}
+            <div className="rounded-xl border border-yellow-200 bg-white p-8 text-center">
 
-          </div>
+              <p className="text-gray-500">
+                {query
+                  ? `No English questions found for "${query}".`
+                  : "No English questions available."}
+              </p>
+
+            </div>
+
+          )}
 
         </section>
 
         {/* =========================================
-            LATEST ARTICLES
+            ARTICLES
         ========================================= */}
         <section>
 
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-5 flex items-center justify-between">
 
-            <h2 className="text-2xl font-bold text-[#4b3415]">
-              Selected Articles
-            </h2>
+            <div>
+
+              <p className="text-xs font-semibold uppercase tracking-wider text-yellow-700">
+                Knowledge
+              </p>
+
+              <h2 className="mt-1 text-2xl font-bold text-[#4b3415] md:text-3xl">
+                Selected Articles
+              </h2>
+
+            </div>
 
             <Link
               href="/en/articles"
-              className="font-semibold text-yellow-700 hover:text-yellow-800"
+              className="
+                text-sm
+                font-semibold
+                text-yellow-700
+                transition
+                hover:text-yellow-900
+              "
             >
               View All →
             </Link>
 
           </div>
 
-          <div className="space-y-3">
+          {articlesLoading ? (
 
-            {filteredArticles.length > 0 ? (
+            <div className="rounded-xl border border-yellow-200 bg-white p-8 text-center text-gray-500">
+              Loading articles...
+            </div>
 
-              filteredArticles.map((item) => {
+          ) : filteredArticles.length > 0 ? (
 
-                const title =
+            <div className="space-y-3">
+
+              {filteredArticles.map((item) => {
+
+                const articleTitle =
                   getEnglishArticleTitle(item);
 
                 const articleSlug =
-                  item.englishSlug ||
-                  item.enSlug ||
-                  item.slug ||
-                  item._id;
+                  item?.englishSlug ||
+                  item?.enSlug ||
+                  item?.slugEn ||
+                  item?.slug ||
+                  item?._id;
 
                 return (
                   <Link
-                    key={item._id}
+                    key={item?._id || articleSlug}
                     href={`/en/articles/${encodeURIComponent(
                       articleSlug
                     )}`}
                     className="
+                      group
                       block
                       rounded-xl
                       border
                       border-yellow-200
                       bg-white
-                      p-4
-                      font-semibold
-                      text-gray-800
+                      p-5
                       shadow-sm
                       transition
+                      hover:-translate-y-0.5
                       hover:border-yellow-500
                       hover:shadow-md
                     "
                   >
-                    {title}
+
+                    <h3 className="
+                      font-semibold
+                      leading-7
+                      text-gray-800
+                      group-hover:text-[#5a421c]
+                    ">
+                      {articleTitle}
+                    </h3>
+
+                    <span className="
+                      mt-2
+                      inline-block
+                      text-sm
+                      font-semibold
+                      text-yellow-700
+                    ">
+                      Read Article →
+                    </span>
+
                   </Link>
                 );
-              })
+              })}
 
-            ) : (
+            </div>
 
-              <div className="rounded-xl bg-white p-8 text-center">
-                <p className="text-gray-500">
-                  No English articles found.
-                </p>
-              </div>
+          ) : (
 
-            )}
+            <div className="rounded-xl border border-yellow-200 bg-white p-8 text-center">
 
-          </div>
+              <p className="text-gray-500">
+                {query
+                  ? `No English articles found for "${query}".`
+                  : "No English articles available."}
+              </p>
+
+            </div>
+
+          )}
 
         </section>
 
       </div>
+
     </main>
   );
 }
