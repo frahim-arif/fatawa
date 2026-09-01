@@ -1,9 +1,9 @@
+
 "use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Search, Mic } from "lucide-react";
-import axios from "axios";
 
 const backend = "https://f-backend-vdi1.onrender.com/api";
 
@@ -65,7 +65,22 @@ export default function EnglishHomePage() {
       item?.englishTitle ||
       item?.enTitle ||
       item?.titleEn ||
+      item?.title ||
       ""
+    );
+  };
+
+  // =====================================================
+  // ARTICLE SLUG
+  // =====================================================
+
+  const getArticleSlug = (item) => {
+    return (
+      item?.englishSlug ||
+      item?.enSlug ||
+      item?.slugEn ||
+      item?.slug ||
+      item?._id
     );
   };
 
@@ -74,43 +89,39 @@ export default function EnglishHomePage() {
   // =====================================================
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchEnglishCategories = async () => {
       try {
-        console.log("Fetching English categories...");
+        const res = await fetch(`${backend}/en/categories`, {
+          cache: "no-store",
+          headers: {
+            Accept: "application/json",
+          },
+        });
 
-        const res = await axios.get(
-          `${backend}/en/categories`,
-          {
-            headers: {
-              Accept: "application/json",
-            },
-          }
-        );
+        if (!res.ok) {
+          throw new Error("Failed to fetch English categories");
+        }
 
-        console.log(
-          "English categories response:",
-          res.data
-        );
+        const data = await res.json();
 
-        if (
-          res.data?.success &&
-          Array.isArray(res.data?.data)
-        ) {
-          setCategories(res.data.data);
+        console.log("English categories:", data);
+
+        if (data?.success && Array.isArray(data?.data)) {
+          setCategories(data.data);
         } else {
           setCategories([]);
         }
       } catch (error) {
         console.error(
           "English category fetch error:",
-          error.response?.data || error.message
+          error
         );
 
         setCategories([]);
       }
     };
 
-    fetchCategories();
+    fetchEnglishCategories();
   }, []);
 
   // =====================================================
@@ -118,85 +129,79 @@ export default function EnglishHomePage() {
   // =====================================================
 
   useEffect(() => {
-    const fetchQuestions = async () => {
+    const fetchEnglishQuestions = async () => {
       try {
-        const res = await axios.get(
+        const res = await fetch(
           `${backend}/en/questions?limit=10`,
           {
+            cache: "no-store",
             headers: {
               Accept: "application/json",
             },
           }
         );
 
-        console.log(
-          "English questions response:",
-          res.data
-        );
+        if (!res.ok) {
+          throw new Error("Failed to fetch English questions");
+        }
 
-        if (
-          res.data?.success &&
-          Array.isArray(res.data?.data)
-        ) {
-          setLatestQuestions(
-            res.data.data.slice(0, 5)
-          );
+        const data = await res.json();
+
+        console.log("English questions:", data);
+
+        if (data?.success && Array.isArray(data?.data)) {
+          setLatestQuestions(data.data.slice(0, 5));
         } else {
           setLatestQuestions([]);
         }
       } catch (error) {
         console.error(
-          "English questions fetch error:",
-          error.response?.data || error.message
+          "English question fetch error:",
+          error
         );
 
         setLatestQuestions([]);
       }
     };
 
-    fetchQuestions();
+    fetchEnglishQuestions();
   }, []);
 
   // =====================================================
-  // FETCH ENGLISH ARTICLES
+  // FETCH ARTICLES
   // =====================================================
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const res = await axios.get(
-          `${backend}/majameen`,
-          {
-            headers: {
-              Accept: "application/json",
-            },
-          }
-        );
+        const res = await fetch(`${backend}/majameen`, {
+          cache: "no-store",
+          headers: {
+            Accept: "application/json",
+          },
+        });
 
-        console.log(
-          "Articles response:",
-          res.data
-        );
+        if (!res.ok) {
+          throw new Error("Failed to fetch articles");
+        }
 
-        if (
-          res.data?.success &&
-          Array.isArray(res.data?.data)
-        ) {
-          const englishArticles =
-            res.data.data.filter((item) =>
-              getArticleTitle(item)
-            );
+        const data = await res.json();
 
-          setArticles(
-            englishArticles.slice(0, 5)
+        console.log("Articles:", data);
+
+        if (data?.success && Array.isArray(data?.data)) {
+          const englishArticles = data.data.filter((item) =>
+            getArticleTitle(item)
           );
+
+          setArticles(englishArticles.slice(0, 5));
         } else {
           setArticles([]);
         }
       } catch (error) {
         console.error(
-          "English articles fetch error:",
-          error.response?.data || error.message
+          "Articles fetch error:",
+          error
         );
 
         setArticles([]);
@@ -218,17 +223,13 @@ export default function EnglishHomePage() {
         );
 
         if (!res.ok) {
-          throw new Error(
-            "Failed to fetch prayer times"
-          );
+          throw new Error("Failed to fetch prayer times");
         }
 
         const data = await res.json();
 
-        if (data.code === 200) {
-          setPrayerTimes(
-            data.data.timings
-          );
+        if (data?.code === 200) {
+          setPrayerTimes(data.data.timings);
         }
       } catch (error) {
         console.error(
@@ -258,8 +259,7 @@ export default function EnglishHomePage() {
       return;
     }
 
-    const recognition =
-      new SpeechRecognition();
+    const recognition = new SpeechRecognition();
 
     recognition.lang = "en-US";
     recognition.interimResults = false;
@@ -283,11 +283,22 @@ export default function EnglishHomePage() {
   };
 
   // =====================================================
+  // FILTER CATEGORIES
+  // =====================================================
+
+  const englishCategories = categories.filter((category) => {
+    return (
+      getCategoryName(category) &&
+      getCategorySlug(category)
+    );
+  });
+
+  // =====================================================
   // FILTER QUESTIONS
   // =====================================================
 
-  const filteredQuestions =
-    latestQuestions.filter((item) => {
+  const filteredQuestions = latestQuestions.filter(
+    (item) => {
       const question = getQuestion(item);
 
       if (!question) {
@@ -296,42 +307,25 @@ export default function EnglishHomePage() {
 
       return question
         .toLowerCase()
-        .includes(
-          query.trim().toLowerCase()
-        );
-    });
+        .includes(query.trim().toLowerCase());
+    }
+  );
 
   // =====================================================
   // FILTER ARTICLES
   // =====================================================
 
-  const filteredArticles =
-    articles.filter((item) => {
-      const title =
-        getArticleTitle(item);
+  const filteredArticles = articles.filter((item) => {
+    const title = getArticleTitle(item);
 
-      if (!title) {
-        return false;
-      }
+    if (!title) {
+      return false;
+    }
 
-      return title
-        .toLowerCase()
-        .includes(
-          query.trim().toLowerCase()
-        );
-    });
-
-  // =====================================================
-  // VALID CATEGORIES
-  // =====================================================
-
-  const validCategories =
-    categories.filter((cat) => {
-      return (
-        getCategoryName(cat) &&
-        getCategorySlug(cat)
-      );
-    });
+    return title
+      .toLowerCase()
+      .includes(query.trim().toLowerCase());
+  });
 
   // =====================================================
   // UI
@@ -362,13 +356,11 @@ export default function EnglishHomePage() {
           </h1>
 
           <p className="mt-3 text-base text-yellow-100 md:text-lg">
-            Islamic knowledge in the light of
-            the Quran and Sunnah
+            Islamic knowledge based on the Quran and Sunnah
           </p>
 
         </div>
       </section>
-
 
       {/* =================================================
           PRAYER TIMES
@@ -419,16 +411,15 @@ export default function EnglishHomePage() {
 
       </div>
 
-
       {/* =================================================
           MAIN
       ================================================= */}
 
       <div className="mx-auto max-w-6xl px-3 py-8">
 
-        {/* =============================================
+        {/* =================================================
             SEARCH
-        ============================================= */}
+        ================================================= */}
 
         <section className="mb-8">
 
@@ -462,10 +453,9 @@ export default function EnglishHomePage() {
 
         </section>
 
-
-        {/* =============================================
+        {/* =================================================
             ENGLISH CATEGORIES
-        ============================================= */}
+        ================================================= */}
 
         <section className="mb-10">
 
@@ -484,24 +474,23 @@ export default function EnglishHomePage() {
 
           </div>
 
-
-          {validCategories.length > 0 ? (
+          {englishCategories.length > 0 ? (
 
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
 
-              {validCategories
+              {englishCategories
                 .slice(0, 8)
-                .map((cat) => {
+                .map((category) => {
 
                   const name =
-                    getCategoryName(cat);
+                    getCategoryName(category);
 
                   const slug =
-                    getCategorySlug(cat);
+                    getCategorySlug(category);
 
                   return (
                     <Link
-                      key={cat._id}
+                      key={category._id}
                       href={`/en/categories/${encodeURIComponent(
                         slug
                       )}`}
@@ -541,7 +530,7 @@ export default function EnglishHomePage() {
             <div className="rounded-xl border border-yellow-200 bg-white p-8 text-center">
 
               <p className="text-gray-500">
-                No Islamic categories available.
+                No Islamic categories found.
               </p>
 
             </div>
@@ -550,10 +539,9 @@ export default function EnglishHomePage() {
 
         </section>
 
-
-        {/* =============================================
+        {/* =================================================
             QUICK LINKS
-        ============================================= */}
+        ================================================= */}
 
         <section className="mb-10">
 
@@ -591,10 +579,9 @@ export default function EnglishHomePage() {
 
         </section>
 
-
-        {/* =============================================
+        {/* =================================================
             LATEST QUESTIONS
-        ============================================= */}
+        ================================================= */}
 
         <section className="mb-10">
 
@@ -612,7 +599,6 @@ export default function EnglishHomePage() {
             </Link>
 
           </div>
-
 
           <div className="space-y-3">
 
@@ -677,10 +663,9 @@ export default function EnglishHomePage() {
 
         </section>
 
-
-        {/* =============================================
+        {/* =================================================
             ARTICLES
-        ============================================= */}
+        ================================================= */}
 
         <section>
 
@@ -699,7 +684,6 @@ export default function EnglishHomePage() {
 
           </div>
 
-
           <div className="space-y-3">
 
             {filteredArticles.length > 0 ? (
@@ -710,10 +694,7 @@ export default function EnglishHomePage() {
                   getArticleTitle(item);
 
                 const slug =
-                  item?.englishSlug ||
-                  item?.enSlug ||
-                  item?.slug ||
-                  item?._id;
+                  getArticleSlug(item);
 
                 return (
                   <Link
