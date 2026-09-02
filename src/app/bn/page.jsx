@@ -338,97 +338,101 @@ export default function BanglaHomePage() {
           PRAYER TIMES
       ================================================= */}
 
-     {/* =====================================================
-    BANGLA PRAYER TIMES - INFINITE LOOP SCROLL
-===================================================== */}
-
-<div className="overflow-hidden border-b-2 border-[#75593f] bg-black">
-  <div className="relative w-full overflow-hidden py-2">
-
-    {prayerTimes ? (
-      <div className="prayer-marquee flex w-max whitespace-nowrap">
-
-        {/* =========================
-            FIRST LOOP
-        ========================= */}
-        <div className="flex shrink-0 items-center text-sm text-yellow-400 md:text-base">
-          <span className="mx-4">
-            ফজর: {prayerTimes.Fajr?.split(" ")[0] || "--"}
+     <div className="overflow-hidden border-b-2 border-[#75593f] bg-black">
+  {prayerTimes ? (
+    <div className="w-full overflow-hidden py-2 sm:py-2.5">
+      <div className="animate-prayer-marquee flex w-max items-center whitespace-nowrap">
+        
+        {/* SET 1 */}
+        <div className="flex shrink-0 items-center gap-2 px-4 text-xs text-yellow-400 sm:gap-3 sm:text-sm md:gap-4 md:text-base lg:text-lg">
+          <span>
+            ফজর:{" "}
+            {prayerTimes.Fajr?.split(" ")[0] || "--"}
           </span>
 
           <span className="text-[#75593f]">|</span>
 
-          <span className="mx-4">
-            যোহর: {prayerTimes.Dhuhr?.split(" ")[0] || "--"}
+          <span>
+            যোহর:{" "}
+            {prayerTimes.Dhuhr?.split(" ")[0] || "--"}
           </span>
 
           <span className="text-[#75593f]">|</span>
 
-          <span className="mx-4">
-            আসর: {prayerTimes.Asr?.split(" ")[0] || "--"}
+          <span>
+            আসর:{" "}
+            {prayerTimes.Asr?.split(" ")[0] || "--"}
           </span>
 
           <span className="text-[#75593f]">|</span>
 
-          <span className="mx-4">
-            মাগরিব: {prayerTimes.Maghrib?.split(" ")[0] || "--"}
+          <span>
+            মাগরিব:{" "}
+            {prayerTimes.Maghrib?.split(" ")[0] || "--"}
           </span>
 
           <span className="text-[#75593f]">|</span>
 
-          <span className="mx-4">
-            এশা: {prayerTimes.Isha?.split(" ")[0] || "--"}
+          <span>
+            এশা:{" "}
+            {prayerTimes.Isha?.split(" ")[0] || "--"}
           </span>
 
-          <span className="mx-6 text-yellow-600">☪</span>
+          <span className="ml-2 text-yellow-600 sm:ml-4">
+            ☪
+          </span>
         </div>
 
-        {/* =========================
-            SECOND LOOP
-        ========================= */}
+        {/* SET 2 - EXACT DUPLICATE */}
         <div
-          className="flex shrink-0 items-center text-sm text-yellow-400 md:text-base"
+          className="flex shrink-0 items-center gap-2 px-4 text-xs text-yellow-400 sm:gap-3 sm:text-sm md:gap-4 md:text-base lg:text-lg"
           aria-hidden="true"
         >
-          <span className="mx-4">
-            ফজর: {prayerTimes.Fajr?.split(" ")[0] || "--"}
+          <span>
+            ফজর:{" "}
+            {prayerTimes.Fajr?.split(" ")[0] || "--"}
           </span>
 
           <span className="text-[#75593f]">|</span>
 
-          <span className="mx-4">
-            যোহর: {prayerTimes.Dhuhr?.split(" ")[0] || "--"}
+          <span>
+            যোহর:{" "}
+            {prayerTimes.Dhuhr?.split(" ")[0] || "--"}
           </span>
 
           <span className="text-[#75593f]">|</span>
 
-          <span className="mx-4">
-            আসর: {prayerTimes.Asr?.split(" ")[0] || "--"}
+          <span>
+            আসর:{" "}
+            {prayerTimes.Asr?.split(" ")[0] || "--"}
           </span>
 
           <span className="text-[#75593f]">|</span>
 
-          <span className="mx-4">
-            মাগরিব: {prayerTimes.Maghrib?.split(" ")[0] || "--"}
+          <span>
+            মাগরিব:{" "}
+            {prayerTimes.Maghrib?.split(" ")[0] || "--"}
           </span>
 
           <span className="text-[#75593f]">|</span>
 
-          <span className="mx-4">
-            এশা: {prayerTimes.Isha?.split(" ")[0] || "--"}
+          <span>
+            এশা:{" "}
+            {prayerTimes.Isha?.split(" ")[0] || "--"}
           </span>
 
-          <span className="mx-6 text-yellow-600">☪</span>
+          <span className="ml-2 text-yellow-600 sm:ml-4">
+            ☪
+          </span>
         </div>
 
       </div>
-    ) : (
-      <div className="py-2 text-center text-sm text-yellow-400 md:text-base">
-        নামাজের সময় লোড হচ্ছে...
-      </div>
-    )}
-
-  </div>
+    </div>
+  ) : (
+    <div className="px-3 py-2 text-center text-xs text-yellow-400 sm:text-sm md:text-base">
+      নামাজের সময় লোড হচ্ছে...
+    </div>
+  )}
 </div>
 
       {/* =================================================

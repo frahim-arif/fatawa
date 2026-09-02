@@ -145,25 +145,72 @@ p, div, span, h1, h2, h3 {
   animation: slow-spin 8s linear infinite;
 }
 
-/* =========================================
-   PRAYER TIMES SEAMLESS INFINITE SCROLL
-========================================= */
-
 @keyframes prayer-marquee {
-  0% {
+  from {
     transform: translateX(0);
   }
 
-  100% {
+  to {
     transform: translateX(-50%);
   }
 }
 
-.prayer-marquee {
+.animate-prayer-marquee {
   animation: prayer-marquee 25s linear infinite;
   will-change: transform;
 }
 
-.prayer-marquee:hover {
+/* Desktop hover pause */
+@media (hover: hover) {
+  .animate-prayer-marquee:hover {
+    animation-play-state: paused;
+  }
+}
+
+/* Mobile: slightly faster */
+@media (max-width: 640px) {
+  .animate-prayer-marquee {
+    animation-duration: 18s;
+  }
+}
+
+/* Large desktop: slower and elegant */
+@media (min-width: 1024px) {
+  .animate-prayer-marquee {
+    animation-duration: 30s;
+  }
+}
+
+@keyframes prayer-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-prayer-scroll {
+  animation: prayer-scroll 22s linear infinite;
+  will-change: transform;
+}
+
+/* Hover karne par scroll pause */
+.animate-prayer-scroll:hover {
   animation-play-state: paused;
+}
+
+/* Mobile par thoda fast */
+@media (max-width: 640px) {
+  .animate-prayer-scroll {
+    animation-duration: 16s;
+  }
+}
+
+/* Motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-prayer-scroll {
+    animation: none;
+  }
 }

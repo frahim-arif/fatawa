@@ -264,89 +264,111 @@ export default function EnglishHomePage() {
         </div>
       </section>
 
-      {/* =====================================================
-    PRAYER TIMES - DYNAMIC SCROLLING
+   {/* =====================================================
+    PRAYER TIMES - RESPONSIVE INFINITE SCROLL
 ===================================================== */}
 
-<div className="overflow-hidden border-b-2 border-[#75593f] bg-black">
-  <div className="mx-auto max-w-6xl overflow-hidden">
+<div className="w-full overflow-hidden border-b-2 border-[#75593f] bg-black">
+  <div className="w-full overflow-hidden">
 
     {prayerTimes ? (
-      <div className="relative overflow-hidden py-2">
+      <div className="relative flex overflow-hidden py-2">
 
-        <div className="flex w-max animate-prayer-scroll items-center whitespace-nowrap text-sm text-yellow-400 md:text-base">
+        <div className="flex w-max shrink-0 animate-prayer-scroll items-center whitespace-nowrap text-xs text-yellow-400 sm:text-sm md:text-base">
 
-          {/* FIRST SET */}
-          <div className="flex items-center">
-            <span>
-              Fajr: {prayerTimes.Fajr?.split(" ")[0] || "--"}
+          {/* ================= FIRST SET ================= */}
+          <div className="flex shrink-0 items-center">
+
+            <span className="px-2 sm:px-3">
+              Fajr:{" "}
+              {prayerTimes.Fajr?.split(" ")[0] || "--"}
             </span>
 
-            <span className="mx-4 text-[#75593f]">|</span>
+            <span className="text-[#75593f]">|</span>
 
-            <span>
-              Dhuhr: {prayerTimes.Dhuhr?.split(" ")[0] || "--"}
+            <span className="px-2 sm:px-3">
+              Dhuhr:{" "}
+              {prayerTimes.Dhuhr?.split(" ")[0] || "--"}
             </span>
 
-            <span className="mx-4 text-[#75593f]">|</span>
+            <span className="text-[#75593f]">|</span>
 
-            <span>
-              Asr: {prayerTimes.Asr?.split(" ")[0] || "--"}
+            <span className="px-2 sm:px-3">
+              Asr:{" "}
+              {prayerTimes.Asr?.split(" ")[0] || "--"}
             </span>
 
-            <span className="mx-4 text-[#75593f]">|</span>
+            <span className="text-[#75593f]">|</span>
 
-            <span>
-              Maghrib: {prayerTimes.Maghrib?.split(" ")[0] || "--"}
+            <span className="px-2 sm:px-3">
+              Maghrib:{" "}
+              {prayerTimes.Maghrib?.split(" ")[0] || "--"}
             </span>
 
-            <span className="mx-4 text-[#75593f]">|</span>
+            <span className="text-[#75593f]">|</span>
 
-            <span>
-              Isha: {prayerTimes.Isha?.split(" ")[0] || "--"}
+            <span className="px-2 sm:px-3">
+              Isha:{" "}
+              {prayerTimes.Isha?.split(" ")[0] || "--"}
             </span>
 
-            <span className="mx-8 text-yellow-600">☪</span>
+            <span className="px-4 text-yellow-600 sm:px-6">
+              ☪
+            </span>
+
           </div>
 
-          {/* DUPLICATE SET - FOR CONTINUOUS SCROLL */}
-          <div className="flex items-center" aria-hidden="true">
 
-            <span>
-              Fajr: {prayerTimes.Fajr?.split(" ")[0] || "--"}
+          {/* ================= DUPLICATE SET ================= */}
+          <div
+            className="flex shrink-0 items-center"
+            aria-hidden="true"
+          >
+
+            <span className="px-2 sm:px-3">
+              Fajr:{" "}
+              {prayerTimes.Fajr?.split(" ")[0] || "--"}
             </span>
 
-            <span className="mx-4 text-[#75593f]">|</span>
+            <span className="text-[#75593f]">|</span>
 
-            <span>
-              Dhuhr: {prayerTimes.Dhuhr?.split(" ")[0] || "--"}
+            <span className="px-2 sm:px-3">
+              Dhuhr:{" "}
+              {prayerTimes.Dhuhr?.split(" ")[0] || "--"}
             </span>
 
-            <span className="mx-4 text-[#75593f]">|</span>
+            <span className="text-[#75593f]">|</span>
 
-            <span>
-              Asr: {prayerTimes.Asr?.split(" ")[0] || "--"}
+            <span className="px-2 sm:px-3">
+              Asr:{" "}
+              {prayerTimes.Asr?.split(" ")[0] || "--"}
             </span>
 
-            <span className="mx-4 text-[#75593f]">|</span>
+            <span className="text-[#75593f]">|</span>
 
-            <span>
-              Maghrib: {prayerTimes.Maghrib?.split(" ")[0] || "--"}
+            <span className="px-2 sm:px-3">
+              Maghrib:{" "}
+              {prayerTimes.Maghrib?.split(" ")[0] || "--"}
             </span>
 
-            <span className="mx-4 text-[#75593f]">|</span>
+            <span className="text-[#75593f]">|</span>
 
-            <span>
-              Isha: {prayerTimes.Isha?.split(" ")[0] || "--"}
+            <span className="px-2 sm:px-3">
+              Isha:{" "}
+              {prayerTimes.Isha?.split(" ")[0] || "--"}
             </span>
 
-            <span className="mx-8 text-yellow-600">☪</span>
+            <span className="px-4 text-yellow-600 sm:px-6">
+              ☪
+            </span>
+
           </div>
 
         </div>
+
       </div>
     ) : (
-      <div className="py-2 text-center text-sm text-yellow-400 md:text-base">
+      <div className="py-2 text-center text-xs text-yellow-400 sm:text-sm md:text-base">
         Loading prayer times...
       </div>
     )}
