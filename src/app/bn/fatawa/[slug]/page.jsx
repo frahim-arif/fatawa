@@ -8,20 +8,31 @@ const backend = "https://f-backend-vdi1.onrender.com/api";
 // =========================================
 async function getFatwa(slug) {
   try {
-    const res = await fetch(
-      `${backend}/bn/questions/slug/${encodeURIComponent(slug)}`,
-      {
-        next: {
-          revalidate: 60,
-        },
-      }
-    );
+    const decodedSlug = decodeURIComponent(slug);
+
+    const url = `${backend}/bn/questions/slug/${encodeURIComponent(decodedSlug)}`;
+
+    console.log("================================");
+    console.log("BN SLUG:", slug);
+    console.log("DECODED SLUG:", decodedSlug);
+    console.log("API URL:", url);
+
+    const res = await fetch(url, {
+      cache: "no-store",
+    });
+
+    console.log("API STATUS:", res.status);
+
+    const text = await res.text();
+
+    console.log("API RESPONSE:", text);
+    console.log("================================");
 
     if (!res.ok) {
       return null;
     }
 
-    const data = await res.json();
+    const data = JSON.parse(text);
 
     if (!data.success || !data.data) {
       return null;
