@@ -47,11 +47,11 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative bg-black overflow-hidden mt-10">
+    <footer className="relative overflow-hidden mt-10">
 
       {/* Background Image */}
       <Image
-        // src="/images/6134461.jpg"
+        // src="/images/1934.jpg"
         alt="Footer Background"
         fill
         priority
@@ -91,46 +91,24 @@ export default function Footer() {
               اہم لنکس
             </h3>
 
-           <div className="grid grid-cols-2 gap-3">
-  {links.map((item, index) => {
-    const Icon = item.icon;
+            <div className="grid grid-cols-2 gap-3">
 
-    return (
-      <Link
-        key={index}
-        href={item.href}
-        className="
-          group
-          flex
-          items-center
-          justify-center
-          gap-2
-          rounded-xl
-          border
-          border-yellow-500/20
-          bg-white/5
-          px-4
-          py-3
-          text-white
-          transition-all
-          duration-300
-          hover:border-yellow-400
-          hover:bg-yellow-500/20
-          hover:text-white
-        "
-      >
-        <Icon
-          size={16}
-          className="shrink-0 text-white transition-colors duration-300"
-        />
+              {links.map((item, index) => {
 
-        <span className="text-sm font-medium text-white">
-          {item.name}
-        </span>
-      </Link>
-    );
-  })}
-</div>
+                const Icon = item.icon;
+
+                return (
+                  <Link
+                    key={index}
+                    href={item.href}
+                    className="group flex items-center justify-center md:justify-end gap-2 rounded-xl border border-yellow-500/20 bg-white/5 px-4 py-3 transition-all duration-300 hover:bg-yellow-500/20 hover:border-yellow-400"
+                  >
+                    <Icon size={16} />
+                    <span>{item.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
 
           </div>
 
