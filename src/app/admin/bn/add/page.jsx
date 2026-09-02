@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -21,42 +20,173 @@ const initialFormData = {
   category: "",
 };
 
+// =====================================================
+// BANGLA → ROMAN
+// =====================================================
+
+const banglaToRoman = (text = "") => {
+  const map = {
+    "অ": "a",
+    "আ": "a",
+    "ই": "i",
+    "ঈ": "i",
+    "উ": "u",
+    "ঊ": "u",
+    "ঋ": "ri",
+    "এ": "e",
+    "ঐ": "oi",
+    "ও": "o",
+    "ঔ": "ou",
+
+    "ক": "k",
+    "খ": "kh",
+    "গ": "g",
+    "ঘ": "gh",
+    "ঙ": "ng",
+
+    "চ": "ch",
+    "ছ": "chh",
+    "জ": "j",
+    "ঝ": "jh",
+    "ঞ": "n",
+
+    "ট": "t",
+    "ঠ": "th",
+    "ড": "d",
+    "ঢ": "dh",
+    "ণ": "n",
+
+    "ত": "t",
+    "থ": "th",
+    "দ": "d",
+    "ধ": "dh",
+    "ন": "n",
+
+    "প": "p",
+    "ফ": "ph",
+    "ব": "b",
+    "ভ": "bh",
+    "ম": "m",
+
+    "য": "j",
+    "র": "r",
+    "ল": "l",
+
+    "শ": "sh",
+    "ষ": "sh",
+    "স": "s",
+    "হ": "h",
+
+    "ড়": "r",
+    "ঢ়": "rh",
+    "য়": "y",
+
+    "ৎ": "t",
+    "ং": "ng",
+    "ঃ": "h",
+    "ঁ": "n",
+    "্": "",
+
+    "া": "a",
+    "ি": "i",
+    "ী": "i",
+    "ু": "u",
+    "ূ": "u",
+    "ৃ": "ri",
+    "ে": "e",
+    "ৈ": "oi",
+    "ো": "o",
+    "ৌ": "ou",
+
+    "০": "0",
+    "১": "1",
+    "২": "2",
+    "৩": "3",
+    "৪": "4",
+    "৫": "5",
+    "৬": "6",
+    "৭": "7",
+    "৮": "8",
+    "৯": "9",
+  };
+
+  return text
+    .split("")
+    .map((char) => map[char] ?? char)
+    .join("");
+};
+
+// =====================================================
+// GENERATE ROMAN SLUG
+// =====================================================
+
+const generateSlug = (text = "") => {
+  const romanText = banglaToRoman(text);
+
+  return romanText
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .split("-")
+    .filter(Boolean)
+    .slice(0, 12)
+    .join("-");
+};
+
 export default function BanglaQuestionAddPage() {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
-  const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [categoriesLoading, setCategoriesLoading] =
+    useState(true);
+
   const [categories, setCategories] = useState([]);
 
-  const [formData, setFormData] = useState(initialFormData);
+  const [formData, setFormData] =
+    useState(initialFormData);
 
-  // =========================================
+  // =====================================================
   // GET BANGLA CATEGORIES
-  // =========================================
+  // =====================================================
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         setCategoriesLoading(true);
 
-        const res = await axios.get(`${backend}/bn/categories`, {
-          timeout: 30000,
-        });
+        const res = await axios.get(
+          `${backend}/bn/categories`,
+          {
+            timeout: 30000,
+          }
+        );
 
-        console.log("Bangla categories API:", res.data);
+        console.log(
+          "Bangla categories API:",
+          res.data
+        );
 
-        if (res.data?.success && Array.isArray(res.data?.data)) {
+        if (
+          res.data?.success &&
+          Array.isArray(res.data?.data)
+        ) {
           setCategories(res.data.data);
         } else {
           setCategories([]);
 
           toast.error(
-            res.data?.message || "Bangla categories not found"
+            res.data?.message ||
+              "Bangla categories not found"
           );
         }
       } catch (error) {
         console.error(
           "Bangla category fetch error:",
-          error.response?.data || error.message
+          error.response?.data ||
+            error.message
         );
 
         setCategories([]);
@@ -73,9 +203,10 @@ export default function BanglaQuestionAddPage() {
     fetchCategories();
   }, []);
 
-  // =========================================
-  // HANDLE INPUT
-  // =========================================
+  // =====================================================
+  // NORMAL INPUT CHANGE
+  // =====================================================
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -84,118 +215,97 @@ export default function BanglaQuestionAddPage() {
       [name]: value,
     }));
   };
-// =========================================
-// BANGLA → ROMAN
-// =========================================
 
-const banglaToRoman = (text) => {
-  const map = {
-    "অ": "o", "আ": "a", "ই": "i", "ঈ": "i",
-    "উ": "u", "ঊ": "u", "ঋ": "ri",
-    "এ": "e", "ঐ": "oi", "ও": "o", "ঔ": "ou",
-
-    "ক": "k", "খ": "kh", "গ": "g", "ঘ": "gh", "ঙ": "ng",
-    "চ": "ch", "ছ": "chh", "জ": "j", "ঝ": "jh", "ঞ": "n",
-    "ট": "t", "ঠ": "th", "ড": "d", "ঢ": "dh", "ণ": "n",
-    "ত": "t", "থ": "th", "দ": "d", "ধ": "dh", "ন": "n",
-    "প": "p", "ফ": "ph", "ব": "b", "ভ": "bh", "ম": "m",
-    "য": "j", "র": "r", "ল": "l",
-    "শ": "sh", "ষ": "sh", "স": "s", "হ": "h",
-    "ড়": "r", "ঢ়": "rh", "য়": "y",
-
-    "ৎ": "t", "ং": "ng", "ঃ": "h", "ঁ": "n",
-    "্": "",
-
-    "া": "a", "ি": "i", "ী": "i",
-    "ু": "u", "ূ": "u", "ৃ": "ri",
-    "ে": "e", "ৈ": "oi", "ো": "o", "ৌ": "ou",
-
-    "০": "0", "১": "1", "২": "2", "৩": "3", "৪": "4",
-    "৫": "5", "৬": "6", "৭": "7", "৮": "8", "৯": "9",
-  };
-
-  return text
-    .split("")
-    .map((char) => map[char] ?? char)
-    .join("");
-};
-
-
-// =========================================
-// GENERATE URL SLUG
-// =========================================
-
-const generateSlug = (text) => {
-  return banglaToRoman(text)
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "")
-    .split("-")
-    .filter(Boolean)
-    .slice(0, 12)
-    .join("-");
-};
-  // =========================================
+  // =====================================================
   // QUESTION CHANGE
-  // =========================================
+  // AUTO GENERATE ROMAN SLUG
+  // =====================================================
+
   const handleQuestionChange = (e) => {
     const value = e.target.value;
 
-    setFormData((prev) => {
-      const oldGeneratedSlug = generateSlug(prev.question);
+    setFormData((prev) => ({
+      ...prev,
 
-      const shouldUpdateSlug =
-        prev.slug === "" || prev.slug === oldGeneratedSlug;
+      question: value,
 
-      return {
-        ...prev,
-        question: value,
-        slug: shouldUpdateSlug
-          ? generateSlug(value)
-          : prev.slug,
-      };
-    });
+      // Always keep slug synchronized with question
+      slug: generateSlug(value),
+    }));
   };
 
-  // =========================================
+  // =====================================================
+  // SLUG CHANGE
+  // ONLY ROMAN CHARACTERS ALLOWED
+  // =====================================================
+
+  const handleSlugChange = (e) => {
+    const value = e.target.value
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
+
+    setFormData((prev) => ({
+      ...prev,
+      slug: value,
+    }));
+  };
+
+  // =====================================================
   // SUBMIT
-  // =========================================
+  // =====================================================
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.question.trim()) {
-      toast.error("Bangla question is required");
+      toast.error(
+        "Bangla question is required"
+      );
       return;
     }
 
     if (!formData.answer.trim()) {
-      toast.error("Bangla answer is required");
+      toast.error(
+        "Bangla answer is required"
+      );
       return;
     }
 
     if (!formData.category) {
-      toast.error("Please select a Bangla category");
+      toast.error(
+        "Please select a Bangla category"
+      );
       return;
     }
 
     try {
       setLoading(true);
 
+      // IMPORTANT:
+      // Slug is always generated from question.
+      const generatedSlug =
+        generateSlug(formData.question);
+
       const payload = {
-        question: formData.question.trim(),
+        question:
+          formData.question.trim(),
 
-        answer: formData.answer.trim(),
+        answer:
+          formData.answer.trim(),
 
-        hawala1: formData.hawala1.trim(),
-        hawala2: formData.hawala2.trim(),
-        hawala3: formData.hawala3.trim(),
+        hawala1:
+          formData.hawala1.trim(),
 
-        slug:
-          formData.slug.trim() ||
-          generateSlug(formData.question),
+        hawala2:
+          formData.hawala2.trim(),
+
+        hawala3:
+          formData.hawala3.trim(),
+
+        slug: generatedSlug,
 
         metaTitle:
           formData.metaTitle.trim() ||
@@ -204,13 +314,30 @@ const generateSlug = (text) => {
         metaDescription:
           formData.metaDescription.trim(),
 
-        keywords: formData.keywords.trim(),
+        keywords:
+          formData.keywords.trim(),
 
-        // Category ObjectId
-        category: formData.category,
+        category:
+          formData.category,
       };
 
-      console.log("Bangla question payload:", payload);
+      console.log(
+        "================================="
+      );
+
+      console.log(
+        "Bangla question payload:",
+        payload
+      );
+
+      console.log(
+        "Generated Roman slug:",
+        generatedSlug
+      );
+
+      console.log(
+        "================================="
+      );
 
       const res = await axios.post(
         `${backend}/bn/questions`,
@@ -220,7 +347,10 @@ const generateSlug = (text) => {
         }
       );
 
-      console.log("Bangla question response:", res.data);
+      console.log(
+        "Bangla question response:",
+        res.data
+      );
 
       if (res.data?.success) {
         toast.success(
@@ -228,7 +358,10 @@ const generateSlug = (text) => {
             "Bangla question added successfully"
         );
 
-        setFormData(initialFormData);
+        // Reset form
+        setFormData({
+          ...initialFormData,
+        });
       } else {
         toast.error(
           res.data?.message ||
@@ -238,7 +371,8 @@ const generateSlug = (text) => {
     } catch (error) {
       console.error(
         "Bangla question submit error:",
-        error.response?.data || error.message
+        error.response?.data ||
+          error.message
       );
 
       toast.error(
@@ -254,12 +388,11 @@ const generateSlug = (text) => {
     <div className="min-h-screen bg-gray-50 px-4 py-8 md:px-8">
       <div className="mx-auto max-w-5xl">
 
-        {/* ========================================= */}
+        {/* ================================================= */}
         {/* HEADER */}
-        {/* ========================================= */}
+        {/* ================================================= */}
 
         <div className="mb-6 rounded-xl border bg-white p-6 shadow-sm">
-
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
             <div>
@@ -268,14 +401,16 @@ const generateSlug = (text) => {
               </h1>
 
               <p className="mt-1 text-sm text-gray-500">
-                Add Bangla question, answer, references,
-                category and SEO details.
+                Add Bangla question, answer,
+                references, category and SEO details.
               </p>
             </div>
 
             <button
               type="button"
-              onClick={() => router.push("/admin/bn")}
+              onClick={() =>
+                router.push("/admin/bn")
+              }
               disabled={loading}
               className="
                 rounded-lg
@@ -298,18 +433,18 @@ const generateSlug = (text) => {
           </div>
         </div>
 
-        {/* ========================================= */}
+        {/* ================================================= */}
         {/* FORM */}
-        {/* ========================================= */}
+        {/* ================================================= */}
 
         <form
           onSubmit={handleSubmit}
           className="space-y-6"
         >
 
-          {/* ========================================= */}
+          {/* ================================================= */}
           {/* BANGLA CONTENT */}
-          {/* ========================================= */}
+          {/* ================================================= */}
 
           <div className="rounded-xl border bg-white p-6 shadow-sm">
 
@@ -386,9 +521,9 @@ const generateSlug = (text) => {
             </div>
           </div>
 
-          {/* ========================================= */}
+          {/* ================================================= */}
           {/* HAWALA */}
-          {/* ========================================= */}
+          {/* ================================================= */}
 
           <div className="rounded-xl border bg-white p-6 shadow-sm">
 
@@ -485,9 +620,9 @@ const generateSlug = (text) => {
             </div>
           </div>
 
-          {/* ========================================= */}
+          {/* ================================================= */}
           {/* SEO */}
-          {/* ========================================= */}
+          {/* ================================================= */}
 
           <div className="rounded-xl border bg-white p-6 shadow-sm">
 
@@ -497,24 +632,25 @@ const generateSlug = (text) => {
 
             <div className="space-y-5">
 
-              {/* SLUG */}
+              {/* ROMAN SLUG */}
 
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
-                  Bangla Slug
+                  Roman URL Slug
                 </label>
 
                 <input
                   type="text"
                   name="slug"
                   value={formData.slug}
-                  onChange={handleChange}
-                  placeholder="bangla-question-slug"
+                  onChange={handleSlugChange}
+                  placeholder="roman-question-slug"
                   className="
                     w-full
                     rounded-lg
                     border
                     border-gray-300
+                    bg-gray-50
                     px-4
                     py-3
                     text-sm
@@ -526,8 +662,8 @@ const generateSlug = (text) => {
                 />
 
                 <p className="mt-1 text-xs text-gray-400">
-                  Slug is automatically generated from
-                  the question when possible.
+                  Automatically generated in Roman
+                  characters from the Bangla question.
                 </p>
               </div>
 
@@ -631,9 +767,9 @@ const generateSlug = (text) => {
             </div>
           </div>
 
-          {/* ========================================= */}
-          {/* BANGLA CATEGORY */}
-          {/* ========================================= */}
+          {/* ================================================= */}
+          {/* CATEGORY */}
+          {/* ================================================= */}
 
           <div className="rounded-xl border bg-white p-6 shadow-sm">
 
@@ -674,45 +810,35 @@ const generateSlug = (text) => {
 
               {!categoriesLoading &&
                 categories.map((cat) => (
-
                   <option
                     key={cat._id}
                     value={cat._id}
                   >
                     {cat.name}
                   </option>
-
                 ))}
 
             </select>
 
-            {/* CATEGORY COUNT */}
-
             {!categoriesLoading &&
               categories.length > 0 && (
-
                 <p className="mt-2 text-xs text-green-600">
                   {categories.length} Bangla categories loaded
                 </p>
-
               )}
-
-            {/* NO CATEGORY */}
 
             {!categoriesLoading &&
               categories.length === 0 && (
-
                 <p className="mt-2 text-sm text-red-500">
                   No Bangla categories found.
                 </p>
-
               )}
 
           </div>
 
-          {/* ========================================= */}
+          {/* ================================================= */}
           {/* SUBMIT */}
-          {/* ========================================= */}
+          {/* ================================================= */}
 
           <div className="flex justify-end rounded-xl border bg-white p-6 shadow-sm">
 
@@ -750,4 +876,3 @@ const generateSlug = (text) => {
     </div>
   );
 }
-
