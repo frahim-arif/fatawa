@@ -84,27 +84,60 @@ export default function BanglaQuestionAddPage() {
       [name]: value,
     }));
   };
+// =========================================
+// BANGLA → ROMAN
+// =========================================
 
-  // =========================================
-  // GENERATE URL SLUG
-  // =========================================
-  const generateSlug = (text) => {
-    return text
-      .toString()
-      .normalize("NFKD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "")
-      .split("-")
-      .filter(Boolean)
-      .slice(0, 12)
-      .join("-");
+const banglaToRoman = (text) => {
+  const map = {
+    "অ": "o", "আ": "a", "ই": "i", "ঈ": "i",
+    "উ": "u", "ঊ": "u", "ঋ": "ri",
+    "এ": "e", "ঐ": "oi", "ও": "o", "ঔ": "ou",
+
+    "ক": "k", "খ": "kh", "গ": "g", "ঘ": "gh", "ঙ": "ng",
+    "চ": "ch", "ছ": "chh", "জ": "j", "ঝ": "jh", "ঞ": "n",
+    "ট": "t", "ঠ": "th", "ড": "d", "ঢ": "dh", "ণ": "n",
+    "ত": "t", "থ": "th", "দ": "d", "ধ": "dh", "ন": "n",
+    "প": "p", "ফ": "ph", "ব": "b", "ভ": "bh", "ম": "m",
+    "য": "j", "র": "r", "ল": "l",
+    "শ": "sh", "ষ": "sh", "স": "s", "হ": "h",
+    "ড়": "r", "ঢ়": "rh", "য়": "y",
+
+    "ৎ": "t", "ং": "ng", "ঃ": "h", "ঁ": "n",
+    "্": "",
+
+    "া": "a", "ি": "i", "ী": "i",
+    "ু": "u", "ূ": "u", "ৃ": "ri",
+    "ে": "e", "ৈ": "oi", "ো": "o", "ৌ": "ou",
+
+    "০": "0", "১": "1", "২": "2", "৩": "3", "৪": "4",
+    "৫": "5", "৬": "6", "৭": "7", "৮": "8", "৯": "9",
   };
 
+  return text
+    .split("")
+    .map((char) => map[char] ?? char)
+    .join("");
+};
+
+
+// =========================================
+// GENERATE URL SLUG
+// =========================================
+
+const generateSlug = (text) => {
+  return banglaToRoman(text)
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .split("-")
+    .filter(Boolean)
+    .slice(0, 12)
+    .join("-");
+};
   // =========================================
   // QUESTION CHANGE
   // =========================================
