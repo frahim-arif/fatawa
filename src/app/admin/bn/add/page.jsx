@@ -20,133 +20,15 @@ const initialFormData = {
   category: "",
 };
 
-// =====================================================
-// BANGLA → ROMAN
-// =====================================================
-
-const banglaToRoman = (text = "") => {
-  const map = {
-    "অ": "a",
-    "আ": "a",
-    "ই": "i",
-    "ঈ": "i",
-    "উ": "u",
-    "ঊ": "u",
-    "ঋ": "ri",
-    "এ": "e",
-    "ঐ": "oi",
-    "ও": "o",
-    "ঔ": "ou",
-
-    "ক": "k",
-    "খ": "kh",
-    "গ": "g",
-    "ঘ": "gh",
-    "ঙ": "ng",
-
-    "চ": "ch",
-    "ছ": "chh",
-    "জ": "j",
-    "ঝ": "jh",
-    "ঞ": "n",
-
-    "ট": "t",
-    "ঠ": "th",
-    "ড": "d",
-    "ঢ": "dh",
-    "ণ": "n",
-
-    "ত": "t",
-    "থ": "th",
-    "দ": "d",
-    "ধ": "dh",
-    "ন": "n",
-
-    "প": "p",
-    "ফ": "ph",
-    "ব": "b",
-    "ভ": "bh",
-    "ম": "m",
-
-    "য": "j",
-    "র": "r",
-    "ল": "l",
-
-    "শ": "sh",
-    "ষ": "sh",
-    "স": "s",
-    "হ": "h",
-
-    "ড়": "r",
-    "ঢ়": "rh",
-    "য়": "y",
-
-    "ৎ": "t",
-    "ং": "ng",
-    "ঃ": "h",
-    "ঁ": "n",
-    "্": "",
-
-    "া": "a",
-    "ি": "i",
-    "ী": "i",
-    "ু": "u",
-    "ূ": "u",
-    "ৃ": "ri",
-    "ে": "e",
-    "ৈ": "oi",
-    "ো": "o",
-    "ৌ": "ou",
-
-    "০": "0",
-    "১": "1",
-    "২": "2",
-    "৩": "3",
-    "৪": "4",
-    "৫": "5",
-    "৬": "6",
-    "৭": "7",
-    "৮": "8",
-    "৯": "9",
-  };
-
-  return text
-    .split("")
-    .map((char) => map[char] ?? char)
-    .join("");
-};
-
-// =====================================================
-// GENERATE ROMAN SLUG
-// =====================================================
-
-const generateSlug = (text = "") => {
-  const romanText = banglaToRoman(text);
-
-  return romanText
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "")
-    .split("-")
-    .filter(Boolean)
-    .slice(0, 12)
-    .join("-");
-};
-
 export default function BanglaQuestionAddPage() {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
-  const [categoriesLoading, setCategoriesLoading] =
-    useState(true);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
 
   const [categories, setCategories] = useState([]);
 
-  const [formData, setFormData] =
-    useState(initialFormData);
+  const [formData, setFormData] = useState(initialFormData);
 
   // =====================================================
   // GET BANGLA CATEGORIES
@@ -157,17 +39,11 @@ export default function BanglaQuestionAddPage() {
       try {
         setCategoriesLoading(true);
 
-        const res = await axios.get(
-          `${backend}/bn/categories`,
-          {
-            timeout: 30000,
-          }
-        );
+        const res = await axios.get(`${backend}/bn/categories`, {
+          timeout: 30000,
+        });
 
-        console.log(
-          "Bangla categories API:",
-          res.data
-        );
+        console.log("Bangla categories API:", res.data);
 
         if (
           res.data?.success &&
@@ -185,8 +61,7 @@ export default function BanglaQuestionAddPage() {
       } catch (error) {
         console.error(
           "Bangla category fetch error:",
-          error.response?.data ||
-            error.message
+          error.response?.data || error.message
         );
 
         setCategories([]);
@@ -204,6 +79,54 @@ export default function BanglaQuestionAddPage() {
   }, []);
 
   // =====================================================
+  // BACKEND SLUG PREVIEW
+  // =====================================================
+  // Question type karne ke baad 500ms rukega,
+  // phir backend se Roman slug generate hoga.
+  // =====================================================
+
+  useEffect(() => {
+    const question = formData.question.trim();
+
+    if (!question) {
+      setFormData((prev) => ({
+        ...prev,
+        slug: "",
+      }));
+
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await axios.post(
+          `${backend}/bn/questions/slug-preview`,
+          {
+            question,
+          },
+          {
+            timeout: 15000,
+          }
+        );
+
+        if (res.data?.success) {
+          setFormData((prev) => ({
+            ...prev,
+            slug: res.data.slug || "",
+          }));
+        }
+      } catch (error) {
+        console.error(
+          "Bangla slug preview error:",
+          error.response?.data || error.message
+        );
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [formData.question]);
+
+  // =====================================================
   // NORMAL INPUT CHANGE
   // =====================================================
 
@@ -218,7 +141,6 @@ export default function BanglaQuestionAddPage() {
 
   // =====================================================
   // QUESTION CHANGE
-  // AUTO GENERATE ROMAN SLUG
   // =====================================================
 
   const handleQuestionChange = (e) => {
@@ -226,30 +148,7 @@ export default function BanglaQuestionAddPage() {
 
     setFormData((prev) => ({
       ...prev,
-
       question: value,
-
-      // Always keep slug synchronized with question
-      slug: generateSlug(value),
-    }));
-  };
-
-  // =====================================================
-  // SLUG CHANGE
-  // ONLY ROMAN CHARACTERS ALLOWED
-  // =====================================================
-
-  const handleSlugChange = (e) => {
-    const value = e.target.value
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "");
-
-    setFormData((prev) => ({
-      ...prev,
-      slug: value,
     }));
   };
 
@@ -261,51 +160,39 @@ export default function BanglaQuestionAddPage() {
     e.preventDefault();
 
     if (!formData.question.trim()) {
-      toast.error(
-        "Bangla question is required"
-      );
+      toast.error("Bangla question is required");
       return;
     }
 
     if (!formData.answer.trim()) {
-      toast.error(
-        "Bangla answer is required"
-      );
+      toast.error("Bangla answer is required");
       return;
     }
 
     if (!formData.category) {
-      toast.error(
-        "Please select a Bangla category"
-      );
+      toast.error("Please select a Bangla category");
       return;
     }
 
     try {
       setLoading(true);
 
+      // =================================================
       // IMPORTANT:
-      // Slug is always generated from question.
-      const generatedSlug =
-        generateSlug(formData.question);
+      // Slug frontend se generate NAHI kar rahe.
+      // Backend khud final unique slug generate karega.
+      // =================================================
 
       const payload = {
-        question:
-          formData.question.trim(),
+        question: formData.question.trim(),
 
-        answer:
-          formData.answer.trim(),
+        answer: formData.answer.trim(),
 
-        hawala1:
-          formData.hawala1.trim(),
+        hawala1: formData.hawala1.trim(),
 
-        hawala2:
-          formData.hawala2.trim(),
+        hawala2: formData.hawala2.trim(),
 
-        hawala3:
-          formData.hawala3.trim(),
-
-        slug: generatedSlug,
+        hawala3: formData.hawala3.trim(),
 
         metaTitle:
           formData.metaTitle.trim() ||
@@ -317,8 +204,7 @@ export default function BanglaQuestionAddPage() {
         keywords:
           formData.keywords.trim(),
 
-        category:
-          formData.category,
+        category: formData.category,
       };
 
       console.log(
@@ -331,8 +217,8 @@ export default function BanglaQuestionAddPage() {
       );
 
       console.log(
-        "Generated Roman slug:",
-        generatedSlug
+        "Preview slug:",
+        formData.slug
       );
 
       console.log(
@@ -371,8 +257,7 @@ export default function BanglaQuestionAddPage() {
     } catch (error) {
       console.error(
         "Bangla question submit error:",
-        error.response?.data ||
-          error.message
+        error.response?.data || error.message
       );
 
       toast.error(
@@ -533,6 +418,8 @@ export default function BanglaQuestionAddPage() {
 
             <div className="space-y-5">
 
+              {/* HAWALA 1 */}
+
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Hawala 1
@@ -561,6 +448,8 @@ export default function BanglaQuestionAddPage() {
                 />
               </div>
 
+              {/* HAWALA 2 */}
+
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
                   Hawala 2
@@ -588,6 +477,8 @@ export default function BanglaQuestionAddPage() {
                   "
                 />
               </div>
+
+              {/* HAWALA 3 */}
 
               <div>
                 <label className="mb-2 block text-sm font-semibold text-gray-700">
@@ -643,27 +534,26 @@ export default function BanglaQuestionAddPage() {
                   type="text"
                   name="slug"
                   value={formData.slug}
-                  onChange={handleSlugChange}
-                  placeholder="roman-question-slug"
+                  readOnly
+                  placeholder="Roman slug automatically generate hoga"
                   className="
                     w-full
                     rounded-lg
                     border
                     border-gray-300
-                    bg-gray-50
+                    bg-gray-100
                     px-4
                     py-3
                     text-sm
+                    text-gray-700
                     outline-none
-                    focus:border-green-600
-                    focus:ring-2
-                    focus:ring-green-100
                   "
                 />
 
                 <p className="mt-1 text-xs text-gray-400">
-                  Automatically generated in Roman
-                  characters from the Bangla question.
+                  Slug automatically backend se
+                  generate hota hai. Duplicate hone par
+                  unique number add hoga.
                 </p>
               </div>
 
