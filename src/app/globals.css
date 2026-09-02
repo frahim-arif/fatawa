@@ -144,3 +144,25 @@ p, div, span, h1, h2, h3 {
 .animate-slow-spin {
   animation: slow-spin 8s linear infinite;
 }
+
+/* =====================================================
+   PRAYER TIMES SCROLL
+===================================================== */
+
+@keyframes prayer-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-prayer-scroll {
+  animation: prayer-scroll 25s linear infinite;
+}
+
+.animate-prayer-scroll:hover {
+  animation-play-state: paused;
+}
