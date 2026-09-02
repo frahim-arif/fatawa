@@ -145,42 +145,25 @@ p, div, span, h1, h2, h3 {
   animation: slow-spin 8s linear infinite;
 }
 
-/* =====================================================
-   PRAYER TIMES SCROLL
-===================================================== */
+/* =========================================
+   PRAYER TIMES SEAMLESS INFINITE SCROLL
+========================================= */
 
-@keyframes prayer-scroll {
-  from {
+@keyframes prayer-marquee {
+  0% {
     transform: translateX(0);
   }
 
-  to {
+  100% {
     transform: translateX(-50%);
   }
 }
 
-.animate-prayer-scroll {
-  animation: prayer-scroll 18s linear infinite;
+.prayer-marquee {
+  animation: prayer-marquee 25s linear infinite;
+  will-change: transform;
 }
 
-.animate-prayer-scroll:hover {
-  animation-play-state: paused;
-}
-
-@keyframes prayer-scroll {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-prayer-scroll {
-  animation: prayer-scroll 25s linear infinite;
-}
-
-.animate-prayer-scroll:hover {
+.prayer-marquee:hover {
   animation-play-state: paused;
 }
