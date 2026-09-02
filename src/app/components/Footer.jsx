@@ -47,11 +47,11 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative overflow-hidden mt-10">
+    <footer className="relative bg-black overflow-hidden mt-10">
 
       {/* Background Image */}
       <Image
-        // src="/images/1934.jpg"
+        // src="/images/6134461.jpg"
         alt="Footer Background"
         fill
         priority
