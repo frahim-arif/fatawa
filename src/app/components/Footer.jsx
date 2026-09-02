@@ -51,7 +51,7 @@ export default function Footer() {
 
       {/* Background Image */}
       <Image
-        src="/images/1934.jpg"
+        // src="/images/1934.jpg"
         alt="Footer Background"
         fill
         priority
