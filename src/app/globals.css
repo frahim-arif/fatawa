@@ -166,3 +166,21 @@ p, div, span, h1, h2, h3 {
 .animate-prayer-scroll:hover {
   animation-play-state: paused;
 }
+
+@keyframes prayer-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-prayer-scroll {
+  animation: prayer-scroll 25s linear infinite;
+}
+
+.animate-prayer-scroll:hover {
+  animation-play-state: paused;
+}
