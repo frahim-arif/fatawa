@@ -13,7 +13,6 @@ const initialFormData = {
   hawala1: "",
   hawala2: "",
   hawala3: "",
-  slug: "",
   metaTitle: "",
   metaDescription: "",
   keywords: "",
@@ -79,54 +78,6 @@ export default function BanglaQuestionAddPage() {
   }, []);
 
   // =====================================================
-  // BACKEND SLUG PREVIEW
-  // =====================================================
-  // Question type karne ke baad 500ms rukega,
-  // phir backend se Roman slug generate hoga.
-  // =====================================================
-
-  useEffect(() => {
-    const question = formData.question.trim();
-
-    if (!question) {
-      setFormData((prev) => ({
-        ...prev,
-        slug: "",
-      }));
-
-      return;
-    }
-
-    const timer = setTimeout(async () => {
-      try {
-        const res = await axios.post(
-          `${backend}/bn/questions/slug-preview`,
-          {
-            question,
-          },
-          {
-            timeout: 15000,
-          }
-        );
-
-        if (res.data?.success) {
-          setFormData((prev) => ({
-            ...prev,
-            slug: res.data.slug || "",
-          }));
-        }
-      } catch (error) {
-        console.error(
-          "Bangla slug preview error:",
-          error.response?.data || error.message
-        );
-      }
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [formData.question]);
-
-  // =====================================================
   // NORMAL INPUT CHANGE
   // =====================================================
 
@@ -178,9 +129,7 @@ export default function BanglaQuestionAddPage() {
       setLoading(true);
 
       // =================================================
-      // IMPORTANT:
-      // Slug frontend se generate NAHI kar rahe.
-      // Backend khud final unique slug generate karega.
+      // BACKEND QUESTION SE SLUG AUTOMATICALLY GENERATE HOGA
       // =================================================
 
       const payload = {
@@ -214,11 +163,6 @@ export default function BanglaQuestionAddPage() {
       console.log(
         "Bangla question payload:",
         payload
-      );
-
-      console.log(
-        "Preview slug:",
-        formData.slug
       );
 
       console.log(
@@ -522,40 +466,6 @@ export default function BanglaQuestionAddPage() {
             </h2>
 
             <div className="space-y-5">
-
-              {/* ROMAN SLUG */}
-
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-gray-700">
-                  Roman URL Slug
-                </label>
-
-                <input
-                  type="text"
-                  name="slug"
-                  value={formData.slug}
-                  readOnly
-                  placeholder="Roman slug automatically generate hoga"
-                  className="
-                    w-full
-                    rounded-lg
-                    border
-                    border-gray-300
-                    bg-gray-100
-                    px-4
-                    py-3
-                    text-sm
-                    text-gray-700
-                    outline-none
-                  "
-                />
-
-                <p className="mt-1 text-xs text-gray-400">
-                  Slug automatically backend se
-                  generate hota hai. Duplicate hone par
-                  unique number add hoga.
-                </p>
-              </div>
 
               {/* META TITLE */}
 
