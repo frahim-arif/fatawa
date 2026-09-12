@@ -1,32 +1,15 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import {
-  Search,
-  Mic,
-  ArrowUpLeft,
-  BookOpen,
-  ScrollText,
-  Calculator,
-  Heart,
-  Sparkles,
-  ChevronLeft,
-  Clock3,
-  Library,
-  FileText,
-} from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Search, Mic, ArrowLeft, Sparkles } from "lucide-react";
+import Head from "next/head";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
+import HomeLoader from "./components/HomeLoader";
 import LatestBooksSlider from "./components/LatestBooksSlider";
 import IslamicTools from "./components/IslamicTools";
 import IslamicSlider from "./components/IslamicSlider";
-
-const backend = "https://f-backend-vdi1.onrender.com/api";
-
-const urduFont = {
-  fontFamily: "'Jameel Noori Nastaleeq', serif",
-};
 
 export default function HomePage() {
   const [query, setQuery] = useState("");
@@ -37,25 +20,43 @@ export default function HomePage() {
   const [hasMore, setHasMore] = useState(true);
 
   const [prayerTimes, setPrayerTimes] = useState(null);
-  const [nextPrayer, setNextPrayer] = useState("");
-  const [countdown, setCountdown] = useState("");
-
   const [latestQuestions, setLatestQuestions] = useState([]);
   const [activeTab, setActiveTab] = useState("questions");
+  const [nextPrayer, setNextPrayer] = useState("");
+  const [countdown, setCountdown] = useState("");
   const [majameen, setMajameen] = useState([]);
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const questionsRef = useRef(null);
+
+  const backend = "https://f-backend-vdi1.onrender.com/api";
+
+  /* =====================================================
+     HOME LOADER
+  ===================================================== */
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   /* =====================================================
      FETCH CATEGORIES
   ===================================================== */
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch(`${backend}/categories`);
+        const res = await fetch(`${backend}/categories`, {
+          cache: "no-store",
+        });
 
         if (!res.ok) {
-          throw new Error("Categories request failed");
+          throw new Error(`Categories API error: ${res.status}`);
         }
 
         const data = await res.json();
@@ -63,8 +64,8 @@ export default function HomePage() {
         if (data.success) {
           setCategories(data.data || []);
         }
-      } catch (error) {
-        console.error("Categories error:", error);
+      } catch (err) {
+        console.error("❌ Error fetching categories:", err);
       }
     };
 
@@ -74,6 +75,7 @@ export default function HomePage() {
   /* =====================================================
      FETCH PRAYER TIMES
   ===================================================== */
+
   useEffect(() => {
     const fetchPrayerTimes = async () => {
       try {
@@ -82,7 +84,7 @@ export default function HomePage() {
         );
 
         if (!res.ok) {
-          throw new Error("Prayer API failed");
+          throw new Error(`Prayer API error: ${res.status}`);
         }
 
         const data = await res.json();
@@ -90,8 +92,8 @@ export default function HomePage() {
         if (data.code === 200) {
           setPrayerTimes(data.data.timings);
         }
-      } catch (error) {
-        console.error("Namaz timing error:", error);
+      } catch (err) {
+        console.error("❌ Namaz timing error:", err);
       }
     };
 
@@ -101,6 +103,7 @@ export default function HomePage() {
   /* =====================================================
      NEXT PRAYER COUNTDOWN
   ===================================================== */
+
   useEffect(() => {
     if (!prayerTimes) return;
 
@@ -108,11 +111,26 @@ export default function HomePage() {
       const now = new Date();
 
       const prayers = [
-        { name: "فجر", time: prayerTimes.Fajr },
-        { name: "ظہر", time: prayerTimes.Dhuhr },
-        { name: "عصر", time: prayerTimes.Asr },
-        { name: "مغرب", time: prayerTimes.Maghrib },
-        { name: "عشاء", time: prayerTimes.Isha },
+        {
+          name: "فجر",
+          time: prayerTimes.Fajr,
+        },
+        {
+          name: "ظہر",
+          time: prayerTimes.Dhuhr,
+        },
+        {
+          name: "عصر",
+          time: prayerTimes.Asr,
+        },
+        {
+          name: "مغرب",
+          time: prayerTimes.Maghrib,
+        },
+        {
+          name: "عشاء",
+          time: prayerTimes.Isha,
+        },
       ];
 
       let next = null;
@@ -120,34 +138,42 @@ export default function HomePage() {
       for (const prayer of prayers) {
         if (!prayer.time) continue;
 
-        const [hours, minutes] = prayer.time
-          .split(" ")[0]
-          .split(":")
-          .map(Number);
+        const cleanTime = prayer.time.split(" ")[0];
+        const [hours, minutes] = cleanTime.split(":");
 
         const prayerDate = new Date();
 
-        prayerDate.setHours(hours, minutes, 0, 0);
+        prayerDate.setHours(
+          parseInt(hours, 10),
+          parseInt(minutes, 10),
+          0,
+          0
+        );
 
         if (prayerDate > now) {
           next = {
             name: prayer.name,
             time: prayerDate,
           };
+
           break;
         }
       }
 
       if (!next && prayerTimes.Fajr) {
-        const [hours, minutes] = prayerTimes.Fajr
-          .split(" ")[0]
-          .split(":")
-          .map(Number);
+        const cleanFajrTime = prayerTimes.Fajr.split(" ")[0];
+        const [hours, minutes] = cleanFajrTime.split(":");
 
         const fajrTomorrow = new Date();
 
         fajrTomorrow.setDate(fajrTomorrow.getDate() + 1);
-        fajrTomorrow.setHours(hours, minutes, 0, 0);
+
+        fajrTomorrow.setHours(
+          parseInt(hours, 10),
+          parseInt(minutes, 10),
+          0,
+          0
+        );
 
         next = {
           name: "فجر",
@@ -157,7 +183,7 @@ export default function HomePage() {
 
       if (!next) return;
 
-      const diff = Math.max(0, next.time - now);
+      const diff = next.time - now;
 
       const hrs = Math.floor(diff / 1000 / 60 / 60);
       const mins = Math.floor((diff / 1000 / 60) % 60);
@@ -183,13 +209,16 @@ export default function HomePage() {
   /* =====================================================
      FETCH MAJAMEEN
   ===================================================== */
+
   useEffect(() => {
     const fetchMajameen = async () => {
       try {
-        const res = await fetch(`${backend}/majameen`);
+        const res = await fetch(`${backend}/majameen`, {
+          cache: "no-store",
+        });
 
         if (!res.ok) {
-          throw new Error("Majameen request failed");
+          throw new Error(`Majameen API error: ${res.status}`);
         }
 
         const data = await res.json();
@@ -197,8 +226,8 @@ export default function HomePage() {
         if (data.success) {
           setMajameen((data.data || []).slice(0, 4));
         }
-      } catch (error) {
-        console.error("Majameen error:", error);
+      } catch (err) {
+        console.error("❌ Majameen error:", err);
       }
     };
 
@@ -208,15 +237,19 @@ export default function HomePage() {
   /* =====================================================
      FETCH LATEST QUESTIONS
   ===================================================== */
+
   useEffect(() => {
     const fetchLatestQuestions = async () => {
       try {
         const res = await fetch(
-          `${backend}/admin/questions?limit=10`
+          `${backend}/admin/questions?limit=5`,
+          {
+            cache: "no-store",
+          }
         );
 
         if (!res.ok) {
-          throw new Error("Latest questions request failed");
+          throw new Error(`Latest questions API error: ${res.status}`);
         }
 
         const data = await res.json();
@@ -224,8 +257,8 @@ export default function HomePage() {
         if (data.success) {
           setLatestQuestions(data.data || []);
         }
-      } catch (error) {
-        console.error("Latest question error:", error);
+      } catch (err) {
+        console.error("❌ Latest question error:", err);
       }
     };
 
@@ -235,6 +268,7 @@ export default function HomePage() {
   /* =====================================================
      FETCH QUESTIONS BY CATEGORY
   ===================================================== */
+
   const fetchQuestions = async ({
     reset = false,
     customSkip = 0,
@@ -245,15 +279,18 @@ export default function HomePage() {
       if (selectedCategory === "") {
         url = `${backend}/admin/questions?skip=${customSkip}&limit=5`;
       } else {
-        url = `${backend}/admin/questions/category/${encodeURIComponent(
-          selectedCategory
-        )}?skip=${customSkip}&limit=5`;
+        url =
+          `${backend}/admin/questions/category/` +
+          `${encodeURIComponent(selectedCategory)}` +
+          `?skip=${customSkip}&limit=5`;
       }
 
-      const res = await fetch(url);
+      const res = await fetch(url, {
+        cache: "no-store",
+      });
 
       if (!res.ok) {
-        throw new Error("Questions request failed");
+        throw new Error(`Questions API error: ${res.status}`);
       }
 
       const data = await res.json();
@@ -273,10 +310,14 @@ export default function HomePage() {
         setSkip(customSkip + 5);
         setHasMore(newQuestions.length === 5);
       }
-    } catch (error) {
-      console.error("Questions error:", error);
+    } catch (err) {
+      console.error("❌ Questions error:", err);
     }
   };
+
+  /* =====================================================
+     CATEGORY CHANGE
+  ===================================================== */
 
   useEffect(() => {
     if (selectedCategory === "") {
@@ -293,8 +334,9 @@ export default function HomePage() {
   }, [selectedCategory]);
 
   /* =====================================================
-     SEARCH
+     SEARCH FILTER
   ===================================================== */
+
   const filteredQuestions =
     query.trim() === ""
       ? allQuestions
@@ -307,6 +349,7 @@ export default function HomePage() {
   /* =====================================================
      VOICE SEARCH
   ===================================================== */
+
   const startListening = () => {
     if (typeof window === "undefined") return;
 
@@ -322,997 +365,827 @@ export default function HomePage() {
     const recognition = new SpeechRecognition();
 
     recognition.lang = "ur-PK";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
 
-    recognition.onresult = (event) => {
-      const text =
-        event.results?.[0]?.[0]?.transcript || "";
+    recognition.onresult = (e) => {
+      const transcript =
+        e.results?.[0]?.[0]?.transcript || "";
 
-      setQuery(text);
+      setQuery(transcript);
     };
 
-    recognition.onerror = (event) => {
-      console.error("Voice search error:", event);
+    recognition.onerror = (error) => {
+      console.error("Voice search error:", error);
     };
 
     recognition.start();
   };
 
   /* =====================================================
-     CATEGORY CLICK
+     LOADING SCREEN
   ===================================================== */
-  const handleCategoryClick = (categoryName) => {
-    setSelectedCategory(categoryName);
 
-    setTimeout(() => {
-      questionsRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 300);
-  };
+  if (isLoading) {
+    return <HomeLoader />;
+  }
+
+  /* =====================================================
+     HOME PAGE
+  ===================================================== */
 
   return (
-    <main
-      className="relative min-h-screen overflow-hidden bg-[#061f1b] text-white"
+    <div
+      className="
+        relative
+        w-full
+        min-h-screen
+        overflow-hidden
+        -mt-4
+        space-y-10
+        px-0
+        bg-repeat
+        bg-contain
+        bg-top
+        md:bg-cover
+        md:bg-center
+        md:bg-fixed
+      "
       style={{
-        ...urduFont,
+        backgroundImage:
+          "url('/images/ramadan_15_03_2022_1.jpg')",
       }}
     >
+      <Head>
+        <style>{`
+          @font-face {
+            font-family: 'Jameel Noori Nastaleeq';
+            src: url('/fonts/JameelNooriNastaleeq.woff2') format('woff2'),
+                 url('/fonts/JameelNooriNastaleeq.woff') format('woff'),
+                 url('/fonts/JameelNooriNastaleeq.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+          }
+
+          .urdu-font {
+            font-family: 'Jameel Noori Nastaleeq', serif !important;
+            font-weight: normal;
+            font-style: normal;
+          }
+
+          body {
+            font-family: 'Jameel Noori Nastaleeq', serif;
+          }
+        `}</style>
+      </Head>
+
       {/* =================================================
-          BACKGROUND
+          PREMIUM SOFT GLOW
       ================================================= */}
 
       <div
-        className="pointer-events-none absolute inset-0 opacity-30"
-        style={{
-          backgroundImage:
-            "url('/images/ramadan_15_03_2022_1.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center top",
-          backgroundAttachment: "fixed",
-        }}
-      />
-
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(3,32,28,0.78),rgba(3,24,21,0.94))]" />
-
-      {/* Grid */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.08]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.25) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.25) 1px, transparent 1px)
-          `,
-          backgroundSize: "90px 90px",
-        }}
-      />
-
-      {/* Golden glow */}
-      <motion.div
-        className="pointer-events-none absolute left-1/2 top-40 h-96 w-96 -translate-x-1/2 rounded-full"
+        className="
+          fixed
+          inset-0
+          pointer-events-none
+          z-0
+        "
         style={{
           background:
-            "radial-gradient(circle, rgba(200,174,106,0.16), transparent 70%)",
-          filter: "blur(60px)",
+            "radial-gradient(circle at 50% 20%, rgba(200,174,106,0.10), transparent 38%)",
+        }}
+      />
+
+      <motion.div
+        className="
+          fixed
+          top-1/4
+          left-1/2
+          w-72
+          h-72
+          rounded-full
+          pointer-events-none
+        "
+        style={{
+          background:
+            "radial-gradient(circle, rgba(255,223,0,0.12), transparent 70%)",
+          filter: "blur(80px)",
+          zIndex: 0,
         }}
         animate={{
-          scale: [1, 1.15, 1],
-          opacity: [0.5, 0.8, 0.5],
+          x: ["0%", "15%", "-15%", "0%"],
+          y: ["0%", "8%", "-8%", "0%"],
         }}
         transition={{
-          duration: 8,
+          duration: 25,
           repeat: Infinity,
           ease: "easeInOut",
         }}
       />
 
-      <div className="relative z-10">
+      {/* =================================================
+          PRAYER TIMES TOP BAR
+      ================================================= */}
 
-        {/* =================================================
-            TOP STATUS BAR
-        ================================================= */}
-
-        <div className="border-b border-[#8c7547]/40 bg-black/40 backdrop-blur-md">
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2">
-            <div className="flex items-center gap-2">
-              <motion.span
-                animate={{
-                  opacity: [1, 0.35, 1],
-                }}
-                transition={{
-                  duration: 1.4,
-                  repeat: Infinity,
-                }}
-                className="h-2 w-2 rounded-full bg-red-500"
-              />
-
-              <span className="font-mono text-[9px] tracking-[3px] text-red-300">
-                LIVE
-              </span>
-
-              <span className="hidden text-[9px] tracking-[2px] text-gray-500 sm:block">
-                ISLAMIC DIGITAL LIBRARY
-              </span>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <span className="font-mono text-[9px] tracking-[2px] text-[#c8ae6a]">
-                1448 AH
-              </span>
-
-              <span className="hidden text-[9px] tracking-[2px] text-gray-500 sm:block">
-                MASLAK E DEOBAND
-              </span>
-            </div>
-          </div>
+      <div className="w-full relative z-10 -mt-[0.2px]">
+        <div
+          className="
+            w-full
+            overflow-hidden
+            border-b
+          "
+          style={{
+            background:
+              "linear-gradient(90deg, #071c19, #0b302a, #071c19)",
+            borderColor: "#806b3f",
+          }}
+        >
+          <motion.div
+            className="
+              whitespace-nowrap
+              w-full
+              text-[#d8c27d]
+              text-sm
+              font-medium
+            "
+            style={{
+              direction: "rtl",
+              fontFamily:
+                "'Jameel Noori Nastaleeq', serif",
+              lineHeight: "1.4",
+              letterSpacing: "0.5px",
+            }}
+            animate={{
+              x: ["100%", "-100%"],
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          >
+            {prayerTimes ? (
+              <>
+                فجر: {prayerTimes.Fajr?.split(" ")[0]}
+                &nbsp;&nbsp;&nbsp;
+                ظہر: {prayerTimes.Dhuhr?.split(" ")[0]}
+                &nbsp;&nbsp;&nbsp;
+                عصر: {prayerTimes.Asr?.split(" ")[0]}
+                &nbsp;&nbsp;&nbsp;
+                مغرب: {prayerTimes.Maghrib?.split(" ")[0]}
+                &nbsp;&nbsp;&nbsp;
+                عشاء: {prayerTimes.Isha?.split(" ")[0]}
+              </>
+            ) : (
+              "نماز کے اوقات لوڈ ہو رہے ہیں..."
+            )}
+          </motion.div>
         </div>
+      </div>
 
-        {/* =================================================
-            HERO
-        ================================================= */}
+      {/* =================================================
+          ISLAMIC SLIDER
+      ================================================= */}
 
-        <section className="mx-auto max-w-7xl px-4 pb-12 pt-12 md:pb-16 md:pt-20">
+      <div className="-mt-[40px] -mb-6 relative z-10">
+        <IslamicSlider />
+      </div>
 
-          <div className="mx-auto max-w-4xl text-center">
+      {/* =================================================
+          SEARCH
+      ================================================= */}
 
-            {/* Small label */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="mb-5 flex items-center justify-center gap-3"
-            >
-              <span className="h-px w-10 bg-[#c8ae6a]" />
-
-              <span
-                className="text-sm tracking-[3px] text-[#c8ae6a]"
-                style={urduFont}
-              >
-                علمی و تحقیقی مرکز
-              </span>
-
-              <span className="h-px w-10 bg-[#c8ae6a]" />
-            </motion.div>
-
-            {/* Logo */}
-            <motion.h1
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.1,
-              }}
-              className="text-5xl font-bold leading-tight sm:text-6xl md:text-7xl"
-              style={{
-                ...urduFont,
-                textShadow:
-                  "0 0 35px rgba(200,174,106,0.15)",
-              }}
-            >
-              <span className="text-white">
-                مسلکِ
-              </span>{" "}
-              <span className="text-[#c8ae6a]">
-                دیوبند
-              </span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                delay: 0.45,
-                duration: 0.8,
-              }}
-              className="mt-3 text-xs tracking-[4px] text-emerald-300 sm:text-sm"
-            >
-              MASLAK E DEOBAND
-            </motion.p>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                delay: 0.65,
-                duration: 0.8,
-              }}
-              className="mx-auto mt-5 max-w-2xl text-lg leading-9 text-gray-300 sm:text-xl"
-              style={urduFont}
-            >
-              قرآن و سنت کی روشنی میں مستند فتاویٰ،
-              مسائل، مضامین اور اسلامی معلومات
-            </motion.p>
-
-            {/* =================================================
-                SEARCH
-            ================================================= */}
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: 0.8,
-                duration: 0.7,
-              }}
-              className="mx-auto mt-9 max-w-3xl"
-            >
-              <div
-                className="
-                  relative flex items-center
-                  border border-[#9b824c]/70
-                  bg-black/45
-                  shadow-[0_0_35px_rgba(0,0,0,0.35)]
-                  backdrop-blur-xl
-                  transition-all
-                  focus-within:border-[#c8ae6a]
-                  focus-within:shadow-[0_0_30px_rgba(200,174,106,0.15)]
-                "
-              >
-                <div className="px-4">
-                  <Search className="h-5 w-5 text-[#c8ae6a]" />
-                </div>
-
-                <input
-                  type="text"
-                  value={query}
-                  onChange={(e) =>
-                    setQuery(e.target.value)
-                  }
-                  placeholder="اپنا سوال، مسئلہ یا موضوع تلاش کریں..."
-                  className="
-                    w-full
-                    bg-transparent
-                    py-4
-                    pr-2
-                    text-right
-                    text-lg
-                    text-white
-                    outline-none
-                    placeholder:text-gray-500
-                  "
-                  style={{
-                    ...urduFont,
-                    direction: "rtl",
-                  }}
-                />
-
-                <button
-                  type="button"
-                  onClick={startListening}
-                  className="
-                    mr-2
-                    border-l
-                    border-[#806b3f]/50
-                    px-4
-                    py-3
-                    transition
-                    hover:bg-[#c8ae6a]/10
-                  "
-                  aria-label="Voice Search"
-                >
-                  <Mic className="h-5 w-5 text-[#c8ae6a]" />
-                </button>
-              </div>
-
-              <div className="mt-3 flex items-center justify-center gap-2">
-                <span className="text-[9px] tracking-[2px] text-gray-500">
-                  SEARCH FATWA DATABASE
-                </span>
-
-                <span className="h-1 w-1 rounded-full bg-[#c8ae6a]" />
-
-                <span
-                  className="text-sm text-gray-400"
-                  style={urduFont}
-                >
-                  فتاویٰ تلاش کریں
-                </span>
-              </div>
-            </motion.div>
+      <div
+        className="
+          relative
+          w-11/12
+          md:w-full
+          mx-auto
+          mt-6
+          z-10
+        "
+      >
+        <div
+          className="
+            flex
+            items-center
+            overflow-hidden
+            border
+            border-[#8f7840]
+            bg-black/55
+            backdrop-blur-md
+            shadow-[0_8px_30px_rgba(0,0,0,0.30)]
+            transition-all
+            duration-300
+            hover:border-[#c8ae6a]
+            focus-within:border-[#c8ae6a]
+            focus-within:shadow-[0_0_22px_rgba(200,174,106,0.22)]
+          "
+        >
+          <div className="px-3 py-2">
+            <Search className="w-5 h-5 text-[#c8ae6a]" />
           </div>
-        </section>
 
-        {/* =================================================
-            NAMAZ TICKER
-        ================================================= */}
-
-        <div className="border-y border-[#806b3f]/50 bg-black/60 backdrop-blur-md">
-          <div className="mx-auto flex max-w-7xl items-center overflow-hidden">
-
-            <div className="flex shrink-0 items-center gap-2 border-l border-[#806b3f]/40 px-4 py-3">
-              <Clock3 className="h-4 w-4 text-[#c8ae6a]" />
-
-              <span
-                className="text-base text-[#c8ae6a]"
-                style={urduFont}
-              >
-                نماز کے اوقات
-              </span>
-            </div>
-
-            <div className="relative w-full overflow-hidden">
-              <motion.div
-                className="whitespace-nowrap py-3 text-base text-emerald-200"
-                style={{
-                  direction: "rtl",
-                  ...urduFont,
-                }}
-                animate={{
-                  x: ["100%", "-100%"],
-                }}
-                transition={{
-                  duration: 22,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-              >
-                {prayerTimes ? (
-                  <>
-                    فجر:{" "}
-                    {prayerTimes.Fajr?.split(" ")[0]}{" "}
-                    &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
-                    ظہر:{" "}
-                    {prayerTimes.Dhuhr?.split(" ")[0]}{" "}
-                    &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
-                    عصر:{" "}
-                    {prayerTimes.Asr?.split(" ")[0]}{" "}
-                    &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
-                    مغرب:{" "}
-                    {prayerTimes.Maghrib?.split(" ")[0]}{" "}
-                    &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
-                    عشاء:{" "}
-                    {prayerTimes.Isha?.split(" ")[0]}
-                  </>
-                ) : (
-                  "نماز کے اوقات لوڈ ہو رہے ہیں..."
-                )}
-              </motion.div>
-            </div>
-          </div>
-        </div>
-
-        {/* =================================================
-            ISLAMIC SLIDER
-        ================================================= */}
-
-        <section className="mx-auto max-w-7xl px-3 pt-8">
-          <IslamicSlider />
-        </section>
-
-        {/* =================================================
-            STATS
-        ================================================= */}
-
-        <section className="mx-auto max-w-7xl px-3 pt-10">
-          <div className="grid grid-cols-2 border border-[#806b3f]/50 bg-black/35 backdrop-blur-md md:grid-cols-4">
-
-            <div className="border-b border-l border-[#806b3f]/40 p-5 text-center md:border-b-0">
-              <div className="font-mono text-2xl font-bold text-[#c8ae6a]">
-                1900+
-              </div>
-              <p
-                className="mt-1 text-base text-gray-300"
-                style={urduFont}
-              >
-                فتاویٰ
-              </p>
-            </div>
-
-            <div className="border-b border-[#806b3f]/40 p-5 text-center md:border-b-0 md:border-l">
-              <div className="font-mono text-2xl font-bold text-[#c8ae6a]">
-                50+
-              </div>
-              <p
-                className="mt-1 text-base text-gray-300"
-                style={urduFont}
-              >
-                موضوعات
-              </p>
-            </div>
-
-            <div className="border-l border-[#806b3f]/40 p-5 text-center">
-              <div className="font-mono text-2xl font-bold text-[#c8ae6a]">
-                3
-              </div>
-              <p
-                className="mt-1 text-base text-gray-300"
-                style={urduFont}
-              >
-                زبانیں
-              </p>
-            </div>
-
-            <div className="border-l border-[#806b3f]/40 p-5 text-center">
-              <div className="font-mono text-2xl font-bold text-[#c8ae6a]">
-                24/7
-              </div>
-              <p
-                className="mt-1 text-base text-gray-300"
-                style={urduFont}
-              >
-                آن لائن مطالعہ
-              </p>
-            </div>
-
-          </div>
-        </section>
-
-        {/* =================================================
-            CATEGORIES
-        ================================================= */}
-
-        <section className="mx-auto max-w-7xl px-3 pt-14">
-
-          <SectionHeading
-            english="FATWA CATEGORIES"
-            urdu="فتاویٰ کے موضوعات"
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="تلاش کریں....."
+            className="
+              w-full
+              py-3
+              pr-4
+              bg-black/70
+              text-[#f5e6bd]
+              placeholder-gray-300
+              outline-none
+              text-lg
+              border-0
+              focus:ring-0
+            "
+            style={{
+              direction: "rtl",
+              fontFamily:
+                "'Jameel Noori Nastaleeq', serif",
+            }}
           />
 
-          <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-            {categories.map((cat, index) => (
-              <motion.button
-                key={cat._id}
-                type="button"
-                onClick={() =>
-                  handleCategoryClick(cat.name)
-                }
-                initial={{
-                  opacity: 0,
-                  y: 15,
-                }}
-                whileInView={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                viewport={{
-                  once: true,
-                }}
-                transition={{
-                  delay: index * 0.04,
-                }}
-                className={`
-                  group
-                  relative
-                  min-h-[105px]
-                  overflow-hidden
+          <button
+            onClick={startListening}
+            type="button"
+            className="
+              px-3
+              py-2
+              hover:bg-[#c8ae6a]/10
+              transition
+            "
+            aria-label="Voice Search"
+          >
+            <Mic className="w-6 h-6 text-[#c8ae6a] opacity-90" />
+          </button>
+        </div>
+      </div>
+
+      {/* =================================================
+          CATEGORIES
+      ================================================= */}
+
+      <div
+        className="
+          grid
+          grid-cols-2
+          md:grid-cols-4
+          gap-3
+          px-2
+          mt-6
+          w-full
+          relative
+          z-10
+        "
+      >
+        {categories.map((cat) => (
+          <motion.div
+            key={cat._id}
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => {
+              setSelectedCategory(cat.name);
+
+              setTimeout(() => {
+                questionsRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }, 300);
+            }}
+            className={`
+              p-4
+              md:p-5
+              cursor-pointer
+              text-center
+              select-none
+              transition-all
+              duration-300
+              border
+              shadow-[0_5px_18px_rgba(0,0,0,0.18)]
+              text-xl
+              font-medium
+              ${
+                selectedCategory === cat.name
+                  ? `
+                    bg-[#f8f1df]
+                    border-[#c8ae6a]
+                    text-[#183d35]
+                    shadow-[0_0_20px_rgba(200,174,106,0.35)]
+                  `
+                  : `
+                    bg-white/95
+                    border-[#c8ae6a]
+                    text-[#1d332f]
+                    hover:bg-[#f8f1df]
+                    hover:border-[#806b3f]
+                  `
+              }
+            `}
+            style={{
+              fontFamily:
+                "'Jameel Noori Nastaleeq', serif",
+            }}
+          >
+            {cat.name}
+          </motion.div>
+        ))}
+      </div>
+
+      {/* =================================================
+          CATEGORY QUESTIONS
+      ================================================= */}
+
+      <section
+        ref={questionsRef}
+        className="
+          space-y-4
+          px-2
+          z-10
+          relative
+        "
+      >
+        {filteredQuestions.length > 0 ? (
+          filteredQuestions.map((q) => (
+            <Link
+              key={q._id}
+              href={`/questions/${q.slug}`}
+              className="block"
+            >
+              <motion.div
+                whileHover={{ y: -2 }}
+                className="
+                  p-5
                   border
-                  p-4
-                  text-right
+                  bg-[#fffaf0]/95
+                  border-[#c8ae6a]
+                  shadow-[0_5px_20px_rgba(0,0,0,0.15)]
+                  w-full
+                  cursor-pointer
+                  hover:bg-[#fffdf7]
                   transition-all
                   duration-300
-                  ${
-                    selectedCategory === cat.name
-                      ? "border-[#c8ae6a] bg-[#c8ae6a]/15 shadow-[0_0_25px_rgba(200,174,106,0.12)]"
-                      : "border-[#806b3f]/50 bg-[#0b2b26]/80 hover:border-[#c8ae6a] hover:bg-[#123a33]"
-                  }
-                `}
+                  relative
+                  overflow-hidden
+                "
                 style={{
                   direction: "rtl",
-                  ...urduFont,
+                  fontFamily:
+                    "'Jameel Noori Nastaleeq', serif",
+                  lineHeight: "2.2",
+                  textAlign: "right",
                 }}
               >
-                <span className="absolute left-0 top-0 h-px w-10 bg-[#c8ae6a] transition-all duration-300 group-hover:w-full" />
+                <div className="absolute right-0 top-0 bottom-0 w-1 bg-[#806b3f]" />
 
-                <div className="mb-3 flex items-center justify-between">
-                  <span className="font-mono text-[9px] tracking-[2px] text-[#806b3f]">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-
-                  <ArrowUpLeft className="h-4 w-4 text-[#c8ae6a] opacity-60 transition group-hover:opacity-100" />
-                </div>
-
-                <span className="text-lg text-gray-100">
-                  {cat.name}
-                </span>
-              </motion.button>
-            ))}
+                <h3 className="font-bold text-xl text-[#174d40] pr-2">
+                  {q.question}
+                </h3>
+              </motion.div>
+            </Link>
+          ))
+        ) : (
+          <div
+            className="
+              text-center
+              bg-black/50
+              border
+              border-[#806b3f]
+              px-4
+              py-5
+              text-[#f5e6bd]
+              backdrop-blur-sm
+            "
+            style={{
+              fontFamily:
+                "'Jameel Noori Nastaleeq', serif",
+              direction: "rtl",
+            }}
+          >
+            اوپر دیے گئے بٹن پر کلک کر کے سوال و جواب دیکھیں
           </div>
-        </section>
-
-        {/* =================================================
-            NEXT PRAYER
-        ================================================= */}
-
-        <section className="mx-auto max-w-7xl px-3 pt-12">
-
-          <div className="relative overflow-hidden border border-[#806b3f]/60 bg-black/45 p-5 backdrop-blur-xl md:p-7">
-
-            <div className="absolute left-0 top-0 h-px w-32 bg-[#c8ae6a]" />
-
-            <div className="absolute bottom-0 right-0 h-px w-32 bg-[#c8ae6a]" />
-
-            <div className="flex flex-col items-center justify-between gap-5 sm:flex-row">
-
-              <div
-                className="text-center sm:text-right"
-                style={urduFont}
-              >
-                <p className="text-lg text-[#c8ae6a]">
-                  🕌 اگلی نماز
-                </p>
-
-                <h2 className="mt-1 text-3xl text-white">
-                  {nextPrayer || "—"}
-                </h2>
-              </div>
-
-              <div className="text-center">
-                <p className="mb-2 font-mono text-[9px] tracking-[3px] text-gray-500">
-                  NEXT PRAYER IN
-                </p>
-
-                <motion.div
-                  animate={{
-                    opacity: [1, 0.7, 1],
-                  }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                  }}
-                  className="border border-[#806b3f]/60 bg-[#c8ae6a]/10 px-7 py-3"
-                >
-                  <span className="font-mono text-3xl font-bold tracking-[3px] text-[#e5d19b]">
-                    {countdown || "00:00:00"}
-                  </span>
-                </motion.div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        {/* =================================================
-            QUICK LINKS
-        ================================================= */}
-
-        <section className="mx-auto max-w-7xl px-3 pt-14">
-
-          <SectionHeading
-            english="ISLAMIC RESOURCES"
-            urdu="اسلامی سہولیات"
-          />
-
-          <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
-
-            <QuickLink
-              href="/masnoon-duayee"
-              icon={<Heart className="h-5 w-5" />}
-              text="مسنون دعائیں"
-            />
-
-            <QuickLink
-              href="/islami-naam"
-              icon={<Sparkles className="h-5 w-5" />}
-              text="اسلامی نام"
-            />
-
-            <QuickLink
-              href="/books"
-              icon={<BookOpen className="h-5 w-5" />}
-              text="اسلامی کتب"
-            />
-
-            <QuickLink
-              href="/majameen"
-              icon={<ScrollText className="h-5 w-5" />}
-              text="مضامین"
-            />
-
-            <QuickLink
-              href="/ozan-shariah-calculator"
-              icon={<Calculator className="h-5 w-5" />}
-              text="شرعیہ کیلکولیٹر"
-            />
-
-            <QuickLink
-              href="/40-hadith-free"
-              icon={<Library className="h-5 w-5" />}
-              text="40 احادیث"
-            />
-
-          </div>
-        </section>
-
-        {/* =================================================
-            QUESTIONS / MAJAMEEN
-        ================================================= */}
-
-        <section
-          ref={questionsRef}
-          className="mx-auto max-w-7xl scroll-mt-10 px-3 pt-14"
-        >
-
-          <SectionHeading
-            english="LATEST CONTENT"
-            urdu="تازہ علمی مواد"
-          />
-
-          <div className="mt-6 overflow-hidden border border-[#806b3f]/60 bg-[#f4efe2] text-[#263b35] shadow-2xl">
-
-            {/* Tabs */}
-            <div className="grid grid-cols-2 border-b border-[#806b3f]/50">
-
-              <button
-                type="button"
-                onClick={() =>
-                  setActiveTab("questions")
-                }
-                className={`
-                  relative px-4 py-4
-                  transition
-                  ${
-                    activeTab === "questions"
-                      ? "bg-[#0b3029] text-[#e8d49e]"
-                      : "bg-[#ddd4c2] text-[#705d43]"
-                  }
-                `}
-              >
-                <span
-                  className="text-xl"
-                  style={{
-                    ...urduFont,
-                    direction: "rtl",
-                  }}
-                >
-                  نئے سوالات
-                </span>
-
-                {activeTab === "questions" && (
-                  <span className="absolute bottom-0 left-0 h-0.5 w-full bg-[#c8ae6a]" />
-                )}
-              </button>
-
-              <button
-                type="button"
-                onClick={() =>
-                  setActiveTab("majameen")
-                }
-                className={`
-                  relative border-r border-[#806b3f]/30 px-4 py-4
-                  transition
-                  ${
-                    activeTab === "majameen"
-                      ? "bg-[#0b3029] text-[#e8d49e]"
-                      : "bg-[#ddd4c2] text-[#705d43]"
-                  }
-                `}
-              >
-                <span
-                  className="text-xl"
-                  style={{
-                    ...urduFont,
-                    direction: "rtl",
-                  }}
-                >
-                  منتخب مضامین
-                </span>
-
-                {activeTab === "majameen" && (
-                  <span className="absolute bottom-0 left-0 h-0.5 w-full bg-[#c8ae6a]" />
-                )}
-              </button>
-
-            </div>
-
-            {/* Content */}
-            <div
-              className="min-h-[180px] p-4 sm:p-6"
-              style={{
-                direction: "rtl",
-                ...urduFont,
-              }}
-            >
-
-              {activeTab === "questions" && (
-                <div className="space-y-1">
-
-                  {latestQuestions
-                    .slice(0, 5)
-                    .map((item, index) => (
-                      <Link
-                        key={item._id}
-                        href={`/questions/${item.slug}`}
-                        className="group flex items-start gap-3 border-b border-[#b8aa91]/40 px-2 py-3 text-right transition hover:bg-[#e9e0cd]"
-                      >
-                        <span className="pt-1 font-mono text-xs text-[#8b7355]">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-
-                        <span className="flex-1 text-lg leading-8 text-[#244d3e] transition group-hover:text-[#7b5b20]">
-                          {item.question}
-                        </span>
-
-                        <ChevronLeft className="mt-2 h-4 w-4 shrink-0 text-[#8b7355]" />
-                      </Link>
-                    ))}
-
-                  {latestQuestions.length === 0 && (
-                    <p className="py-8 text-center text-gray-500">
-                      کوئی نیا سوال موجود نہیں۔
-                    </p>
-                  )}
-
-                </div>
-              )}
-
-              {activeTab === "majameen" && (
-                <div className="space-y-1">
-
-                  {majameen.length > 0 ? (
-                    majameen.map((item, index) => (
-                      <Link
-                        key={item._id}
-                        href={`/majameen/${item._id}`}
-                        className="group flex items-start gap-3 border-b border-[#b8aa91]/40 px-2 py-3 text-right transition hover:bg-[#e9e0cd]"
-                      >
-                        <span className="pt-1 font-mono text-xs text-[#8b7355]">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-
-                        <span className="flex-1 text-lg leading-8 text-[#244d3e] transition group-hover:text-[#7b5b20]">
-                          {item.title}
-                        </span>
-
-                        <ChevronLeft className="mt-2 h-4 w-4 shrink-0 text-[#8b7355]" />
-                      </Link>
-                    ))
-                  ) : (
-                    <p className="py-8 text-center text-gray-500">
-                      کوئی مضمون موجود نہیں۔
-                    </p>
-                  )}
-
-                </div>
-              )}
-
-            </div>
-          </div>
-        </section>
-
-        {/* =================================================
-            CATEGORY QUESTIONS
-        ================================================= */}
-
-        {selectedCategory && (
-          <section className="mx-auto max-w-7xl px-3 pt-10">
-
-            <div className="mb-5 flex items-center justify-between border-b border-[#806b3f]/50 pb-3">
-
-              <span className="font-mono text-[9px] tracking-[3px] text-[#806b3f]">
-                CATEGORY RESULTS
-              </span>
-
-              <h2
-                className="text-2xl text-[#e5d19b]"
-                style={{
-                  ...urduFont,
-                  direction: "rtl",
-                }}
-              >
-                {selectedCategory}
-              </h2>
-
-            </div>
-
-            <div className="space-y-3">
-
-              {filteredQuestions.length > 0 ? (
-                filteredQuestions.map((q) => (
-                  <Link
-                    key={q._id}
-                    href={`/questions/${q.slug}`}
-                    className="
-                      group
-                      block
-                      border
-                      border-[#806b3f]/50
-                      bg-[#0b2d27]/90
-                      p-4
-                      transition-all
-                      hover:border-[#c8ae6a]
-                      hover:bg-[#123b34]
-                    "
-                    style={{
-                      direction: "rtl",
-                      ...urduFont,
-                    }}
-                  >
-                    <div className="flex items-start gap-3">
-
-                      <FileText className="mt-2 h-4 w-4 shrink-0 text-[#c8ae6a]" />
-
-                      <h3 className="text-xl leading-9 text-gray-100 transition group-hover:text-[#e5d19b]">
-                        {q.question}
-                      </h3>
-
-                    </div>
-                  </Link>
-                ))
-              ) : (
-                <p
-                  className="py-8 text-center text-gray-400"
-                  style={urduFont}
-                >
-                  اس موضوع میں کوئی سوال موجود نہیں۔
-                </p>
-              )}
-
-            </div>
-
-            {hasMore &&
-              filteredQuestions.length > 0 && (
-                <div className="mt-6 text-center">
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      fetchQuestions({
-                        customSkip: skip,
-                      })
-                    }
-                    className="
-                      border
-                      border-[#c8ae6a]
-                      bg-[#c8ae6a]/10
-                      px-8
-                      py-3
-                      text-[#e5d19b]
-                      transition
-                      hover:bg-[#c8ae6a]
-                      hover:text-[#13251f]
-                    "
-                    style={urduFont}
-                  >
-                    مزید سوالات دیکھیں
-                  </button>
-
-                </div>
-              )}
-          </section>
         )}
 
-        {/* =================================================
-            BOOKS
-        ================================================= */}
+        {hasMore && filteredQuestions.length > 0 && (
+          <div className="text-center mt-6">
+            <button
+              type="button"
+              onClick={() =>
+                fetchQuestions({
+                  customSkip: skip,
+                })
+              }
+              className="
+                px-7
+                py-2
+                bg-[#174d40]
+                text-[#f5e6bd]
+                border
+                border-[#c8ae6a]
+                hover:bg-[#216353]
+                hover:shadow-[0_0_18px_rgba(200,174,106,0.25)]
+                transition-all
+                duration-300
+              "
+              style={{
+                fontFamily:
+                  "'Jameel Noori Nastaleeq', serif",
+              }}
+            >
+              مزید سوالات دیکھیں
+            </button>
+          </div>
+        )}
+      </section>
 
-        <section className="mx-auto max-w-7xl px-3 pt-14">
+      {/* =================================================
+          NEXT PRAYER
+      ================================================= */}
 
-          <SectionHeading
-            english="ISLAMIC BOOKS"
-            urdu="اسلامی کتب"
+      <div className="w-full px-3 mt-4 relative z-10">
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 20,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 0.5,
+          }}
+          className="
+            relative
+            overflow-hidden
+            border
+            border-[#c8ae6a]/50
+            bg-[#071c19]/90
+            backdrop-blur-xl
+            shadow-[0_8px_30px_rgba(0,0,0,0.30)]
+            px-4
+            py-3
+          "
+        >
+          <div
+            className="
+              absolute
+              inset-0
+              bg-gradient-to-r
+              from-[#c8ae6a]/5
+              via-transparent
+              to-[#c8ae6a]/5
+            "
           />
 
-          <div className="mt-6 overflow-hidden border border-[#806b3f]/50 bg-black/30 p-2">
-            <LatestBooksSlider />
-          </div>
+          <div className="flex items-center justify-between relative z-10">
+            <div className="text-right">
+              <p
+                className="text-[#d8c27d]"
+                style={{
+                  fontFamily:
+                    "'Jameel Noori Nastaleeq', serif",
+                  fontSize: "20px",
+                  lineHeight: "30px",
+                }}
+              >
+                🕌 اگلی نماز
+              </p>
 
-        </section>
-
-        {/* =================================================
-            ISLAMIC TOOLS
-        ================================================= */}
-
-        <section className="mx-auto max-w-7xl px-3 pb-16 pt-14">
-
-          <SectionHeading
-            english="ISLAMIC TOOLS"
-            urdu="اسلامی سہولیات"
-          />
-
-          <div className="mt-6 overflow-hidden border border-[#806b3f]/50 bg-black/30 p-2">
-            <IslamicTools />
-          </div>
-
-        </section>
-
-        {/* =================================================
-            FINAL CTA
-        ================================================= */}
-
-        <section className="border-y border-[#806b3f]/40 bg-black/35">
-
-          <div className="mx-auto max-w-4xl px-5 py-14 text-center">
-
-            <div className="mx-auto mb-5 h-px w-20 bg-[#c8ae6a]" />
-
-            <h2
-              className="text-3xl text-[#e5d19b] md:text-4xl"
-              style={urduFont}
-            >
-              علم حاصل کرنا ہر مسلمان کی ضرورت ہے
-            </h2>
-
-            <p
-              className="mt-3 text-lg leading-8 text-gray-400"
-              style={urduFont}
-            >
-              مستند اسلامی معلومات اور فتاویٰ تک آسان رسائی
-            </p>
-
-            <div className="mt-6 font-mono text-[9px] tracking-[4px] text-gray-600">
-              KNOWLEDGE • RESEARCH • GUIDANCE
+              <h2
+                className="text-white"
+                style={{
+                  fontFamily:
+                    "'Jameel Noori Nastaleeq', serif",
+                  fontSize: "30px",
+                  lineHeight: "40px",
+                }}
+              >
+                {nextPrayer}
+              </h2>
             </div>
 
+            <motion.div
+              animate={{
+                opacity: [1, 0.7, 1],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+              }}
+              className="
+                bg-[#c8ae6a]/10
+                border
+                border-[#c8ae6a]/30
+                px-4
+                py-2
+              "
+            >
+              <span
+                className="
+                  text-[#f5e6bd]
+                  font-bold
+                "
+                style={{
+                  fontSize: "24px",
+                  letterSpacing: "2px",
+                }}
+              >
+                {countdown}
+              </span>
+            </motion.div>
           </div>
-
-        </section>
-
-      </div>
-    </main>
-  );
-}
-
-/* =========================================================
-   SECTION HEADING
-========================================================= */
-
-function SectionHeading({ english, urdu }) {
-  return (
-    <div className="flex items-end justify-between gap-4 border-b border-[#806b3f]/50 pb-3">
-
-      <div>
-        <span className="font-mono text-[9px] tracking-[3px] text-[#806b3f]">
-          {english}
-        </span>
+        </motion.div>
       </div>
 
-      <div className="flex items-center gap-3">
-        <span className="h-px w-8 bg-[#c8ae6a]" />
+      {/* =================================================
+          ISLAMIC QUICK LINKS
+      ================================================= */}
 
-        <h2
-          className="text-2xl text-[#e5d19b] md:text-3xl"
+      <div
+        className="
+          grid
+          grid-cols-2
+          gap-3
+          px-3
+          mt-5
+          relative
+          z-10
+        "
+      >
+        {[
+          {
+            href: "/masnoon-duayee",
+            title: "مسنون دعائیں",
+          },
+          {
+            href: "/islami-naam",
+            title: "اسلامی نام",
+          },
+          {
+            href: "/books",
+            title: "اسلامی کتب",
+          },
+          {
+            href: "/majameen",
+            title: "مضامین",
+          },
+          {
+            href: "/ozan-shariah-calculator",
+            title: "اوزان شریعہ کیلکولیٹر",
+          },
+          {
+            href: "/40-hadith-free",
+            title: "40 احادیث",
+          },
+        ].map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="
+              group
+              relative
+              overflow-hidden
+              bg-white
+              dark:bg-[#18201f]
+              border
+              border-[#c8ae6a]
+              dark:border-[#8f7840]
+              p-4
+              text-center
+              shadow-[0_4px_16px_rgba(0,0,0,0.15)]
+              dark:shadow-[0_0_14px_rgba(200,174,106,0.08)]
+              hover:bg-[#fff9ec]
+              dark:hover:bg-[#202b29]
+              text-gray-900
+              dark:text-[#f5e6bd]
+              transition-all
+              duration-300
+              hover:-translate-y-1
+            "
+            style={{
+              fontFamily:
+                "'Jameel Noori Nastaleeq', serif",
+              direction: "rtl",
+              fontSize: "20px",
+            }}
+          >
+            <span
+              className="
+                absolute
+                top-0
+                right-0
+                w-0
+                h-[2px]
+                bg-[#c8ae6a]
+                group-hover:w-full
+                transition-all
+                duration-300
+              "
+            />
+
+            <span className="relative z-10">
+              {item.title}
+            </span>
+          </Link>
+        ))}
+      </div>
+
+      {/* =================================================
+          TABS
+      ================================================= */}
+
+      <div className="mt-10 px-3 relative z-10">
+        <div className="flex overflow-hidden border border-[#806b3f] shadow-lg">
+          <button
+            type="button"
+            onClick={() => setActiveTab("questions")}
+            className={`
+              w-1/2
+              py-3
+              transition-all
+              duration-300
+              border-l
+              border-[#806b3f]
+              ${
+                activeTab === "questions"
+                  ? "bg-[#174d40] text-[#f5e6bd]"
+                  : "bg-[#d9cfbf] text-[#624d35] hover:bg-[#e5dccd]"
+              }
+            `}
+          >
+            <span
+              style={{
+                fontFamily:
+                  "'Jameel Noori Nastaleeq', serif",
+                direction: "rtl",
+                fontSize: "22px",
+                lineHeight: "34px",
+                fontWeight: "normal",
+                display: "block",
+              }}
+            >
+              نئے سوالات
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab("majameen")}
+            className={`
+              w-1/2
+              py-3
+              transition-all
+              duration-300
+              ${
+                activeTab === "majameen"
+                  ? "bg-[#174d40] text-[#f5e6bd]"
+                  : "bg-[#d9cfbf] text-[#624d35] hover:bg-[#e5dccd]"
+              }
+            `}
+          >
+            <span
+              style={{
+                fontFamily:
+                  "'Jameel Noori Nastaleeq', serif",
+                direction: "rtl",
+                fontSize: "22px",
+                lineHeight: "34px",
+                fontWeight: "normal",
+                display: "block",
+              }}
+            >
+              منتخب مضامین
+            </span>
+          </button>
+        </div>
+
+        {/* =================================================
+            TAB CONTENT
+        ================================================= */}
+
+        <div
+          className="
+            bg-white/90
+            dark:bg-[#17211f]/95
+            p-4
+            border
+            border-[#c8ae6a]
+            shadow-lg
+          "
           style={{
             fontFamily:
               "'Jameel Noori Nastaleeq', serif",
             direction: "rtl",
           }}
         >
-          {urdu}
-        </h2>
-      </div>
+          {/* NEW QUESTIONS */}
 
+          {activeTab === "questions" && (
+            <div className="space-y-3">
+              {latestQuestions.length > 0 ? (
+                latestQuestions
+                  .slice(0, 5)
+                  .map((item) => (
+                    <Link
+                      key={item._id}
+                      href={`/questions/${item.slug}`}
+                      className="
+                        group
+                        flex
+                        items-start
+                        gap-2
+                        text-[#174d40]
+                        dark:text-[#f5e6bd]
+                        hover:text-[#806b3f]
+                        transition-colors
+                      "
+                      style={{
+                        fontSize: "18px",
+                        lineHeight: "30px",
+                      }}
+                    >
+                      <span className="text-[#c8ae6a] shrink-0">
+                        ➜
+                      </span>
+
+                      <span className="group-hover:underline">
+                        {item.question}
+                      </span>
+                    </Link>
+                  ))
+              ) : (
+                <p className="text-gray-500 dark:text-gray-300 text-center">
+                  کوئی نیا سوال موجود نہیں۔
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* MAJAMEEN */}
+
+          {activeTab === "majameen" && (
+            <div className="space-y-3">
+              {majameen.length > 0 ? (
+                majameen.map((item) => (
+                  <Link
+                    key={item._id}
+                    href={`/majameen/${item._id}`}
+                    className="
+                      group
+                      flex
+                      items-start
+                      gap-2
+                      text-[#174d40]
+                      dark:text-[#f5e6bd]
+                      hover:text-[#806b3f]
+                      transition-colors
+                    "
+                    style={{
+                      fontSize: "20px",
+                      lineHeight: "32px",
+                    }}
+                  >
+                    <span className="text-[#c8ae6a] shrink-0">
+                      ➜
+                    </span>
+
+                    <span className="group-hover:underline">
+                      {item.title}
+                    </span>
+                  </Link>
+                ))
+              ) : (
+                <p className="text-gray-500 dark:text-gray-300 text-center">
+                  کوئی مضمون موجود نہیں۔
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* =================================================
+            BOOKS
+        ================================================= */}
+
+        <div className="mt-8">
+          <LatestBooksSlider />
+        </div>
+
+        {/* =================================================
+            ISLAMIC TOOLS
+        ================================================= */}
+
+        <div className="mt-8">
+          <IslamicTools />
+        </div>
+      </div>
     </div>
-  );
-}
-
-/* =========================================================
-   QUICK LINK
-========================================================= */
-
-function QuickLink({ href, icon, text }) {
-  return (
-    <Link
-      href={href}
-      className="
-        group
-        relative
-        overflow-hidden
-        border
-        border-[#806b3f]/50
-        bg-[#0b2b26]/90
-        px-3
-        py-5
-        text-center
-        transition-all
-        duration-300
-        hover:border-[#c8ae6a]
-        hover:bg-[#123a33]
-      "
-      style={{
-        fontFamily:
-          "'Jameel Noori Nastaleeq', serif",
-        direction: "rtl",
-      }}
-    >
-      <span className="absolute left-0 top-0 h-px w-8 bg-[#c8ae6a] transition-all duration-300 group-hover:w-full" />
-
-      <div className="mb-2 flex justify-center text-[#c8ae6a]">
-        {icon}
-      </div>
-
-      <span className="text-lg leading-8 text-gray-100 group-hover:text-[#e5d19b]">
-        {text}
-      </span>
-    </Link>
   );
 }
