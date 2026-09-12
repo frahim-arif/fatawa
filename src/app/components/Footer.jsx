@@ -3,8 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import {
-  Phone,
-  Mail,
   BookOpen,
   FileText,
   Home,
@@ -47,98 +45,371 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative overflow-hidden mt-10">
+    <footer
+      className="
+        relative
+        overflow-hidden
+        mt-10
+        bg-[#071c19]
+        text-white
+      "
+    >
+      {/* =====================================================
+          BACKGROUND
+      ===================================================== */}
 
-      {/* Background Image */}
-      <Image
-        // src="/images/1934.jpg"
-        alt="Footer Background"
-        fill
-        priority
-        className="object-cover -z-20"
-      />
+      <div className="absolute inset-0 pointer-events-none">
+        <Image
+          src="/images/1934.jpg"
+          alt=""
+          fill
+          priority
+          className="object-cover opacity-20"
+        />
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/80 -z-10"></div>
+        <div className="absolute inset-0 bg-[#071c19]/95" />
 
-      {/* Golden Pattern */}
-      <div className="absolute inset-0 bg-gradient-to-t from-yellow-900/20 via-transparent to-black/40 -z-10"></div>
+        <div
+          className="
+            absolute
+            inset-0
+            opacity-[0.06]
+          "
+          style={{
+            backgroundImage: `
+              linear-gradient(
+                rgba(200,174,106,0.5) 1px,
+                transparent 1px
+              ),
+              linear-gradient(
+                90deg,
+                rgba(200,174,106,0.5) 1px,
+                transparent 1px
+              )
+            `,
+            backgroundSize: "70px 70px",
+          }}
+        />
 
-      <div className="max-w-7xl mx-auto px-5 py-14">
+        <div
+          className="
+            absolute
+            top-0
+            left-0
+            right-0
+            h-[3px]
+            bg-gradient-to-r
+            from-transparent
+            via-[#c8ae6a]
+            to-transparent
+          "
+        />
+      </div>
 
-        <div className="grid gap-10 lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
+      {/* =====================================================
+          CONTENT
+      ===================================================== */}
 
-          {/* About */}
+      <div className="relative max-w-7xl mx-auto px-5 py-12 md:py-14">
+
+        <div
+          className="
+            grid
+            gap-10
+            lg:grid-cols-2
+            md:grid-cols-2
+            grid-cols-1
+          "
+        >
+
+          {/* =================================================
+              ABOUT
+          ================================================= */}
 
           <div className="text-center md:text-right">
 
-            <h2 className="text-3xl font-bold text-yellow-400 mb-4">
-              مسلک دیوبند
+            <div
+              className="
+                inline-flex
+                items-center
+                gap-3
+                mb-5
+              "
+            >
+              <div
+                className="
+                  flex
+                  items-center
+                  justify-center
+                  w-11
+                  h-11
+                  bg-[#174d40]
+                  border
+                  border-[#c8ae6a]
+                  text-[#f5e6bd]
+                "
+              >
+                <BookOpen size={21} />
+              </div>
+
+              <span className="hidden sm:block w-10 h-px bg-[#c8ae6a]" />
+            </div>
+
+            <h2
+              className="
+                text-3xl
+                md:text-4xl
+                font-bold
+                text-[#f5e6bd]
+                mb-4
+              "
+              style={{
+                fontFamily:
+                  "'Jameel Noori Nastaleeq', serif",
+              }}
+            >
+              مسلکِ دیوبند
             </h2>
 
-            <p className="text-yellow-100/80 leading-8">
-              قرآن و سنت کی روشنی میں مستند اسلامی سوالات، جوابات،
-              مضامین، کتب اور اہلِ علم کی رہنمائی۔
+            <p
+              className="
+                text-[#d6cfbd]
+                leading-8
+                text-sm
+                md:text-base
+                max-w-xl
+                md:ml-0
+                md:mr-auto
+              "
+              style={{
+                fontFamily:
+                  "'Jameel Noori Nastaleeq', serif",
+              }}
+            >
+              قرآن و سنت کی روشنی میں مستند اسلامی سوالات،
+              جوابات، مضامین، کتب اور اہلِ علم کی رہنمائی۔
             </p>
 
+            <div
+              className="
+                mt-6
+                border-r-2
+                border-[#c8ae6a]
+                pr-4
+                text-[#bcae8e]
+                text-sm
+                leading-7
+              "
+              style={{
+                fontFamily:
+                  "'Jameel Noori Nastaleeq', serif",
+              }}
+            >
+              دینی مسائل اور اسلامی معلومات کے لیے
+              ایک مفید علمی و تحقیقی ذخیرہ۔
+            </div>
           </div>
 
-          {/* Links */}
+          {/* =================================================
+              LINKS
+          ================================================= */}
 
           <div className="text-center md:text-right">
 
-            <h3 className="text-xl text-yellow-300 font-semibold mb-5">
-              اہم لنکس
-            </h3>
+            <div className="flex items-center gap-3 mb-5 justify-center md:justify-start">
 
-            <div className="grid grid-cols-2 gap-3">
+              <h3
+                className="
+                  text-xl
+                  md:text-2xl
+                  font-bold
+                  text-[#f5e6bd]
+                "
+                style={{
+                  fontFamily:
+                    "'Jameel Noori Nastaleeq', serif",
+                }}
+              >
+                اہم لنکس
+              </h3>
+
+              <span className="w-10 h-px bg-[#c8ae6a]" />
+            </div>
+
+            <div className="grid grid-cols-2 gap-2.5">
 
               {links.map((item, index) => {
-
                 const Icon = item.icon;
 
                 return (
                   <Link
                     key={index}
                     href={item.href}
-                    className="group flex items-center justify-center md:justify-end gap-2 rounded-xl border border-yellow-500/20 bg-white/5 px-4 py-3 transition-all duration-300 hover:bg-yellow-500/20 hover:border-yellow-400"
+                    className="
+                      group
+                      relative
+                      overflow-hidden
+                      flex
+                      items-center
+                      justify-center
+                      md:justify-end
+                      gap-2
+                      border
+                      border-[#806b3f]/70
+                      bg-[#102f2a]/80
+                      px-4
+                      py-3
+                      text-[#e8dfca]
+                      transition-all
+                      duration-300
+                      hover:bg-[#174d40]
+                      hover:border-[#c8ae6a]
+                      hover:text-[#f5e6bd]
+                    "
                   >
-                    <Icon size={16} />
-                    <span>{item.name}</span>
+                    {/* Gold hover line */}
+
+                    <span
+                      className="
+                        absolute
+                        right-0
+                        top-0
+                        h-[2px]
+                        w-0
+                        bg-[#c8ae6a]
+                        transition-all
+                        duration-300
+                        group-hover:w-full
+                      "
+                    />
+
+                    <span
+                      className="
+                        text-sm
+                        md:text-base
+                      "
+                      style={{
+                        fontFamily:
+                          "'Jameel Noori Nastaleeq', serif",
+                      }}
+                    >
+                      {item.name}
+                    </span>
+
+                    <Icon
+                      size={16}
+                      className="
+                        text-[#c8ae6a]
+                        transition-transform
+                        duration-300
+                        group-hover:-translate-x-1
+                      "
+                    />
                   </Link>
                 );
               })}
+
             </div>
-
           </div>
+        </div>
 
-          {/* Contact */}
+        {/* =================================================
+            DECORATIVE DIVIDER
+        ================================================= */}
 
+        <div className="flex items-center gap-4 my-10">
+
+          <span className="flex-1 h-px bg-[#806b3f]/40" />
+
+          <div
+            className="
+              w-2
+              h-2
+              rotate-45
+              border
+              border-[#c8ae6a]
+              bg-[#174d40]
+            "
+          />
+
+          <span className="w-16 h-px bg-[#c8ae6a]" />
+
+          <div
+            className="
+              w-2
+              h-2
+              rotate-45
+              border
+              border-[#c8ae6a]
+              bg-[#174d40]
+            "
+          />
+
+          <span className="flex-1 h-px bg-[#806b3f]/40" />
 
         </div>
 
-        {/* Divider */}
-
-        <div className="border-t border-yellow-500/20 my-10"></div>
-
-        {/* Bottom */}
+        {/* =================================================
+            QURAN AYAH
+        ================================================= */}
 
         <div className="text-center">
 
-          <p className="text-yellow-300 text-lg leading-8">
-            فَاسْأَلُوا أَهْلَ الذِّكْرِ إِنْ كُنْتُمْ لَا تَعْلَمُونَ
+          <p
+            className="
+              text-[#e8d39a]
+              text-lg
+              md:text-xl
+              leading-9
+            "
+            style={{
+              fontFamily:
+                "'Jameel Noori Nastaleeq', serif",
+            }}
+          >
+            فَاسْأَلُوا أَهْلَ الذِّكْرِ إِنْ كُنْتُمْ
+            لَا تَعْلَمُونَ
           </p>
 
-          <p className="text-yellow-100/70 mt-3 text-sm">
-            © {new Date().getFullYear()} Maslak e Deoband
-            <br />
-            Developed by -Web Core Cube Tech-9058596626
+          <p
+            className="
+              text-[#8f866f]
+              text-xs
+              mt-1
+            "
+          >
+            "اگر تم نہیں جانتے تو اہلِ ذکر سے پوچھو"
           </p>
 
         </div>
 
-      </div>
+        {/* =================================================
+            BOTTOM
+        ================================================= */}
 
+        <div
+          className="
+            border-t
+            border-[#806b3f]/30
+            mt-8
+            pt-5
+            text-center
+          "
+        >
+          <p className="text-[#a9a18d] text-xs md:text-sm">
+            © {new Date().getFullYear()} Maslak e Deoband
+          </p>
+
+          <p className="text-[#6f695b] text-[11px] mt-2">
+            Developed by
+            <span className="text-[#c8ae6a] mx-1">
+              Web Core Cube Tech
+            </span>
+            — 9058596626
+          </p>
+        </div>
+
+      </div>
     </footer>
   );
 }
