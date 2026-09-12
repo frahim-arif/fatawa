@@ -50,7 +50,7 @@ export default function IslamicSlider() {
       <div className="relative w-full m-0 p-0">
 
         {slides.map((slide, index) => (
-          <img
+          <image
             key={slide.id}
             src={slide.image}
             alt={slide.alt}
