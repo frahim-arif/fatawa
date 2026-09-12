@@ -401,7 +401,7 @@ export default function HomePage() {
         w-full
         min-h-screen
         overflow-hidden
-        -mt-4
+        -mt-8
         space-y-10
         px-0
         bg-repeat
