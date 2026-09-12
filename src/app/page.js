@@ -886,151 +886,199 @@ export default function HomePage() {
         </motion.div>
       </div>
 
-      {/* =================================================
-          ISLAMIC QUICK LINKS
-      ================================================= */}
+{/* =================================================
+    ISLAMIC QUICK LINKS
+================================================= */}
 
-      <div
-        className="
-          grid
-          grid-cols-2
-          gap-3
-          px-3
-          mt-5
-        "
-      >
-        <Link
-          href="/masnoon-duayee"
-          className="
-            bg-white
-            border
-            border-yellow-400
-            p-4
-            text-center
-            shadow-md
-            hover:bg-yellow-50
-            transition
-          "
-          style={{
-            fontFamily:
-              "'Jameel Noori Nastaleeq', serif",
-            direction: "rtl",
-            fontSize: "20px",
-          }}
-        >
-          مسنون دعائیں
-        </Link>
+<div
+  className="
+    grid
+    grid-cols-2
+    gap-3
+    px-3
+    mt-5
+  "
+>
+  {/* مسنون دعائیں */}
+  <Link
+    href="/masnoon-duayee"
+    className="
+      bg-white
+      dark:bg-[#18201f]
+      border
+      border-yellow-400
+      dark:border-[#8f7840]
+      p-4
+      text-center
+      shadow-md
+      dark:shadow-[0_0_12px_rgba(200,174,106,0.08)]
+      hover:bg-yellow-50
+      dark:hover:bg-[#202b29]
+      text-gray-900
+      dark:text-[#f5e6bd]
+      transition-all
+      duration-300
+    "
+    style={{
+      fontFamily:
+        "'Jameel Noori Nastaleeq', serif",
+      direction: "rtl",
+      fontSize: "20px",
+    }}
+  >
+    مسنون دعائیں
+  </Link>
 
-        <Link
-          href="/islami-naam"
-          className="
-            bg-white
-            border
-            border-yellow-400
-            p-4
-            text-center
-            shadow-md
-            hover:bg-yellow-50
-            transition
-          "
-          style={{
-            fontFamily:
-              "'Jameel Noori Nastaleeq', serif",
-            direction: "rtl",
-            fontSize: "20px",
-          }}
-        >
-          اسلامی نام
-        </Link>
+  {/* اسلامی نام */}
+  <Link
+    href="/islami-naam"
+    className="
+      bg-white
+      dark:bg-[#18201f]
+      border
+      border-yellow-400
+      dark:border-[#8f7840]
+      p-4
+      text-center
+      shadow-md
+      dark:shadow-[0_0_12px_rgba(200,174,106,0.08)]
+      hover:bg-yellow-50
+      dark:hover:bg-[#202b29]
+      text-gray-900
+      dark:text-[#f5e6bd]
+      transition-all
+      duration-300
+    "
+    style={{
+      fontFamily:
+        "'Jameel Noori Nastaleeq', serif",
+      direction: "rtl",
+      fontSize: "20px",
+    }}
+  >
+    اسلامی نام
+  </Link>
 
-        <Link
-          href="/books"
-          className="
-            bg-white
-            border
-            border-yellow-400
-            p-4
-            text-center
-            shadow-md
-            hover:bg-yellow-50
-            transition
-          "
-          style={{
-            fontFamily:
-              "'Jameel Noori Nastaleeq', serif",
-            direction: "rtl",
-            fontSize: "20px",
-          }}
-        >
-          اسلامی کتب
-        </Link>
+  {/* اسلامی کتب */}
+  <Link
+    href="/books"
+    className="
+      bg-white
+      dark:bg-[#18201f]
+      border
+      border-yellow-400
+      dark:border-[#8f7840]
+      p-4
+      text-center
+      shadow-md
+      dark:shadow-[0_0_12px_rgba(200,174,106,0.08)]
+      hover:bg-yellow-50
+      dark:hover:bg-[#202b29]
+      text-gray-900
+      dark:text-[#f5e6bd]
+      transition-all
+      duration-300
+    "
+    style={{
+      fontFamily:
+        "'Jameel Noori Nastaleeq', serif",
+      direction: "rtl",
+      fontSize: "20px",
+    }}
+  >
+    اسلامی کتب
+  </Link>
 
-        <Link
-          href="/majameen"
-          className="
-            bg-white
-            border
-            border-yellow-400
-            p-4
-            text-center
-            shadow-md
-            hover:bg-yellow-50
-            transition
-          "
-          style={{
-            fontFamily:
-              "'Jameel Noori Nastaleeq', serif",
-            direction: "rtl",
-            fontSize: "20px",
-          }}
-        >
-          مضامین
-        </Link>
+  {/* مضامین */}
+  <Link
+    href="/majameen"
+    className="
+      bg-white
+      dark:bg-[#18201f]
+      border
+      border-yellow-400
+      dark:border-[#8f7840]
+      p-4
+      text-center
+      shadow-md
+      dark:shadow-[0_0_12px_rgba(200,174,106,0.08)]
+      hover:bg-yellow-50
+      dark:hover:bg-[#202b29]
+      text-gray-900
+      dark:text-[#f5e6bd]
+      transition-all
+      duration-300
+    "
+    style={{
+      fontFamily:
+        "'Jameel Noori Nastaleeq', serif",
+      direction: "rtl",
+      fontSize: "20px",
+    }}
+  >
+    مضامین
+  </Link>
 
-        <a
-          href="/ozan-shariah-calculator"
-          className="
-            bg-white
-            border
-            border-yellow-400
-            p-4
-            text-center
-            shadow-md
-            hover:bg-yellow-50
-            transition
-          "
-          style={{
-            fontFamily:
-              "'Jameel Noori Nastaleeq', serif",
-            direction: "rtl",
-            fontSize: "20px",
-          }}
-        >
-          اوزان شریعہ کیلکولیٹر
-        </a>
+  {/* اوزان شریعہ */}
+  <Link
+    href="/ozan-shariah-calculator"
+    className="
+      bg-white
+      dark:bg-[#18201f]
+      border
+      border-yellow-400
+      dark:border-[#8f7840]
+      p-4
+      text-center
+      shadow-md
+      dark:shadow-[0_0_12px_rgba(200,174,106,0.08)]
+      hover:bg-yellow-50
+      dark:hover:bg-[#202b29]
+      text-gray-900
+      dark:text-[#f5e6bd]
+      transition-all
+      duration-300
+    "
+    style={{
+      fontFamily:
+        "'Jameel Noori Nastaleeq', serif",
+      direction: "rtl",
+      fontSize: "20px",
+    }}
+  >
+    اوزان شریعہ کیلکولیٹر
+  </Link>
 
-        <a
-          href="/40-hadith-free"
-          className="
-            bg-white
-            border
-            border-yellow-400
-            p-4
-            text-center
-            shadow-md
-            hover:bg-yellow-50
-            transition
-          "
-          style={{
-            fontFamily:
-              "'Jameel Noori Nastaleeq', serif",
-            direction: "rtl",
-            fontSize: "20px",
-          }}
-        >
-          40 احادیث
-        </a>
-      </div>
+  {/* 40 احادیث */}
+  <Link
+    href="/40-hadith-free"
+    className="
+      bg-white
+      dark:bg-[#18201f]
+      border
+      border-yellow-400
+      dark:border-[#8f7840]
+      p-4
+      text-center
+      shadow-md
+      dark:shadow-[0_0_12px_rgba(200,174,106,0.08)]
+      hover:bg-yellow-50
+      dark:hover:bg-[#202b29]
+      text-gray-900
+      dark:text-[#f5e6bd]
+      transition-all
+      duration-300
+    "
+    style={{
+      fontFamily:
+        "'Jameel Noori Nastaleeq', serif",
+      direction: "rtl",
+      fontSize: "20px",
+    }}
+  >
+    40 احادیث
+  </Link>
+</div>
 
       {/* =================================================
           TABS
