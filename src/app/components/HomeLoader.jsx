@@ -1,0 +1,191 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+
+export default function HomeLoader() {
+  const [progress, setProgress] = useState(8);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 92) return prev;
+
+        const increment = Math.floor(Math.random() * 5) + 1;
+        return Math.min(prev + increment, 92);
+      });
+    }, 180);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className="fixed inset-0 z-[99999] flex items-center justify-center overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(circle at center, #073b36 0%, #032b28 45%, #021b19 100%)",
+      }}
+    >
+      {/* Grid Background */}
+      <div
+        className="absolute inset-0 opacity-20"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)
+          `,
+          backgroundSize: "120px 120px",
+        }}
+      />
+
+      {/* Golden Camera Corners */}
+      <div className="absolute top-16 left-8 w-14 h-14 border-l-2 border-t-2 border-[#c8ae6a]" />
+      <div className="absolute top-16 right-8 w-14 h-14 border-r-2 border-t-2 border-[#c8ae6a]" />
+      <div className="absolute bottom-16 left-8 w-14 h-14 border-l-2 border-b-2 border-[#c8ae6a]" />
+      <div className="absolute bottom-16 right-8 w-14 h-14 border-r-2 border-b-2 border-[#c8ae6a]" />
+
+      {/* REC */}
+      <div className="absolute top-24 left-14 flex items-center gap-2">
+        <motion.div
+          animate={{ opacity: [1, 0.3, 1] }}
+          transition={{ duration: 1, repeat: Infinity }}
+          className="w-3 h-3 rounded-full bg-red-500"
+        />
+
+        <span className="text-red-400 text-xs tracking-[4px]">
+          REC
+        </span>
+      </div>
+
+      {/* Time Code */}
+      <div className="absolute top-24 right-14">
+        <span className="text-emerald-400 text-xs tracking-[3px] font-mono">
+          TC 00:00:{String(progress).padStart(2, "0")}:14
+        </span>
+      </div>
+
+      {/* Main */}
+      <div className="relative w-[82%] max-w-md text-center">
+
+        {/* Logo */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="mb-3"
+        >
+          <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
+            <span className="text-white">Edito</span>
+            <span className="text-emerald-400">Hub</span>
+            <span className="text-[#c8ae6a]">|</span>
+          </h1>
+        </motion.div>
+
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="text-gray-300 text-[10px] md:text-xs tracking-[7px]"
+        >
+          POST-PRODUCTION SUITE
+        </motion.p>
+
+        {/* Progress */}
+        <div className="mt-14">
+
+          <div className="relative h-4 w-full rounded-full bg-[#062824] border border-[#07574f] overflow-visible">
+
+            {/* Progress Fill */}
+            <motion.div
+              className="absolute left-0 top-0 h-full rounded-full"
+              style={{
+                background:
+                  "linear-gradient(90deg, #17b897, #38d5b4)",
+                boxShadow: "0 0 12px rgba(35,220,180,0.8)",
+              }}
+              animate={{ width: `${progress}%` }}
+              transition={{
+                duration: 0.3,
+                ease: "easeOut",
+              }}
+            />
+
+            {/* Red Playhead */}
+            <motion.div
+              className="absolute top-[-8px] w-[3px] h-11 bg-red-400"
+              animate={{
+                left: `${progress}%`,
+              }}
+              transition={{
+                duration: 0.3,
+                ease: "easeOut",
+              }}
+              style={{
+                boxShadow: "0 0 8px rgba(255,80,80,0.8)",
+              }}
+            >
+              <div
+                className="absolute -top-1 left-[-5px]"
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: "6px solid transparent",
+                  borderRight: "6px solid transparent",
+                  borderTop: "8px solid #ff6666",
+                }}
+              />
+            </motion.div>
+          </div>
+
+          {/* Loading Text */}
+          <div className="flex justify-between mt-5">
+            <motion.span
+              key={progress}
+              initial={{ opacity: 0.5 }}
+              animate={{ opacity: 1 }}
+              className="text-gray-300 text-[10px] tracking-[4px]"
+            >
+              LOADING CONTENT
+            </motion.span>
+
+            <span className="text-emerald-400 text-sm font-mono font-bold">
+              {String(progress).padStart(3, "0")}%
+            </span>
+          </div>
+        </div>
+
+        {/* Bottom Loading Animation */}
+        <div className="mt-8 flex justify-center gap-1">
+          {[1, 2, 3, 4, 5].map((item) => (
+            <motion.div
+              key={item}
+              className="w-1 h-1 rounded-full bg-emerald-400"
+              animate={{
+                opacity: [0.2, 1, 0.2],
+                scale: [1, 1.5, 1],
+              }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                delay: item * 0.12,
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom Status */}
+      <div className="absolute bottom-8 left-0 right-0 text-center">
+        <span className="text-gray-500 text-[9px] tracking-[5px]">
+          INITIALIZING DIGITAL LIBRARY
+        </span>
+      </div>
+    </motion.div>
+  );
+}
