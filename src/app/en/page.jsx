@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, {
@@ -12,6 +13,14 @@ import Link from "next/link";
 import {
   Search,
   Mic,
+  ArrowRight,
+  BookOpen,
+  FileText,
+  Layers3,
+  Calculator,
+  ScrollText,
+  Sparkles,
+  Clock3,
 } from "lucide-react";
 
 import { motion } from "framer-motion";
@@ -19,10 +28,8 @@ import { motion } from "framer-motion";
 import HomeLoader from "../components/HomeLoader";
 import LatestBooksSlider from "../components/LatestBooksSlider";
 import IslamicTools from "../components/IslamicTools";
-import IslamicSlider from "../components/IslamicSlider";
 
-const backend =
-  "https://f-backend-vdi1.onrender.com/api";
+const backend = "https://f-backend-vdi1.onrender.com/api";
 
 const QUESTION_LIMIT = 10;
 
@@ -31,50 +38,27 @@ export default function EnglishHomePage() {
      STATES
   ===================================================== */
 
-  const [query, setQuery] =
-    useState("");
+  const [query, setQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
-  const [selectedCategory, setSelectedCategory] =
-    useState("");
+  const [categories, setCategories] = useState([]);
+  const [allQuestions, setAllQuestions] = useState([]);
+  const [latestQuestions, setLatestQuestions] = useState([]);
+  const [articles, setArticles] = useState([]);
 
-  const [categories, setCategories] =
-    useState([]);
+  const [skip, setSkip] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingQuestions, setLoadingQuestions] = useState(false);
 
-  const [allQuestions, setAllQuestions] =
-    useState([]);
+  const [prayerTimes, setPrayerTimes] = useState(null);
+  const [nextPrayer, setNextPrayer] = useState("");
+  const [countdown, setCountdown] = useState("");
 
-  const [latestQuestions, setLatestQuestions] =
-    useState([]);
+  const [activeTab, setActiveTab] = useState("questions");
 
-  const [articles, setArticles] =
-    useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [skip, setSkip] =
-    useState(0);
-
-  const [hasMore, setHasMore] =
-    useState(true);
-
-  const [loadingQuestions, setLoadingQuestions] =
-    useState(false);
-
-  const [prayerTimes, setPrayerTimes] =
-    useState(null);
-
-  const [nextPrayer, setNextPrayer] =
-    useState("");
-
-  const [countdown, setCountdown] =
-    useState("");
-
-  const [activeTab, setActiveTab] =
-    useState("questions");
-
-  const [isLoading, setIsLoading] =
-    useState(true);
-
-  const questionsRef =
-    useRef(null);
+  const questionsRef = useRef(null);
 
   /* =====================================================
      HOME LOADER
@@ -83,7 +67,7 @@ export default function EnglishHomePage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1200);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -95,12 +79,9 @@ export default function EnglishHomePage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch(
-          `${backend}/en/categories`,
-          {
-            cache: "no-store",
-          }
-        );
+        const res = await fetch(`${backend}/en/categories`, {
+          cache: "no-store",
+        });
 
         if (!res.ok) {
           throw new Error(
@@ -133,7 +114,6 @@ export default function EnglishHomePage() {
 
   /* =====================================================
      ENGLISH CATEGORIES
-     IMPORTANT: THIS FIXES englishCategories ERROR
   ===================================================== */
 
   const englishCategories = useMemo(() => {
@@ -277,28 +257,23 @@ export default function EnglishHomePage() {
         return;
       }
 
-      const newQuestions =
-        Array.isArray(data?.data)
-          ? data.data
-          : [];
+      const newQuestions = Array.isArray(data?.data)
+        ? data.data
+        : [];
 
       if (reset) {
         setAllQuestions(newQuestions);
       } else {
         setAllQuestions((prev) => {
           const existingIds = new Set(
-            prev.map(
-              (item) => item?._id
-            )
+            prev.map((item) => item?._id)
           );
 
           const uniqueQuestions =
             newQuestions.filter(
               (item) =>
                 item?._id &&
-                !existingIds.has(
-                  item._id
-                )
+                !existingIds.has(item?._id)
             );
 
           return [
@@ -309,13 +284,11 @@ export default function EnglishHomePage() {
       }
 
       setSkip(
-        customSkip +
-          newQuestions.length
+        customSkip + newQuestions.length
       );
 
       setHasMore(
-        newQuestions.length ===
-          QUESTION_LIMIT
+        newQuestions.length === QUESTION_LIMIT
       );
     } catch (error) {
       console.error(
@@ -364,9 +337,7 @@ export default function EnglishHomePage() {
           data?.success &&
           Array.isArray(data?.data)
         ) {
-          setLatestQuestions(
-            data.data
-          );
+          setLatestQuestions(data.data);
         } else {
           setLatestQuestions([]);
         }
@@ -623,8 +594,7 @@ export default function EnglishHomePage() {
   ) => {
     const values = [];
 
-    const category =
-      item?.category;
+    const category = item?.category;
 
     if (
       typeof category ===
@@ -906,20 +876,10 @@ export default function EnglishHomePage() {
   const handleCategoryClick =
     (category) => {
       const name =
-        getCategoryName(
-          category
-        );
+        getCategoryName(category);
 
       const slug =
-        getCategorySlug(
-          category
-        );
-
-      /*
-       * Name is used for display/filter,
-       * while slug is also accepted by
-       * the filtering logic.
-       */
+        getCategorySlug(category);
 
       setSelectedCategory(
         name || slug
@@ -932,7 +892,7 @@ export default function EnglishHomePage() {
             block: "start",
           }
         );
-      }, 150);
+      }, 100);
     };
 
   /* =====================================================
@@ -1027,60 +987,19 @@ export default function EnglishHomePage() {
   ===================================================== */
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#eef3f8]">
-
-      {/* =================================================
-          HERO
-      ================================================= */}
-{/* 
-      <section
-        className="relative overflow-hidden border-b border-[#b68a35]"
-        style={{
-          backgroundImage:
-            "url('/images/ramadan_15_03_2022_1.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0 bg-[#071827]/85" />
-
-        <div className="absolute -top-24 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-blue-500/20 blur-[100px]" />
-
-        <div className="relative z-10 mx-auto max-w-7xl px-4 py-10 md:py-14">
-
-          <div className="text-center">
-
-            <p className="text-xs font-bold uppercase tracking-[0.3em] text-amber-300 md:text-sm">
-              MASLAK-E-DEOBAND
-            </p>
-
-            <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-white md:text-5xl">
-              Islamic Questions &amp; Answers
-            </h1>
-
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-blue-100 md:text-lg">
-              Authentic Islamic guidance based on the
-              Quran and Sunnah according to the
-              Maslak-e-Deoband.
-            </p>
-
-          </div>
-
-        </div>
-      </section> */}
+    <main className="min-h-screen overflow-hidden bg-[#f4f7fa]">
 
       {/* =================================================
           PRAYER BAR
       ================================================= */}
 
-      <div className="w-full overflow-hidden border-b border-[#315b7a] bg-[#06131f]">
+      <div className="w-full border-b border-[#294c67] bg-[#071725]">
 
         {prayerTimes ? (
-
-          <div className="relative overflow-hidden py-2">
+          <div className="overflow-hidden py-2">
 
             <motion.div
-              className="flex w-max items-center whitespace-nowrap text-xs font-medium text-amber-300 sm:text-sm md:text-base"
+              className="flex w-max items-center whitespace-nowrap text-xs font-medium text-amber-300 sm:text-sm"
               animate={{
                 x: [
                   "100%",
@@ -1088,12 +1007,11 @@ export default function EnglishHomePage() {
                 ],
               }}
               transition={{
-                duration: 18,
+                duration: 22,
                 repeat: Infinity,
                 ease: "linear",
               }}
             >
-
               {[1, 2].map((set) => (
                 <div
                   key={set}
@@ -1102,128 +1020,129 @@ export default function EnglishHomePage() {
                     set === 2
                   }
                 >
-
-                  <span className="px-3">
+                  <span className="px-4">
                     Fajr:{" "}
                     {prayerTimes?.Fajr?.split(
                       " "
                     )[0] || "--"}
                   </span>
 
-                  <span className="text-blue-400">
+                  <span className="text-[#6689a5]">
                     |
                   </span>
 
-                  <span className="px-3">
+                  <span className="px-4">
                     Dhuhr:{" "}
                     {prayerTimes?.Dhuhr?.split(
                       " "
                     )[0] || "--"}
                   </span>
 
-                  <span className="text-blue-400">
+                  <span className="text-[#6689a5]">
                     |
                   </span>
 
-                  <span className="px-3">
+                  <span className="px-4">
                     Asr:{" "}
                     {prayerTimes?.Asr?.split(
                       " "
                     )[0] || "--"}
                   </span>
 
-                  <span className="text-blue-400">
+                  <span className="text-[#6689a5]">
                     |
                   </span>
 
-                  <span className="px-3">
+                  <span className="px-4">
                     Maghrib:{" "}
                     {prayerTimes?.Maghrib?.split(
                       " "
                     )[0] || "--"}
                   </span>
 
-                  <span className="text-blue-400">
+                  <span className="text-[#6689a5]">
                     |
                   </span>
 
-                  <span className="px-3">
+                  <span className="px-4">
                     Isha:{" "}
                     {prayerTimes?.Isha?.split(
                       " "
                     )[0] || "--"}
                   </span>
 
-                  <span className="px-5 text-amber-500">
+                  <span className="px-6 text-amber-500">
                     ☪
                   </span>
-
                 </div>
               ))}
-
             </motion.div>
 
           </div>
-
         ) : (
-
           <div className="py-2 text-center text-xs text-amber-300 sm:text-sm">
             Loading prayer times...
           </div>
-
         )}
-
       </div>
 
       {/* =================================================
-          ISLAMIC SLIDER
+          MAIN CONTENT
       ================================================= */}
 
-      <div className="relative z-10 bg-[#eef3f8] py-3">
-        <IslamicSlider />
-      </div>
-
-      {/* =================================================
-          CONTENT
-      ================================================= */}
-
-      <div className="mx-auto max-w-7xl px-3 py-8 md:px-5">
+      <div className="mx-auto max-w-7xl px-3 py-8 sm:px-5 md:py-10">
 
         {/* =================================================
             SEARCH
         ================================================= */}
 
-        <section className="mb-10">
+        <section className="mb-12">
 
-          <div className="mx-auto flex max-w-5xl items-center overflow-hidden border border-[#54728d] bg-white shadow-[0_8px_30px_rgba(20,50,80,0.10)] transition focus-within:border-[#b68a35]">
+          <div className="mx-auto max-w-5xl">
 
-            <div className="px-4">
-              <Search className="h-5 w-5 text-[#315b7a]" />
+            <div className="mb-3 text-center">
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#b17e19]">
+                Search Knowledge
+              </p>
+
+              <h1 className="mt-2 text-2xl font-bold text-[#102d45] sm:text-3xl">
+                Search Islamic Questions
+              </h1>
+
+              <p className="mt-2 text-sm text-gray-500">
+                Find answers to your Islamic questions
+              </p>
             </div>
 
-            <input
-              type="text"
-              value={query}
-              onChange={(e) =>
-                setQuery(
-                  e.target.value
-                )
-              }
-              placeholder="Search Islamic questions..."
-              aria-label="Search Islamic questions"
-              className="w-full bg-transparent py-4 text-gray-800 outline-none placeholder:text-gray-400"
-            />
+            <div className="relative mt-6 flex items-center overflow-hidden border border-[#9fb3c3] bg-white shadow-[0_12px_35px_rgba(16,45,69,0.10)] transition-all duration-300 focus-within:border-[#b68a35] focus-within:shadow-[0_12px_35px_rgba(182,138,53,0.12)]">
 
-            <button
-              type="button"
-              onClick={
-                startListening
-              }
-              className="border-l border-gray-200 px-4 py-3 transition hover:bg-blue-50"
-              aria-label="Voice Search"
-            >
-              <Mic className="h-5 w-5 text-[#315b7a]" />
-            </button>
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center bg-[#102d45] sm:h-16 sm:w-16">
+                <Search className="h-5 w-5 text-amber-300 sm:h-6 sm:w-6" />
+              </div>
+
+              <input
+                type="text"
+                value={query}
+                onChange={(e) =>
+                  setQuery(e.target.value)
+                }
+                placeholder="Search Islamic questions..."
+                aria-label="Search Islamic questions"
+                className="h-14 w-full bg-transparent px-4 text-sm text-gray-800 outline-none placeholder:text-gray-400 sm:h-16 sm:text-base"
+              />
+
+              <button
+                type="button"
+                onClick={
+                  startListening
+                }
+                className="mr-2 flex h-10 w-10 shrink-0 items-center justify-center border border-gray-200 bg-gray-50 text-[#315b7a] transition hover:border-[#b68a35] hover:bg-[#fffaf0] hover:text-[#b17e19] sm:mr-3"
+                aria-label="Voice Search"
+              >
+                <Mic className="h-5 w-5" />
+              </button>
+
+            </div>
 
           </div>
 
@@ -1233,112 +1152,156 @@ export default function EnglishHomePage() {
             CATEGORIES
         ================================================= */}
 
-        <section className="mb-12">
+        <section className="mb-14">
 
-          <div className="mb-5 flex items-end justify-between gap-3">
+          <div className="mb-6 flex items-end justify-between gap-4">
 
             <div>
+              <div className="mb-3 flex items-center gap-2">
+                <span className="h-1 w-8 bg-amber-500" />
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#b17e19]">
+                  Browse Topics
+                </span>
+              </div>
 
-              <div className="mb-2 h-1 w-12 bg-amber-500" />
-
-              <h2 className="text-2xl font-bold text-[#102d45] md:text-3xl">
+              <h2 className="text-2xl font-bold text-[#102d45] sm:text-3xl">
                 Islamic Categories
               </h2>
 
-              <p className="mt-1 text-sm text-gray-500">
-                Explore Islamic questions by topic
+              <p className="mt-2 text-sm text-gray-500">
+                Explore questions by Islamic topic
               </p>
-
             </div>
 
             <Link
               href="/en/categories"
-              className="hidden font-semibold text-[#315b7a] transition hover:text-[#b17e19] sm:block"
+              className="hidden items-center gap-1 border-b border-[#b68a35] pb-1 text-sm font-bold text-[#315b7a] transition hover:text-[#b17e19] sm:flex"
             >
-              View All →
+              View All
+              <ArrowRight className="h-4 w-4" />
             </Link>
 
           </div>
 
-          {englishCategories.length >
-          0 ? (
+          {englishCategories.length > 0 ? (
 
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
-
-              {/* ALL QUESTIONS */}
-
-              <button
-                type="button"
-                onClick={
-                  clearCategory
-                }
-                className={`flex min-h-[90px] items-center justify-center border px-3 py-4 text-center font-bold transition ${
-                  selectedCategory === ""
-                    ? "border-[#b68a35] bg-[#102d45] text-white shadow-lg"
-                    : "border-[#b9c9d5] bg-white text-[#173b57] hover:-translate-y-1 hover:border-[#b68a35] hover:shadow-md"
-                }`}
-              >
-                All Questions
-              </button>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
 
               {englishCategories
-                .slice(0, 11)
-                .map(
-                  (category) => {
-                    const name =
-                      getCategoryName(
-                        category
-                      );
+                .slice(0, 10)
+                .map((category, index) => {
 
-                    const slug =
-                      getCategorySlug(
-                        category
-                      );
+                  const name =
+                    getCategoryName(
+                      category
+                    );
 
-                    const active =
-                      selectedCategory
-                        .trim()
-                        .toLowerCase() ===
-                      name
-                        .trim()
-                        .toLowerCase();
+                  const slug =
+                    getCategorySlug(
+                      category
+                    );
 
-                    return (
-                      <button
-                        type="button"
-                        key={
-                          category?._id ||
-                          slug ||
-                          name
-                        }
-                        onClick={() =>
-                          handleCategoryClick(
-                            category
-                          )
-                        }
-                        className={`group flex min-h-[90px] items-center justify-center border px-3 py-4 text-center font-bold transition-all duration-200 ${
+                  const active =
+                    selectedCategory
+                      .trim()
+                      .toLowerCase() ===
+                    name
+                      .trim()
+                      .toLowerCase();
+
+                  return (
+                    <button
+                      type="button"
+                      key={
+                        category?._id ||
+                        slug ||
+                        name
+                      }
+                      onClick={() =>
+                        handleCategoryClick(
+                          category
+                        )
+                      }
+                      className={`group relative min-h-[125px] overflow-hidden border p-4 text-left transition-all duration-300 ${
+                        active
+                          ? "border-[#b68a35] bg-[#102d45] text-white shadow-[0_12px_30px_rgba(16,45,69,0.20)]"
+                          : "border-[#d3dde5] bg-white text-[#173b57] hover:-translate-y-1 hover:border-[#b68a35] hover:shadow-[0_12px_30px_rgba(16,45,69,0.10)]"
+                      }`}
+                    >
+
+                      {/* top accent */}
+                      <span
+                        className={`absolute left-0 top-0 h-1 w-full transition-all ${
                           active
-                            ? "border-[#b68a35] bg-[#dce9f2] text-[#102d45] shadow-md"
-                            : "border-[#b9c9d5] bg-white text-[#173b57] hover:-translate-y-1 hover:border-[#54728d] hover:bg-[#f7fafc] hover:shadow-md"
+                            ? "bg-amber-400"
+                            : "bg-[#dfe7ed] group-hover:bg-amber-400"
+                        }`}
+                      />
+
+                      {/* number */}
+                      <span
+                        className={`absolute right-3 top-3 text-xs font-bold ${
+                          active
+                            ? "text-amber-300"
+                            : "text-[#b8c6d1]"
                         }`}
                       >
-                        <span className="leading-6">
-                          {name}
-                        </span>
-                      </button>
-                    );
-                  }
-                )}
+                        {String(
+                          index + 1
+                        ).padStart(2, "0")}
+                      </span>
+
+                      {/* icon */}
+                      <div
+                        className={`mb-5 flex h-10 w-10 items-center justify-center border ${
+                          active
+                            ? "border-amber-400/40 bg-amber-400/10 text-amber-300"
+                            : "border-[#d7e1e8] bg-[#f5f8fa] text-[#315b7a] group-hover:border-amber-300 group-hover:bg-[#fffaf0] group-hover:text-[#b17e19]"
+                        }`}
+                      >
+                        <Layers3 className="h-5 w-5" />
+                      </div>
+
+                      <span className="block pr-5 text-sm font-bold leading-5 sm:text-base">
+                        {name}
+                      </span>
+
+                      <span
+                        className={`mt-2 flex items-center gap-1 text-xs font-semibold ${
+                          active
+                            ? "text-amber-300"
+                            : "text-gray-400 group-hover:text-[#b17e19]"
+                        }`}
+                      >
+                        Explore
+                        <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+                      </span>
+
+                    </button>
+                  );
+                })}
 
             </div>
 
           ) : (
 
-            <div className="border border-blue-100 bg-white p-8 text-center text-gray-500 shadow-sm">
+            <div className="border border-[#d7e1e8] bg-white p-10 text-center text-gray-500 shadow-sm">
               No English categories available.
             </div>
 
           )}
+
+          {/* Mobile View All */}
+
+          <div className="mt-5 sm:hidden">
+            <Link
+              href="/en/categories"
+              className="flex items-center justify-center gap-2 border border-[#b68a35] bg-white px-4 py-3 text-sm font-bold text-[#315b7a] transition hover:bg-[#fffaf0]"
+            >
+              View All Categories
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
 
         </section>
 
@@ -1348,21 +1311,27 @@ export default function EnglishHomePage() {
 
         <section
           ref={questionsRef}
-          className="mb-12"
+          className="mb-14"
         >
 
-          <div className="mb-5 flex items-center justify-between gap-3">
+          <div className="mb-6 flex items-end justify-between gap-4">
 
             <div>
 
-              <div className="mb-2 h-1 w-12 bg-amber-500" />
+              <div className="mb-3 flex items-center gap-2">
+                <span className="h-1 w-8 bg-amber-500" />
 
-              <h2 className="text-2xl font-bold text-[#102d45] md:text-3xl">
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#b17e19]">
+                  Fatwa Library
+                </span>
+              </div>
+
+              <h2 className="text-2xl font-bold text-[#102d45] sm:text-3xl">
                 {selectedCategory ||
                   "Latest Questions"}
               </h2>
 
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-2 text-sm text-gray-500">
                 {selectedCategory
                   ? "Questions from the selected category"
                   : "Recently added Islamic questions"}
@@ -1370,7 +1339,7 @@ export default function EnglishHomePage() {
 
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
 
               {selectedCategory && (
                 <button
@@ -1378,17 +1347,18 @@ export default function EnglishHomePage() {
                   onClick={
                     clearCategory
                   }
-                  className="border border-[#54728d] bg-white px-3 py-2 text-sm font-semibold text-[#315b7a] hover:bg-blue-50"
+                  className="flex items-center gap-1 border border-[#d0dce5] bg-white px-3 py-2 text-xs font-bold text-[#315b7a] transition hover:border-[#b68a35] hover:text-[#b17e19]"
                 >
-                  All
+                  Clear
                 </button>
               )}
 
               <Link
                 href="/en/fatawa"
-                className="hidden font-semibold text-[#315b7a] hover:text-[#b17e19] sm:block"
+                className="hidden items-center gap-1 border-b border-[#b68a35] pb-1 text-sm font-bold text-[#315b7a] transition hover:text-[#b17e19] sm:flex"
               >
-                View All →
+                View All
+                <ArrowRight className="h-4 w-4" />
               </Link>
 
             </div>
@@ -1398,17 +1368,16 @@ export default function EnglishHomePage() {
           {loadingQuestions &&
           allQuestions.length === 0 ? (
 
-            <div className="border border-blue-100 bg-white p-8 text-center text-gray-500">
+            <div className="border border-[#d7e1e8] bg-white p-10 text-center text-gray-500">
               Loading questions...
             </div>
 
-          ) : filteredQuestions.length >
-            0 ? (
+          ) : filteredQuestions.length > 0 ? (
 
             <div className="space-y-3">
 
               {filteredQuestions.map(
-                (item) => {
+                (item, index) => {
 
                   const question =
                     getQuestion(
@@ -1428,26 +1397,43 @@ export default function EnglishHomePage() {
                       href={`/en/fatawa/${encodeURIComponent(
                         slug
                       )}`}
-                      className="group block border border-blue-100 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#b68a35] hover:shadow-md"
+                      className="group relative block overflow-hidden border border-[#d6e0e7] bg-white p-5 shadow-[0_5px_20px_rgba(16,45,69,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#b68a35] hover:shadow-[0_12px_30px_rgba(16,45,69,0.09)] sm:p-6"
                     >
 
-                      <div className="flex gap-3">
+                      <div className="flex gap-4">
 
-                        <span className="mt-1 h-8 w-1 shrink-0 bg-[#315b7a] transition group-hover:bg-amber-500" />
+                        <div className="hidden shrink-0 sm:block">
+                          <div className="flex h-10 w-10 items-center justify-center border border-[#d7e1e8] bg-[#f5f8fa] text-xs font-bold text-[#315b7a] group-hover:border-amber-300 group-hover:bg-[#fffaf0] group-hover:text-[#b17e19]">
+                            {String(
+                              index + 1
+                            ).padStart(2, "0")}
+                          </div>
+                        </div>
 
-                        <div>
+                        <div className="min-w-0 flex-1">
 
-                          <h3 className="font-semibold leading-7 text-[#1d3447] group-hover:text-[#315b7a]">
+                          <div className="mb-2 flex items-center gap-2">
+                            <span className="h-1.5 w-1.5 bg-amber-500" />
+
+                            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-gray-400">
+                              Islamic Question
+                            </span>
+                          </div>
+
+                          <h3 className="text-base font-semibold leading-7 text-[#1d3447] transition group-hover:text-[#315b7a] sm:text-lg">
                             {question}
                           </h3>
 
-                          <span className="mt-2 inline-block text-sm font-semibold text-[#b17e19]">
-                            Read Fatwa →
-                          </span>
+                          <div className="mt-3 flex items-center gap-2 text-sm font-bold text-[#b17e19]">
+                            Read Fatwa
+                            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                          </div>
 
                         </div>
 
                       </div>
+
+                      <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-amber-500 transition-all duration-300 group-hover:w-full" />
 
                     </Link>
                   );
@@ -1458,14 +1444,12 @@ export default function EnglishHomePage() {
 
           ) : (
 
-            <div className="border border-blue-100 bg-white p-8 text-center text-gray-500">
-
+            <div className="border border-[#d7e1e8] bg-white p-10 text-center text-gray-500">
               {query
                 ? "No questions found for your search."
                 : selectedCategory
                 ? "No questions found in this category."
                 : "No English questions available."}
-
             </div>
 
           )}
@@ -1475,10 +1459,9 @@ export default function EnglishHomePage() {
           {hasMore &&
             !selectedCategory &&
             !query &&
-            allQuestions.length >
-              0 && (
+            allQuestions.length > 0 && (
 
-              <div className="mt-6 text-center">
+              <div className="mt-7 text-center">
 
                 <button
                   type="button"
@@ -1492,11 +1475,15 @@ export default function EnglishHomePage() {
                       reset: false,
                     })
                   }
-                  className="border border-[#b68a35] bg-[#102d45] px-7 py-3 font-semibold text-white transition hover:bg-[#174261] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex items-center gap-2 border border-[#b68a35] bg-[#102d45] px-7 py-3 text-sm font-bold text-white transition-all hover:bg-[#173f5d] hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {loadingQuestions
                     ? "Loading..."
                     : "Load More Questions"}
+
+                  {!loadingQuestions && (
+                    <ArrowRight className="h-4 w-4" />
+                  )}
                 </button>
 
               </div>
@@ -1508,7 +1495,7 @@ export default function EnglishHomePage() {
             NEXT PRAYER
         ================================================= */}
 
-        <section className="mb-12">
+        <section className="mb-14">
 
           <motion.div
             initial={{
@@ -1519,23 +1506,29 @@ export default function EnglishHomePage() {
               opacity: 1,
               y: 0,
             }}
-            className="relative overflow-hidden border border-[#54728d] bg-[#071827] px-5 py-4 shadow-[0_10px_30px_rgba(10,30,50,0.20)]"
+            className="relative overflow-hidden border border-[#294c67] bg-[#071725] shadow-[0_15px_40px_rgba(7,23,37,0.18)]"
           >
 
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-transparent to-amber-500/10" />
+            <div className="absolute right-0 top-0 h-40 w-40 translate-x-16 -translate-y-16 border border-amber-400/10 rounded-full" />
 
-            <div className="relative z-10 flex items-center justify-between gap-4">
+            <div className="absolute bottom-0 left-0 h-32 w-32 -translate-x-16 translate-y-16 border border-blue-300/10 rounded-full" />
+
+            <div className="relative z-10 flex flex-col gap-5 px-5 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-7">
 
               <div>
 
-                <p className="text-sm text-amber-300 md:text-base">
-                  🕌 Next Prayer
-                </p>
+                <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-amber-300">
+                  <Clock3 className="h-4 w-4" />
+                  Next Prayer
+                </div>
 
-                <h2 className="mt-1 text-2xl font-bold text-white md:text-3xl">
-                  {nextPrayer ||
-                    "--"}
+                <h2 className="text-2xl font-bold text-white sm:text-3xl">
+                  {nextPrayer || "--"}
                 </h2>
+
+                <p className="mt-1 text-sm text-[#9db2c4]">
+                  Stay connected with your daily prayers
+                </p>
 
               </div>
 
@@ -1551,9 +1544,9 @@ export default function EnglishHomePage() {
                   duration: 1.5,
                   repeat: Infinity,
                 }}
-                className="border border-amber-400/30 bg-amber-400/10 px-4 py-2"
+                className="inline-flex items-center border border-amber-400/30 bg-amber-400/10 px-5 py-3"
               >
-                <span className="font-mono text-xl font-bold text-amber-200 md:text-2xl">
+                <span className="font-mono text-2xl font-bold tracking-wider text-amber-200 sm:text-3xl">
                   {countdown ||
                     "00:00:00"}
                 </span>
@@ -1569,15 +1562,25 @@ export default function EnglishHomePage() {
             ISLAMIC RESOURCES
         ================================================= */}
 
-        <section className="mb-12">
+        <section className="mb-14">
 
-          <div className="mb-5">
+          <div className="mb-6">
 
-            <div className="mb-2 h-1 w-12 bg-amber-500" />
+            <div className="mb-3 flex items-center gap-2">
+              <span className="h-1 w-8 bg-amber-500" />
 
-            <h2 className="text-2xl font-bold text-[#102d45] md:text-3xl">
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#b17e19]">
+                Explore More
+              </span>
+            </div>
+
+            <h2 className="text-2xl font-bold text-[#102d45] sm:text-3xl">
               Islamic Resources
             </h2>
+
+            <p className="mt-2 text-sm text-gray-500">
+              Useful Islamic resources and learning tools
+            </p>
 
           </div>
 
@@ -1585,43 +1588,41 @@ export default function EnglishHomePage() {
 
             {[
               {
-                href:
-                  "/en/fatawa",
-                title:
-                  "Fatwas",
+                href: "/en/fatawa",
+                title: "Fatwas",
+                icon: BookOpen,
               },
               {
-                href:
-                  "/en/articles",
-                title:
-                  "Articles",
+                href: "/en/articles",
+                title: "Articles",
+                icon: FileText,
               },
               {
-                href:
-                  "/en/categories",
-                title:
-                  "Categories",
+                href: "/en/categories",
+                title: "Categories",
+                icon: Layers3,
               },
               {
-                href:
-                  "/books",
-                title:
-                  "Islamic Books",
+                href: "/books",
+                title: "Islamic Books",
+                icon: ScrollText,
               },
               {
-                href:
-                  "/ozan-shariah-calculator",
-                title:
-                  "Islamic Calculator",
+                href: "/ozan-shariah-calculator",
+                title: "Islamic Calculator",
+                icon: Calculator,
               },
               {
-                href:
-                  "/40-hadith-free",
-                title:
-                  "40 Hadith",
+                href: "/40-hadith-free",
+                title: "40 Hadith",
+                icon: Sparkles,
               },
-            ].map(
-              (item) => (
+            ].map((item) => {
+
+              const Icon =
+                item.icon;
+
+              return (
                 <Link
                   key={
                     item.href
@@ -1629,177 +1630,234 @@ export default function EnglishHomePage() {
                   href={
                     item.href
                   }
-                  className="group relative overflow-hidden border border-[#54728d] bg-[#102d45] p-4 text-center font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-amber-500 hover:bg-[#173f5d] hover:shadow-md"
+                  className="group relative overflow-hidden border border-[#d1dce4] bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#b68a35] hover:shadow-[0_12px_30px_rgba(16,45,69,0.10)]"
                 >
 
-                  <span className="absolute left-0 top-0 h-0.5 w-0 bg-amber-400 transition-all duration-300 group-hover:w-full" />
+                  <span className="absolute left-0 top-0 h-1 w-0 bg-amber-500 transition-all duration-300 group-hover:w-full" />
 
-                  {item.title}
+                  <div className="mb-5 flex h-11 w-11 items-center justify-center border border-[#d8e2e9] bg-[#f5f8fa] text-[#315b7a] transition group-hover:border-amber-300 group-hover:bg-[#fffaf0] group-hover:text-[#b17e19]">
+                    <Icon className="h-5 w-5" />
+                  </div>
+
+                  <h3 className="text-sm font-bold leading-5 text-[#173b57]">
+                    {item.title}
+                  </h3>
+
+                  <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-gray-400 transition group-hover:text-[#b17e19]">
+                    Explore
+                    <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+                  </div>
 
                 </Link>
-              )
-            )}
+              );
+            })}
 
           </div>
 
         </section>
 
         {/* =================================================
-            TABS
+            LATEST QUESTIONS / ARTICLES
         ================================================= */}
 
-        <section className="mb-12">
+        <section className="mb-14">
 
-          <div className="flex overflow-hidden border border-[#54728d]">
+          <div className="mb-5 flex items-center gap-2">
+            <span className="h-1 w-8 bg-amber-500" />
 
-            <button
-              type="button"
-              onClick={() =>
-                setActiveTab(
-                  "questions"
-                )
-              }
-              className={`w-1/2 py-3 font-semibold transition ${
-                activeTab ===
-                "questions"
-                  ? "bg-[#102d45] text-white"
-                  : "bg-white text-[#315b7a] hover:bg-blue-50"
-              }`}
-            >
-              Latest Questions
-            </button>
-
-            <button
-              type="button"
-              onClick={() =>
-                setActiveTab(
-                  "articles"
-                )
-              }
-              className={`w-1/2 py-3 font-semibold transition ${
-                activeTab ===
-                "articles"
-                  ? "bg-[#102d45] text-white"
-                  : "bg-white text-[#315b7a] hover:bg-blue-50"
-              }`}
-            >
-              Selected Articles
-            </button>
-
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#b17e19]">
+              Latest Updates
+            </span>
           </div>
 
-          <div className="border-x border-b border-blue-100 bg-white p-4 shadow-sm">
+          <div className="overflow-hidden border border-[#d2dde5] bg-white shadow-[0_8px_25px_rgba(16,45,69,0.05)]">
 
-            {/* QUESTIONS */}
+            {/* tabs */}
 
-            {activeTab ===
-              "questions" && (
+            <div className="grid grid-cols-2 border-b border-[#d2dde5]">
 
-              <div className="space-y-3">
+              <button
+                type="button"
+                onClick={() =>
+                  setActiveTab(
+                    "questions"
+                  )
+                }
+                className={`relative px-4 py-4 text-sm font-bold transition ${
+                  activeTab ===
+                  "questions"
+                    ? "bg-[#102d45] text-white"
+                    : "bg-[#f8fafb] text-[#315b7a] hover:bg-[#eef4f8]"
+                }`}
+              >
+                Latest Questions
 
-                {latestQuestions.length >
-                0 ? (
-
-                  latestQuestions
-                    .slice(0, 5)
-                    .map(
-                      (item) => (
-                        <Link
-                          key={
-                            item?._id
-                          }
-                          href={`/en/fatawa/${encodeURIComponent(
-                            getQuestionSlug(
-                              item
-                            )
-                          )}`}
-                          className="group flex items-start gap-3 border-b border-gray-100 pb-3 text-[#1d3447] transition last:border-0"
-                        >
-
-                          <span className="shrink-0 text-amber-500">
-                            →
-                          </span>
-
-                          <span className="leading-7 group-hover:text-[#315b7a] group-hover:underline">
-                            {getQuestion(
-                              item
-                            )}
-                          </span>
-
-                        </Link>
-                      )
-                    )
-
-                ) : (
-
-                  <p className="py-4 text-center text-gray-500">
-                    No latest questions available.
-                  </p>
-
+                {activeTab ===
+                  "questions" && (
+                  <span className="absolute bottom-0 left-1/2 h-1 w-10 -translate-x-1/2 bg-amber-400" />
                 )}
+              </button>
 
-              </div>
-            )}
+              <button
+                type="button"
+                onClick={() =>
+                  setActiveTab(
+                    "articles"
+                  )
+                }
+                className={`relative px-4 py-4 text-sm font-bold transition ${
+                  activeTab ===
+                  "articles"
+                    ? "bg-[#102d45] text-white"
+                    : "bg-[#f8fafb] text-[#315b7a] hover:bg-[#eef4f8]"
+                }`}
+              >
+                Selected Articles
 
-            {/* ARTICLES */}
+                {activeTab ===
+                  "articles" && (
+                  <span className="absolute bottom-0 left-1/2 h-1 w-10 -translate-x-1/2 bg-amber-400" />
+                )}
+              </button>
 
-            {activeTab ===
-              "articles" && (
+            </div>
 
-              <div className="space-y-3">
+            {/* content */}
 
-                {filteredArticles.length >
-                0 ? (
+            <div className="p-4 sm:p-6">
 
-                  filteredArticles
-                    .slice(0, 5)
-                    .map(
-                      (item) => {
+              {/* QUESTIONS */}
 
-                        const title =
-                          getArticleTitle(
-                            item
-                          );
+              {activeTab ===
+                "questions" && (
 
-                        const slug =
-                          getArticleSlug(
-                            item
-                          );
+                <div className="space-y-1">
 
-                        return (
+                  {latestQuestions.length >
+                  0 ? (
+
+                    latestQuestions
+                      .slice(0, 5)
+                      .map(
+                        (
+                          item,
+                          index
+                        ) => (
                           <Link
                             key={
                               item?._id
                             }
-                            href={`/en/articles/${encodeURIComponent(
-                              slug
+                            href={`/en/fatawa/${encodeURIComponent(
+                              getQuestionSlug(
+                                item
+                              )
                             )}`}
-                            className="group flex items-start gap-3 border-b border-gray-100 pb-3 text-[#1d3447] last:border-0"
+                            className="group flex items-start gap-4 border-b border-gray-100 px-2 py-4 last:border-0 hover:bg-[#fafcfd]"
                           >
 
-                            <span className="shrink-0 text-amber-500">
-                              →
+                            <span className="flex h-7 w-7 shrink-0 items-center justify-center border border-[#d7e1e8] text-[10px] font-bold text-[#315b7a] group-hover:border-amber-300 group-hover:text-[#b17e19]">
+                              {String(
+                                index + 1
+                              ).padStart(
+                                2,
+                                "0"
+                              )}
                             </span>
 
-                            <span className="leading-7 group-hover:text-[#315b7a] group-hover:underline">
-                              {title}
+                            <span className="flex-1 leading-7 text-[#1d3447] group-hover:text-[#315b7a]">
+                              {getQuestion(
+                                item
+                              )}
                             </span>
+
+                            <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-gray-300 transition group-hover:translate-x-1 group-hover:text-amber-500" />
 
                           </Link>
-                        );
-                      }
-                    )
+                        )
+                      )
 
-                ) : (
+                  ) : (
 
-                  <p className="py-4 text-center text-gray-500">
-                    No English articles available.
-                  </p>
+                    <p className="py-6 text-center text-gray-500">
+                      No latest questions available.
+                    </p>
 
-                )}
+                  )}
 
-              </div>
-            )}
+                </div>
+              )}
+
+              {/* ARTICLES */}
+
+              {activeTab ===
+                "articles" && (
+
+                <div className="space-y-1">
+
+                  {filteredArticles.length >
+                  0 ? (
+
+                    filteredArticles
+                      .slice(0, 5)
+                      .map(
+                        (
+                          item,
+                          index
+                        ) => {
+
+                          const title =
+                            getArticleTitle(
+                              item
+                            );
+
+                          const slug =
+                            getArticleSlug(
+                              item
+                            );
+
+                          return (
+                            <Link
+                              key={
+                                item?._id
+                              }
+                              href={`/en/articles/${encodeURIComponent(
+                                slug
+                              )}`}
+                              className="group flex items-start gap-4 border-b border-gray-100 px-2 py-4 last:border-0 hover:bg-[#fafcfd]"
+                            >
+
+                              <span className="flex h-7 w-7 shrink-0 items-center justify-center border border-[#d7e1e8] text-[10px] font-bold text-[#315b7a] group-hover:border-amber-300 group-hover:text-[#b17e19]">
+                                {String(
+                                  index + 1
+                                ).padStart(
+                                  2,
+                                  "0"
+                                )}
+                              </span>
+
+                              <span className="flex-1 leading-7 text-[#1d3447] group-hover:text-[#315b7a]">
+                                {title}
+                              </span>
+
+                              <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-gray-300 transition group-hover:translate-x-1 group-hover:text-amber-500" />
+
+                            </Link>
+                          );
+                        }
+                      )
+
+                  ) : (
+
+                    <p className="py-6 text-center text-gray-500">
+                      No English articles available.
+                    </p>
+
+                  )}
+
+                </div>
+              )}
+
+            </div>
 
           </div>
 
@@ -1809,8 +1867,10 @@ export default function EnglishHomePage() {
             LATEST BOOKS
         ================================================= */}
 
-        <section className="mb-10">
+        <section className="mb-12">
+
           <LatestBooksSlider />
+
         </section>
 
         {/* =================================================
@@ -1818,10 +1878,13 @@ export default function EnglishHomePage() {
         ================================================= */}
 
         <section className="pb-6">
+
           <IslamicTools />
+
         </section>
 
       </div>
     </main>
   );
 }
+
