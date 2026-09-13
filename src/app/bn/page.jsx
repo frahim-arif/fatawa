@@ -1462,6 +1462,7 @@ export default function BanglaHomePage() {
             ISLAMIC TOOLS
         ================================================= */}
 
+
         <div className="mt-8">
           <IslamicTools />
         </div>
