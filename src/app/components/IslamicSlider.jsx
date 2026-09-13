@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 const slides = [
   {
     id: 1,
-    image: '/images/slider03.png',
+    image: '/images/ee.png',
     alt: 'اسلامی معلومات',
   },
   {
