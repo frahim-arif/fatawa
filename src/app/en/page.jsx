@@ -1036,7 +1036,7 @@ export default function EnglishHomePage() {
           ISLAMIC SLIDER
       ================================================= */}
 
-      <div className="relative z-10 bg-[#eef3f8] py-3">
+      <div className="relative -mt-6 z-10 bg-[#eef3f8] py-3">
         <IslamicSlider />
       </div>
 
