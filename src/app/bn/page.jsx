@@ -1,35 +1,61 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+
 import Link from "next/link";
 import { Search, Mic } from "lucide-react";
+import { motion } from "framer-motion";
 
 import HomeLoader from "../components/HomeLoader";
 import LatestBooksSlider from "../components/LatestBooksSlider";
 import IslamicTools from "../components/IslamicTools";
 import IslamicSlider from "../components/IslamicSlider";
-const backend = "https://f-backend-vdi1.onrender.com/api";
+
+const backend =
+  "https://f-backend-vdi1.onrender.com/api";
+
+const QUESTION_LIMIT = 10;
 
 export default function BanglaHomePage() {
+  /* =====================================================
+     STATES
+  ===================================================== */
+
   const [query, setQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] =
+    useState("");
 
   const [categories, setCategories] = useState([]);
   const [allQuestions, setAllQuestions] = useState([]);
-  const [latestQuestions, setLatestQuestions] = useState([]);
+  const [latestQuestions, setLatestQuestions] =
+    useState([]);
 
   const [articles, setArticles] = useState([]);
 
   const [skip, setSkip] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const [loadingQuestions, setLoadingQuestions] =
+    useState(false);
 
-  const [prayerTimes, setPrayerTimes] = useState(null);
-  const [nextPrayer, setNextPrayer] = useState("");
-  const [countdown, setCountdown] = useState("");
+  const [prayerTimes, setPrayerTimes] =
+    useState(null);
 
-  const [activeTab, setActiveTab] = useState("questions");
+  const [nextPrayer, setNextPrayer] =
+    useState("");
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [countdown, setCountdown] =
+    useState("");
+
+  const [activeTab, setActiveTab] =
+    useState("questions");
+
+  const [isLoading, setIsLoading] =
+    useState(true);
 
   const questionsRef = useRef(null);
 
@@ -52,23 +78,36 @@ export default function BanglaHomePage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch(`${backend}/bn/categories`, {
-          cache: "no-store",
-        });
+        const res = await fetch(
+          `${backend}/bn/categories`,
+          {
+            cache: "no-store",
+          }
+        );
 
         if (!res.ok) {
-          throw new Error(`Categories API error: ${res.status}`);
+          throw new Error(
+            `Categories API error: ${res.status}`
+          );
         }
 
         const data = await res.json();
 
         if (data?.success) {
-          setCategories(data.data || []);
+          setCategories(
+            Array.isArray(data.data)
+              ? data.data
+              : []
+          );
         } else {
           setCategories([]);
         }
       } catch (error) {
-        console.error("❌ Bangla categories error:", error);
+        console.error(
+          "❌ Bangla categories error:",
+          error
+        );
+
         setCategories([]);
       }
     };
@@ -77,29 +116,172 @@ export default function BanglaHomePage() {
   }, []);
 
   /* =====================================================
+     FETCH ALL INITIAL BANGLA QUESTIONS
+  ===================================================== */
+
+  const fetchQuestions = async ({
+    customSkip = 0,
+    reset = false,
+  } = {}) => {
+    if (loadingQuestions) return;
+
+    try {
+      setLoadingQuestions(true);
+
+      const res = await fetch(
+        `${backend}/bn/questions?skip=${customSkip}&limit=${QUESTION_LIMIT}`,
+        {
+          cache: "no-store",
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error(
+          `Bangla questions API error: ${res.status}`
+        );
+      }
+
+      const data = await res.json();
+
+      if (!data?.success) {
+        return;
+      }
+
+      const newQuestions = Array.isArray(
+        data.data
+      )
+        ? data.data
+        : [];
+
+      if (reset) {
+        setAllQuestions(newQuestions);
+      } else {
+        setAllQuestions((prev) => {
+          const existingIds = new Set(
+            prev.map((item) => item?._id)
+          );
+
+          const uniqueNewQuestions =
+            newQuestions.filter(
+              (item) =>
+                item?._id &&
+                !existingIds.has(item._id)
+            );
+
+          return [
+            ...prev,
+            ...uniqueNewQuestions,
+          ];
+        });
+      }
+
+      setSkip(
+        customSkip + newQuestions.length
+      );
+
+      setHasMore(
+        newQuestions.length ===
+          QUESTION_LIMIT
+      );
+    } catch (error) {
+      console.error(
+        "❌ Bangla questions error:",
+        error
+      );
+    } finally {
+      setLoadingQuestions(false);
+    }
+  };
+
+  /* =====================================================
+     INITIAL QUESTIONS
+  ===================================================== */
+
+  useEffect(() => {
+    fetchQuestions({
+      customSkip: 0,
+      reset: true,
+    });
+  }, []);
+
+  /* =====================================================
+     FETCH LATEST QUESTIONS
+  ===================================================== */
+
+  useEffect(() => {
+    const fetchLatestQuestions =
+      async () => {
+        try {
+          const res = await fetch(
+            `${backend}/bn/questions?skip=0&limit=5`,
+            {
+              cache: "no-store",
+            }
+          );
+
+          if (!res.ok) {
+            throw new Error(
+              `Latest questions API error: ${res.status}`
+            );
+          }
+
+          const data = await res.json();
+
+          if (data?.success) {
+            setLatestQuestions(
+              Array.isArray(data.data)
+                ? data.data
+                : []
+            );
+          } else {
+            setLatestQuestions([]);
+          }
+        } catch (error) {
+          console.error(
+            "❌ Latest Bangla questions error:",
+            error
+          );
+
+          setLatestQuestions([]);
+        }
+      };
+
+    fetchLatestQuestions();
+  }, []);
+
+  /* =====================================================
      FETCH PRAYER TIMES
   ===================================================== */
 
   useEffect(() => {
-    const fetchPrayerTimes = async () => {
-      try {
-        const res = await fetch(
-          "https://api.aladhan.com/v1/timingsByCity?city=Guwahati&country=India&method=1"
-        );
+    const fetchPrayerTimes =
+      async () => {
+        try {
+          const res = await fetch(
+            "https://api.aladhan.com/v1/timingsByCity?city=Guwahati&country=India&method=1"
+          );
 
-        if (!res.ok) {
-          throw new Error(`Prayer API error: ${res.status}`);
+          if (!res.ok) {
+            throw new Error(
+              `Prayer API error: ${res.status}`
+            );
+          }
+
+          const data =
+            await res.json();
+
+          if (data?.code === 200) {
+            setPrayerTimes(
+              data.data.timings
+            );
+          }
+        } catch (error) {
+          console.error(
+            "❌ Namaz timing error:",
+            error
+          );
         }
-
-        const data = await res.json();
-
-        if (data?.code === 200) {
-          setPrayerTimes(data.data.timings);
-        }
-      } catch (error) {
-        console.error("❌ Namaz timing error:", error);
-      }
-    };
+      };
 
     fetchPrayerTimes();
   }, []);
@@ -142,11 +324,14 @@ export default function BanglaHomePage() {
       for (const prayer of prayers) {
         if (!prayer.time) continue;
 
-        const cleanTime = prayer.time.split(" ")[0];
+        const cleanTime =
+          prayer.time.split(" ")[0];
 
-        const [hours, minutes] = cleanTime.split(":");
+        const [hours, minutes] =
+          cleanTime.split(":");
 
-        const prayerDate = new Date();
+        const prayerDate =
+          new Date();
 
         prayerDate.setHours(
           parseInt(hours, 10),
@@ -165,18 +350,20 @@ export default function BanglaHomePage() {
         }
       }
 
-      /* =================================================
-         IF ALL PRAYERS PASSED → NEXT DAY FAJR
-      ================================================= */
+      /* Next day Fajr */
 
-      if (!next && prayerTimes.Fajr) {
+      if (
+        !next &&
+        prayerTimes.Fajr
+      ) {
         const cleanFajrTime =
           prayerTimes.Fajr.split(" ")[0];
 
         const [hours, minutes] =
           cleanFajrTime.split(":");
 
-        const fajrTomorrow = new Date();
+        const fajrTomorrow =
+          new Date();
 
         fajrTomorrow.setDate(
           fajrTomorrow.getDate() + 1
@@ -197,39 +384,57 @@ export default function BanglaHomePage() {
 
       if (!next) return;
 
-      const diff = next.time - now;
+      const diff =
+        next.time.getTime() -
+        now.getTime();
 
-      const hrs = Math.floor(
-        diff / 1000 / 60 / 60
+      const hrs = Math.max(
+        0,
+        Math.floor(
+          diff / 1000 / 60 / 60
+        )
       );
 
-      const mins = Math.floor(
-        (diff / 1000 / 60) % 60
+      const mins = Math.max(
+        0,
+        Math.floor(
+          (diff / 1000 / 60) % 60
+        )
       );
 
-      const secs = Math.floor(
-        (diff / 1000) % 60
+      const secs = Math.max(
+        0,
+        Math.floor(
+          (diff / 1000) % 60
+        )
       );
 
       setNextPrayer(next.name);
 
       setCountdown(
-        `${String(hrs).padStart(2, "0")}:${String(
-          mins
-        ).padStart(2, "0")}:${String(
-          secs
-        ).padStart(2, "0")}`
+        `${String(hrs).padStart(
+          2,
+          "0"
+        )}:${String(mins).padStart(
+          2,
+          "0"
+        )}:${String(secs).padStart(
+          2,
+          "0"
+        )}`
       );
     };
 
     updateCountdown();
 
-    const interval = setInterval(
-      updateCountdown,
-      1000
-    );
+    const interval =
+      setInterval(
+        updateCountdown,
+        1000
+      );
 
-    return () => clearInterval(interval);
+    return () =>
+      clearInterval(interval);
   }, [prayerTimes]);
 
   /* =====================================================
@@ -237,189 +442,307 @@ export default function BanglaHomePage() {
   ===================================================== */
 
   useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const res = await fetch(
-          `${backend}/majameen`,
-          {
-            cache: "no-store",
-          }
-        );
-
-        if (!res.ok) {
-          throw new Error(
-            `Articles API error: ${res.status}`
+    const fetchArticles =
+      async () => {
+        try {
+          const res = await fetch(
+            `${backend}/majameen`,
+            {
+              cache: "no-store",
+            }
           );
-        }
 
-        const data = await res.json();
+          if (!res.ok) {
+            throw new Error(
+              `Articles API error: ${res.status}`
+            );
+          }
 
-        if (data?.success) {
-          const banglaArticles = (
-            data.data || []
-          )
-            .filter((item) => {
-              return (
-                item?.banglaTitle ||
-                item?.bnTitle ||
-                item?.titleBn
-              );
-            })
-            .slice(0, 5);
+          const data =
+            await res.json();
 
-          setArticles(banglaArticles);
-        } else {
+          if (data?.success) {
+            const banglaArticles =
+              (
+                Array.isArray(
+                  data.data
+                )
+                  ? data.data
+                  : []
+              ).filter((item) => {
+                return Boolean(
+                  item?.banglaTitle ||
+                    item?.bnTitle ||
+                    item?.titleBn
+                );
+              });
+
+            setArticles(
+              banglaArticles.slice(
+                0,
+                5
+              )
+            );
+          } else {
+            setArticles([]);
+          }
+        } catch (error) {
+          console.error(
+            "❌ Bangla articles error:",
+            error
+          );
+
           setArticles([]);
         }
-      } catch (error) {
-        console.error(
-          "❌ Bangla articles error:",
-          error
-        );
-
-        setArticles([]);
-      }
-    };
+      };
 
     fetchArticles();
   }, []);
 
   /* =====================================================
-     FETCH LATEST BANGLA QUESTIONS
+     ARTICLE TITLE
   ===================================================== */
 
-  useEffect(() => {
-    const fetchLatestQuestions = async () => {
-      try {
-        const res = await fetch(
-          `${backend}/bn/questions?limit=5`,
-          {
-            cache: "no-store",
-          }
-        );
-
-        if (!res.ok) {
-          throw new Error(
-            `Latest Bangla questions error: ${res.status}`
-          );
-        }
-
-        const data = await res.json();
-
-        if (data?.success) {
-          setLatestQuestions(data.data || []);
-        } else {
-          setLatestQuestions([]);
-        }
-      } catch (error) {
-        console.error(
-          "❌ Latest Bangla question error:",
-          error
-        );
-
-        setLatestQuestions([]);
-      }
-    };
-
-    fetchLatestQuestions();
-  }, []);
-
-  /* =====================================================
-     FETCH QUESTIONS
-  ===================================================== */
-
-  const fetchQuestions = async ({
-    reset = false,
-    customSkip = 0,
-  } = {}) => {
-    try {
-      let url;
-
-      if (selectedCategory === "") {
-        url =
-          `${backend}/bn/questions?` +
-          `skip=${customSkip}&limit=5`;
-      } else {
-        url =
-          `${backend}/bn/questions/category/` +
-          `${encodeURIComponent(selectedCategory)}` +
-          `?skip=${customSkip}&limit=5`;
-      }
-
-      const res = await fetch(url, {
-        cache: "no-store",
-      });
-
-      if (!res.ok) {
-        throw new Error(
-          `Bangla questions API error: ${res.status}`
-        );
-      }
-
-      const data = await res.json();
-
-      if (data?.success) {
-        const newQuestions = data.data || [];
-
-        if (reset) {
-          setAllQuestions(newQuestions);
-        } else {
-          setAllQuestions((prev) => [
-            ...prev,
-            ...newQuestions,
-          ]);
-        }
-
-        setSkip(customSkip + 5);
-
-        setHasMore(
-          newQuestions.length === 5
-        );
-      }
-    } catch (error) {
-      console.error(
-        "❌ Bangla questions error:",
-        error
-      );
-    }
+  const getArticleTitle = (
+    item
+  ) => {
+    return (
+      item?.banglaTitle ||
+      item?.bnTitle ||
+      item?.titleBn ||
+      ""
+    );
   };
 
   /* =====================================================
-     CATEGORY CHANGE
+     ARTICLE SLUG
   ===================================================== */
 
-  useEffect(() => {
-    if (selectedCategory === "") {
-      setAllQuestions([]);
-      setSkip(0);
-      setHasMore(true);
-
-      return;
-    }
-
-    fetchQuestions({
-      reset: true,
-      customSkip: 0,
-    });
-  }, [selectedCategory]);
+  const getArticleSlug = (
+    item
+  ) => {
+    return (
+      item?.banglaSlug ||
+      item?.bnSlug ||
+      item?.slugBn ||
+      item?.slug ||
+      item?._id
+    );
+  };
 
   /* =====================================================
-     SEARCH FILTER
+     QUESTION SLUG
+  ===================================================== */
+
+  const getQuestionSlug = (
+    item
+  ) => {
+    return (
+      item?.banglaSlug ||
+      item?.bnSlug ||
+      item?.slugBn ||
+      item?.slug ||
+      item?._id
+    );
+  };
+
+  /* =====================================================
+     CATEGORY HELPER
+  ===================================================== */
+
+  const getQuestionCategoryValues =
+    (item) => {
+      const category =
+        item?.category;
+
+      const values = [];
+
+      if (
+        typeof category ===
+        "string"
+      ) {
+        values.push(category);
+      }
+
+      if (
+        category &&
+        typeof category ===
+          "object"
+      ) {
+        if (category._id) {
+          values.push(
+            String(category._id)
+          );
+        }
+
+        if (category.slug) {
+          values.push(
+            String(category.slug)
+          );
+        }
+
+        if (category.name) {
+          values.push(
+            String(category.name)
+          );
+        }
+
+        if (category.banglaName) {
+          values.push(
+            String(
+              category.banglaName
+            )
+          );
+        }
+
+        if (category.bnName) {
+          values.push(
+            String(category.bnName)
+          );
+        }
+      }
+
+      if (item?.categoryId) {
+        values.push(
+          String(item.categoryId)
+        );
+      }
+
+      if (item?.categoryName) {
+        values.push(
+          String(item.categoryName)
+        );
+      }
+
+      if (item?.categorySlug) {
+        values.push(
+          String(item.categorySlug)
+        );
+      }
+
+      return values.map((value) =>
+        value
+          .trim()
+          .toLowerCase()
+      );
+    };
+
+  /* =====================================================
+     FILTER QUESTIONS
   ===================================================== */
 
   const filteredQuestions =
-    query.trim() === ""
-      ? allQuestions
-      : allQuestions.filter((item) => {
-          const question =
-            item?.question || "";
+    useMemo(() => {
+      let result = [
+        ...allQuestions,
+      ];
 
-          return question
-            .toLowerCase()
-            .includes(
-              query.trim().toLowerCase()
+      /* Category */
+
+      if (
+        selectedCategory
+      ) {
+        const selected =
+          String(
+            selectedCategory
+          )
+            .trim()
+            .toLowerCase();
+
+        result = result.filter(
+          (item) =>
+            getQuestionCategoryValues(
+              item
+            ).includes(selected)
+        );
+      }
+
+      /* Search */
+
+      const searchText =
+        query.trim().toLowerCase();
+
+      if (searchText) {
+        result = result.filter(
+          (item) => {
+            const question =
+              String(
+                item?.question ||
+                  ""
+              ).toLowerCase();
+
+            const answer =
+              String(
+                item?.answer ||
+                  item?.banglaAnswer ||
+                  item?.bnAnswer ||
+                  ""
+              ).toLowerCase();
+
+            return (
+              question.includes(
+                searchText
+              ) ||
+              answer.includes(
+                searchText
+              )
             );
-        });
+          }
+        );
+      }
+
+      return result;
+    }, [
+      allQuestions,
+      selectedCategory,
+      query,
+    ]);
+
+  /* =====================================================
+     CATEGORY SELECT
+  ===================================================== */
+
+  const handleCategoryClick = (
+    category
+  ) => {
+    const value =
+      category?.name ||
+      category?.banglaName ||
+      category?.bnName ||
+      category?.slug ||
+      category?._id ||
+      "";
+
+    setSelectedCategory(
+      String(value)
+    );
+
+    setTimeout(() => {
+      questionsRef.current?.scrollIntoView(
+        {
+          behavior: "smooth",
+          block: "start",
+        }
+      );
+    }, 200);
+  };
+
+  /* =====================================================
+     CLEAR CATEGORY
+  ===================================================== */
+
+  const clearCategory = () => {
+    setSelectedCategory("");
+
+    setTimeout(() => {
+      questionsRef.current?.scrollIntoView(
+        {
+          behavior: "smooth",
+          block: "start",
+        }
+      );
+    }, 100);
+  };
 
   /* =====================================================
      VOICE SEARCH
@@ -427,7 +750,8 @@ export default function BanglaHomePage() {
 
   const startListening = () => {
     if (
-      typeof window === "undefined"
+      typeof window ===
+      "undefined"
     ) {
       return;
     }
@@ -448,11 +772,14 @@ export default function BanglaHomePage() {
       new SpeechRecognition();
 
     recognition.lang = "bn-BD";
-    recognition.interimResults = false;
+    recognition.interimResults =
+      false;
     recognition.maxAlternatives = 1;
     recognition.continuous = false;
 
-    recognition.onresult = (event) => {
+    recognition.onresult = (
+      event
+    ) => {
       const transcript =
         event.results?.[0]?.[0]
           ?.transcript || "";
@@ -460,41 +787,23 @@ export default function BanglaHomePage() {
       setQuery(transcript);
     };
 
-    recognition.onerror = (error) => {
+    recognition.onerror = (
+      error
+    ) => {
       console.error(
         "Voice search error:",
         error
       );
     };
 
-    recognition.start();
-  };
-
-  /* =====================================================
-     ARTICLE TITLE
-  ===================================================== */
-
-  const getArticleTitle = (item) => {
-    return (
-      item?.banglaTitle ||
-      item?.bnTitle ||
-      item?.titleBn ||
-      ""
-    );
-  };
-
-  /* =====================================================
-     ARTICLE SLUG
-  ===================================================== */
-
-  const getArticleSlug = (item) => {
-    return (
-      item?.banglaSlug ||
-      item?.bnSlug ||
-      item?.slugBn ||
-      item?.slug ||
-      item?._id
-    );
+    try {
+      recognition.start();
+    } catch (error) {
+      console.error(
+        "Voice recognition start error:",
+        error
+      );
+    }
   };
 
   /* =====================================================
@@ -511,6 +820,7 @@ export default function BanglaHomePage() {
 
   return (
     <div
+      dir="ltr"
       className="
         relative
         min-h-screen
@@ -532,7 +842,7 @@ export default function BanglaHomePage() {
       }}
     >
       {/* =================================================
-          PREMIUM GLOW
+          PREMIUM BACKGROUND GLOW
       ================================================= */}
 
       <div
@@ -589,7 +899,7 @@ export default function BanglaHomePage() {
           PRAYER TIMES TOP BAR
       ================================================= */}
 
-      <div className="relative z-10 w-full -mt-[0.2px]">
+      <div className="relative z-10 w-full">
         <div
           className="
             w-full
@@ -611,7 +921,6 @@ export default function BanglaHomePage() {
               font-medium
             "
             style={{
-              direction: "ltr",
               fontFamily:
                 "'Noto Sans Bengali', sans-serif",
               lineHeight: "1.8",
@@ -675,7 +984,7 @@ export default function BanglaHomePage() {
           ISLAMIC HERO SLIDER
       ================================================= */}
 
-      <div className="-mt-[40px] -mb-6 relative z-10">
+      <div className="relative z-10 -mt-10 -mb-6">
         <IslamicSlider />
       </div>
 
@@ -709,7 +1018,6 @@ export default function BanglaHomePage() {
             focus-within:border-[#c8ae6a]
             focus-within:shadow-[0_0_22px_rgba(200,174,106,0.22)]
           "
-          dir="ltr"
         >
           <div className="px-3 py-2">
             <Search className="h-5 w-5 text-[#c8ae6a]" />
@@ -736,14 +1044,15 @@ export default function BanglaHomePage() {
               focus:ring-0
             "
             style={{
-              direction: "ltr",
               fontFamily:
                 "'Noto Sans Bengali', sans-serif",
             }}
           />
 
           <button
-            onClick={startListening}
+            onClick={
+              startListening
+            }
             type="button"
             className="
               px-3
@@ -759,6 +1068,42 @@ export default function BanglaHomePage() {
       </div>
 
       {/* =================================================
+          CATEGORY HEADING
+      ================================================= */}
+
+      <div
+        className="
+          relative
+          z-10
+          px-3
+          mt-8
+          text-center
+        "
+      >
+        <h2
+          className="
+            text-2xl
+            md:text-3xl
+            font-bold
+            text-[#174d40]
+            bg-[#fffaf0]/90
+            inline-block
+            px-6
+            py-2
+            border
+            border-[#c8ae6a]
+            shadow-sm
+          "
+          style={{
+            fontFamily:
+              "'Noto Sans Bengali', sans-serif",
+          }}
+        >
+          বিষয়সমূহ
+        </h2>
+      </div>
+
+      {/* =================================================
           BANGLA CATEGORIES
       ================================================= */}
 
@@ -769,46 +1114,90 @@ export default function BanglaHomePage() {
           md:grid-cols-4
           gap-3
           px-2
-          mt-6
+          mt-4
           w-full
           relative
           z-10
         "
       >
+        {/* ALL */}
+
+        <motion.div
+          whileHover={{ y: -3 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={
+            clearCategory
+          }
+          className={`
+            p-4
+            md:p-5
+            cursor-pointer
+            text-center
+            select-none
+            transition-all
+            duration-300
+            border
+            shadow-[0_5px_18px_rgba(0,0,0,0.18)]
+            text-lg
+            md:text-xl
+            font-medium
+
+            ${
+              selectedCategory ===
+              ""
+                ? `
+                  bg-[#174d40]
+                  border-[#c8ae6a]
+                  text-[#f5e6bd]
+                  shadow-[0_0_20px_rgba(200,174,106,0.35)]
+                `
+                : `
+                  bg-white/95
+                  border-[#c8ae6a]
+                  text-[#1d332f]
+                  hover:bg-[#f8f1df]
+                `
+            }
+          `}
+          style={{
+            fontFamily:
+              "'Noto Sans Bengali', sans-serif",
+          }}
+        >
+          সব প্রশ্ন
+        </motion.div>
+
         {categories
           .filter(
             (cat) =>
-              cat?.name &&
-              (cat?.slug || cat?._id)
+              cat?.name ||
+              cat?.banglaName ||
+              cat?.bnName
           )
           .map((cat) => {
-            const categorySlug =
-              cat?.slug || cat?._id;
+            const title =
+              cat?.banglaName ||
+              cat?.bnName ||
+              cat?.name;
 
             return (
               <motion.div
-                key={cat._id}
+                key={
+                  cat?._id ||
+                  cat?.slug ||
+                  title
+                }
                 whileHover={{
                   y: -3,
                 }}
                 whileTap={{
                   scale: 0.98,
                 }}
-                onClick={() => {
-                  setSelectedCategory(
-                    cat.name
-                  );
-
-                  setTimeout(() => {
-                    questionsRef.current?.scrollIntoView(
-                      {
-                        behavior:
-                          "smooth",
-                        block: "start",
-                      }
-                    );
-                  }, 300);
-                }}
+                onClick={() =>
+                  handleCategoryClick(
+                    cat
+                  )
+                }
                 className={`
                   p-4
                   md:p-5
@@ -824,8 +1213,10 @@ export default function BanglaHomePage() {
                   font-medium
 
                   ${
-                    selectedCategory ===
-                    cat.name
+                    selectedCategory
+                      .toLowerCase() ===
+                    String(title)
+                      .toLowerCase()
                       ? `
                         bg-[#f8f1df]
                         border-[#c8ae6a]
@@ -846,14 +1237,14 @@ export default function BanglaHomePage() {
                     "'Noto Sans Bengali', sans-serif",
                 }}
               >
-                {cat.name}
+                {title}
               </motion.div>
             );
           })}
       </section>
 
       {/* =================================================
-          CATEGORY QUESTIONS
+          QUESTIONS
       ================================================= */}
 
       <section
@@ -865,15 +1256,92 @@ export default function BanglaHomePage() {
           relative
         "
       >
-        {filteredQuestions.length >
-        0 ? (
+        {/* Heading */}
+
+        <div
+          className="
+            flex
+            items-center
+            justify-between
+            gap-3
+            px-2
+          "
+        >
+          <h2
+            className="
+              text-xl
+              md:text-2xl
+              font-bold
+              text-[#174d40]
+              bg-[#fffaf0]/90
+              px-4
+              py-2
+              border
+              border-[#c8ae6a]
+            "
+            style={{
+              fontFamily:
+                "'Noto Sans Bengali', sans-serif",
+            }}
+          >
+            {selectedCategory
+              ? selectedCategory
+              : "নতুন প্রশ্নসমূহ"}
+          </h2>
+
+          {selectedCategory && (
+            <button
+              type="button"
+              onClick={
+                clearCategory
+              }
+              className="
+                px-4
+                py-2
+                border
+                border-[#c8ae6a]
+                bg-[#174d40]
+                text-[#f5e6bd]
+                hover:bg-[#216353]
+              "
+              style={{
+                fontFamily:
+                  "'Noto Sans Bengali', sans-serif",
+              }}
+            >
+              সব দেখুন
+            </button>
+          )}
+        </div>
+
+        {loadingQuestions &&
+        allQuestions.length ===
+          0 ? (
+          <div
+            className="
+              text-center
+              bg-black/50
+              border
+              border-[#806b3f]
+              px-4
+              py-6
+              text-[#f5e6bd]
+            "
+            style={{
+              fontFamily:
+                "'Noto Sans Bengali', sans-serif",
+            }}
+          >
+            প্রশ্ন লোড হচ্ছে...
+          </div>
+        ) : filteredQuestions.length >
+          0 ? (
           filteredQuestions.map(
             (q) => (
               <Link
                 key={q._id}
                 href={`/bn/fatawa/${encodeURIComponent(
-                  q.slug ||
-                    q._id
+                  getQuestionSlug(q)
                 )}`}
                 className="block"
               >
@@ -896,12 +1364,10 @@ export default function BanglaHomePage() {
                     overflow-hidden
                   "
                   style={{
-                    direction: "ltr",
                     fontFamily:
                       "'Noto Sans Bengali', sans-serif",
                     lineHeight: "2",
-                    textAlign:
-                      "left",
+                    textAlign: "left",
                   }}
                 >
                   <div
@@ -947,7 +1413,11 @@ export default function BanglaHomePage() {
                 "'Noto Sans Bengali', sans-serif",
             }}
           >
-            কোনো প্রশ্ন দেখতে একটি বিষয় নির্বাচন করুন।
+            {query
+              ? "আপনার অনুসন্ধানের সাথে কোনো প্রশ্ন পাওয়া যায়নি।"
+              : selectedCategory
+              ? "এই বিষয়ে কোনো প্রশ্ন পাওয়া যায়নি।"
+              : "কোনো প্রশ্ন পাওয়া যায়নি।"}
           </div>
         )}
 
@@ -956,15 +1426,20 @@ export default function BanglaHomePage() {
         ================================================= */}
 
         {hasMore &&
+          !selectedCategory &&
           filteredQuestions.length >
             0 && (
             <div className="text-center mt-6">
               <button
                 type="button"
+                disabled={
+                  loadingQuestions
+                }
                 onClick={() =>
                   fetchQuestions({
                     customSkip:
                       skip,
+                    reset: false,
                   })
                 }
                 className="
@@ -978,13 +1453,17 @@ export default function BanglaHomePage() {
                   hover:shadow-[0_0_18px_rgba(200,174,106,0.25)]
                   transition-all
                   duration-300
+                  disabled:opacity-50
+                  disabled:cursor-not-allowed
                 "
                 style={{
                   fontFamily:
                     "'Noto Sans Bengali', sans-serif",
                 }}
               >
-                আরও প্রশ্ন দেখুন
+                {loadingQuestions
+                  ? "লোড হচ্ছে..."
+                  : "আরও প্রশ্ন দেখুন"}
               </button>
             </div>
           )}
@@ -1039,7 +1518,7 @@ export default function BanglaHomePage() {
               z-10
             "
           >
-            <div className="text-left">
+            <div>
               <p
                 className="
                   text-[#d8c27d]
@@ -1167,18 +1646,13 @@ export default function BanglaHomePage() {
               relative
               overflow-hidden
               bg-white
-              dark:bg-[#18201f]
               border
               border-[#c8ae6a]
-              dark:border-[#8f7840]
               p-4
               text-center
               shadow-[0_4px_16px_rgba(0,0,0,0.15)]
-              dark:shadow-[0_0_14px_rgba(200,174,106,0.08)]
               hover:bg-[#fff9ec]
-              dark:hover:bg-[#202b29]
               text-gray-900
-              dark:text-[#f5e6bd]
               transition-all
               duration-300
               hover:-translate-y-1
@@ -1186,9 +1660,7 @@ export default function BanglaHomePage() {
             style={{
               fontFamily:
                 "'Noto Sans Bengali', sans-serif",
-              direction: "ltr",
-              fontSize:
-                "18px",
+              fontSize: "18px",
             }}
           >
             <span
@@ -1253,12 +1725,9 @@ export default function BanglaHomePage() {
               style={{
                 fontFamily:
                   "'Noto Sans Bengali', sans-serif",
-                fontSize:
-                  "19px",
-                fontWeight:
-                  "600",
-                display:
-                  "block",
+                fontSize: "19px",
+                fontWeight: "600",
+                display: "block",
               }}
             >
               নতুন প্রশ্ন
@@ -1290,12 +1759,9 @@ export default function BanglaHomePage() {
               style={{
                 fontFamily:
                   "'Noto Sans Bengali', sans-serif",
-                fontSize:
-                  "19px",
-                fontWeight:
-                  "600",
-                display:
-                  "block",
+                fontSize: "19px",
+                fontWeight: "600",
+                display: "block",
               }}
             >
               নির্বাচিত প্রবন্ধ
@@ -1310,7 +1776,6 @@ export default function BanglaHomePage() {
         <div
           className="
             bg-white/90
-            dark:bg-[#17211f]/95
             p-4
             border
             border-[#c8ae6a]
@@ -1319,7 +1784,6 @@ export default function BanglaHomePage() {
           style={{
             fontFamily:
               "'Noto Sans Bengali', sans-serif",
-            direction: "ltr",
           }}
         >
           {/* =================================================
@@ -1333,47 +1797,45 @@ export default function BanglaHomePage() {
               0 ? (
                 latestQuestions
                   .slice(0, 5)
-                  .map(
-                    (item) => (
-                      <Link
-                        key={
-                          item._id
-                        }
-                        href={`/bn/fatawa/${encodeURIComponent(
-                          item.slug ||
-                            item._id
-                        )}`}
-                        className="
-                          group
-                          flex
-                          items-start
-                          gap-2
-                          text-[#174d40]
-                          dark:text-[#f5e6bd]
-                          hover:text-[#806b3f]
-                          transition-colors
-                        "
-                        style={{
-                          fontSize:
-                            "17px",
-                          lineHeight:
-                            "30px",
-                        }}
-                      >
-                        <span className="text-[#c8ae6a] shrink-0">
-                          ➜
-                        </span>
+                  .map((item) => (
+                    <Link
+                      key={
+                        item._id
+                      }
+                      href={`/bn/fatawa/${encodeURIComponent(
+                        getQuestionSlug(
+                          item
+                        )
+                      )}`}
+                      className="
+                        group
+                        flex
+                        items-start
+                        gap-2
+                        text-[#174d40]
+                        hover:text-[#806b3f]
+                        transition-colors
+                      "
+                      style={{
+                        fontSize:
+                          "17px",
+                        lineHeight:
+                          "30px",
+                      }}
+                    >
+                      <span className="text-[#c8ae6a] shrink-0">
+                        ➜
+                      </span>
 
-                        <span className="group-hover:underline">
-                          {
-                            item.question
-                          }
-                        </span>
-                      </Link>
-                    )
-                  )
+                      <span className="group-hover:underline">
+                        {
+                          item.question
+                        }
+                      </span>
+                    </Link>
+                  ))
               ) : (
-                <p className="text-gray-500 dark:text-gray-300 text-center">
+                <p className="text-gray-500 text-center">
                   এখনো কোনো নতুন প্রশ্ন নেই।
                 </p>
               )}
@@ -1391,56 +1853,53 @@ export default function BanglaHomePage() {
               0 ? (
                 articles
                   .slice(0, 5)
-                  .map(
-                    (item) => {
-                      const title =
-                        getArticleTitle(
-                          item
-                        );
-
-                      const slug =
-                        getArticleSlug(
-                          item
-                        );
-
-                      return (
-                        <Link
-                          key={
-                            item._id
-                          }
-                          href={`/bn/articles/${encodeURIComponent(
-                            slug
-                          )}`}
-                          className="
-                            group
-                            flex
-                            items-start
-                            gap-2
-                            text-[#174d40]
-                            dark:text-[#f5e6bd]
-                            hover:text-[#806b3f]
-                            transition-colors
-                          "
-                          style={{
-                            fontSize:
-                              "17px",
-                            lineHeight:
-                              "30px",
-                          }}
-                        >
-                          <span className="text-[#c8ae6a] shrink-0">
-                            ➜
-                          </span>
-
-                          <span className="group-hover:underline">
-                            {title}
-                          </span>
-                        </Link>
+                  .map((item) => {
+                    const title =
+                      getArticleTitle(
+                        item
                       );
-                    }
-                  )
+
+                    const slug =
+                      getArticleSlug(
+                        item
+                      );
+
+                    return (
+                      <Link
+                        key={
+                          item._id
+                        }
+                        href={`/bn/articles/${encodeURIComponent(
+                          slug
+                        )}`}
+                        className="
+                          group
+                          flex
+                          items-start
+                          gap-2
+                          text-[#174d40]
+                          hover:text-[#806b3f]
+                          transition-colors
+                        "
+                        style={{
+                          fontSize:
+                            "17px",
+                          lineHeight:
+                            "30px",
+                        }}
+                      >
+                        <span className="text-[#c8ae6a] shrink-0">
+                          ➜
+                        </span>
+
+                        <span className="group-hover:underline">
+                          {title}
+                        </span>
+                      </Link>
+                    );
+                  })
               ) : (
-                <p className="text-gray-500 dark:text-gray-300 text-center">
+                <p className="text-gray-500 text-center">
                   এখনো কোনো বাংলা প্রবন্ধ নেই।
                 </p>
               )}
@@ -1460,11 +1919,16 @@ export default function BanglaHomePage() {
             ISLAMIC TOOLS
         ================================================= */}
 
-
         <div className="mt-8">
           <IslamicTools />
         </div>
       </section>
+
+      {/* =================================================
+          BOTTOM SPACE
+      ================================================= */}
+
+      <div className="h-6" />
     </div>
   );
 }
