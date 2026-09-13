@@ -933,13 +933,13 @@ export default function EnglishHomePage() {
   ===================================================== */
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#eef3f8]">
+    <main className="min-h-screen -mt-6 overflow-hidden bg-[#eef3f8]">
 
       {/* =================================================
           PRAYER BAR
       ================================================= */}
 
-      <div className="w-full -mt-6  overflow-hidden border-b border-[#315b7a] bg-[#06131f]">
+      <div className="w-full  overflow-hidden border-b border-[#315b7a] bg-[#06131f]">
 
         {prayerTimes ? (
           <div className="relative overflow-hidden py-2">
