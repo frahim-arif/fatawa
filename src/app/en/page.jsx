@@ -942,7 +942,7 @@ export default function EnglishHomePage() {
       <div className="w-full overflow-hidden border-b border-[#315b7a] bg-[#06131f]">
 
         {prayerTimes ? (
-          <div className="relative overflow-hidden py-2">
+          <div className="relative -mt-6 overflow-hidden py-2">
 
             <motion.div
               className="flex w-max items-center whitespace-nowrap text-xs font-medium text-amber-300 sm:text-sm md:text-base"
