@@ -942,7 +942,7 @@ export default function EnglishHomePage() {
       <div className="w-full  overflow-hidden border-b border-[#315b7a] bg-[#06131f]">
 
         {prayerTimes ? (
-          <div className="relative overflow-hidden py-2">
+          <div className="relative overflow-hidden ">
 
             <motion.div
               className="flex w-max items-center whitespace-nowrap text-xs font-medium text-amber-300 sm:text-sm md:text-base"
@@ -1036,7 +1036,7 @@ export default function EnglishHomePage() {
           ISLAMIC SLIDER
       ================================================= */}
 
-      <div className="relative -mt-6 z-10 bg-[#eef3f8] py-3">
+      <div className="relative  z-10 bg-[#eef3f8] py-3">
         <IslamicSlider />
       </div>
 
