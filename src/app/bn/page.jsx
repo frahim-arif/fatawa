@@ -1,15 +1,13 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { Search, Mic } from "lucide-react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { Search, Mic } from "lucide-react";
 
-import HomeLoader from "./components/HomeLoader";
-import LatestBooksSlider from "./components/LatestBooksSlider";
-import IslamicTools from "./components/IslamicTools";
-import IslamicSlider from "./components/IslamicSlider";
-
+import HomeLoader from "../components/HomeLoader";
+import LatestBooksSlider from "../components/LatestBooksSlider";
+import IslamicTools from "../components/IslamicTools";
+import IslamicSlider from "../components/IslamicSlider";
 const backend = "https://f-backend-vdi1.onrender.com/api";
 
 export default function BanglaHomePage() {
