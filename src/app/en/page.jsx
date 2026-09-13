@@ -1048,7 +1048,7 @@ export default function EnglishHomePage() {
 
         <div className="relative z-10 mx-auto max-w-7xl px-4 py-10 md:py-14">
 
-          <div className="text-center">
+          {/* <div className="text-center">
 
             <p className="text-xs font-bold uppercase tracking-[0.3em] text-amber-300 md:text-sm">
               MASLAK-E-DEOBAND
@@ -1064,7 +1064,7 @@ export default function EnglishHomePage() {
               Maslak-e-Deoband.
             </p>
 
-          </div>
+          </div> */}
 
         </div>
       </section>
