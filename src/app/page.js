@@ -490,60 +490,214 @@ export default function HomePage() {
           PRAYER TIMES TOP BAR
       ================================================= */}
 
-      <div className="w-full relative z-10 -mt-[0.2px]">
-        <div
+      
+<div className="w-full relative z-10 -mt-[0.2px]">
+  <div
+    className="
+      relative
+      w-full
+      overflow-hidden
+      border-b
+      border-t
+      bg-white
+      shadow-[0_2px_10px_rgba(117,193,120,0.08)]
+    "
+    style={{
+      borderColor: "#C6E2C8",
+    }}
+  >
+    {/* Golden Accent Line */}
+    <div
+      className="
+        absolute
+        top-0
+        left-0
+        right-0
+        h-[2px]
+        z-20
+      "
+      style={{
+        background:
+          "linear-gradient(90deg, transparent, #D4AF37, transparent)",
+      }}
+    />
+
+    {/* Soft Green Glow */}
+    <div
+      className="
+        absolute
+        inset-0
+        pointer-events-none
+      "
+      style={{
+        background:
+          "linear-gradient(90deg, #F5FAF5 0%, #FFFFFF 25%, #FFFFFF 75%, #F5FAF5 100%)",
+      }}
+    />
+
+    {/* Prayer Icon / Label */}
+    <div
+      className="
+        absolute
+        right-0
+        top-0
+        bottom-0
+        z-10
+        flex
+        items-center
+        px-3
+        md:px-5
+        bg-white/95
+        border-l
+      "
+      style={{
+        borderColor: "#C6E2C8",
+      }}
+    >
+      <div className="flex items-center gap-2">
+        <span
           className="
-            w-full
-            overflow-hidden
-            border-b
+            flex
+            items-center
+            justify-center
+            w-7
+            h-7
+            rounded-full
+            text-sm
           "
           style={{
-            background: "#FFFFFF",
-            borderColor: "#C6E2C8",
+            background: "#EAF5EA",
+            border: "1px solid #C6E2C8",
+            color: "#75C178",
           }}
         >
-          <motion.div
-            className="
-              whitespace-nowrap
-              w-full
-              text-[#333333]
-              text-sm
-              font-medium
-            "
-            style={{
-              direction: "rtl",
-              fontFamily:
-                "'Jameel Noori Nastaleeq', serif",
-              lineHeight: "1.4",
-              letterSpacing: "0.5px",
-            }}
-            animate={{
-              x: ["100%", "-100%"],
-            }}
-            transition={{
-              duration: 15,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          >
-            {prayerTimes ? (
-              <>
-                فجر: {prayerTimes.Fajr?.split(" ")[0]}
-                &nbsp;&nbsp;&nbsp;
-                ظہر: {prayerTimes.Dhuhr?.split(" ")[0]}
-                &nbsp;&nbsp;&nbsp;
-                عصر: {prayerTimes.Asr?.split(" ")[0]}
-                &nbsp;&nbsp;&nbsp;
-                مغرب: {prayerTimes.Maghrib?.split(" ")[0]}
-                &nbsp;&nbsp;&nbsp;
-                عشاء: {prayerTimes.Isha?.split(" ")[0]}
-              </>
-            ) : (
-              "نماز کے اوقات لوڈ ہو رہے ہیں..."
-            )}
-          </motion.div>
-        </div>
+          🕌
+        </span>
+
+        <span
+          className="
+            hidden
+            sm:block
+            text-xs
+            font-semibold
+          "
+          style={{
+            color: "#63B56A",
+            fontFamily: "'Jameel Noori Nastaleeq', serif",
+          }}
+        >
+          اوقاتِ نماز
+        </span>
       </div>
+    </div>
+
+    {/* Moving Prayer Times */}
+    <motion.div
+      className="
+        whitespace-nowrap
+        w-full
+        py-2
+        md:py-2.5
+        pr-28
+        md:pr-36
+        text-[#333333]
+        text-sm
+        md:text-[15px]
+        font-medium
+      "
+      style={{
+        direction: "rtl",
+        fontFamily: "'Jameel Noori Nastaleeq', serif",
+        lineHeight: "1.5",
+        letterSpacing: "0.5px",
+      }}
+      animate={{
+        x: ["100%", "-100%"],
+      }}
+      transition={{
+        duration: 18,
+        repeat: Infinity,
+        ease: "linear",
+      }}
+    >
+      {prayerTimes ? (
+        <>
+          <span className="text-[#75C178]">
+            فجر
+          </span>
+          <span className="text-[#333333]">
+            : {prayerTimes.Fajr?.split(" ")[0]}
+          </span>
+
+          <span className="mx-5 text-[#D4AF37]">
+            ✦
+          </span>
+
+          <span className="text-[#75C178]">
+            ظہر
+          </span>
+          <span className="text-[#333333]">
+            : {prayerTimes.Dhuhr?.split(" ")[0]}
+          </span>
+
+          <span className="mx-5 text-[#D4AF37]">
+            ✦
+          </span>
+
+          <span className="text-[#75C178]">
+            عصر
+          </span>
+          <span className="text-[#333333]">
+            : {prayerTimes.Asr?.split(" ")[0]}
+          </span>
+
+          <span className="mx-5 text-[#D4AF37]">
+            ✦
+          </span>
+
+          <span className="text-[#75C178]">
+            مغرب
+          </span>
+          <span className="text-[#333333]">
+            : {prayerTimes.Maghrib?.split(" ")[0]}
+          </span>
+
+          <span className="mx-5 text-[#D4AF37]">
+            ✦
+          </span>
+
+          <span className="text-[#75C178]">
+            عشاء
+          </span>
+          <span className="text-[#333333]">
+            : {prayerTimes.Isha?.split(" ")[0]}
+          </span>
+        </>
+      ) : (
+        <span className="text-[#63B56A]">
+          نماز کے اوقات لوڈ ہو رہے ہیں...
+        </span>
+      )}
+    </motion.div>
+
+    {/* Bottom Golden Accent */}
+    <div
+      className="
+        absolute
+        bottom-0
+        left-1/2
+        -translate-x-1/2
+        w-20
+        h-[2px]
+      "
+      style={{
+        background: "#D4AF37",
+      }}
+    />
+  </div>
+</div>
+
+
 
       {/* =================================================
           ISLAMIC SLIDER
