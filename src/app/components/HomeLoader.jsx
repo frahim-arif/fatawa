@@ -1,3 +1,4 @@
+
 "use client";
 
 import { motion } from "framer-motion";
@@ -37,24 +38,24 @@ export default function HomeLoader() {
       "
       style={{
         background:
-          "radial-gradient(circle at center, #073b36 0%, #032b28 45%, #021b19 100%)",
+          "radial-gradient(circle at center, #FFFFFF 0%, #F5FAF5 50%, #EAF5EA 100%)",
       }}
     >
       {/* =====================================================
-          GRID BACKGROUND
+          SOFT GRID BACKGROUND
       ===================================================== */}
 
       <div
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 opacity-50"
         style={{
           backgroundImage: `
             linear-gradient(
-              rgba(255,255,255,0.08) 1px,
+              rgba(117,193,120,0.08) 1px,
               transparent 1px
             ),
             linear-gradient(
               90deg,
-              rgba(255,255,255,0.08) 1px,
+              rgba(117,193,120,0.08) 1px,
               transparent 1px
             )
           `,
@@ -66,13 +67,13 @@ export default function HomeLoader() {
           GOLDEN CAMERA CORNERS
       ===================================================== */}
 
-      <div className="absolute top-16 left-8 w-14 h-14 border-l-2 border-t-2 border-[#c8ae6a]" />
+      <div className="absolute top-16 left-8 w-14 h-14 border-l-2 border-t-2 border-[#D4AF37]" />
 
-      <div className="absolute top-16 right-8 w-14 h-14 border-r-2 border-t-2 border-[#c8ae6a]" />
+      <div className="absolute top-16 right-8 w-14 h-14 border-r-2 border-t-2 border-[#D4AF37]" />
 
-      <div className="absolute bottom-16 left-8 w-14 h-14 border-l-2 border-b-2 border-[#c8ae6a]" />
+      <div className="absolute bottom-16 left-8 w-14 h-14 border-l-2 border-b-2 border-[#D4AF37]" />
 
-      <div className="absolute bottom-16 right-8 w-14 h-14 border-r-2 border-b-2 border-[#c8ae6a]" />
+      <div className="absolute bottom-16 right-8 w-14 h-14 border-r-2 border-b-2 border-[#D4AF37]" />
 
       {/* =====================================================
           REC
@@ -90,7 +91,7 @@ export default function HomeLoader() {
           className="w-3 h-3 rounded-full bg-red-500"
         />
 
-        <span className="text-red-400 text-xs tracking-[4px]">
+        <span className="text-red-500 text-xs tracking-[4px] font-medium">
           REC
         </span>
       </div>
@@ -100,7 +101,7 @@ export default function HomeLoader() {
       ===================================================== */}
 
       <div className="absolute top-24 right-14">
-        <span className="text-emerald-400 text-xs tracking-[3px] font-mono">
+        <span className="text-[#63B56A] text-xs tracking-[3px] font-mono font-medium">
           TC 00:00:{String(progress).padStart(2, "0")}:14
         </span>
       </div>
@@ -138,15 +139,15 @@ export default function HomeLoader() {
               whitespace-nowrap
             "
           >
-            <span className="text-white">
+            <span className="text-[#333333]">
               Maslak-e-
             </span>
 
-            <span className="text-emerald-400">
+            <span className="text-[#75C178]">
               Deoband
             </span>
 
-            <span className="text-[#c8ae6a]">
+            <span className="text-[#D4AF37]">
               |
             </span>
           </h1>
@@ -168,11 +169,12 @@ export default function HomeLoader() {
             duration: 0.8,
           }}
           className="
-            text-gray-300
+            text-[#555555]
             text-[10px]
             md:text-xs
             tracking-[5px]
             md:tracking-[7px]
+            font-medium
           "
         >
           ISLAMIC KNOWLEDGE LIBRARY
@@ -190,9 +192,9 @@ export default function HomeLoader() {
               h-4
               w-full
               rounded-full
-              bg-[#062824]
+              bg-[#EAF5EA]
               border
-              border-[#07574f]
+              border-[#C6E2C8]
               overflow-visible
             "
           >
@@ -209,9 +211,9 @@ export default function HomeLoader() {
               "
               style={{
                 background:
-                  "linear-gradient(90deg, #17b897, #38d5b4)",
+                  "linear-gradient(90deg, #75C178, #63B56A)",
                 boxShadow:
-                  "0 0 12px rgba(35,220,180,0.8)",
+                  "0 0 12px rgba(117,193,120,0.35)",
               }}
               animate={{
                 width: `${progress}%`,
@@ -241,7 +243,7 @@ export default function HomeLoader() {
               }}
               style={{
                 boxShadow:
-                  "0 0 8px rgba(255,80,80,0.8)",
+                  "0 0 8px rgba(255,80,80,0.35)",
               }}
             >
               <div
@@ -275,10 +277,11 @@ export default function HomeLoader() {
                 opacity: 1,
               }}
               className="
-                text-gray-300
+                text-[#555555]
                 text-[10px]
                 tracking-[3px]
                 md:tracking-[4px]
+                font-medium
               "
             >
               LOADING ISLAMIC CONTENT
@@ -286,7 +289,7 @@ export default function HomeLoader() {
 
             <span
               className="
-                text-emerald-400
+                text-[#75C178]
                 text-sm
                 font-mono
                 font-bold
@@ -310,7 +313,7 @@ export default function HomeLoader() {
                 w-1
                 h-1
                 rounded-full
-                bg-emerald-400
+                bg-[#75C178]
               "
               animate={{
                 opacity: [0.2, 1, 0.2],
@@ -342,10 +345,11 @@ export default function HomeLoader() {
       >
         <span
           className="
-            text-gray-500
+            text-[#777777]
             text-[9px]
             tracking-[3px]
             md:tracking-[5px]
+            font-medium
           "
         >
           INITIALIZING MASLAK-E-DEOBAND
@@ -354,3 +358,4 @@ export default function HomeLoader() {
     </motion.div>
   );
 }
+
