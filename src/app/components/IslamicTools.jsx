@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -220,8 +221,7 @@ export default function IslamicToolsPage() {
       dir="rtl"
       className="
         min-h-screen
-        bg-[#faf8ef]
-        dark:bg-[#071c19]
+        bg-[#F5FAF5]
         px-3
         sm:px-4
         py-8
@@ -241,28 +241,38 @@ export default function IslamicToolsPage() {
             justify-center
             w-16
             h-16
-            bg-[#174d40]
+            bg-[#EAF5EA]
             border
-            border-[#c8ae6a]
-            shadow-[0_5px_20px_rgba(0,0,0,0.15)]
+            border-[#C6E2C8]
+            shadow-[0_5px_20px_rgba(117,193,120,0.15)]
             mb-4
           "
         >
           <span className="text-3xl">
             🕌
           </span>
+
+          <span
+            className="
+              absolute
+              top-0
+              right-0
+              w-3
+              h-3
+              bg-[#D4AF37]
+            "
+          />
         </div>
 
         <div className="flex items-center justify-center gap-3">
-          <span className="hidden sm:block w-12 h-px bg-[#c8ae6a]" />
+          <span className="hidden sm:block w-12 h-px bg-[#D4AF37]" />
 
           <h1
             className="
               text-3xl
               md:text-4xl
               font-bold
-              text-[#174d40]
-              dark:text-[#f5e6bd]
+              text-[#333333]
             "
             style={{
               fontFamily:
@@ -272,13 +282,12 @@ export default function IslamicToolsPage() {
             اسلامی سہولیات
           </h1>
 
-          <span className="hidden sm:block w-12 h-px bg-[#c8ae6a]" />
+          <span className="hidden sm:block w-12 h-px bg-[#D4AF37]" />
         </div>
 
         <p
           className="
-            text-[#806b3f]
-            dark:text-[#bcae8e]
+            text-[#63B56A]
             mt-2
             text-sm
             md:text-base
@@ -332,17 +341,17 @@ export default function IslamicToolsPage() {
                   ${
                     active
                       ? `
-                        bg-[#174d40]
-                        border-[#d8c27d]
-                        shadow-[0_0_22px_rgba(200,174,106,0.28)]
+                        bg-[#EAF5EA]
+                        border-[#D4AF37]
+                        shadow-[0_6px_20px_rgba(117,193,120,0.18)]
                       `
                       : `
-                        bg-[#102f2a]
-                        border-[#806b3f]
-                        hover:bg-[#174d40]
-                        hover:border-[#c8ae6a]
+                        bg-white
+                        border-[#C6E2C8]
+                        hover:bg-[#EAF5EA]
+                        hover:border-[#75C178]
                         hover:-translate-y-1
-                        shadow-[0_5px_18px_rgba(0,0,0,0.18)]
+                        shadow-[0_5px_18px_rgba(0,0,0,0.07)]
                       `
                   }
                 `}
@@ -355,7 +364,7 @@ export default function IslamicToolsPage() {
                     top-0
                     right-0
                     h-[2px]
-                    bg-[#c8ae6a]
+                    bg-[#D4AF37]
                     transition-all
                     duration-300
                     ${
@@ -383,8 +392,8 @@ export default function IslamicToolsPage() {
                       className="
                         text-[10px]
                         tracking-[2px]
-                        text-[#c8ae6a]
-                        opacity-70
+                        text-[#D4AF37]
+                        opacity-80
                       "
                     >
                       TOOL
@@ -396,7 +405,7 @@ export default function IslamicToolsPage() {
                       font-bold
                       text-base
                       md:text-lg
-                      text-[#f5e6bd]
+                      text-[#333333]
                     "
                     style={{
                       fontFamily:
@@ -410,7 +419,7 @@ export default function IslamicToolsPage() {
                     className="
                       text-xs
                       md:text-sm
-                      text-[#bcae8e]
+                      text-[#777777]
                       mt-1
                     "
                     style={{
@@ -441,11 +450,10 @@ export default function IslamicToolsPage() {
           <section
             id="zakat"
             className="
-              bg-[#fffdf7]
-              dark:bg-[#17211f]
+              bg-white
               border
-              border-[#c8ae6a]
-              shadow-[0_8px_30px_rgba(0,0,0,0.18)]
+              border-[#C6E2C8]
+              shadow-[0_8px_30px_rgba(0,0,0,0.08)]
               p-5
               md:p-8
               scroll-mt-5
@@ -501,9 +509,7 @@ export default function IslamicToolsPage() {
               />
             </div>
 
-            <ToolButton
-              onClick={calculateZakat}
-            >
+            <ToolButton onClick={calculateZakat}>
               زکوٰۃ معلوم کریں
             </ToolButton>
 
@@ -511,38 +517,37 @@ export default function IslamicToolsPage() {
               <div
                 className="
                   mt-6
-                  bg-[#f5f0e2]
-                  dark:bg-[#102f2a]
+                  bg-[#EAF5EA]
                   border
-                  border-[#c8ae6a]
+                  border-[#C6E2C8]
                   p-5
                   text-center
                 "
               >
-                <p className="text-gray-600 dark:text-gray-300">
+                <p className="text-[#666666]">
                   کل اثاثہ:
 
-                  <span className="font-bold text-[#174d40] dark:text-[#d8c27d] mr-2">
+                  <span className="font-bold text-[#63B56A] mr-2">
                     ₹
                     {zakatResult.total.toLocaleString()}
                   </span>
                 </p>
 
-                <p className="text-gray-600 dark:text-gray-300 mt-2">
+                <p className="text-[#666666] mt-2">
                   منہا کرنے کے بعد:
 
-                  <span className="font-bold text-[#174d40] dark:text-[#d8c27d] mr-2">
+                  <span className="font-bold text-[#63B56A] mr-2">
                     ₹
                     {zakatResult.net.toLocaleString()}
                   </span>
                 </p>
 
-                <div className="border-t border-[#c8ae6a]/40 mt-4 pt-4">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                <div className="border-t border-[#D4AF37]/40 mt-4 pt-4">
+                  <p className="text-sm text-[#777777]">
                     اندازاً واجب زکوٰۃ
                   </p>
 
-                  <p className="text-3xl font-bold text-[#174d40] dark:text-[#d8c27d] mt-1">
+                  <p className="text-3xl font-bold text-[#333333] mt-1">
                     ₹
                     {zakatResult.zakat.toLocaleString()}
                   </p>
@@ -560,11 +565,10 @@ export default function IslamicToolsPage() {
           <section
             id="mirath"
             className="
-              bg-[#fffdf7]
-              dark:bg-[#17211f]
+              bg-white
               border
-              border-[#c8ae6a]
-              shadow-[0_8px_30px_rgba(0,0,0,0.18)]
+              border-[#C6E2C8]
+              shadow-[0_8px_30px_rgba(0,0,0,0.08)]
               p-5
               md:p-8
               scroll-mt-5
@@ -617,9 +621,7 @@ export default function IslamicToolsPage() {
               />
             </div>
 
-            <ToolButton
-              onClick={calculateMirath}
-            >
+            <ToolButton onClick={calculateMirath}>
               میراث کا حساب کریں
             </ToolButton>
 
@@ -627,20 +629,18 @@ export default function IslamicToolsPage() {
               <div
                 className="
                   mt-6
-                  bg-[#f5f0e2]
-                  dark:bg-[#102f2a]
+                  bg-[#EAF5EA]
                   border
-                  border-[#c8ae6a]
+                  border-[#C6E2C8]
                   p-5
                   text-center
-                  text-gray-700
-                  dark:text-gray-200
+                  text-[#555555]
                   leading-8
                 "
               >
                 {mirathResult}
 
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
+                <p className="text-xs text-[#888888] mt-3">
                   حتمی شرعی حساب کے لیے مستند مفتی صاحب سے
                   رجوع کرنا ضروری ہے۔
                 </p>
@@ -657,11 +657,10 @@ export default function IslamicToolsPage() {
           <section
             id="hijri-date"
             className="
-              bg-[#fffdf7]
-              dark:bg-[#17211f]
+              bg-white
               border
-              border-[#c8ae6a]
-              shadow-[0_8px_30px_rgba(0,0,0,0.18)]
+              border-[#C6E2C8]
+              shadow-[0_8px_30px_rgba(0,0,0,0.08)]
               p-5
               md:p-8
               scroll-mt-5
@@ -678,15 +677,13 @@ export default function IslamicToolsPage() {
               onChange={setGregorianDate}
             />
 
-            <ToolButton
-              onClick={convertToHijri}
-            >
+            <ToolButton onClick={convertToHijri}>
               ہجری تاریخ معلوم کریں
             </ToolButton>
 
             {hijriResult && (
               <ResultBox>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-[#777777]">
                   ہجری تاریخ
                 </p>
 
@@ -694,8 +691,7 @@ export default function IslamicToolsPage() {
                   className="
                     text-2xl
                     font-bold
-                    text-[#174d40]
-                    dark:text-[#d8c27d]
+                    text-[#63B56A]
                     mt-2
                   "
                 >
@@ -714,11 +710,10 @@ export default function IslamicToolsPage() {
           <section
             id="hijri-age"
             className="
-              bg-[#fffdf7]
-              dark:bg-[#17211f]
+              bg-white
               border
-              border-[#c8ae6a]
-              shadow-[0_8px_30px_rgba(0,0,0,0.18)]
+              border-[#C6E2C8]
+              shadow-[0_8px_30px_rgba(0,0,0,0.08)]
               p-5
               md:p-8
               scroll-mt-5
@@ -735,9 +730,7 @@ export default function IslamicToolsPage() {
               onChange={setBirthDate}
             />
 
-            <ToolButton
-              onClick={calculateAge}
-            >
+            <ToolButton onClick={calculateAge}>
               عمر معلوم کریں
             </ToolButton>
 
@@ -747,8 +740,7 @@ export default function IslamicToolsPage() {
                   className="
                     text-xl
                     font-bold
-                    text-[#174d40]
-                    dark:text-[#d8c27d]
+                    text-[#63B56A]
                   "
                 >
                   {ageResult}
@@ -766,11 +758,10 @@ export default function IslamicToolsPage() {
           <section
             id="prayer-times"
             className="
-              bg-[#fffdf7]
-              dark:bg-[#17211f]
+              bg-white
               border
-              border-[#c8ae6a]
-              shadow-[0_8px_30px_rgba(0,0,0,0.18)]
+              border-[#C6E2C8]
+              shadow-[0_8px_30px_rgba(0,0,0,0.08)]
               p-5
               md:p-8
               scroll-mt-5
@@ -792,23 +783,20 @@ export default function IslamicToolsPage() {
               className="
                 w-full
                 border
-                border-[#c8ae6a]
-                bg-[#fffdf7]
-                dark:bg-[#102f2a]
-                dark:text-white
+                border-[#C6E2C8]
+                bg-[#F5FAF5]
+                text-[#333333]
                 px-4
                 py-3
                 outline-none
-                focus:border-[#806b3f]
+                focus:border-[#75C178]
                 focus:ring-2
-                focus:ring-[#c8ae6a]/20
+                focus:ring-[#75C178]/15
                 transition
               "
             />
 
-            <ToolButton
-              onClick={calculatePrayerTimes}
-            >
+            <ToolButton onClick={calculatePrayerTimes}>
               نماز کے اوقات دیکھیں
             </ToolButton>
 
@@ -824,8 +812,7 @@ export default function IslamicToolsPage() {
                       text-center
                       text-xl
                       font-bold
-                      text-[#174d40]
-                      dark:text-[#d8c27d]
+                      text-[#333333]
                       mb-4
                     "
                     style={{
@@ -880,16 +867,14 @@ export default function IslamicToolsPage() {
       <div className="max-w-4xl mx-auto mt-8">
         <div
           className="
-            bg-[#f5f0e2]
-            dark:bg-[#102f2a]
+            bg-[#EAF5EA]
             border
-            border-[#c8ae6a]/70
+            border-[#C6E2C8]
             p-4
             text-center
             text-xs
             md:text-sm
-            text-gray-500
-            dark:text-gray-300
+            text-[#666666]
             leading-7
           "
           style={{
@@ -897,7 +882,7 @@ export default function IslamicToolsPage() {
               "'Jameel Noori Nastaleeq', serif",
           }}
         >
-          <span className="font-bold text-[#806b3f] dark:text-[#d8c27d]">
+          <span className="font-bold text-[#B08D2C]">
             اہم نوٹ:
           </span>
 
@@ -924,7 +909,7 @@ function ToolHeading({
   return (
     <div className="text-center mb-7">
       <div className="flex items-center justify-center gap-3 mb-2">
-        <span className="hidden sm:block w-10 h-px bg-[#c8ae6a]" />
+        <span className="hidden sm:block w-10 h-px bg-[#D4AF37]" />
 
         <div
           className="
@@ -933,24 +918,23 @@ function ToolHeading({
             justify-center
             w-12
             h-12
-            bg-[#174d40]
+            bg-[#EAF5EA]
             border
-            border-[#c8ae6a]
+            border-[#D4AF37]
             text-2xl
           "
         >
           {icon}
         </div>
 
-        <span className="hidden sm:block w-10 h-px bg-[#c8ae6a]" />
+        <span className="hidden sm:block w-10 h-px bg-[#D4AF37]" />
       </div>
 
       <h2
         className="
           text-2xl
           font-bold
-          text-[#174d40]
-          dark:text-[#f5e6bd]
+          text-[#333333]
         "
         style={{
           fontFamily:
@@ -963,8 +947,7 @@ function ToolHeading({
       <p
         className="
           text-sm
-          text-gray-500
-          dark:text-gray-400
+          text-[#777777]
           mt-1
         "
         style={{
@@ -995,8 +978,7 @@ function InputField({
           block
           text-sm
           font-medium
-          text-[#806b3f]
-          dark:text-[#d8c27d]
+          text-[#63B56A]
           mb-1
         "
         style={{
@@ -1018,16 +1000,15 @@ function InputField({
         className="
           w-full
           border
-          border-[#c8ae6a]
-          bg-[#fffdf7]
-          dark:bg-[#102f2a]
-          dark:text-white
+          border-[#C6E2C8]
+          bg-[#F5FAF5]
+          text-[#333333]
           px-4
           py-3
           outline-none
-          focus:border-[#806b3f]
+          focus:border-[#75C178]
           focus:ring-2
-          focus:ring-[#c8ae6a]/20
+          focus:ring-[#75C178]/15
           transition
         "
       />
@@ -1053,16 +1034,15 @@ function DateInput({
       className="
         w-full
         border
-        border-[#c8ae6a]
-        bg-[#fffdf7]
-        dark:bg-[#102f2a]
-        dark:text-white
+        border-[#C6E2C8]
+        bg-[#F5FAF5]
+        text-[#333333]
         px-4
         py-3
         outline-none
-        focus:border-[#806b3f]
+        focus:border-[#75C178]
         focus:ring-2
-        focus:ring-[#c8ae6a]/20
+        focus:ring-[#75C178]/15
         transition
       "
     />
@@ -1083,17 +1063,17 @@ function ToolButton({
       className="
         w-full
         mt-6
-        bg-[#174d40]
-        hover:bg-[#216353]
+        bg-[#75C178]
+        hover:bg-[#63B56A]
         border
-        border-[#806b3f]
-        hover:border-[#c8ae6a]
-        text-[#f5e6bd]
+        border-[#75C178]
+        hover:border-[#D4AF37]
+        text-white
         font-bold
         py-3.5
         transition-all
         duration-300
-        hover:shadow-[0_0_18px_rgba(200,174,106,0.20)]
+        hover:shadow-[0_5px_18px_rgba(117,193,120,0.22)]
       "
       style={{
         fontFamily:
@@ -1121,14 +1101,13 @@ function CheckBoxField({
         items-center
         gap-3
         border
-        border-[#c8ae6a]
-        bg-[#fffdf7]
-        dark:bg-[#102f2a]
-        dark:text-gray-200
+        border-[#C6E2C8]
+        bg-[#F5FAF5]
+        text-[#444444]
         p-4
         cursor-pointer
-        hover:bg-[#f8f1df]
-        dark:hover:bg-[#174d40]
+        hover:bg-[#EAF5EA]
+        hover:border-[#75C178]
         transition
       "
     >
@@ -1141,7 +1120,7 @@ function CheckBoxField({
         className="
           w-5
           h-5
-          accent-[#806b3f]
+          accent-[#75C178]
         "
       />
 
@@ -1168,10 +1147,9 @@ function ResultBox({
     <div
       className="
         mt-5
-        bg-[#f5f0e2]
-        dark:bg-[#102f2a]
+        bg-[#EAF5EA]
         border
-        border-[#c8ae6a]
+        border-[#C6E2C8]
         p-5
         text-center
       "
@@ -1192,21 +1170,20 @@ function PrayerCard({
   return (
     <div
       className="
-        bg-[#f5f0e2]
-        dark:bg-[#102f2a]
+        bg-[#F5FAF5]
         border
-        border-[#c8ae6a]/70
+        border-[#C6E2C8]
         p-4
         text-center
-        hover:border-[#806b3f]
+        hover:border-[#D4AF37]
+        hover:bg-[#EAF5EA]
         transition
       "
     >
       <p
         className="
           text-sm
-          text-gray-500
-          dark:text-gray-400
+          text-[#777777]
         "
         style={{
           fontFamily:
@@ -1220,8 +1197,7 @@ function PrayerCard({
         className="
           text-lg
           font-bold
-          text-[#174d40]
-          dark:text-[#d8c27d]
+          text-[#63B56A]
           mt-1
         "
       >
@@ -1230,3 +1206,4 @@ function PrayerCard({
     </div>
   );
 }
+

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -9,7 +10,7 @@ export default function LatestBooksSlider() {
   const sliderRef = useRef(null);
 
   /* =====================================================
-     SLOW GOLD BORDER ANIMATION
+     SLOW GREEN BORDER ANIMATION
   ===================================================== */
 
   useEffect(() => {
@@ -140,14 +141,14 @@ export default function LatestBooksSlider() {
           relative
           overflow-hidden
           border
-          border-[#c8ae6a]
-          bg-[#f9f5e9]/95
-          dark:bg-[#17211f]/95
-          shadow-[0_8px_28px_rgba(0,0,0,0.20)]
+          border-[#C6E2C8]
+          bg-[#F5FAF5]/95
+          dark:bg-[#F5FAF5]/95
+          shadow-[0_8px_28px_rgba(0,0,0,0.10)]
         "
       >
         {/* =================================================
-            TOP GOLD LINE
+            TOP GREEN LINE
         ================================================= */}
 
         <div
@@ -159,7 +160,7 @@ export default function LatestBooksSlider() {
             h-[2px]
             bg-gradient-to-r
             from-transparent
-            via-[#c8ae6a]
+            via-[#75C178]
             to-transparent
           "
         />
@@ -170,7 +171,7 @@ export default function LatestBooksSlider() {
 
         <div className="px-3 pt-5 pb-3 text-center">
           <div className="flex items-center justify-center gap-3">
-            <span className="hidden sm:block h-px w-12 bg-[#c8ae6a]/60" />
+            <span className="hidden sm:block h-px w-12 bg-[#75C178]/60" />
 
             <div
               className="
@@ -180,15 +181,15 @@ export default function LatestBooksSlider() {
                 w-9
                 h-9
                 border
-                border-[#c8ae6a]
-                bg-[#174d40]
-                text-[#f5e6bd]
+                border-[#C6E2C8]
+                bg-[#EAF5EA]
+                text-[#75C178]
               "
             >
               <BookOpen size={20} />
             </div>
 
-            <span className="hidden sm:block h-px w-12 bg-[#c8ae6a]/60" />
+            <span className="hidden sm:block h-px w-12 bg-[#75C178]/60" />
           </div>
 
           <h2
@@ -196,8 +197,7 @@ export default function LatestBooksSlider() {
               mt-2
               text-2xl
               font-bold
-              text-[#174d40]
-              dark:text-[#f5e6bd]
+              text-[#333333]
             "
             style={{
               fontFamily:
@@ -212,8 +212,7 @@ export default function LatestBooksSlider() {
             className="
               mt-1
               text-xs
-              text-[#806b3f]
-              dark:text-[#bcae8e]
+              text-[#63B56A]
             "
             style={{
               fontFamily:
@@ -258,29 +257,29 @@ export default function LatestBooksSlider() {
                     relative
                     overflow-hidden
                     border
-                    border-[#c8ae6a]/70
+                    border-[#C6E2C8]
                     bg-white
-                    dark:bg-[#202b29]
+                    dark:bg-white
                     p-1
                     text-center
-                    shadow-[0_3px_12px_rgba(0,0,0,0.12)]
+                    shadow-[0_3px_12px_rgba(0,0,0,0.08)]
                     transition-all
                     duration-300
                     group-hover:-translate-y-1
-                    group-hover:border-[#806b3f]
-                    group-hover:shadow-[0_7px_18px_rgba(0,0,0,0.22)]
+                    group-hover:border-[#75C178]
+                    group-hover:shadow-[0_7px_18px_rgba(0,0,0,0.14)]
                   "
                 >
                   {/* BOOK COVER */}
 
                   <div className="relative h-[82px] overflow-hidden">
-                    {/* Animated gold frame */}
+                    {/* Animated green frame */}
 
                     <div
                       className="
                         absolute
                         inset-0
-                        bg-[conic-gradient(from_0deg,#806b3f,#d8c27d,#c8ae6a,#806b3f,#d8c27d)]
+                        bg-[conic-gradient(from_0deg,#63B56A,#C6E2C8,#75C178,#63B56A,#EAF5EA)]
                         animate-slow-spin
                       "
                     />
@@ -292,7 +291,7 @@ export default function LatestBooksSlider() {
                         absolute
                         inset-[2px]
                         overflow-hidden
-                        bg-[#174d40]
+                        bg-[#EAF5EA]
                       "
                     >
                       {cover ? (
@@ -317,11 +316,11 @@ export default function LatestBooksSlider() {
                             flex
                             items-center
                             justify-center
-                            bg-[#174d40]
+                            bg-[#EAF5EA]
                           "
                         >
                           <BookOpen
-                            className="text-[#d8c27d]"
+                            className="text-[#75C178]"
                             size={30}
                           />
                         </div>
@@ -334,7 +333,7 @@ export default function LatestBooksSlider() {
                           absolute
                           inset-0
                           bg-gradient-to-t
-                          from-black/25
+                          from-black/15
                           via-transparent
                           to-transparent
                           pointer-events-none
@@ -351,8 +350,8 @@ export default function LatestBooksSlider() {
                       px-1
                       line-clamp-1
                       text-[12px]
-                      text-[#2d2418]
-                      dark:text-[#f5e6bd]
+                      text-[#333333]
+                      dark:text-[#333333]
                     "
                     style={{
                       fontFamily:
@@ -381,18 +380,18 @@ export default function LatestBooksSlider() {
               items-center
               gap-2
               border
-              border-[#806b3f]
-              bg-[#174d40]
+              border-[#75C178]
+              bg-[#75C178]
               px-5
               py-2
               text-sm
-              text-[#f5e6bd]
-              shadow-[0_3px_12px_rgba(0,0,0,0.15)]
+              text-white
+              shadow-[0_3px_12px_rgba(0,0,0,0.10)]
               transition-all
               duration-300
-              hover:bg-[#216353]
-              hover:border-[#c8ae6a]
-              hover:shadow-[0_0_16px_rgba(200,174,106,0.22)]
+              hover:bg-[#63B56A]
+              hover:border-[#63B56A]
+              hover:shadow-[0_5px_16px_rgba(117,193,120,0.25)]
             "
             style={{
               fontFamily:
@@ -418,3 +417,4 @@ export default function LatestBooksSlider() {
     </section>
   );
 }
+
