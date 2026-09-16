@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -293,9 +292,7 @@ export default function HomePage() {
       });
 
       if (!res.ok) {
-        throw new Error(
-          `Questions API error: ${res.status}`
-        );
+        throw new Error(`Questions API error: ${res.status}`);
       }
 
       const data = await res.json();
@@ -446,7 +443,7 @@ export default function HomePage() {
       </Head>
 
       {/* =================================================
-          PREMIUM SOFT GREEN GLOW
+          CLEAN SOFT GREEN GLOW
       ================================================= */}
 
       <div
@@ -458,7 +455,7 @@ export default function HomePage() {
         "
         style={{
           background:
-            "radial-gradient(circle at 50% 20%, rgba(76,175,80,0.10), transparent 38%)",
+            "radial-gradient(circle at 50% 20%, rgba(117,193,120,0.08), transparent 38%)",
         }}
       />
 
@@ -474,7 +471,7 @@ export default function HomePage() {
         "
         style={{
           background:
-            "radial-gradient(circle, rgba(76,175,80,0.12), transparent 70%)",
+            "radial-gradient(circle, rgba(117,193,120,0.10), transparent 70%)",
           filter: "blur(80px)",
           zIndex: 0,
         }}
@@ -501,16 +498,15 @@ export default function HomePage() {
             border-b
           "
           style={{
-            background:
-              "linear-gradient(90deg, #123B22, #174A2A, #123B22)",
-            borderColor: "#4CAF50",
+            background: "#FFFFFF",
+            borderColor: "#C6E2C8",
           }}
         >
           <motion.div
             className="
               whitespace-nowrap
               w-full
-              text-[#B7E3BC]
+              text-[#333333]
               text-sm
               font-medium
             "
@@ -577,19 +573,19 @@ export default function HomePage() {
             items-center
             overflow-hidden
             border
-            border-[#76C77A]
-            bg-black/55
+            border-[#C6E2C8]
+            bg-white/95
             backdrop-blur-md
-            shadow-[0_8px_30px_rgba(0,0,0,0.30)]
+            shadow-[0_8px_30px_rgba(0,0,0,0.10)]
             transition-all
             duration-300
-            hover:border-[#4CAF50]
-            focus-within:border-[#4CAF50]
-            focus-within:shadow-[0_0_22px_rgba(76,175,80,0.22)]
+            hover:border-[#75C178]
+            focus-within:border-[#75C178]
+            focus-within:shadow-[0_0_22px_rgba(117,193,120,0.18)]
           "
         >
           <div className="px-3 py-2">
-            <Search className="w-5 h-5 text-[#4CAF50]" />
+            <Search className="w-5 h-5 text-[#75C178]" />
           </div>
 
           <input
@@ -601,9 +597,9 @@ export default function HomePage() {
               w-full
               py-3
               pr-4
-              bg-black/70
-              text-[#E8F5E9]
-              placeholder-gray-300
+              bg-white
+              text-[#333333]
+              placeholder-gray-400
               outline-none
               text-lg
               border-0
@@ -622,12 +618,12 @@ export default function HomePage() {
             className="
               px-3
               py-2
-              hover:bg-[#4CAF50]/10
+              hover:bg-[#EAF5EA]
               transition
             "
             aria-label="Voice Search"
           >
-            <Mic className="w-6 h-6 text-[#4CAF50] opacity-90" />
+            <Mic className="w-6 h-6 text-[#75C178]" />
           </button>
         </div>
       </div>
@@ -673,24 +669,24 @@ export default function HomePage() {
               transition-all
               duration-300
               border
-              shadow-[0_5px_18px_rgba(0,0,0,0.18)]
+              shadow-[0_5px_18px_rgba(0,0,0,0.08)]
               text-xl
               font-medium
 
               ${
                 selectedCategory === cat.name
                   ? `
-                    bg-[#E8F5E9]
-                    border-[#4CAF50]
-                    text-[#174A2A]
-                    shadow-[0_0_20px_rgba(76,175,80,0.20)]
+                    bg-[#EAF5EA]
+                    border-[#75C178]
+                    text-[#333333]
+                    shadow-[0_0_20px_rgba(117,193,120,0.16)]
                   `
                   : `
-                    bg-white/95
-                    border-[#76C77A]
-                    text-[#245438]
-                    hover:bg-[#F1FAF2]
-                    hover:border-[#4CAF50]
+                    bg-white
+                    border-[#C6E2C8]
+                    text-[#333333]
+                    hover:bg-[#F5FAF5]
+                    hover:border-[#75C178]
                   `
               }
             `}
@@ -729,12 +725,13 @@ export default function HomePage() {
                 className="
                   p-5
                   border
-                  bg-[#F8FCF8]/95
-                  border-[#76C77A]
-                  shadow-[0_5px_20px_rgba(0,0,0,0.15)]
+                  bg-white
+                  border-[#C6E2C8]
+                  shadow-[0_5px_20px_rgba(0,0,0,0.08)]
                   w-full
                   cursor-pointer
-                  hover:bg-white
+                  hover:bg-[#F5FAF5]
+                  hover:border-[#75C178]
                   transition-all
                   duration-300
                   relative
@@ -748,9 +745,9 @@ export default function HomePage() {
                   textAlign: "right",
                 }}
               >
-                <div className="absolute right-0 top-0 bottom-0 w-1 bg-[#4CAF50]" />
+                <div className="absolute right-0 top-0 bottom-0 w-1 bg-[#75C178]" />
 
-                <h3 className="font-bold text-xl text-[#174A2A] pr-2">
+                <h3 className="font-bold text-xl text-[#333333] pr-2">
                   {q.question}
                 </h3>
               </motion.div>
@@ -760,13 +757,13 @@ export default function HomePage() {
           <div
             className="
               text-center
-              bg-[#123B22]/90
+              bg-white
               border
-              border-[#4CAF50]
+              border-[#C6E2C8]
               px-4
               py-5
-              text-[#E8F5E9]
-              backdrop-blur-sm
+              text-[#333333]
+              shadow-[0_5px_20px_rgba(0,0,0,0.06)]
             "
             style={{
               fontFamily:
@@ -790,12 +787,12 @@ export default function HomePage() {
               className="
                 px-7
                 py-2
-                bg-[#174A2A]
-                text-[#E8F5E9]
+                bg-[#75C178]
+                text-white
                 border
-                border-[#4CAF50]
-                hover:bg-[#2E8B57]
-                hover:shadow-[0_0_18px_rgba(76,175,80,0.25)]
+                border-[#75C178]
+                hover:bg-[#63B56A]
+                hover:shadow-[0_0_18px_rgba(117,193,120,0.22)]
                 transition-all
                 duration-300
               "
@@ -831,10 +828,10 @@ export default function HomePage() {
             relative
             overflow-hidden
             border
-            border-[#4CAF50]/50
-            bg-[#123B22]/95
+            border-[#C6E2C8]
+            bg-white
             backdrop-blur-xl
-            shadow-[0_8px_30px_rgba(0,0,0,0.30)]
+            shadow-[0_8px_30px_rgba(0,0,0,0.08)]
             px-4
             py-3
           "
@@ -844,16 +841,16 @@ export default function HomePage() {
               absolute
               inset-0
               bg-gradient-to-r
-              from-[#4CAF50]/5
+              from-[#75C178]/5
               via-transparent
-              to-[#4CAF50]/5
+              to-[#75C178]/5
             "
           />
 
           <div className="flex items-center justify-between relative z-10">
             <div className="text-right">
               <p
-                className="text-[#B7E3BC]"
+                className="text-[#333333]"
                 style={{
                   fontFamily:
                     "'Jameel Noori Nastaleeq', serif",
@@ -865,7 +862,7 @@ export default function HomePage() {
               </p>
 
               <h2
-                className="text-white"
+                className="text-[#333333]"
                 style={{
                   fontFamily:
                     "'Jameel Noori Nastaleeq', serif",
@@ -886,16 +883,16 @@ export default function HomePage() {
                 repeat: Infinity,
               }}
               className="
-                bg-[#4CAF50]/10
+                bg-[#EAF5EA]
                 border
-                border-[#4CAF50]/30
+                border-[#C6E2C8]
                 px-4
                 py-2
               "
             >
               <span
                 className="
-                  text-[#E8F5E9]
+                  text-[#333333]
                   font-bold
                 "
                 style={{
@@ -959,18 +956,14 @@ export default function HomePage() {
               relative
               overflow-hidden
               bg-white
-              dark:bg-[#18201f]
               border
-              border-[#76C77A]
-              dark:border-[#2E8B57]
+              border-[#C6E2C8]
               p-4
               text-center
-              shadow-[0_4px_16px_rgba(0,0,0,0.15)]
-              dark:shadow-[0_0_14px_rgba(76,175,80,0.08)]
-              hover:bg-[#F1FAF2]
-              dark:hover:bg-[#202b29]
-              text-gray-900
-              dark:text-[#E8F5E9]
+              shadow-[0_4px_16px_rgba(0,0,0,0.07)]
+              hover:bg-[#F5FAF5]
+              hover:border-[#75C178]
+              text-[#333333]
               transition-all
               duration-300
               hover:-translate-y-1
@@ -989,7 +982,7 @@ export default function HomePage() {
                 right-0
                 w-0
                 h-[2px]
-                bg-[#4CAF50]
+                bg-[#75C178]
                 group-hover:w-full
                 transition-all
                 duration-300
@@ -1008,7 +1001,7 @@ export default function HomePage() {
       ================================================= */}
 
       <div className="mt-10 px-3 relative z-10">
-        <div className="flex overflow-hidden border border-[#4CAF50] shadow-lg">
+        <div className="flex overflow-hidden border border-[#C6E2C8] shadow-lg">
           <button
             type="button"
             onClick={() => setActiveTab("questions")}
@@ -1018,12 +1011,12 @@ export default function HomePage() {
               transition-all
               duration-300
               border-l
-              border-[#4CAF50]
+              border-[#C6E2C8]
 
               ${
                 activeTab === "questions"
-                  ? "bg-[#174A2A] text-[#E8F5E9]"
-                  : "bg-[#E1F0E3] text-[#315A3A] hover:bg-[#EEF8EF]"
+                  ? "bg-[#75C178] text-white"
+                  : "bg-[#EAF5EA] text-[#333333] hover:bg-[#F5FAF5]"
               }
             `}
           >
@@ -1053,8 +1046,8 @@ export default function HomePage() {
 
               ${
                 activeTab === "majameen"
-                  ? "bg-[#174A2A] text-[#E8F5E9]"
-                  : "bg-[#E1F0E3] text-[#315A3A] hover:bg-[#EEF8EF]"
+                  ? "bg-[#75C178] text-white"
+                  : "bg-[#EAF5EA] text-[#333333] hover:bg-[#F5FAF5]"
               }
             `}
           >
@@ -1080,11 +1073,10 @@ export default function HomePage() {
 
         <div
           className="
-            bg-white/95
-            dark:bg-[#17211f]/95
+            bg-white
             p-4
             border
-            border-[#76C77A]
+            border-[#C6E2C8]
             shadow-lg
           "
           style={{
@@ -1109,9 +1101,8 @@ export default function HomePage() {
                         flex
                         items-start
                         gap-2
-                        text-[#174A2A]
-                        dark:text-[#E8F5E9]
-                        hover:text-[#2E8B57]
+                        text-[#333333]
+                        hover:text-[#75C178]
                         transition-colors
                       "
                       style={{
@@ -1119,7 +1110,7 @@ export default function HomePage() {
                         lineHeight: "30px",
                       }}
                     >
-                      <span className="text-[#4CAF50] shrink-0">
+                      <span className="text-[#75C178] shrink-0">
                         ➜
                       </span>
 
@@ -1129,7 +1120,7 @@ export default function HomePage() {
                     </Link>
                   ))
               ) : (
-                <p className="text-gray-500 dark:text-gray-300 text-center">
+                <p className="text-gray-500 text-center">
                   کوئی نیا سوال موجود نہیں۔
                 </p>
               )}
@@ -1150,9 +1141,8 @@ export default function HomePage() {
                       flex
                       items-start
                       gap-2
-                      text-[#174A2A]
-                      dark:text-[#E8F5E9]
-                      hover:text-[#2E8B57]
+                      text-[#333333]
+                      hover:text-[#75C178]
                       transition-colors
                     "
                     style={{
@@ -1160,7 +1150,7 @@ export default function HomePage() {
                       lineHeight: "32px",
                     }}
                   >
-                    <span className="text-[#4CAF50] shrink-0">
+                    <span className="text-[#75C178] shrink-0">
                       ➜
                     </span>
 
@@ -1170,7 +1160,7 @@ export default function HomePage() {
                   </Link>
                 ))
               ) : (
-                <p className="text-gray-500 dark:text-gray-300 text-center">
+                <p className="text-gray-500 text-center">
                   کوئی مضمون موجود نہیں۔
                 </p>
               )}
@@ -1197,4 +1187,3 @@ export default function HomePage() {
     </div>
   );
 }
-
