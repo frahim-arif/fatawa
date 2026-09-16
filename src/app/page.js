@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -249,7 +250,9 @@ export default function HomePage() {
         );
 
         if (!res.ok) {
-          throw new Error(`Latest questions API error: ${res.status}`);
+          throw new Error(
+            `Latest questions API error: ${res.status}`
+          );
         }
 
         const data = await res.json();
@@ -290,7 +293,9 @@ export default function HomePage() {
       });
 
       if (!res.ok) {
-        throw new Error(`Questions API error: ${res.status}`);
+        throw new Error(
+          `Questions API error: ${res.status}`
+        );
       }
 
       const data = await res.json();
@@ -441,7 +446,7 @@ export default function HomePage() {
       </Head>
 
       {/* =================================================
-          PREMIUM SOFT GLOW
+          PREMIUM SOFT GREEN GLOW
       ================================================= */}
 
       <div
@@ -453,7 +458,7 @@ export default function HomePage() {
         "
         style={{
           background:
-            "radial-gradient(circle at 50% 20%, rgba(200,174,106,0.10), transparent 38%)",
+            "radial-gradient(circle at 50% 20%, rgba(76,175,80,0.10), transparent 38%)",
         }}
       />
 
@@ -469,7 +474,7 @@ export default function HomePage() {
         "
         style={{
           background:
-            "radial-gradient(circle, rgba(255,223,0,0.12), transparent 70%)",
+            "radial-gradient(circle, rgba(76,175,80,0.12), transparent 70%)",
           filter: "blur(80px)",
           zIndex: 0,
         }}
@@ -497,15 +502,15 @@ export default function HomePage() {
           "
           style={{
             background:
-              "linear-gradient(90deg, #071c19, #0b302a, #071c19)",
-            borderColor: "#806b3f",
+              "linear-gradient(90deg, #123B22, #174A2A, #123B22)",
+            borderColor: "#4CAF50",
           }}
         >
           <motion.div
             className="
               whitespace-nowrap
               w-full
-              text-[#d8c27d]
+              text-[#B7E3BC]
               text-sm
               font-medium
             "
@@ -572,19 +577,19 @@ export default function HomePage() {
             items-center
             overflow-hidden
             border
-            border-[#8f7840]
+            border-[#76C77A]
             bg-black/55
             backdrop-blur-md
             shadow-[0_8px_30px_rgba(0,0,0,0.30)]
             transition-all
             duration-300
-            hover:border-[#c8ae6a]
-            focus-within:border-[#c8ae6a]
-            focus-within:shadow-[0_0_22px_rgba(200,174,106,0.22)]
+            hover:border-[#4CAF50]
+            focus-within:border-[#4CAF50]
+            focus-within:shadow-[0_0_22px_rgba(76,175,80,0.22)]
           "
         >
           <div className="px-3 py-2">
-            <Search className="w-5 h-5 text-[#c8ae6a]" />
+            <Search className="w-5 h-5 text-[#4CAF50]" />
           </div>
 
           <input
@@ -597,7 +602,7 @@ export default function HomePage() {
               py-3
               pr-4
               bg-black/70
-              text-[#f5e6bd]
+              text-[#E8F5E9]
               placeholder-gray-300
               outline-none
               text-lg
@@ -617,12 +622,12 @@ export default function HomePage() {
             className="
               px-3
               py-2
-              hover:bg-[#c8ae6a]/10
+              hover:bg-[#4CAF50]/10
               transition
             "
             aria-label="Voice Search"
           >
-            <Mic className="w-6 h-6 text-[#c8ae6a] opacity-90" />
+            <Mic className="w-6 h-6 text-[#4CAF50] opacity-90" />
           </button>
         </div>
       </div>
@@ -671,20 +676,21 @@ export default function HomePage() {
               shadow-[0_5px_18px_rgba(0,0,0,0.18)]
               text-xl
               font-medium
+
               ${
                 selectedCategory === cat.name
                   ? `
-                    bg-[#f8f1df]
-                    border-[#c8ae6a]
-                    text-[#183d35]
-                    shadow-[0_0_20px_rgba(200,174,106,0.35)]
+                    bg-[#E8F5E9]
+                    border-[#4CAF50]
+                    text-[#174A2A]
+                    shadow-[0_0_20px_rgba(76,175,80,0.20)]
                   `
                   : `
                     bg-white/95
-                    border-[#c8ae6a]
-                    text-[#1d332f]
-                    hover:bg-[#f8f1df]
-                    hover:border-[#806b3f]
+                    border-[#76C77A]
+                    text-[#245438]
+                    hover:bg-[#F1FAF2]
+                    hover:border-[#4CAF50]
                   `
               }
             `}
@@ -723,12 +729,12 @@ export default function HomePage() {
                 className="
                   p-5
                   border
-                  bg-[#fffaf0]/95
-                  border-[#c8ae6a]
+                  bg-[#F8FCF8]/95
+                  border-[#76C77A]
                   shadow-[0_5px_20px_rgba(0,0,0,0.15)]
                   w-full
                   cursor-pointer
-                  hover:bg-[#fffdf7]
+                  hover:bg-white
                   transition-all
                   duration-300
                   relative
@@ -742,9 +748,9 @@ export default function HomePage() {
                   textAlign: "right",
                 }}
               >
-                <div className="absolute right-0 top-0 bottom-0 w-1 bg-[#806b3f]" />
+                <div className="absolute right-0 top-0 bottom-0 w-1 bg-[#4CAF50]" />
 
-                <h3 className="font-bold text-xl text-[#174d40] pr-2">
+                <h3 className="font-bold text-xl text-[#174A2A] pr-2">
                   {q.question}
                 </h3>
               </motion.div>
@@ -754,12 +760,12 @@ export default function HomePage() {
           <div
             className="
               text-center
-              bg-black/50
+              bg-[#123B22]/90
               border
-              border-[#806b3f]
+              border-[#4CAF50]
               px-4
               py-5
-              text-[#f5e6bd]
+              text-[#E8F5E9]
               backdrop-blur-sm
             "
             style={{
@@ -784,12 +790,12 @@ export default function HomePage() {
               className="
                 px-7
                 py-2
-                bg-[#174d40]
-                text-[#f5e6bd]
+                bg-[#174A2A]
+                text-[#E8F5E9]
                 border
-                border-[#c8ae6a]
-                hover:bg-[#216353]
-                hover:shadow-[0_0_18px_rgba(200,174,106,0.25)]
+                border-[#4CAF50]
+                hover:bg-[#2E8B57]
+                hover:shadow-[0_0_18px_rgba(76,175,80,0.25)]
                 transition-all
                 duration-300
               "
@@ -825,8 +831,8 @@ export default function HomePage() {
             relative
             overflow-hidden
             border
-            border-[#c8ae6a]/50
-            bg-[#071c19]/90
+            border-[#4CAF50]/50
+            bg-[#123B22]/95
             backdrop-blur-xl
             shadow-[0_8px_30px_rgba(0,0,0,0.30)]
             px-4
@@ -838,16 +844,16 @@ export default function HomePage() {
               absolute
               inset-0
               bg-gradient-to-r
-              from-[#c8ae6a]/5
+              from-[#4CAF50]/5
               via-transparent
-              to-[#c8ae6a]/5
+              to-[#4CAF50]/5
             "
           />
 
           <div className="flex items-center justify-between relative z-10">
             <div className="text-right">
               <p
-                className="text-[#d8c27d]"
+                className="text-[#B7E3BC]"
                 style={{
                   fontFamily:
                     "'Jameel Noori Nastaleeq', serif",
@@ -880,16 +886,16 @@ export default function HomePage() {
                 repeat: Infinity,
               }}
               className="
-                bg-[#c8ae6a]/10
+                bg-[#4CAF50]/10
                 border
-                border-[#c8ae6a]/30
+                border-[#4CAF50]/30
                 px-4
                 py-2
               "
             >
               <span
                 className="
-                  text-[#f5e6bd]
+                  text-[#E8F5E9]
                   font-bold
                 "
                 style={{
@@ -955,16 +961,16 @@ export default function HomePage() {
               bg-white
               dark:bg-[#18201f]
               border
-              border-[#c8ae6a]
-              dark:border-[#8f7840]
+              border-[#76C77A]
+              dark:border-[#2E8B57]
               p-4
               text-center
               shadow-[0_4px_16px_rgba(0,0,0,0.15)]
-              dark:shadow-[0_0_14px_rgba(200,174,106,0.08)]
-              hover:bg-[#fff9ec]
+              dark:shadow-[0_0_14px_rgba(76,175,80,0.08)]
+              hover:bg-[#F1FAF2]
               dark:hover:bg-[#202b29]
               text-gray-900
-              dark:text-[#f5e6bd]
+              dark:text-[#E8F5E9]
               transition-all
               duration-300
               hover:-translate-y-1
@@ -983,7 +989,7 @@ export default function HomePage() {
                 right-0
                 w-0
                 h-[2px]
-                bg-[#c8ae6a]
+                bg-[#4CAF50]
                 group-hover:w-full
                 transition-all
                 duration-300
@@ -1002,7 +1008,7 @@ export default function HomePage() {
       ================================================= */}
 
       <div className="mt-10 px-3 relative z-10">
-        <div className="flex overflow-hidden border border-[#806b3f] shadow-lg">
+        <div className="flex overflow-hidden border border-[#4CAF50] shadow-lg">
           <button
             type="button"
             onClick={() => setActiveTab("questions")}
@@ -1012,11 +1018,12 @@ export default function HomePage() {
               transition-all
               duration-300
               border-l
-              border-[#806b3f]
+              border-[#4CAF50]
+
               ${
                 activeTab === "questions"
-                  ? "bg-[#174d40] text-[#f5e6bd]"
-                  : "bg-[#d9cfbf] text-[#624d35] hover:bg-[#e5dccd]"
+                  ? "bg-[#174A2A] text-[#E8F5E9]"
+                  : "bg-[#E1F0E3] text-[#315A3A] hover:bg-[#EEF8EF]"
               }
             `}
           >
@@ -1043,10 +1050,11 @@ export default function HomePage() {
               py-3
               transition-all
               duration-300
+
               ${
                 activeTab === "majameen"
-                  ? "bg-[#174d40] text-[#f5e6bd]"
-                  : "bg-[#d9cfbf] text-[#624d35] hover:bg-[#e5dccd]"
+                  ? "bg-[#174A2A] text-[#E8F5E9]"
+                  : "bg-[#E1F0E3] text-[#315A3A] hover:bg-[#EEF8EF]"
               }
             `}
           >
@@ -1072,11 +1080,11 @@ export default function HomePage() {
 
         <div
           className="
-            bg-white/90
+            bg-white/95
             dark:bg-[#17211f]/95
             p-4
             border
-            border-[#c8ae6a]
+            border-[#76C77A]
             shadow-lg
           "
           style={{
@@ -1101,9 +1109,9 @@ export default function HomePage() {
                         flex
                         items-start
                         gap-2
-                        text-[#174d40]
-                        dark:text-[#f5e6bd]
-                        hover:text-[#806b3f]
+                        text-[#174A2A]
+                        dark:text-[#E8F5E9]
+                        hover:text-[#2E8B57]
                         transition-colors
                       "
                       style={{
@@ -1111,7 +1119,7 @@ export default function HomePage() {
                         lineHeight: "30px",
                       }}
                     >
-                      <span className="text-[#c8ae6a] shrink-0">
+                      <span className="text-[#4CAF50] shrink-0">
                         ➜
                       </span>
 
@@ -1142,9 +1150,9 @@ export default function HomePage() {
                       flex
                       items-start
                       gap-2
-                      text-[#174d40]
-                      dark:text-[#f5e6bd]
-                      hover:text-[#806b3f]
+                      text-[#174A2A]
+                      dark:text-[#E8F5E9]
+                      hover:text-[#2E8B57]
                       transition-colors
                     "
                     style={{
@@ -1152,7 +1160,7 @@ export default function HomePage() {
                       lineHeight: "32px",
                     }}
                   >
-                    <span className="text-[#c8ae6a] shrink-0">
+                    <span className="text-[#4CAF50] shrink-0">
                       ➜
                     </span>
 
@@ -1189,3 +1197,4 @@ export default function HomePage() {
     </div>
   );
 }
+
