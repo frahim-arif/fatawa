@@ -50,8 +50,10 @@ export default function Footer() {
         relative
         overflow-hidden
         mt-10
-        bg-[#071c19]
-        text-white
+        bg-[#F5FAF5]
+        text-[#333333]
+        border-t
+        border-[#C6E2C8]
       "
     >
       {/* =====================================================
@@ -64,26 +66,28 @@ export default function Footer() {
           alt=""
           fill
           priority
-          className="object-cover opacity-20"
+          className="object-cover opacity-[0.04]"
         />
 
-        <div className="absolute inset-0 bg-[#071c19]/95" />
+        {/* Clean soft-green overlay */}
+        <div className="absolute inset-0 bg-[#F5FAF5]/95" />
 
+        {/* Very subtle pattern */}
         <div
           className="
             absolute
             inset-0
-            opacity-[0.06]
+            opacity-[0.035]
           "
           style={{
             backgroundImage: `
               linear-gradient(
-                rgba(200,174,106,0.5) 1px,
+                rgba(117,193,120,0.7) 1px,
                 transparent 1px
               ),
               linear-gradient(
                 90deg,
-                rgba(200,174,106,0.5) 1px,
+                rgba(117,193,120,0.7) 1px,
                 transparent 1px
               )
             `,
@@ -91,6 +95,7 @@ export default function Footer() {
           }}
         />
 
+        {/* Primary green top line */}
         <div
           className="
             absolute
@@ -100,7 +105,7 @@ export default function Footer() {
             h-[3px]
             bg-gradient-to-r
             from-transparent
-            via-[#c8ae6a]
+            via-[#75C178]
             to-transparent
           "
         />
@@ -111,7 +116,6 @@ export default function Footer() {
       ===================================================== */}
 
       <div className="relative max-w-7xl mx-auto px-5 py-12 md:py-14">
-
         <div
           className="
             grid
@@ -121,13 +125,11 @@ export default function Footer() {
             grid-cols-1
           "
         >
-
           {/* =================================================
               ABOUT
           ================================================= */}
 
           <div className="text-center md:text-right">
-
             <div
               className="
                 inline-flex
@@ -143,16 +145,17 @@ export default function Footer() {
                   justify-center
                   w-11
                   h-11
-                  bg-[#174d40]
+                  bg-[#EAF5EA]
                   border
-                  border-[#c8ae6a]
-                  text-[#f5e6bd]
+                  border-[#C6E2C8]
+                  text-[#75C178]
+                  shadow-sm
                 "
               >
                 <BookOpen size={21} />
               </div>
 
-              <span className="hidden sm:block w-10 h-px bg-[#c8ae6a]" />
+              <span className="hidden sm:block w-10 h-px bg-[#75C178]" />
             </div>
 
             <h2
@@ -160,7 +163,7 @@ export default function Footer() {
                 text-3xl
                 md:text-4xl
                 font-bold
-                text-[#f5e6bd]
+                text-[#333333]
                 mb-4
               "
               style={{
@@ -173,7 +176,7 @@ export default function Footer() {
 
             <p
               className="
-                text-[#d6cfbd]
+                text-[#555555]
                 leading-8
                 text-sm
                 md:text-base
@@ -194,9 +197,9 @@ export default function Footer() {
               className="
                 mt-6
                 border-r-2
-                border-[#c8ae6a]
+                border-[#75C178]
                 pr-4
-                text-[#bcae8e]
+                text-[#666666]
                 text-sm
                 leading-7
               "
@@ -215,15 +218,22 @@ export default function Footer() {
           ================================================= */}
 
           <div className="text-center md:text-right">
-
-            <div className="flex items-center gap-3 mb-5 justify-center md:justify-start">
-
+            <div
+              className="
+                flex
+                items-center
+                gap-3
+                mb-5
+                justify-center
+                md:justify-start
+              "
+            >
               <h3
                 className="
                   text-xl
                   md:text-2xl
                   font-bold
-                  text-[#f5e6bd]
+                  text-[#333333]
                 "
                 style={{
                   fontFamily:
@@ -233,11 +243,10 @@ export default function Footer() {
                 اہم لنکس
               </h3>
 
-              <span className="w-10 h-px bg-[#c8ae6a]" />
+              <span className="w-10 h-px bg-[#75C178]" />
             </div>
 
             <div className="grid grid-cols-2 gap-2.5">
-
               {links.map((item, index) => {
                 const Icon = item.icon;
 
@@ -255,19 +264,21 @@ export default function Footer() {
                       md:justify-end
                       gap-2
                       border
-                      border-[#806b3f]/70
-                      bg-[#102f2a]/80
+                      border-[#C6E2C8]
+                      bg-white
                       px-4
                       py-3
-                      text-[#e8dfca]
+                      text-[#444444]
                       transition-all
                       duration-300
-                      hover:bg-[#174d40]
-                      hover:border-[#c8ae6a]
-                      hover:text-[#f5e6bd]
+                      shadow-sm
+                      hover:bg-[#EAF5EA]
+                      hover:border-[#75C178]
+                      hover:text-[#333333]
+                      hover:shadow-md
                     "
                   >
-                    {/* Gold hover line */}
+                    {/* Green hover line */}
 
                     <span
                       className="
@@ -276,7 +287,7 @@ export default function Footer() {
                         top-0
                         h-[2px]
                         w-0
-                        bg-[#c8ae6a]
+                        bg-[#75C178]
                         transition-all
                         duration-300
                         group-hover:w-full
@@ -299,7 +310,7 @@ export default function Footer() {
                     <Icon
                       size={16}
                       className="
-                        text-[#c8ae6a]
+                        text-[#75C178]
                         transition-transform
                         duration-300
                         group-hover:-translate-x-1
@@ -308,7 +319,6 @@ export default function Footer() {
                   </Link>
                 );
               })}
-
             </div>
           </div>
         </div>
@@ -318,21 +328,7 @@ export default function Footer() {
         ================================================= */}
 
         <div className="flex items-center gap-4 my-10">
-
-          <span className="flex-1 h-px bg-[#806b3f]/40" />
-
-          <div
-            className="
-              w-2
-              h-2
-              rotate-45
-              border
-              border-[#c8ae6a]
-              bg-[#174d40]
-            "
-          />
-
-          <span className="w-16 h-px bg-[#c8ae6a]" />
+          <span className="flex-1 h-px bg-[#C6E2C8]" />
 
           <div
             className="
@@ -340,13 +336,25 @@ export default function Footer() {
               h-2
               rotate-45
               border
-              border-[#c8ae6a]
-              bg-[#174d40]
+              border-[#75C178]
+              bg-[#EAF5EA]
             "
           />
 
-          <span className="flex-1 h-px bg-[#806b3f]/40" />
+          <span className="w-16 h-px bg-[#75C178]" />
 
+          <div
+            className="
+              w-2
+              h-2
+              rotate-45
+              border
+              border-[#75C178]
+              bg-[#EAF5EA]
+            "
+          />
+
+          <span className="flex-1 h-px bg-[#C6E2C8]" />
         </div>
 
         {/* =================================================
@@ -354,10 +362,9 @@ export default function Footer() {
         ================================================= */}
 
         <div className="text-center">
-
           <p
             className="
-              text-[#e8d39a]
+              text-[#63B56A]
               text-lg
               md:text-xl
               leading-9
@@ -373,14 +380,13 @@ export default function Footer() {
 
           <p
             className="
-              text-[#8f866f]
+              text-[#777777]
               text-xs
               mt-1
             "
           >
             "اگر تم نہیں جانتے تو اہلِ ذکر سے پوچھو"
           </p>
-
         </div>
 
         {/* =================================================
@@ -390,25 +396,24 @@ export default function Footer() {
         <div
           className="
             border-t
-            border-[#806b3f]/30
+            border-[#C6E2C8]
             mt-8
             pt-5
             text-center
           "
         >
-          <p className="text-[#a9a18d] text-xs md:text-sm">
+          <p className="text-[#555555] text-xs md:text-sm">
             © {new Date().getFullYear()} Maslak e Deoband
           </p>
 
-          <p className="text-[#6f695b] text-[11px] mt-2">
+          <p className="text-[#888888] text-[11px] mt-2">
             Developed by
-            <span className="text-[#c8ae6a] mx-1">
+            <span className="text-[#75C178] mx-1 font-medium">
               Web Core Cube Tech
             </span>
             — 9058596626
           </p>
         </div>
-
       </div>
     </footer>
   );
