@@ -1264,7 +1264,6 @@ export default function HomePage() {
                         lineHeight: "30px",
                       }}
                     >
-                      
                       <span className="text-[#75C178] shrink-0">
                         ➜
                       </span>
