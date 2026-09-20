@@ -409,7 +409,7 @@ export default function Footer() {
           <p className="text-[#888888] text-[11px] mt-2">
             Developed by
             <span className="text-[#75C178] mx-1 font-medium">
-              Web Core Cube Tech
+              WebCoreCubeTech
             </span>
             — 9058596626
           </p>

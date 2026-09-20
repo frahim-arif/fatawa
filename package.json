@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/cli": "^8.5.2",
+    "@capacitor/core": "^8.5.2",
     "@fontsource/amiri-quran": "^5.2.10",
     "axios": "^1.13.2",
     "embla-carousel-auto-scroll": "^8.6.0",

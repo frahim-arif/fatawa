@@ -1245,7 +1245,7 @@ export default function HomePage() {
             <div className="space-y-3">
               {latestQuestions.length > 0 ? (
                 latestQuestions
-                  .slice(0, 5)
+                  .slice(0, 8)
                   .map((item) => (
                     <Link
                       key={item._id}
@@ -1264,6 +1264,7 @@ export default function HomePage() {
                         lineHeight: "30px",
                       }}
                     >
+                      
                       <span className="text-[#75C178] shrink-0">
                         ➜
                       </span>
