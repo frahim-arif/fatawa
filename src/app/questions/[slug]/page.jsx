@@ -280,16 +280,23 @@ export default async function Page({ params }) {
 
       <div className="max-w-3xl mx-auto px-4 md:px-6 py-6 space-y-6 text-right">
 
-        {/* Breadcrumb */}
-<nav className="text-sm text-gray-500 mb-2">
+    {/* Breadcrumb */}
+<nav className="text-sm text-gray-500 mb-2" dir="rtl">
+  <Link
+    href="/"
+    className="hover:text-green-700"
+  >
+    Home
+  </Link>
 
-  <Link href="/">Home</Link> /{" "}
-
-  <span>
-    {question.category}
-  </span>{" "}
-
-  / <span>{question.question}</span>
+  {question.category && (
+    <>
+      <span className="mx-2">/</span>
+      <span className="text-gray-600">
+        {question.category}
+      </span>
+    </>
+  )}
 </nav>
 
 {/* Question */}
