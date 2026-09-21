@@ -49,7 +49,7 @@ export default function AdminAddQuestion() {
   // ✅ AUTO SEO GENERATION
   useEffect(() => {
     if (question && !metaTitle) {
-      setMetaTitle(`${question} | Maslak e Deoband`);
+      setMetaTitle(`${question}`);
     }
 
     // 🔥 slug sirf tab auto banega jab empty ho
