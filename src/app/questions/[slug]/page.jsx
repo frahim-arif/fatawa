@@ -281,26 +281,26 @@ export default async function Page({ params }) {
       <div className="max-w-3xl mx-auto px-4 md:px-6 py-6 space-y-6 text-right">
 
         {/* Breadcrumb */}
-        <nav className="text-sm text-gray-500 mb-2">
+<nav className="text-sm text-gray-500 mb-2">
 
-          <Link href="/">Home</Link> /{" "}
+  <Link href="/">Home</Link> /{" "}
 
-          <Link href={`/category/${question.category}`}>
-            {question.category}
-          </Link>{" "}
+  <span>
+    {question.category}
+  </span>{" "}
 
-          / <span>{question.question}</span>
-        </nav>
+  / <span>{question.question}</span>
+</nav>
 
-        {/* Question
-        <div className="p-5 rounded-2xl border bg-yellow-50">
-
-          <h1 className="text-xl md:text-2xl font-bold text-green-800 leading-8">
-
-            {question.metaTitle || question.question}
-
-          </h1>
-        </div> */}
+{/* Question */}
+<div className="p-5 rounded-2xl border bg-yellow-50">
+  <h1
+    className="text-xl md:text-2xl font-bold text-[#5a3a2e] leading-8"
+    dir="rtl"
+  >
+    {question.question}
+  </h1>
+</div>
 
 
         {/* Answer */}
