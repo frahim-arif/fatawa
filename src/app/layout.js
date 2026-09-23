@@ -133,18 +133,18 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ur" dir="rtl" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${nastaleeq.variable} ${amiri.variable} bg-gray-50 min-h-screen`}
-      >
-        {/* Google AdSense */}
+      <head>
         <Script
           id="google-adsense"
           async
-          strategy="afterInteractive"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1540204802615671"
           crossOrigin="anonymous"
         />
+      </head>
 
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${nastaleeq.variable} ${amiri.variable} bg-gray-50 min-h-screen`}
+      >
         <HeaderWrapper />
 
         <main className="max-w-5xl mx-auto py-6 px-4">
