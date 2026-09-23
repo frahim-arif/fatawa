@@ -134,6 +134,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ur" dir="rtl" suppressHydrationWarning>
       <head>
+        <meta name="google-adsense-account" content="ca-pub-1540204802615671">
         <Script
           id="google-adsense"
           async
