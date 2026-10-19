@@ -1,15 +1,23 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Search, Mic, ArrowLeft, Sparkles } from "lucide-react";
+// import { Search, Mic, ArrowLeft, Sparkles } from "lucide-react";
 import Head from "next/head";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { Search, Mic } from "lucide-react";
 
 import HomeLoader from "./components/HomeLoader";
 import LatestBooksSlider from "./components/LatestBooksSlider";
 import IslamicTools from "./components/IslamicTools";
 import IslamicSlider from "./components/IslamicSlider";
+
+const PLACEHOLDER_PHRASES = [
+  "یہاں تلاش کریں...",
+  "نماز کے مسائل تلاش کریں...",
+  "روزے کے احکام تلاش کریں...",
+  "زکوٰۃ کے مسائل تلاش کریں...",
+];
 
 function useTypewriterPlaceholder(
   phrases,
@@ -80,16 +88,15 @@ export default function HomePage() {
 
   const [isFocused, setIsFocused] = useState(false);
 
-const placeholderPhrases = [
-  "یہاں تلاش کریں...",
-  "نماز کے مسائل تلاش کریں...",
-  "روزے کے احکام تلاش کریں...",
-  "زکوٰۃ کے مسائل تلاش کریں...",
-];
 
-const animatedPlaceholder = useTypewriterPlaceholder(placeholderPhrases, {
-  active: query === "" && !isFocused,
-});
+
+
+const animatedPlaceholder = useTypewriterPlaceholder(
+  PLACEHOLDER_PHRASES,
+  {
+    active: query === "" && !isFocused,
+  }
+);
 
   /* =====================================================
      HOME LOADER
