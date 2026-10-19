@@ -11,6 +11,52 @@ import LatestBooksSlider from "./components/LatestBooksSlider";
 import IslamicTools from "./components/IslamicTools";
 import IslamicSlider from "./components/IslamicSlider";
 
+function useTypewriterPlaceholder(
+  phrases,
+  { typeSpeed = 110, deleteSpeed = 60, pause = 1400, active = true } = {}
+) {
+  const [text, setText] = useState("");
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    if (!active) {
+      setText("");
+      return;
+    }
+
+    const current = phrases[phraseIndex % phrases.length];
+    let delay = isDeleting ? deleteSpeed : typeSpeed;
+
+    // Urdu joined letters ke liye Array.from use karte hain
+    const chars = Array.from(current);
+
+    if (!isDeleting && text === current) {
+      delay = pause;
+    } else if (isDeleting && text === "") {
+      delay = 400;
+    }
+
+    const timer = setTimeout(() => {
+      if (!isDeleting && text === current) {
+        setIsDeleting(true);
+      } else if (isDeleting && text === "") {
+        setIsDeleting(false);
+        setPhraseIndex((i) => (i + 1) % phrases.length);
+      } else {
+        const nextLength = text
+          ? Array.from(text).length + (isDeleting ? -1 : 1)
+          : 1;
+        setText(chars.slice(0, Math.max(nextLength, 0)).join(""));
+      }
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [text, isDeleting, phraseIndex, phrases, typeSpeed, deleteSpeed, pause, active]);
+
+  return text;
+}
+
 export default function HomePage() {
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -31,6 +77,19 @@ export default function HomePage() {
   const questionsRef = useRef(null);
 
   const backend = "https://f-backend-vdi1.onrender.com/api";
+
+  const [isFocused, setIsFocused] = useState(false);
+
+const placeholderPhrases = [
+  "یہاں تلاش کریں...",
+  "نماز کے مسائل تلاش کریں...",
+  "روزے کے احکام تلاش کریں...",
+  "زکوٰۃ کے مسائل تلاش کریں...",
+];
+
+const animatedPlaceholder = useTypewriterPlaceholder(placeholderPhrases, {
+  active: query === "" && !isFocused,
+});
 
   /* =====================================================
      HOME LOADER
@@ -746,7 +805,9 @@ export default function HomePage() {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="تلاش کریں....."
+            onFocus={() => setIsFocused(true)}
+onBlur={() => setIsFocused(false)}
+placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00A0"}
             className="
               w-full
               py-3
