@@ -852,96 +852,110 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
         </div>
       </div>
 
-     {/* =================================================
-    ASK QUESTION BUTTON
+
+{/* =================================================
+    PREMIUM FATAWA — ASK QUESTION BUTTON
 ================================================= */}
 
-<div className="w-11/12 md:w-full mx-auto mt-4 relative z-10">
-  <motion.button
+<div className="w-11/12 md:w-full mx-auto mt-5 mb-3 relative z-10">
+  <button
     type="button"
     onClick={() => setShowAsk(true)}
-    whileHover={{ y: -3 }}
-    whileTap={{ scale: 0.98 }}
-    className="group relative w-full overflow-hidden text-white text-right"
+    
+className="
+  group relative w-full overflow-hidden
+  flex items-center justify-center gap-3
+  py-3.5 px-4
+  bg-gradient-to-r from-[#4B1522] via-[#651E2D] to-[#842D40]
+  text-[#FAF6ED]
+  border border-[#D5B779]
+  shadow-[0_5px_18px_rgba(101,30,45,0.16)]
+  hover:shadow-[0_0_18px_rgba(101,30,45,0.25)]
+  hover:border-[#E8D29B]
+  active:scale-[0.99]
+  transition-all duration-300 ease-out
+  cursor-pointer
+"
+
     style={{
       fontFamily: "'Jameel Noori Nastaleeq', serif",
-      direction: "rtl",
-      background: "linear-gradient(135deg, #4FA855 0%, #75C178 55%, #63B56A 100%)",
-      borderTop: "2px solid #D4AF37",
-      borderBottom: "2px solid #D4AF37",
-      boxShadow: "0 10px 28px rgba(99,181,106,0.35)",
+      fontSize: "23px",
+      lineHeight: "1.9",
     }}
   >
-    {/* Islamic star pattern */}
-    <svg
-      className="absolute inset-0 w-full h-full opacity-[0.13] pointer-events-none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <defs>
-        <pattern id="askStar" width="44" height="44" patternUnits="userSpaceOnUse">
-          <path
-            d="M22 2 L27 15 L40 10 L33 22 L40 34 L27 29 L22 42 L17 29 L4 34 L11 22 L4 10 L17 15 Z"
-            fill="none"
-            stroke="#fff"
-            strokeWidth="1"
-          />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#askStar)" />
-    </svg>
-
-    {/* Shine sweep on hover */}
+    {/* Subtle golden shine */}
     <span
+      aria-hidden="true"
       className="
-        absolute top-0 -left-1/3 h-full w-1/4
-        -skew-x-12 bg-white/30 blur-md
-        opacity-0 group-hover:opacity-100
-        group-hover:translate-x-[520%]
-        transition-all duration-1000 ease-out
-        pointer-events-none
+        pointer-events-none absolute inset-0
+        -translate-x-full
+        bg-gradient-to-r from-transparent
+        via-white/[0.08] to-transparent
+        group-hover:translate-x-full
+        transition-transform duration-700
       "
     />
 
-    <div className="relative z-10 flex items-center gap-3 px-4 py-3">
-      {/* Pulsing icon */}
-      <div className="relative shrink-0">
-        <motion.span
-          className="absolute inset-0 rounded-full bg-white/60"
-          animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
-        />
-        <span
-          className="relative flex items-center justify-center w-12 h-12 rounded-full bg-white text-2xl"
-          style={{ border: "2px solid #D4AF37" }}
-        >
-          ✍️
-        </span>
-      </div>
-
-      {/* Text */}
-      <div className="flex-1">
-        <div style={{ fontSize: "24px", lineHeight: "38px" }}>
-          اپنا سوال بھیجیں
-        </div>
-        <div
-          className="text-white/90"
-          style={{ fontSize: "15px", lineHeight: "24px" }}
-        >
-          علمائے کرام سے اپنے مسئلے کا حل پوچھیں
-        </div>
-      </div>
-
-      {/* Arrow */}
-      <motion.span
-        className="shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-white/20 group-hover:bg-white/30 transition"
-        animate={{ x: [0, -5, 0] }}
-        transition={{ duration: 1.4, repeat: Infinity }}
+    {/* Golden pen icon */}
+    <span
+      className="
+        relative flex h-9 w-9 shrink-0 items-center
+        justify-center border border-[#c8ae6a]/50
+        bg-[#c8ae6a]/10 text-[#e2cc8d]
+        transition-colors duration-300
+        group-hover:bg-[#c8ae6a]/20
+      "
+      aria-hidden="true"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="21"
+        height="21"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
-        <ArrowLeft className="w-5 h-5" />
-      </motion.span>
-    </div>
-  </motion.button>
+        <path d="m15 5 4 4" />
+        <path d="M4 20l4.5-1 11-11a2.83 2.83 0 0 0-4-4l-11 11L4 20Z" />
+        <path d="M13 7l4 4" />
+      </svg>
+    </span>
+
+    <span className="relative">
+      اپنا سوال بھیجیں
+    </span>
+
+    {/* Decorative arrow */}
+    <svg
+      aria-hidden="true"
+      className="relative h-4 w-4 text-[#c8ae6a] transition-transform duration-300 group-hover:-translate-x-1"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M19 12H5" />
+      <path d="m12 19-7-7 7-7" />
+    </svg>
+  </button>
+
+  <p
+    className="mt-2 text-center text-xs text-[#64746c]"
+    style={{
+      fontFamily: "'Jameel Noori Nastaleeq', serif",
+      lineHeight: "1.9",
+    }}
+  >
+    مستند دینی رہنمائی کے لیے اپنا سوال ارسال کریں
+  </p>
 </div>
+
       {/* =================================================
           CATEGORIES
       ================================================= */}
