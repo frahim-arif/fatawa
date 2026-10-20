@@ -10,7 +10,7 @@ export default function AskedQuestionsButton() {
   return (
     <div
       className="w-11/12 md:w-full mx-auto relative z-10"
-      style={{ marginTop: "36px", marginBottom: "-24px" }}
+      style={{ marginTop: "36px", marginBottom: "24px" }}
     >
       <style>{`
         .asked-btn,
