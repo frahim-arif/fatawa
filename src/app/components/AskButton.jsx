@@ -7,7 +7,7 @@ const font = "'Jameel Noori Nastaleeq', serif";
 
 export default function AskButton({ onClick }) {
   return (
-    <div className="w-11/12 md:w-full mx-auto mt-4 relative z-10">
+    <div className="w-11/12 md:w-full mx-auto mt-1 relative z-10">
       <style>{`
         .ask-btn,
         .ask-btn * {
