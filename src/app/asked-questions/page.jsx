@@ -1,149 +1,243 @@
+
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MessageCircle, RefreshCw } from "lucide-react";
 
 const backend = "https://f-backend-vdi1.onrender.com/api";
 const font = "'Jameel Noori Nastaleeq', serif";
 const LIMIT = 10;
 
-const formatDate = (d) =>
-  new Date(d).toLocaleDateString("en-IN", {
+const formatDate = (date) => {
+  if (!date) return "";
+
+  const parsedDate = new Date(date);
+
+  if (Number.isNaN(parsedDate.getTime())) return "";
+
+  return parsedDate.toLocaleDateString("en-IN", {
     day: "2-digit",
     month: "short",
     year: "numeric",
   });
+};
 
 export default function AskedQuestionsPage() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(false);
   const [error, setError] = useState("");
 
-  const load = async (skip = 0) => {
+  const load = useCallback(async (skip = 0) => {
     setLoading(true);
     setError("");
+
     try {
       const res = await fetch(
         `${backend}/ask-question/public?skip=${skip}&limit=${LIMIT}`,
         { cache: "no-store" }
       );
-      const data = await res.json();
 
-      if (data.success) {
-        const rows = data.data || [];
-        setItems((prev) => (skip === 0 ? rows : [...prev, ...rows]));
-        setHasMore(rows.length === LIMIT);
-      } else {
-        setError("سوالات لوڈ نہیں ہوئے");
+      if (!res.ok) {
+        throw new Error("سوالات لوڈ نہیں ہو سکے");
       }
-    } catch {
-      setError("سرور سے رابطہ نہیں ہو سکا");
+
+      const result = await res.json();
+
+      if (!result.success || !Array.isArray(result.data)) {
+        throw new Error("سوالات لوڈ نہیں ہو سکے");
+      }
+
+      const rows = result.data;
+
+      setItems((prev) => (skip === 0 ? rows : [...prev, ...rows]));
+      setHasMore(rows.length === LIMIT);
+    } catch (err) {
+      setError(err.message || "سرور سے رابطہ نہیں ہو سکا");
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     load(0);
-  }, []);
+  }, [load]);
 
   return (
-    <div
-      className="max-w-3xl mx-auto p-4"
+    <main
+      className="mx-auto w-full max-w-3xl px-4 py-6 sm:py-8"
       style={{ fontFamily: font, direction: "rtl" }}
     >
       <Link
         href="/"
-        className="inline-flex items-center gap-1 text-[#63B56A] hover:underline mb-3"
+        className="mb-4 inline-flex items-center gap-2 text-[#3f8f46] hover:underline"
         style={{ fontSize: "18px" }}
       >
         <ArrowRight size={18} />
         ہوم
       </Link>
 
-      <h1 className="text-[#333333] mb-1" style={{ fontSize: "32px", lineHeight: "50px" }}>
-        لوگوں کے بھیجے ہوئے سوالات
-      </h1>
-      <p className="text-gray-500 mb-5" style={{ fontSize: "17px", lineHeight: "30px" }}>
-        یہاں وہ سوالات ہیں جو قارئین نے بھیجے ہیں۔ جواب شائع ہونے پر نشان لگ جاتا ہے۔
-      </p>
+      <header className="mb-6 border-b border-[#C6E2C8] pb-4">
+        <div className="mb-2 flex items-center gap-2 text-[#3f8f46]">
+          <MessageCircle size={23} />
+          <span style={{ fontSize: "17px" }}>قارئین کے سوالات</span>
+        </div>
 
-      {error && <p className="text-center text-red-600">{error}</p>}
+        <h1
+          className="mb-2 text-[#333333]"
+          style={{ fontSize: "32px", lineHeight: "1.8" }}
+        >
+          لوگوں کے بھیجے ہوئے سوالات
+        </h1>
+
+        <p
+          className="text-gray-500"
+          style={{ fontSize: "17px", lineHeight: "2" }}
+        >
+          یہاں وہ سوالات ہیں جنہیں قارئین کی اجازت اور انتظامی منظوری کے بعد
+          شائع کیا گیا ہے۔ جواب دیے جانے کی کیفیت بھی یہاں دیکھی جا سکتی ہے۔
+        </p>
+      </header>
+
+      {error && (
+        <div
+          className="mb-5 border border-red-200 bg-red-50 p-4 text-center text-red-700"
+          style={{ fontSize: "18px" }}
+          role="alert"
+        >
+          <p>{error}</p>
+          <button
+            type="button"
+            onClick={() => load(0)}
+            className="mt-3 inline-flex items-center gap-2 border border-red-300 px-4 py-2 hover:bg-red-100"
+          >
+            <RefreshCw size={16} />
+            دوبارہ کوشش کریں
+          </button>
+        </div>
+      )}
+
+      {loading && items.length === 0 && (
+        <div
+          className="border border-[#C6E2C8] bg-white py-10 text-center text-gray-500"
+          style={{ fontSize: "19px" }}
+          aria-live="polite"
+        >
+          سوالات لوڈ ہو رہے ہیں...
+        </div>
+      )}
 
       {!loading && !error && items.length === 0 && (
         <div
-          className="text-center bg-white border border-[#C6E2C8] py-8 text-[#333333]"
-          style={{ fontSize: "20px" }}
+          className="border border-[#C6E2C8] bg-white px-4 py-10 text-center text-[#333333]"
         >
-          ابھی کوئی سوال موجود نہیں۔
+          <MessageCircle
+            size={34}
+            className="mx-auto mb-3 text-[#75C178]"
+          />
+          <h2 style={{ fontSize: "23px", lineHeight: "1.8" }}>
+            ابھی کوئی سوال موجود نہیں۔
+          </h2>
+          <p
+            className="mt-1 text-gray-500"
+            style={{ fontSize: "17px", lineHeight: "1.9" }}
+          >
+            نئے شائع شدہ سوالات یہاں دکھائی دیں گے۔
+          </p>
+          <button
+            type="button"
+            onClick={() => load(0)}
+            className="mt-4 inline-flex items-center gap-2 bg-[#75C178] px-5 py-2 text-white transition hover:bg-[#3f8f46]"
+            style={{ fontSize: "18px" }}
+          >
+            <RefreshCw size={16} />
+            دوبارہ دیکھیں
+          </button>
         </div>
       )}
 
       <div className="space-y-4">
         {items.map((q) => (
-          <div
+          <article
             key={q._id}
-            className="relative bg-white border border-[#C6E2C8] shadow p-4"
+            className="relative overflow-hidden border border-[#C6E2C8] bg-white p-4 shadow-sm sm:p-5"
           >
             <div
               className={`absolute right-0 top-0 bottom-0 w-1 ${
-                q.status === "answered" ? "bg-[#75C178]" : "bg-[#D4AF37]"
+                q.status === "answered"
+                  ? "bg-[#75C178]"
+                  : "bg-[#D4AF37]"
               }`}
             />
 
-            <div className="flex items-center justify-between pr-2 mb-2">
-              <span className="text-[#3f8f46]" style={{ fontSize: "18px" }}>
-                {q.name}
+            <div className="mb-3 flex items-center justify-between gap-3 pr-2">
+              <span
+                className="text-[#3f8f46]"
+                style={{ fontSize: "18px" }}
+              >
+                {q.name || "قارئ"}
               </span>
-              <span className="text-xs text-gray-400" style={{ direction: "ltr" }}>
+
+              <time
+                dateTime={q.createdAt || undefined}
+                className="shrink-0 text-xs text-gray-400"
+                style={{ direction: "ltr" }}
+              >
                 {formatDate(q.createdAt)}
-              </span>
+              </time>
             </div>
 
             <p
-              className="text-[#333333] pr-2 whitespace-pre-wrap"
+              className="whitespace-pre-wrap break-words pr-2 text-[#333333]"
               style={{ fontSize: "21px", lineHeight: "2.1" }}
             >
               {q.question}
             </p>
 
-            <div className="pr-2 mt-2">
+            <div className="mt-4 pr-2">
               {q.status === "answered" ? (
                 <span
-                  className="px-2 py-1 bg-[#EAF5EA] text-[#3f8f46]"
+                  className="inline-block bg-[#EAF5EA] px-3 py-1 text-[#3f8f46]"
                   style={{ fontSize: "15px" }}
                 >
                   ✓ جواب دیا جا چکا ہے
                 </span>
               ) : (
                 <span
-                  className="px-2 py-1 bg-[#FFF6D6] text-[#8a6d00]"
+                  className="inline-block bg-[#FFF6D6] px-3 py-1 text-[#8a6d00]"
                   style={{ fontSize: "15px" }}
                 >
                   جواب کا انتظار ہے
                 </span>
               )}
             </div>
-          </div>
+          </article>
         ))}
       </div>
 
-      {loading && <p className="text-center text-gray-500 py-4">لوڈ ہو رہا ہے...</p>}
+      {loading && items.length > 0 && (
+        <p
+          className="py-4 text-center text-gray-500"
+          style={{ fontSize: "17px" }}
+          aria-live="polite"
+        >
+          مزید سوالات لوڈ ہو رہے ہیں...
+        </p>
+      )}
 
-      {hasMore && !loading && items.length > 0 && (
-        <div className="text-center mt-6">
+      {hasMore && !loading && !error && items.length > 0 && (
+        <div className="mt-6 text-center">
           <button
             type="button"
             onClick={() => load(items.length)}
-            className="px-7 py-2 bg-[#75C178] text-white hover:bg-[#63B56A] transition"
+            className="bg-[#75C178] px-7 py-2 text-white transition hover:bg-[#3f8f46]"
             style={{ fontSize: "20px" }}
           >
             مزید سوالات دیکھیں
           </button>
         </div>
       )}
-    </div>
+    </main>
   );
 }
