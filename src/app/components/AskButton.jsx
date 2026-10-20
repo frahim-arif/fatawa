@@ -9,7 +9,7 @@ export default function AskButton({ onClick }) {
   return (
    <div
   className="w-11/12 md:w-full mx-auto relative z-10"
-  style={{ marginTop: "-24px", marginBottom: "-24px" }}
+  style={{ marginTop: "-20px", marginBottom: "-24px" }}
 >
       <style>{`
         .ask-btn,

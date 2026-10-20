@@ -1142,7 +1142,7 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
       </div>
 
 
-      <AskButton onClick={() => setShowAsk(true)} />
+      
 <AskedQuestionsButton />
 
       {/* =================================================
