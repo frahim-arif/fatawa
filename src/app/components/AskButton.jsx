@@ -131,7 +131,7 @@ export default function AskButton({ onClick }) {
               اپنا سوال بھیجیں
             </div>
             <div style={{ fontSize: "16px", lineHeight: "28px", color: "#EAF5EA" }}>
-              علمائے کرام سے اپنے مسئلے کا حل پوچھیں
+             علمائے کرام سے  
             </div>
           </div>
 

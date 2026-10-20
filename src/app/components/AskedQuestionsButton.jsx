@@ -58,9 +58,7 @@ export default function AskedQuestionsButton() {
         </span>
 
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: "24px", lineHeight: "40px" }}>
-            لوگوں کے بھیجے ہوئے سوالات
-          </div>
+          
           <div style={{ fontSize: "16px", lineHeight: "28px", color: "#6b7280" }}>
             دوسروں کے سوالات دیکھیں اور جوابات پڑھیں
           </div>
