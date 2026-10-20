@@ -104,6 +104,15 @@ export default function AdminAskQuestionsPage() {
     { key: "all", label: "سب" },
   ];
 
+    const setPublic = async (id, isPublic) => {
+    await fetch(`${backend}/ask-question/${id}/public`, {
+      method: "PATCH",
+      headers: authHeaders(),
+      body: JSON.stringify({ isPublic }),
+    });
+    load();
+  };
+
   return (
     <div className="max-w-3xl mx-auto p-4" style={{ fontFamily: font }}>
       <h1 className="text-3xl text-[#333333] mb-4 text-right">
@@ -189,6 +198,17 @@ export default function AdminAskQuestionsPage() {
                   className="px-3 py-1 border border-[#C6E2C8] hover:bg-[#EAF5EA] transition"
                 >
                   کاپی
+                </button>
+                                <button
+                  type="button"
+                  onClick={() => setPublic(item._id, !item.isPublic)}
+                  className={`px-3 py-1 border transition ${
+                    item.isPublic
+                      ? "bg-[#EAF5EA] border-[#75C178] text-[#3f8f46]"
+                      : "border-[#C6E2C8] hover:bg-[#EAF5EA]"
+                  }`}
+                >
+                  {item.isPublic ? "✓ ویب سائٹ پر ہے (چھپائیں)" : "ویب سائٹ پر دکھائیں"}
                 </button>
 
                 {contact && (

@@ -13,6 +13,7 @@ import IslamicTools from "./components/IslamicTools";
 import IslamicSlider from "./components/IslamicSlider";
 import AskQuestionForm from "./components/AskQuestionForm";
 import AskButton from "./components/AskButton";
+import AskedQuestionsButton from "./components/AskedQuestionsButton";
 
 const PLACEHOLDER_PHRASES = [
   "یہاں تلاش کریں...",
@@ -1037,6 +1038,9 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
         )}
       </section>
 
+
+
+
       {/* =================================================
           NEXT PRAYER
       ================================================= */}
@@ -1136,6 +1140,10 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
           </div>
         </motion.div>
       </div>
+
+
+      <AskButton onClick={() => setShowAsk(true)} />
+<AskedQuestionsButton />
 
       {/* =================================================
           ISLAMIC QUICK LINKS
