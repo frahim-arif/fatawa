@@ -1419,7 +1419,7 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
             ISLAMIC TOOLS
         ================================================= */}
 
-        <div className="mt-8">
+                <div id="islamic-tools" className="mt-8" style={{ scrollMarginTop: "80px" }}>
           <IslamicTools />
         </div>
       </div>
