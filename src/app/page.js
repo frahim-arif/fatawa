@@ -782,6 +782,7 @@ const animatedPlaceholder = useTypewriterPlaceholder(
       ================================================= */}
 
       <div
+       id="home-search"
         className="
           relative
           w-11/12

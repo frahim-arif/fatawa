@@ -1,4 +1,3 @@
-
 import { Geist, Geist_Mono } from "next/font/google";
 import { Noto_Nastaliq_Urdu, Amiri } from "next/font/google";
 import Script from "next/script";
@@ -6,6 +5,7 @@ import Script from "next/script";
 import "./globals.css";
 import HeaderWrapper from "./components/HeaderWrapper";
 import Footer from "./components/Footer";
+import MobileBottomNav from "./components/MobileBottomNav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -135,20 +135,22 @@ export default function RootLayout({ children }) {
     <html lang="ur" dir="rtl" suppressHydrationWarning>
       <head>
         <meta
-  name="google-adsense-account"
-  content="ca-pub-1540204802615671"
-/>
-        <Script
-          id="google-adsense"
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1540204802615671"
-          crossOrigin="anonymous"
+          name="google-adsense-account"
+          content="ca-pub-1540204802615671"
         />
       </head>
 
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${nastaleeq.variable} ${amiri.variable} bg-gray-50 min-h-screen`}
       >
+        <Script
+          id="google-adsense"
+          async
+          strategy="afterInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1540204802615671"
+          crossOrigin="anonymous"
+        />
+
         <HeaderWrapper />
 
         <main className="max-w-5xl mx-auto py-6 px-4">
@@ -156,8 +158,9 @@ export default function RootLayout({ children }) {
         </main>
 
         <Footer />
+
+        <MobileBottomNav />
       </body>
     </html>
   );
 }
-
