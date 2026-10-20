@@ -942,7 +942,6 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
     </div>
   </motion.button>
 </div>
-
       {/* =================================================
           CATEGORIES
       ================================================= */}
