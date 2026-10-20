@@ -12,7 +12,7 @@ export default function AdminLoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/admin/auth/login", { username, password });
+      const res = await axios.post("https://f-backend-vdi1.onrender.com/api/admin/auth/login", { username, password });
       if (res.data.success) {
         localStorage.setItem("adminToken", res.data.token);
         localStorage.setItem("adminUser", JSON.stringify(res.data.admin));
