@@ -11,6 +11,7 @@ import HomeLoader from "./components/HomeLoader";
 import LatestBooksSlider from "./components/LatestBooksSlider";
 import IslamicTools from "./components/IslamicTools";
 import IslamicSlider from "./components/IslamicSlider";
+import AskQuestionForm from "./components/AskQuestionForm";
 
 const PLACEHOLDER_PHRASES = [
   "یہاں تلاش کریں...",
@@ -87,6 +88,7 @@ export default function HomePage() {
   const backend = "https://f-backend-vdi1.onrender.com/api";
 
   const [isFocused, setIsFocused] = useState(false);
+  const [showAsk, setShowAsk] = useState(false);
 
 
 
@@ -849,6 +851,36 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
           </button>
         </div>
       </div>
+
+      {/* =================================================
+    ASK QUESTION BUTTON
+================================================= */}
+
+<div className="w-11/12 md:w-full mx-auto mt-4 relative z-10">
+  <button
+    type="button"
+    onClick={() => setShowAsk(true)}
+    className="
+      w-full
+      py-3
+      bg-[#75C178]
+      text-white
+      border
+      border-[#75C178]
+      hover:bg-[#63B56A]
+      hover:shadow-[0_0_18px_rgba(117,193,120,0.22)]
+      transition-all
+      duration-300
+    "
+    style={{
+      fontFamily: "'Jameel Noori Nastaleeq', serif",
+      fontSize: "22px",
+      lineHeight: "34px",
+    }}
+  >
+    ✍️ اپنا سوال بھیجیں
+  </button>
+</div>
 
       {/* =================================================
           CATEGORIES
