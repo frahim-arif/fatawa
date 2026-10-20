@@ -1437,6 +1437,13 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
         <div className="mt-8">
           <IslamicTools />
         </div>
+        <div>
+           <AskQuestionForm
+        open={showAsk}
+        onClose={() => setShowAsk(false)}
+        backend={backend}
+      />
+        </div>
       </div>
     </div>
   );
