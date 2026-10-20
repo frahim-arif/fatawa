@@ -7,7 +7,7 @@ const font = "'Jameel Noori Nastaleeq', serif";
 
 // ⚠️ Yahan wo key likhein jisme aapka admin login token save hota hai
 const getToken = () =>
-  typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  typeof window !== "undefined" ? localStorage.getItem("adminToken") : null;
 
 const formatDate = (d) =>
   new Date(d).toLocaleString("en-IN", {
