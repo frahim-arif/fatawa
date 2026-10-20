@@ -3,16 +3,37 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Home, MessageSquare, BookOpen, Search } from "lucide-react";
+import { Home, Wrench, BookOpen, Search } from "lucide-react";
 
 const font = "'Jameel Noori Nastaleeq', serif";
 
 const items = [
   { key: "home", label: "ہوم", href: "/", icon: Home },
-  { key: "questions", label: "سوالات", href: "/asked-questions", icon: MessageSquare },
+  { key: "tools", label: "ٹولز", href: null, targetId: "islamic-tools", icon: Wrench },
   { key: "books", label: "کتب", href: "/books", icon: BookOpen },
-  { key: "search", label: "تلاش", href: null, icon: Search },
+  { key: "search", label: "تلاش", href: null, targetId: "home-search", icon: Search },
 ];
+
+// element milne tak intezar karta hai (homepage loader ki wajah se)
+function scrollToWhenReady(id, { focusInput = false } = {}) {
+  let tries = 0;
+
+  const timer = setInterval(() => {
+    const el = document.getElementById(id);
+    tries += 1;
+
+    if (el) {
+      clearInterval(timer);
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+
+      if (focusInput) {
+        setTimeout(() => el.querySelector("input")?.focus(), 400);
+      }
+    } else if (tries > 30) {
+      clearInterval(timer);
+    }
+  }, 150);
+}
 
 export default function MobileBottomNav() {
   const pathname = usePathname();
@@ -27,13 +48,14 @@ export default function MobileBottomNav() {
     return pathname?.startsWith(item.href);
   };
 
-  const handleSearch = () => {
+  const handleScrollTab = (item) => {
+    const opts = { focusInput: item.key === "search" };
+
     if (pathname === "/") {
-      const box = document.getElementById("home-search");
-      box?.scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(() => box?.querySelector("input")?.focus(), 350);
+      scrollToWhenReady(item.targetId, opts);
     } else {
       router.push("/");
+      scrollToWhenReady(item.targetId, opts);
     }
   };
 
@@ -91,7 +113,7 @@ export default function MobileBottomNav() {
                 ) : (
                   <button
                     type="button"
-                    onClick={handleSearch}
+                    onClick={() => handleScrollTab(item)}
                     className="block w-full h-full"
                   >
                     {inner}
