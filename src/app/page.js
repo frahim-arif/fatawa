@@ -1414,21 +1414,24 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
           <LatestBooksSlider />
         </div>
 
-        {/* =================================================
+                {/* =================================================
             ISLAMIC TOOLS
         ================================================= */}
 
         <div className="mt-8">
           <IslamicTools />
         </div>
-        <div>
-           <AskQuestionForm
+      </div>
+
+      {/* =================================================
+          ASK QUESTION POPUP
+      ================================================= */}
+
+      <AskQuestionForm
         open={showAsk}
         onClose={() => setShowAsk(false)}
         backend={backend}
       />
-        </div>
-      </div>
     </div>
   );
 }
