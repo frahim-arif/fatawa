@@ -12,6 +12,7 @@ import LatestBooksSlider from "./components/LatestBooksSlider";
 import IslamicTools from "./components/IslamicTools";
 import IslamicSlider from "./components/IslamicSlider";
 import AskQuestionForm from "./components/AskQuestionForm";
+import AskButton from "./components/AskButton";
 
 const PLACEHOLDER_PHRASES = [
   "یہاں تلاش کریں...",
@@ -852,110 +853,11 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
         </div>
       </div>
 
-
-{/* =================================================
-    PREMIUM FATAWA — ASK QUESTION BUTTON
+     {/* =================================================
+    ASK QUESTION BUTTON
 ================================================= */}
 
-<div className="w-11/12 md:w-full mx-auto mt-5 mb-3 relative z-10">
-  <button
-    type="button"
-    onClick={() => setShowAsk(true)}
-    
-className="
-  group relative w-full overflow-hidden
-  flex items-center justify-center gap-3
-  py-3.5 px-4
-  bg-gradient-to-r from-[#4B1522] via-[#651E2D] to-[#842D40]
-  text-[#FAF6ED]
-  border border-[#D5B779]
-  shadow-[0_5px_18px_rgba(101,30,45,0.16)]
-  hover:shadow-[0_0_18px_rgba(101,30,45,0.25)]
-  hover:border-[#E8D29B]
-  active:scale-[0.99]
-  transition-all duration-300 ease-out
-  cursor-pointer
-"
-
-    style={{
-      fontFamily: "'Jameel Noori Nastaleeq', serif",
-      fontSize: "23px",
-      lineHeight: "1.9",
-    }}
-  >
-    {/* Subtle golden shine */}
-    <span
-      aria-hidden="true"
-      className="
-        pointer-events-none absolute inset-0
-        -translate-x-full
-        bg-gradient-to-r from-transparent
-        via-white/[0.08] to-transparent
-        group-hover:translate-x-full
-        transition-transform duration-700
-      "
-    />
-
-    {/* Golden pen icon */}
-    <span
-      className="
-        relative flex h-9 w-9 shrink-0 items-center
-        justify-center border border-[#c8ae6a]/50
-        bg-[#c8ae6a]/10 text-[#e2cc8d]
-        transition-colors duration-300
-        group-hover:bg-[#c8ae6a]/20
-      "
-      aria-hidden="true"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="21"
-        height="21"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="m15 5 4 4" />
-        <path d="M4 20l4.5-1 11-11a2.83 2.83 0 0 0-4-4l-11 11L4 20Z" />
-        <path d="M13 7l4 4" />
-      </svg>
-    </span>
-
-    <span className="relative">
-      اپنا سوال بھیجیں
-    </span>
-
-    {/* Decorative arrow */}
-    <svg
-      aria-hidden="true"
-      className="relative h-4 w-4 text-[#c8ae6a] transition-transform duration-300 group-hover:-translate-x-1"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M19 12H5" />
-      <path d="m12 19-7-7 7-7" />
-    </svg>
-  </button>
-
-  <p
-    className="mt-2 text-center text-xs text-[#64746c]"
-    style={{
-      fontFamily: "'Jameel Noori Nastaleeq', serif",
-      lineHeight: "1.9",
-    }}
-  >
-    مستند دینی رہنمائی کے لیے اپنا سوال ارسال کریں
-  </p>
-</div>
-
+     <AskButton onClick={() => setShowAsk(true)} />
       {/* =================================================
           CATEGORIES
       ================================================= */}
