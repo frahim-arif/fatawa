@@ -68,7 +68,7 @@ export const metadata = {
   publisher: "Maslak-e-Deoband",
 
   alternates: {
-    canonical: siteUrl,
+    canonical: "./",
   },
 
   robots: {
@@ -87,7 +87,6 @@ export const metadata = {
   openGraph: {
     type: "website",
     locale: "ur_PK",
-    url: siteUrl,
     siteName: "Maslak-e-Deoband",
 
     title: "Maslak-e-Deoband | اسلامی سوال و جواب اور فتاویٰ",
