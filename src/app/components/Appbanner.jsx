@@ -30,7 +30,6 @@ export default function AppBanner() {
   };
 
   if (!show) return null;
-
   return (
     <>
       {/* Spacer: taaki banner ke neeche content na chhupe */}
