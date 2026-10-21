@@ -16,6 +16,7 @@ import AskButton from "./components/AskButton";
 import AskedQuestionsButton from "./components/AskedQuestionsButton";
 import AppBanner from "./components/AppBanner";
 
+
 const PLACEHOLDER_PHRASES = [
   "یہاں تلاش کریں...",
   "نماز کے مسائل تلاش کریں...",
