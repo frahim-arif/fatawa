@@ -584,6 +584,68 @@ const animatedPlaceholder = useTypewriterPlaceholder(
         }}
       />
 
+      <!-- ===== Maslakedeoband.in App Banner ===== -->
+
+
+<style>
+  #app-banner{
+    display:none; position:fixed; top:0; left:0; right:0; z-index:99999;
+    background:#0f172a; color:#fff; padding:10px 12px;
+    align-items:center; gap:12px; font-family:Arial,Helvetica,sans-serif;
+    border-bottom:1px solid #334155; box-sizing:border-box;
+  }
+  #app-banner .ab-close{
+    background:none; border:0; color:#94a3b8; font-size:24px;
+    line-height:1; cursor:pointer; padding:4px 6px;
+  }
+  #app-banner .ab-icon{
+    width:52px; height:52px; border-radius:12px; background:#fff; flex-shrink:0;
+  }
+  #app-banner .ab-text{flex:1; min-width:0;}
+  #app-banner .ab-title{
+    font-size:16px; font-weight:700; white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis;
+  }
+  #app-banner .ab-sub{font-size:12px; color:#94a3b8; margin-top:3px;}
+  #app-banner .ab-stars{color:#facc15; letter-spacing:1px; margin-right:4px;}
+  #app-banner .ab-btn{
+    background:#f97316; color:#fff; text-decoration:none; font-weight:700;
+    font-size:13px; padding:11px 14px; border-radius:10px; white-space:nowrap;
+  }
+</style>
+
+<div id="app-banner">
+  <button class="ab-close" id="ab-close" aria-label="Close">&times;</button>
+  <img class="ab-icon" src="/app-logo.png" alt="Maslakedeoband.in">
+  <div class="ab-text">
+    <div class="ab-title">Maslakedeoband.in</div>
+    <div class="ab-sub"><span class="ab-stars">★★★★★</span>Free on Play Store</div>
+  </div>
+  <a class="ab-btn" id="ab-open"
+     href="https://play.google.com/store/apps/details?id=YOUR.PACKAGE.NAME">OPEN IN APP</a>
+</div>
+
+<script>
+(function () {
+  var banner = document.getElementById('app-banner');
+  var isAndroid = /Android/i.test(navigator.userAgent);
+  var KEY = 'appBannerClosed';
+
+  // Sirf Android mobile par dikhega
+  if (!isAndroid) return;
+  try { if (localStorage.getItem(KEY)) return; } catch (e) {}
+
+  banner.style.display = 'flex';
+  document.body.style.paddingTop = banner.offsetHeight + 'px';
+
+  document.getElementById('ab-close').onclick = function () {
+    banner.style.display = 'none';
+    document.body.style.paddingTop = '0';
+    try { localStorage.setItem(KEY, '1'); } catch (e) {}
+  };
+})();
+</script>
+
       {/* =================================================
           PRAYER TIMES TOP BAR
       ================================================= */}
