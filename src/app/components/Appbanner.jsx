@@ -62,7 +62,6 @@ export default function AppBanner() {
             Free on Play Store
           </div>
         </div>
-
         <a
           href={PLAY_STORE_URL}
           className="bg-orange-500 text-white font-bold text-[13px] px-3.5 py-2.5 rounded-[10px] whitespace-nowrap"
