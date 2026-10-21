@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ShareButtons from "../../components/ShareButtons";
+import ViewCounter from "../../components/ViewCounter";
 export const revalidate = 3600;
 export const dynamicParams = true;
 
@@ -157,6 +158,8 @@ export async function generateMetadata({ params }) {
     `https://www.maslakedeoband.in/questions/${cleanSlug}`;
 
   return {
+
+      
     title,
     description,
 
@@ -228,6 +231,8 @@ export default async function Page({ params }) {
 
   return (
     <>
+
+    <ViewCounter slug={slug} />
       {/* JSON LD */}
       <script
   type="application/ld+json"

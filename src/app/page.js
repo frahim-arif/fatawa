@@ -93,7 +93,7 @@ export default function HomePage() {
   const [showAsk, setShowAsk] = useState(false);
 
 
-
+const [popularQuestions, setPopularQuestions] = useState([]);
 
 const animatedPlaceholder = useTypewriterPlaceholder(
   PLACEHOLDER_PHRASES,
@@ -337,6 +337,34 @@ const animatedPlaceholder = useTypewriterPlaceholder(
     fetchLatestQuestions();
   }, []);
 
+    /* =====================================================
+     FETCH POPULAR QUESTIONS
+  ===================================================== */
+
+  useEffect(() => {
+    const fetchPopular = async () => {
+      try {
+        const res = await fetch(
+          `${backend}/admin/questions/popular?limit=8`,
+          { cache: "no-store" }
+        );
+
+        if (!res.ok) {
+          throw new Error(`Popular API error: ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        if (data.success) {
+          setPopularQuestions(data.data || []);
+        }
+      } catch (err) {
+        console.error("❌ Popular questions error:", err);
+      }
+    };
+
+    fetchPopular();
+  }, []);
   /* =====================================================
      FETCH QUESTIONS BY CATEGORY
   ===================================================== */
@@ -1245,7 +1273,7 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
             type="button"
             onClick={() => setActiveTab("questions")}
             className={`
-              w-1/2
+              w-1/3
               py-3
               transition-all
               duration-300
@@ -1264,7 +1292,7 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
                 fontFamily:
                   "'Jameel Noori Nastaleeq', serif",
                 direction: "rtl",
-                fontSize: "22px",
+                fontSize: "18px",
                 lineHeight: "34px",
                 fontWeight: "normal",
                 display: "block",
@@ -1278,7 +1306,7 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
             type="button"
             onClick={() => setActiveTab("majameen")}
             className={`
-              w-1/2
+              w-1/3
               py-3
               transition-all
               duration-300
@@ -1295,13 +1323,46 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
                 fontFamily:
                   "'Jameel Noori Nastaleeq', serif",
                 direction: "rtl",
-                fontSize: "22px",
+                fontSize: "18px",
                 lineHeight: "34px",
                 fontWeight: "normal",
                 display: "block",
               }}
             >
               منتخب مضامین
+            </span>
+          </button>
+
+                    <button
+            type="button"
+            onClick={() => setActiveTab("popular")}
+            className={`
+              w-1/3
+              py-3
+              transition-all
+              duration-300
+              border-r
+              border-[#C6E2C8]
+
+              ${
+                activeTab === "popular"
+                  ? "bg-[#75C178] text-white"
+                  : "bg-[#EAF5EA] text-[#333333] hover:bg-[#F5FAF5]"
+              }
+            `}
+          >
+            <span
+              style={{
+                fontFamily:
+                  "'Jameel Noori Nastaleeq', serif",
+                direction: "rtl",
+                fontSize: "18px",
+                lineHeight: "34px",
+                fontWeight: "normal",
+                display: "block",
+              }}
+            >
+              زیادہ پڑھے گئے
             </span>
           </button>
         </div>
@@ -1401,6 +1462,45 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
               ) : (
                 <p className="text-gray-500 text-center">
                   کوئی مضمون موجود نہیں۔
+                </p>
+              )}
+            </div>
+          )}
+                    {/* POPULAR */}
+
+          {activeTab === "popular" && (
+            <div className="space-y-3">
+              {popularQuestions.length > 0 ? (
+                popularQuestions.map((item) => (
+                  <Link
+                    key={item._id}
+                    href={`/questions/${item.slug}`}
+                    className="
+                      group
+                      flex
+                      items-start
+                      gap-2
+                      text-[#333333]
+                      hover:text-[#75C178]
+                      transition-colors
+                    "
+                    style={{
+                      fontSize: "18px",
+                      lineHeight: "30px",
+                    }}
+                  >
+                    <span className="text-[#75C178] shrink-0">
+                      ➜
+                    </span>
+
+                    <span className="group-hover:underline">
+                      {item.question}
+                    </span>
+                  </Link>
+                ))
+              ) : (
+                <p className="text-gray-500 text-center">
+                  ابھی کوئی سوال موجود نہیں۔
                 </p>
               )}
             </div>
