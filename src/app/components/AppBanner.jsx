@@ -17,7 +17,9 @@ export default function AppBanner() {
     }
 
     try {
-      if (sessionStorage.getItem("fzo_app_banner_dismissed") === "true") {
+      if (
+        sessionStorage.getItem("fzo_app_banner_dismissed") === "true"
+      ) {
         setIsDismissed(true);
         setIsVisible(false);
         return;
@@ -68,13 +70,13 @@ export default function AppBanner() {
   if (!isVisible || isDismissed) return null;
 
   return (
-    <div className="w-full bg-[#0f1426] text-white px-3 py-2 flex items-center justify-between text-xs border-b border-gray-800 shadow-md">
+    <div className="fixed top-0 left-0 right-0 w-full bg-[#0f1426] text-white px-3 py-2 flex items-center justify-between text-xs z-[99998] border-b border-gray-800 shadow-md">
       <div className="flex items-center gap-2.5 min-w-0">
         <button
           type="button"
           onClick={handleDismiss}
           aria-label="Dismiss banner"
-          className="text-gray-400 hover:text-white p-0.5 rounded-full"
+          className="text-gray-400 hover:text-white p-0.5 rounded-full shrink-0"
         >
           <X size={15} />
         </button>

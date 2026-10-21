@@ -496,13 +496,10 @@ const animatedPlaceholder = useTypewriterPlaceholder(
      HOME PAGE
   ===================================================== */
 
-  return (
-    <div
-  className="fixed top-0 left-0 right-0 flex items-center gap-3 px-3 py-2.5 bg-[#0f172a] text-white border-b border-slate-700"
-  style={{ zIndex: 99999, marginTop: 0, fontFamily: "Arial, Helvetica, sans-serif" }}
->
-
-       <AppBanner />
+  
+   return (
+  <div className="relative min-h-screen overflow-x-hidden bg-white text-[#333333]">
+    <AppBanner />
       <Head>
         <style>{`
           @font-face {
