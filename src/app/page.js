@@ -14,6 +14,7 @@ import IslamicSlider from "./components/IslamicSlider";
 import AskQuestionForm from "./components/AskQuestionForm";
 import AskButton from "./components/AskButton";
 import AskedQuestionsButton from "./components/AskedQuestionsButton";
+import AppBanner from "./components/AppBanner";
 
 const PLACEHOLDER_PHRASES = [
   "یہاں تلاش کریں...",
@@ -516,6 +517,8 @@ const animatedPlaceholder = useTypewriterPlaceholder(
           "url('/images/ramadan_15_03_2022_1.jpg')",
       }}
     >
+
+       <AppBanner />
       <Head>
         <style>{`
           @font-face {
@@ -587,7 +590,7 @@ const animatedPlaceholder = useTypewriterPlaceholder(
      
 
 
-<style>
+{/* <style>
   #app-banner{
     display:none; position:fixed; top:0; left:0; right:0; z-index:99999;
     background:#0f172a; color:#fff; padding:10px 12px;
@@ -644,7 +647,7 @@ const animatedPlaceholder = useTypewriterPlaceholder(
     try { localStorage.setItem(KEY, '1'); } catch (e) {}
   };
 })();
-</script>
+</script> */}
 
       {/* =================================================
           PRAYER TIMES TOP BAR
