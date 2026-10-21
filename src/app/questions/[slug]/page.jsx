@@ -16,7 +16,7 @@ async function getQuestion(slug) {
     const res = await fetch(
       `${API}/slug/${slug}`,
       {
-        cache: "no-store",
+        next: { revalidate: 600 },
       }
     );
 
@@ -150,7 +150,7 @@ export async function generateMetadata({ params }) {
 
   const description =
     question.metaDescription ||
-    question.answer?.slice(0, 150) ||
+      question.answer?.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, 155) ||
     "اسلامی سوال و جواب";
 
   const url =
@@ -216,14 +216,8 @@ export default async function Page({ params }) {
   // =======================
   // NOT FOUND
   // =======================
-  if (!question) {
-    return (
-      <div className="text-center py-20">
-        <h1 className="text-2xl font-bold">
-          ❌ سوال نہیں ملا
-        </h1>
-      </div>
-    );
+    if (!question) {
+    notFound();
   }
 
   const hawalas = [
