@@ -497,26 +497,9 @@ const animatedPlaceholder = useTypewriterPlaceholder(
 
   return (
     <div
-      className="
-        relative
-        w-full
-        min-h-screen
-        overflow-hidden
-        -mt-6
-        space-y-10
-        px-0
-        bg-repeat
-        bg-contain
-        bg-top
-        md:bg-cover
-        md:bg-center
-        md:bg-fixed
-      "
-      style={{
-        backgroundImage:
-          "url('/images/ramadan_15_03_2022_1.jpg')",
-      }}
-    >
+  className="fixed top-0 left-0 right-0 flex items-center gap-3 px-3 py-2.5 bg-[#0f172a] text-white border-b border-slate-700"
+  style={{ zIndex: 99999, marginTop: 0, fontFamily: "Arial, Helvetica, sans-serif" }}
+>
 
        <AppBanner />
       <Head>
