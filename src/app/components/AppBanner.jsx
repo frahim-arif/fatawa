@@ -70,8 +70,7 @@ export default function AppBanner() {
   if (!isVisible || isDismissed) return null;
 
   return (
-    <div className="fixed top-0 left-0 right-0 w-full bg-[#0f1426] text-white px-3 py-2 flex items-center justify-between text-xs z-[99998] border-b border-gray-800 shadow-md">
-      <div className="flex items-center gap-2.5 min-w-0">
+<div className="fixed bottom-0 left-0 right-0 w-full bg-[#0f1426] text-white px-3 py-2 flex items-center justify-between text-xs z-[99998] border-t border-gray-800 shadow-md">      <div className="flex items-center gap-2.5 min-w-0">
         <button
           type="button"
           onClick={handleDismiss}
