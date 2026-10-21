@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 
 // 👇 Apna asli package name yahan likhein
-const PACKAGE_NAME = "YOUR.PACKAGE.NAME";
+const PACKAGE_NAME = "com.maslakedeoband.app";
 const PLAY_STORE_URL = `https://play.google.com/store/apps/details?id=${PACKAGE_NAME}`;
 const STORAGE_KEY = "appBannerClosed";
 
