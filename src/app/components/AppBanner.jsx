@@ -79,7 +79,6 @@ export default function AppBanner() {
         >
           <X size={15} />
         </button>
-
         <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center p-1 shrink-0">
           <img
             src="/icon.png"
