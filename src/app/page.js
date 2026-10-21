@@ -497,9 +497,9 @@ const animatedPlaceholder = useTypewriterPlaceholder(
   ===================================================== */
 
   
-   return (
+ return (
   <div className="relative min-h-screen overflow-x-hidden bg-white text-[#333333]">
-    <AppBanner />
+   
       <Head>
         <style>{`
           @font-face {
@@ -1569,7 +1569,7 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
           <IslamicTools />
         </div>
       </div>
-
+ <AppBanner />
       {/* =================================================
           ASK QUESTION POPUP
       ================================================= */}
