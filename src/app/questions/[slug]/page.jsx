@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ShareButtons from "../../components/ShareButtons";
 export const revalidate = 3600;
 export const dynamicParams = true;
 
@@ -340,7 +341,12 @@ export default async function Page({ params }) {
             ))}
           </div>
         )}
-
+ 
+  {/* Share */}
+        <ShareButtons
+          title={question.question}
+          url={`https://www.maslakedeoband.in/questions/${slug}`}
+        />
         {/* Related */}
         {related.length > 0 && (
 
