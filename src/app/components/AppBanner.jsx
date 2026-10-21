@@ -1,73 +1,118 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import { X, Star, Smartphone } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
 
-// 👇 Apna asli package name yahan likhein
-const PACKAGE_NAME = "com.maslakedeoband.app";
-const PLAY_STORE_URL = `https://play.google.com/store/apps/details?id=${PACKAGE_NAME}`;
-const STORAGE_KEY = "appBannerClosed";
-
-export default function AppBanner() {
-  const [show, setShow] = useState(false);
+export const SmartAppBanner: React.FC = () => {
+  const pathname = usePathname();
+  const [isVisible, setIsVisible] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
-    // Sirf Android mobile par dikhao
-    const isAndroid = /Android/i.test(navigator.userAgent);
-    if (!isAndroid) return;
+    // Never show inside the native Capacitor APK app itself
+    if (typeof window === 'undefined' || Capacitor.isNativePlatform()) {
+      setIsVisible(false);
+      return;
+    }
 
+    // Check if dismissed in this session
     try {
-      if (localStorage.getItem(STORAGE_KEY)) return;
-    } catch (e) {}
+      const dismissed = sessionStorage.getItem('fzo_app_banner_dismissed');
+      if (dismissed === 'true') {
+        setIsVisible(false);
+        return;
+      }
+    } catch (_) {}
 
-    setShow(true);
-  }, []);
+    // Only show on mobile browser screen widths
+    const isMobileDevice = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+    setIsVisible(isMobileDevice);
+  }, [pathname]);
 
-  const handleClose = () => {
-    setShow(false);
+  const handleDismiss = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsVisible(false);
+    setIsDismissed(true);
     try {
-      localStorage.setItem(STORAGE_KEY, "1");
-    } catch (e) {}
+      sessionStorage.setItem('fzo_app_banner_dismissed', 'true');
+    } catch (_) {}
   };
 
-  if (!show) return null;
-  return (
-    <>
-      {/* Spacer: taaki banner ke neeche content na chhupe */}
-      <div style={{ height: 72 }} />
+  const handleOpenApp = () => {
+    const currentPath = window.location.pathname + window.location.search;
+    const pathWithSlash = currentPath.startsWith('/') ? currentPath : `/${currentPath}`;
+    const cleanPath = currentPath.startsWith('/') ? currentPath.slice(1) : currentPath;
 
-      <div
-        className="fixed top-0 left-0 right-0 flex items-center gap-3 px-3 py-2.5 bg-[#0f172a] text-white border-b border-slate-700"
-        style={{ zIndex: 99999, fontFamily: "Arial, Helvetica, sans-serif" }}
-      >
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    const playStoreUrl = `https://play.google.com/store/apps/details?id=com.maslakedeoband.app`;
+
+    if (isAndroid) {
+      // Android Intent: Uses verified https host + package name
+      // If App is installed -> Opens exact page in App
+      // If App is NOT installed -> Chrome automatically opens Google Play Store to download maslakedeoband
+      const intentUrl = `intent://maslakedeoband.in${pathWithSlash}#Intent;scheme=https;package=com.maslakedeoband.app;S.browser_fallback_url=${encodeURIComponent(playStoreUrl)};end`;
+
+      try {
+        window.location.href = intentUrl;
+      } catch (_) {
+        window.location.href = `maslakedeoband://${cleanPath || 'open'}`;
+      }
+    } else if (isIOS) {
+      const customScheme = `maslakedeoband://${cleanPath || 'open'}`;
+      const start = Date.now();
+      window.location.href = customScheme;
+      setTimeout(() => {
+        if (Date.now() - start < 2000) {
+          window.location.href = 'https://maslakedeoband.in';
+        }
+      }, 1500);
+    } else {
+      window.location.href = `maslakedeoband://${cleanPath || 'open'}`;
+    }
+  };
+
+  if (!isVisible || isDismissed) return null;
+
+  return (
+    <div className="w-full bg-[#0f1426] text-white px-3 py-2 flex items-center justify-between text-xs z-[99998] border-b border-gray-800 shadow-md">
+      <div className="flex items-center gap-2.5 min-w-0">
         <button
           type="button"
-          onClick={handleClose}
-          aria-label="Close"
-          className="text-slate-400 text-2xl leading-none px-1.5"
+          onClick={handleDismiss}
+          className="text-gray-400 hover:text-white p-0.5 rounded-full"
+          aria-label="Dismiss banner"
         >
-          &times;
+          <X size={15} />
         </button>
 
-        <img
-          src="/app-logo.png"
-          alt="Maslakedeoband.in"
-          className="w-[52px] h-[52px] rounded-xl bg-white shrink-0"
-        />
-
-        <div className="flex-1 min-w-0">
-          <div className="text-base font-bold truncate">Maslakedeoband.in</div>
-          <div className="text-xs text-slate-400 mt-0.5">
-            <span className="text-yellow-400 tracking-wider mr-1">★★★★★</span>
-            Free on Play Store
-          </div>
+        <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center p-1 shrink-0 shadow-xs">
+          <img src="/icon.png" alt="maslakedeoband App" className="w-full h-full object-contain" onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/favicon.ico'; }} />
         </div>
-        <a
-          href={PLAY_STORE_URL}
-          className="bg-orange-500 text-white font-bold text-[13px] px-3.5 py-2.5 rounded-[10px] whitespace-nowrap"
-        >
-          OPEN IN APP
-        </a>
+
+        <div className="flex flex-col min-w-0">
+          <span className="font-bold text-[12px] truncate text-white leading-tight flex items-center gap-1">
+            <span>maslakedeoband</span>
+          </span>
+          <span className="text-[10px] text-gray-300 leading-tight flex items-center gap-1">
+            <span className="flex text-amber-400">★★★★★</span>
+            <span className="text-gray-400">Free on Play Store</span>
+          </span>
+        </div>
       </div>
-    </>
+
+      <button
+        type="button"
+        onClick={handleOpenApp}
+        className="px-3 py-1.5 bg-gradient-to-r from-[#ff6a00] to-[#f4580c] hover:from-[#e05d00] text-white font-extrabold text-[11px] rounded-lg tracking-wide shrink-0 shadow-sm transition-transform active:scale-95 cursor-pointer"
+      >
+        OPEN IN APP
+      </button>
+    </div>
   );
-}
+};
+
+export default SmartAppBanner;
