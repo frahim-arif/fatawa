@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import FooterEn from "./FooterEn";
 import {
   BookOpen,
   FileText,
@@ -124,6 +126,10 @@ function SectionTitle({ children }) {
 }
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname?.startsWith("/en")) return <FooterEn />;
+
+  const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
   const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
