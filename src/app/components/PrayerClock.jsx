@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { buildEvents, hijriDate, hm, URDU_D, URDU_G } from "../lib/prayerTimes";
+import {
+  buildEvents,
+  hijriDate,
+  hm,
+  URDU_D,
+  URDU_G,
+} from "../../lib/prayerTimes";
 
 const GREEN = "#75C178";
 const TEXT = "#333333";
