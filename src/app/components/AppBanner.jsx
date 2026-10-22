@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -69,18 +70,16 @@ export default function AppBanner() {
 
   if (!isVisible || isDismissed) return null;
 
-
-
-
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 flex items-center justify-between gap-3 px-3 py-2.5 bg-[#0f172a] text-white border-t border-slate-700 shadow-md"
+      className="fixed bottom-0 left-0 right-0 w-full flex items-center justify-between gap-3 px-3 py-2.5 bg-[#0f172a] text-white border-t border-slate-700 shadow-md"
       style={{
         zIndex: 99999,
         marginBottom: 0,
         fontFamily: "Arial, Helvetica, sans-serif",
       }}
     >
+      {/* App details */}
       <div className="flex items-center gap-2.5 min-w-0">
         <button
           type="button"
@@ -107,6 +106,7 @@ export default function AppBanner() {
           <span className="font-bold text-[12px] truncate leading-tight">
             maslakedeoband
           </span>
+
           <span className="text-[10px] text-gray-300 leading-tight flex items-center gap-1">
             <span className="text-amber-400">★★★★★</span>
             <span className="text-gray-400">Free on Play Store</span>
@@ -114,6 +114,7 @@ export default function AppBanner() {
         </div>
       </div>
 
+      {/* Open app button */}
       <button
         type="button"
         onClick={handleOpenApp}
@@ -123,3 +124,4 @@ export default function AppBanner() {
       </button>
     </div>
   );
+}
