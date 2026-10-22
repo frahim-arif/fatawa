@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-// import { Search, Mic, ArrowLeft, Sparkles } from "lucide-react";
-import Head from "next/head";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Search, Mic } from "lucide-react";
@@ -14,8 +12,11 @@ import IslamicSlider from "./components/IslamicSlider";
 import AskQuestionForm from "./components/AskQuestionForm";
 import AskButton from "./components/AskButton";
 import AskedQuestionsButton from "./components/AskedQuestionsButton";
+import PrayerTicker from "./components/PrayerTicker";
 import AppBanner from "./components/AppBanner";
 
+const font = "'Jameel Noori Nastaleeq', serif";
+const backend = "https://f-backend-vdi1.onrender.com/api";
 
 const PLACEHOLDER_PHRASES = [
   "یہاں تلاش کریں...",
@@ -23,6 +24,25 @@ const PLACEHOLDER_PHRASES = [
   "روزے کے احکام تلاش کریں...",
   "زکوٰۃ کے مسائل تلاش کریں...",
 ];
+
+const QUICK_LINKS = [
+  { href: "/masnoon-duayee", title: "مسنون دعائیں" },
+  { href: "/islami-naam", title: "اسلامی نام" },
+  { href: "/books", title: "اسلامی کتب" },
+  { href: "/majameen", title: "مضامین" },
+  { href: "/ozan-shariah-calculator", title: "اوزان شریعہ کیلکولیٹر" },
+  { href: "/40-hadith-free", title: "40 احادیث" },
+];
+
+const TABS = [
+  { key: "questions", label: "نئے سوالات" },
+  { key: "majameen", label: "منتخب مضامین" },
+  { key: "popular", label: "زیادہ پڑھے گئے" },
+];
+
+/* =====================================================
+   TYPEWRITER PLACEHOLDER
+===================================================== */
 
 function useTypewriterPlaceholder(
   phrases,
@@ -41,7 +61,7 @@ function useTypewriterPlaceholder(
     const current = phrases[phraseIndex % phrases.length];
     let delay = isDeleting ? deleteSpeed : typeSpeed;
 
-    // Urdu joined letters ke liye Array.from use karte hain
+    // Urdu joined letters ke liye Array.from
     const chars = Array.from(current);
 
     if (!isDeleting && text === current) {
@@ -70,6 +90,10 @@ function useTypewriterPlaceholder(
   return text;
 }
 
+/* =====================================================
+   PAGE
+===================================================== */
+
 export default function HomePage() {
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -80,101 +104,64 @@ export default function HomePage() {
 
   const [prayerTimes, setPrayerTimes] = useState(null);
   const [latestQuestions, setLatestQuestions] = useState([]);
+  const [popularQuestions, setPopularQuestions] = useState([]);
+  const [majameen, setMajameen] = useState([]);
   const [activeTab, setActiveTab] = useState("questions");
   const [nextPrayer, setNextPrayer] = useState("");
   const [countdown, setCountdown] = useState("");
-  const [majameen, setMajameen] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
-
-  const questionsRef = useRef(null);
-
-  const backend = "https://f-backend-vdi1.onrender.com/api";
-
   const [isFocused, setIsFocused] = useState(false);
   const [showAsk, setShowAsk] = useState(false);
 
+  const questionsRef = useRef(null);
 
-const [popularQuestions, setPopularQuestions] = useState([]);
-
-const animatedPlaceholder = useTypewriterPlaceholder(
-  PLACEHOLDER_PHRASES,
-  {
+  const animatedPlaceholder = useTypewriterPlaceholder(PLACEHOLDER_PHRASES, {
     active: query === "" && !isFocused,
-  }
-);
+  });
 
-  /* =====================================================
-     HOME LOADER
-  ===================================================== */
+  /* ---------- HOME LOADER ---------- */
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1200);
-
+    const timer = setTimeout(() => setIsLoading(false), 1200);
     return () => clearTimeout(timer);
   }, []);
 
-  /* =====================================================
-     FETCH CATEGORIES
-  ===================================================== */
+  /* ---------- FETCH CATEGORIES ---------- */
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const run = async () => {
       try {
-        const res = await fetch(`${backend}/categories`, {
-          cache: "no-store",
-        });
-
-        if (!res.ok) {
-          throw new Error(`Categories API error: ${res.status}`);
-        }
-
+        const res = await fetch(`${backend}/categories`, { cache: "no-store" });
+        if (!res.ok) throw new Error(`Categories API error: ${res.status}`);
         const data = await res.json();
-
-        if (data.success) {
-          setCategories(data.data || []);
-        }
+        if (data.success) setCategories(data.data || []);
       } catch (err) {
         console.error("❌ Error fetching categories:", err);
       }
     };
-
-    fetchCategories();
+    run();
   }, []);
 
-  /* =====================================================
-     FETCH PRAYER TIMES
-  ===================================================== */
+  /* ---------- FETCH PRAYER TIMES ---------- */
 
   useEffect(() => {
-    const fetchPrayerTimes = async () => {
+    const run = async () => {
       try {
         const res = await fetch(
           "https://api.aladhan.com/v1/timingsByCity?city=Guwahati&country=India&method=1"
         );
-
-        if (!res.ok) {
-          throw new Error(`Prayer API error: ${res.status}`);
-        }
-
+        if (!res.ok) throw new Error(`Prayer API error: ${res.status}`);
         const data = await res.json();
-
-        if (data.code === 200) {
-          setPrayerTimes(data.data.timings);
-        }
+        if (data.code === 200) setPrayerTimes(data.data.timings);
       } catch (err) {
         console.error("❌ Namaz timing error:", err);
       }
     };
-
-    fetchPrayerTimes();
+    run();
   }, []);
 
-  /* =====================================================
-     NEXT PRAYER COUNTDOWN
-  ===================================================== */
+  /* ---------- NEXT PRAYER COUNTDOWN ---------- */
 
   useEffect(() => {
     if (!prayerTimes) return;
@@ -183,26 +170,11 @@ const animatedPlaceholder = useTypewriterPlaceholder(
       const now = new Date();
 
       const prayers = [
-        {
-          name: "فجر",
-          time: prayerTimes.Fajr,
-        },
-        {
-          name: "ظہر",
-          time: prayerTimes.Dhuhr,
-        },
-        {
-          name: "عصر",
-          time: prayerTimes.Asr,
-        },
-        {
-          name: "مغرب",
-          time: prayerTimes.Maghrib,
-        },
-        {
-          name: "عشاء",
-          time: prayerTimes.Isha,
-        },
+        { name: "فجر", time: prayerTimes.Fajr },
+        { name: "ظہر", time: prayerTimes.Dhuhr },
+        { name: "عصر", time: prayerTimes.Asr },
+        { name: "مغرب", time: prayerTimes.Maghrib },
+        { name: "عشاء", time: prayerTimes.Isha },
       ];
 
       let next = null;
@@ -210,205 +182,116 @@ const animatedPlaceholder = useTypewriterPlaceholder(
       for (const prayer of prayers) {
         if (!prayer.time) continue;
 
-        const cleanTime = prayer.time.split(" ")[0];
-        const [hours, minutes] = cleanTime.split(":");
-
+        const [hours, minutes] = prayer.time.split(" ")[0].split(":");
         const prayerDate = new Date();
-
-        prayerDate.setHours(
-          parseInt(hours, 10),
-          parseInt(minutes, 10),
-          0,
-          0
-        );
+        prayerDate.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
 
         if (prayerDate > now) {
-          next = {
-            name: prayer.name,
-            time: prayerDate,
-          };
-
+          next = { name: prayer.name, time: prayerDate };
           break;
         }
       }
 
       if (!next && prayerTimes.Fajr) {
-        const cleanFajrTime = prayerTimes.Fajr.split(" ")[0];
-        const [hours, minutes] = cleanFajrTime.split(":");
-
+        const [hours, minutes] = prayerTimes.Fajr.split(" ")[0].split(":");
         const fajrTomorrow = new Date();
-
         fajrTomorrow.setDate(fajrTomorrow.getDate() + 1);
-
-        fajrTomorrow.setHours(
-          parseInt(hours, 10),
-          parseInt(minutes, 10),
-          0,
-          0
-        );
-
-        next = {
-          name: "فجر",
-          time: fajrTomorrow,
-        };
+        fajrTomorrow.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
+        next = { name: "فجر", time: fajrTomorrow };
       }
 
       if (!next) return;
 
       const diff = next.time - now;
-
       const hrs = Math.floor(diff / 1000 / 60 / 60);
       const mins = Math.floor((diff / 1000 / 60) % 60);
       const secs = Math.floor((diff / 1000) % 60);
 
       setNextPrayer(next.name);
-
       setCountdown(
-        `${String(hrs).padStart(2, "0")}:${String(mins).padStart(
-          2,
-          "0"
-        )}:${String(secs).padStart(2, "0")}`
+        `${String(hrs).padStart(2, "0")}:${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`
       );
     };
 
     updateCountdown();
-
     const interval = setInterval(updateCountdown, 1000);
-
     return () => clearInterval(interval);
   }, [prayerTimes]);
 
-  /* =====================================================
-     FETCH MAJAMEEN
-  ===================================================== */
+  /* ---------- FETCH MAJAMEEN ---------- */
 
   useEffect(() => {
-    const fetchMajameen = async () => {
+    const run = async () => {
       try {
-        const res = await fetch(`${backend}/majameen`, {
-          cache: "no-store",
-        });
-
-        if (!res.ok) {
-          throw new Error(`Majameen API error: ${res.status}`);
-        }
-
+        const res = await fetch(`${backend}/majameen`, { cache: "no-store" });
+        if (!res.ok) throw new Error(`Majameen API error: ${res.status}`);
         const data = await res.json();
-
-        if (data.success) {
-          setMajameen((data.data || []).slice(0, 4));
-        }
+        if (data.success) setMajameen((data.data || []).slice(0, 4));
       } catch (err) {
         console.error("❌ Majameen error:", err);
       }
     };
-
-    fetchMajameen();
+    run();
   }, []);
 
-  /* =====================================================
-     FETCH LATEST QUESTIONS
-  ===================================================== */
+  /* ---------- FETCH LATEST QUESTIONS ---------- */
 
   useEffect(() => {
-    const fetchLatestQuestions = async () => {
+    const run = async () => {
       try {
-        const res = await fetch(
-          `${backend}/admin/questions?limit=5`,
-          {
-            cache: "no-store",
-          }
-        );
-
-        if (!res.ok) {
-          throw new Error(
-            `Latest questions API error: ${res.status}`
-          );
-        }
-
+        const res = await fetch(`${backend}/admin/questions?limit=5`, {
+          cache: "no-store",
+        });
+        if (!res.ok) throw new Error(`Latest questions API error: ${res.status}`);
         const data = await res.json();
-
-        if (data.success) {
-          setLatestQuestions(data.data || []);
-        }
+        if (data.success) setLatestQuestions(data.data || []);
       } catch (err) {
         console.error("❌ Latest question error:", err);
       }
     };
-
-    fetchLatestQuestions();
+    run();
   }, []);
 
-    /* =====================================================
-     FETCH POPULAR QUESTIONS
-  ===================================================== */
+  /* ---------- FETCH POPULAR QUESTIONS ---------- */
 
   useEffect(() => {
-    const fetchPopular = async () => {
+    const run = async () => {
       try {
-        const res = await fetch(
-          `${backend}/admin/questions/popular?limit=8`,
-          { cache: "no-store" }
-        );
-
-        if (!res.ok) {
-          throw new Error(`Popular API error: ${res.status}`);
-        }
-
+        const res = await fetch(`${backend}/admin/questions/popular?limit=8`, {
+          cache: "no-store",
+        });
+        if (!res.ok) throw new Error(`Popular API error: ${res.status}`);
         const data = await res.json();
-
-        if (data.success) {
-          setPopularQuestions(data.data || []);
-        }
+        if (data.success) setPopularQuestions(data.data || []);
       } catch (err) {
         console.error("❌ Popular questions error:", err);
       }
     };
-
-    fetchPopular();
+    run();
   }, []);
-  /* =====================================================
-     FETCH QUESTIONS BY CATEGORY
-  ===================================================== */
 
-  const fetchQuestions = async ({
-    reset = false,
-    customSkip = 0,
-  } = {}) => {
+  /* ---------- FETCH QUESTIONS BY CATEGORY ---------- */
+
+  const fetchQuestions = async ({ reset = false, customSkip = 0 } = {}) => {
     try {
-      let url;
+      const url =
+        selectedCategory === ""
+          ? `${backend}/admin/questions?skip=${customSkip}&limit=5`
+          : `${backend}/admin/questions/category/${encodeURIComponent(
+              selectedCategory
+            )}?skip=${customSkip}&limit=5`;
 
-      if (selectedCategory === "") {
-        url = `${backend}/admin/questions?skip=${customSkip}&limit=5`;
-      } else {
-        url =
-          `${backend}/admin/questions/category/` +
-          `${encodeURIComponent(selectedCategory)}` +
-          `?skip=${customSkip}&limit=5`;
-      }
-
-      const res = await fetch(url, {
-        cache: "no-store",
-      });
-
-      if (!res.ok) {
-        throw new Error(`Questions API error: ${res.status}`);
-      }
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error(`Questions API error: ${res.status}`);
 
       const data = await res.json();
 
       if (data.success) {
         const newQuestions = data.data || [];
 
-        if (reset) {
-          setAllQuestions(newQuestions);
-        } else {
-          setAllQuestions((prev) => [
-            ...prev,
-            ...newQuestions,
-          ]);
-        }
-
+        setAllQuestions((prev) =>
+          reset ? newQuestions : [...prev, ...newQuestions]
+        );
         setSkip(customSkip + 5);
         setHasMore(newQuestions.length === 5);
       }
@@ -417,9 +300,7 @@ const animatedPlaceholder = useTypewriterPlaceholder(
     }
   };
 
-  /* =====================================================
-     CATEGORY CHANGE
-  ===================================================== */
+  /* ---------- CATEGORY CHANGE ---------- */
 
   useEffect(() => {
     if (selectedCategory === "") {
@@ -429,35 +310,26 @@ const animatedPlaceholder = useTypewriterPlaceholder(
       return;
     }
 
-    fetchQuestions({
-      reset: true,
-      customSkip: 0,
-    });
+    fetchQuestions({ reset: true, customSkip: 0 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory]);
 
-  /* =====================================================
-     SEARCH FILTER
-  ===================================================== */
+  /* ---------- SEARCH FILTER ---------- */
 
   const filteredQuestions =
     query.trim() === ""
       ? allQuestions
       : allQuestions.filter((q) =>
-          q.question
-            ?.toLowerCase()
-            .includes(query.toLowerCase())
+          q.question?.toLowerCase().includes(query.toLowerCase())
         );
 
-  /* =====================================================
-     VOICE SEARCH
-  ===================================================== */
+  /* ---------- VOICE SEARCH ---------- */
 
   const startListening = () => {
     if (typeof window === "undefined") return;
 
     const SpeechRecognition =
-      window.SpeechRecognition ||
-      window.webkitSpeechRecognition;
+      window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
       alert("🎤 Voice search not supported");
@@ -465,16 +337,12 @@ const animatedPlaceholder = useTypewriterPlaceholder(
     }
 
     const recognition = new SpeechRecognition();
-
     recognition.lang = "ur-PK";
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
     recognition.onresult = (e) => {
-      const transcript =
-        e.results?.[0]?.[0]?.transcript || "";
-
-      setQuery(transcript);
+      setQuery(e.results?.[0]?.[0]?.transcript || "");
     };
 
     recognition.onerror = (error) => {
@@ -484,60 +352,66 @@ const animatedPlaceholder = useTypewriterPlaceholder(
     recognition.start();
   };
 
-  /* =====================================================
-     LOADING SCREEN
-  ===================================================== */
+  /* ---------- LOADING SCREEN ---------- */
 
   if (isLoading) {
     return <HomeLoader />;
   }
 
+  /* ---------- tab content helper ---------- */
+
+  const renderList = (list, getHref, getText, emptyText, size = "18px") =>
+    list.length > 0 ? (
+      list.map((item) => (
+        <Link
+          key={item._id}
+          href={getHref(item)}
+          className="group flex items-start gap-2 text-[#333333] hover:text-[#75C178] transition-colors"
+          style={{ fontSize: size, lineHeight: "30px" }}
+        >
+          <span className="text-[#75C178] shrink-0">➜</span>
+          <span className="group-hover:underline">{getText(item)}</span>
+        </Link>
+      ))
+    ) : (
+      <p className="text-gray-500 text-center">{emptyText}</p>
+    );
+
   /* =====================================================
-     HOME PAGE
+     RENDER
   ===================================================== */
 
-  
- 
-return (
- <div className="relative min-h-screen overflow-x-hidden bg-white text-[#333333]"
-  style={{ zIndex: 99999, marginTop: 0, fontFamily: "Arial, Helvetica, sans-serif" }}
->
-   
-      <Head>
-        <style>{`
-          @font-face {
-            font-family: 'Jameel Noori Nastaleeq';
-            src: url('/fonts/JameelNooriNastaleeq.woff2') format('woff2'),
-                 url('/fonts/JameelNooriNastaleeq.woff') format('woff'),
-                 url('/fonts/JameelNooriNastaleeq.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-          }
+  return (
+    <div
+      className="relative w-full min-h-screen overflow-hidden -mt-6 space-y-10 px-0 bg-repeat bg-contain bg-top md:bg-cover md:bg-center md:bg-fixed"
+      style={{
+        backgroundImage: "url('/images/ramadan_15_03_2022_1.jpg')",
+        fontFamily: font,
+      }}
+    >
+      {/* next/head App Router me kaam nahi karta, isliye style seedha yahan */}
+      <style>{`
+        @font-face {
+          font-family: 'Jameel Noori Nastaleeq';
+          src: url('/fonts/JameelNooriNastaleeq.woff2') format('woff2'),
+               url('/fonts/JameelNooriNastaleeq.woff') format('woff'),
+               url('/fonts/JameelNooriNastaleeq.ttf') format('truetype');
+          font-weight: normal;
+          font-style: normal;
+          font-display: swap;
+        }
+        .urdu-font {
+          font-family: 'Jameel Noori Nastaleeq', serif !important;
+          font-weight: normal;
+          font-style: normal;
+        }
+      `}</style>
 
-          .urdu-font {
-            font-family: 'Jameel Noori Nastaleeq', serif !important;
-            font-weight: normal;
-            font-style: normal;
-          }
+      <h1 className="sr-only">مسلکِ دیوبند | اسلامی سوال و جواب اور فتاویٰ</h1>
 
-          body {
-            font-family: 'Jameel Noori Nastaleeq', serif;
-          }
-        `}</style>
-      </Head>
-
-      {/* =================================================
-          CLEAN SOFT GREEN GLOW
-      ================================================= */}
-
+      {/* SOFT GREEN GLOW */}
       <div
-        className="
-          fixed
-          inset-0
-          pointer-events-none
-          z-0
-        "
+        className="fixed inset-0 pointer-events-none z-0"
         style={{
           background:
             "radial-gradient(circle at 50% 20%, rgba(117,193,120,0.08), transparent 38%)",
@@ -545,245 +419,22 @@ return (
       />
 
       <motion.div
-        className="
-          fixed
-          top-1/4
-          left-1/2
-          w-72
-          h-72
-          rounded-full
-          pointer-events-none
-        "
+        className="fixed top-1/4 left-1/2 w-72 h-72 rounded-full pointer-events-none"
         style={{
           background:
             "radial-gradient(circle, rgba(117,193,120,0.10), transparent 70%)",
           filter: "blur(80px)",
           zIndex: 0,
         }}
-        animate={{
-          x: ["0%", "15%", "-15%", "0%"],
-          y: ["0%", "8%", "-8%", "0%"],
-        }}
-        transition={{
-          duration: 25,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={{ x: ["0%", "15%", "-15%", "0%"], y: ["0%", "8%", "-8%", "0%"] }}
+        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
       />
-
 
       {/* =================================================
           PRAYER TIMES TOP BAR
       ================================================= */}
 
-      
-<div className="w-full relative z-10 -mt-1">
-  <div
-    className="
-      relative
-      w-full
-      overflow-hidden
-      border-b
-      border-t
-      bg-white
-      shadow-[0_2px_10px_rgba(117,193,120,0.08)]
-    "
-    style={{
-      borderColor: "#C6E2C8",
-    }}
-  >
-    {/* Golden Accent Line */}
-    <div
-      className="
-        absolute
-        top-0
-        left-0
-        right-0
-        h-[2px]
-        z-20
-      "
-      style={{
-        background:
-          "linear-gradient(90deg, transparent, #D4AF37, transparent)",
-      }}
-    />
-
-    {/* Soft Green Glow */}
-    <div
-      className="
-        absolute
-        inset-0
-        pointer-events-none
-      "
-      style={{
-        background:
-          "linear-gradient(90deg, #F5FAF5 0%, #FFFFFF 25%, #FFFFFF 75%, #F5FAF5 100%)",
-      }}
-    />
-
-    {/* Prayer Icon / Label */}
-    <div
-      className="
-        absolute
-        right-0
-        top-0
-        bottom-0
-        z-10
-        flex
-        items-center
-        px-3
-        md:px-5
-        bg-white/95
-        border-l
-      "
-      style={{
-        borderColor: "#C6E2C8",
-      }}
-    >
-      <div className="flex items-center gap-2">
-        <span
-          className="
-            flex
-            items-center
-            justify-center
-            w-7
-            h-7
-            rounded-full
-            text-sm
-          "
-          style={{
-            background: "#EAF5EA",
-            border: "1px solid #C6E2C8",
-            color: "#75C178",
-          }}
-        >
-          🕌
-        </span>
-
-        <span
-          className="
-            hidden
-            sm:block
-            text-xs
-            font-semibold
-          "
-          style={{
-            color: "#63B56A",
-            fontFamily: "'Jameel Noori Nastaleeq', serif",
-          }}
-        >
-          اوقاتِ نماز
-        </span>
-      </div>
-    </div>
-
-    {/* Moving Prayer Times */}
-    <motion.div
-      className="
-        whitespace-nowrap
-        w-full
-        py-2
-        md:py-2.5
-        pr-28
-        md:pr-36
-        text-[#333333]
-        text-sm
-        md:text-[15px]
-        font-medium
-      "
-      style={{
-        direction: "rtl",
-        fontFamily: "'Jameel Noori Nastaleeq', serif",
-        lineHeight: "1.5",
-        letterSpacing: "0.5px",
-      }}
-      animate={{
-        x: ["100%", "-100%"],
-      }}
-      transition={{
-        duration: 18,
-        repeat: Infinity,
-        ease: "linear",
-      }}
-    >
-      {prayerTimes ? (
-        <>
-          <span className="text-[#75C178]">
-            فجر
-          </span>
-          <span className="text-[#333333]">
-            : {prayerTimes.Fajr?.split(" ")[0]}
-          </span>
-
-          <span className="mx-5 text-[#D4AF37]">
-            ✦
-          </span>
-
-          <span className="text-[#75C178]">
-            ظہر
-          </span>
-          <span className="text-[#333333]">
-            : {prayerTimes.Dhuhr?.split(" ")[0]}
-          </span>
-
-          <span className="mx-5 text-[#D4AF37]">
-            ✦
-          </span>
-
-          <span className="text-[#75C178]">
-            عصر
-          </span>
-          <span className="text-[#333333]">
-            : {prayerTimes.Asr?.split(" ")[0]}
-          </span>
-
-          <span className="mx-5 text-[#D4AF37]">
-            ✦
-          </span>
-
-          <span className="text-[#75C178]">
-            مغرب
-          </span>
-          <span className="text-[#333333]">
-            : {prayerTimes.Maghrib?.split(" ")[0]}
-          </span>
-
-          <span className="mx-5 text-[#D4AF37]">
-            ✦
-          </span>
-
-          <span className="text-[#75C178]">
-            عشاء
-          </span>
-          <span className="text-[#333333]">
-            : {prayerTimes.Isha?.split(" ")[0]}
-          </span>
-        </>
-      ) : (
-        <span className="text-[#63B56A]">
-          نماز کے اوقات لوڈ ہو رہے ہیں...
-        </span>
-      )}
-    </motion.div>
-
-    {/* Bottom Golden Accent */}
-    <div
-      className="
-        absolute
-        bottom-0
-        left-1/2
-        -translate-x-1/2
-        w-20
-        h-[2px]
-      "
-      style={{
-        background: "#D4AF37",
-      }}
-    />
-  </div>
-</div>
-
-
+      <PrayerTicker prayerTimes={prayerTimes} nextPrayer={nextPrayer} />
 
       {/* =================================================
           ISLAMIC SLIDER
@@ -798,33 +449,10 @@ return (
       ================================================= */}
 
       <div
-       id="home-search"
-        className="
-          relative
-          w-11/12
-          md:w-full
-          mx-auto
-          mt-6
-          z-10
-        "
+        id="home-search"
+        className="relative w-11/12 md:w-full mx-auto mt-6 z-10"
       >
-        <div
-          className="
-            flex
-            items-center
-            overflow-hidden
-            border
-            border-[#C6E2C8]
-            bg-white/95
-            backdrop-blur-md
-            shadow-[0_8px_30px_rgba(0,0,0,0.10)]
-            transition-all
-            duration-300
-            hover:border-[#75C178]
-            focus-within:border-[#75C178]
-            focus-within:shadow-[0_0_22px_rgba(117,193,120,0.18)]
-          "
-        >
+        <div className="flex items-center overflow-hidden border border-[#C6E2C8] bg-white/95 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.10)] transition-all duration-300 hover:border-[#75C178] focus-within:border-[#75C178] focus-within:shadow-[0_0_22px_rgba(117,193,120,0.18)]">
           <div className="px-3 py-2">
             <Search className="w-5 h-5 text-[#75C178]" />
           </div>
@@ -834,36 +462,18 @@ return (
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => setIsFocused(true)}
-onBlur={() => setIsFocused(false)}
-placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00A0"}
-            className="
-              w-full
-              py-3
-              pr-4
-              bg-white
-              text-[#333333]
-              placeholder-gray-400
-              outline-none
-              text-lg
-              border-0
-              focus:ring-0
-            "
-            style={{
-              direction: "rtl",
-              fontFamily:
-                "'Jameel Noori Nastaleeq', serif",
-            }}
+            onBlur={() => setIsFocused(false)}
+            placeholder={
+              isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00A0"
+            }
+            className="w-full py-3 pr-4 bg-white text-[#333333] placeholder-gray-400 outline-none text-lg border-0 focus:ring-0"
+            style={{ direction: "rtl", fontFamily: font }}
           />
 
           <button
             onClick={startListening}
             type="button"
-            className="
-              px-3
-              py-2
-              hover:bg-[#EAF5EA]
-              transition
-            "
+            className="px-3 py-2 hover:bg-[#EAF5EA] transition"
             aria-label="Voice Search"
           >
             <Mic className="w-6 h-6 text-[#75C178]" />
@@ -871,28 +481,17 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
         </div>
       </div>
 
-     {/* =================================================
-    ASK QUESTION BUTTON
-================================================= */}
+      {/* =================================================
+          ASK QUESTION BUTTON
+      ================================================= */}
 
-     <AskButton onClick={() => setShowAsk(true)} />
+      <AskButton onClick={() => setShowAsk(true)} />
+
       {/* =================================================
           CATEGORIES
       ================================================= */}
 
-      <div
-        className="
-          grid
-          grid-cols-2
-          md:grid-cols-4
-          gap-3
-          px-2
-          mt-6
-          w-full
-          relative
-          z-10
-        "
-      >
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 px-2 mt-6 w-full relative z-10">
         {categories.map((cat) => (
           <motion.div
             key={cat._id}
@@ -908,40 +507,12 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
                 });
               }, 300);
             }}
-            className={`
-              p-4
-              md:p-5
-              cursor-pointer
-              text-center
-              select-none
-              transition-all
-              duration-300
-              border
-              shadow-[0_5px_18px_rgba(0,0,0,0.08)]
-              text-xl
-              font-medium
-
-              ${
-                selectedCategory === cat.name
-                  ? `
-                    bg-[#EAF5EA]
-                    border-[#75C178]
-                    text-[#333333]
-                    shadow-[0_0_20px_rgba(117,193,120,0.16)]
-                  `
-                  : `
-                    bg-white
-                    border-[#C6E2C8]
-                    text-[#333333]
-                    hover:bg-[#F5FAF5]
-                    hover:border-[#75C178]
-                  `
-              }
-            `}
-            style={{
-              fontFamily:
-                "'Jameel Noori Nastaleeq', serif",
-            }}
+            className={`p-4 md:p-5 cursor-pointer text-center select-none transition-all duration-300 border shadow-[0_5px_18px_rgba(0,0,0,0.08)] text-xl font-medium ${
+              selectedCategory === cat.name
+                ? "bg-[#EAF5EA] border-[#75C178] text-[#333333] shadow-[0_0_20px_rgba(117,193,120,0.16)]"
+                : "bg-white border-[#C6E2C8] text-[#333333] hover:bg-[#F5FAF5] hover:border-[#75C178]"
+            }`}
+            style={{ fontFamily: font }}
           >
             {cat.name}
           </motion.div>
@@ -952,49 +523,21 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
           CATEGORY QUESTIONS
       ================================================= */}
 
-      <section
-        ref={questionsRef}
-        className="
-          space-y-4
-          px-2
-          z-10
-          relative
-        "
-      >
+      <section ref={questionsRef} className="space-y-4 px-2 z-10 relative">
         {filteredQuestions.length > 0 ? (
           filteredQuestions.map((q) => (
-            <Link
-              key={q._id}
-              href={`/questions/${q.slug}`}
-              className="block"
-            >
+            <Link key={q._id} href={`/questions/${q.slug}`} className="block">
               <motion.div
                 whileHover={{ y: -2 }}
-                className="
-                  p-5
-                  border
-                  bg-white
-                  border-[#C6E2C8]
-                  shadow-[0_5px_20px_rgba(0,0,0,0.08)]
-                  w-full
-                  cursor-pointer
-                  hover:bg-[#F5FAF5]
-                  hover:border-[#75C178]
-                  transition-all
-                  duration-300
-                  relative
-                  overflow-hidden
-                "
+                className="p-5 border bg-white border-[#C6E2C8] shadow-[0_5px_20px_rgba(0,0,0,0.08)] w-full cursor-pointer hover:bg-[#F5FAF5] hover:border-[#75C178] transition-all duration-300 relative overflow-hidden"
                 style={{
                   direction: "rtl",
-                  fontFamily:
-                    "'Jameel Noori Nastaleeq', serif",
+                  fontFamily: font,
                   lineHeight: "2.2",
                   textAlign: "right",
                 }}
               >
                 <div className="absolute right-0 top-0 bottom-0 w-1 bg-[#75C178]" />
-
                 <h3 className="font-bold text-xl text-[#333333] pr-2">
                   {q.question}
                 </h3>
@@ -1003,21 +546,8 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
           ))
         ) : (
           <div
-            className="
-              text-center
-              bg-white
-              border
-              border-[#C6E2C8]
-              px-4
-              py-5
-              text-[#333333]
-              shadow-[0_5px_20px_rgba(0,0,0,0.06)]
-            "
-            style={{
-              fontFamily:
-                "'Jameel Noori Nastaleeq', serif",
-              direction: "rtl",
-            }}
+            className="text-center bg-white border border-[#C6E2C8] px-4 py-5 text-[#333333] shadow-[0_5px_20px_rgba(0,0,0,0.06)]"
+            style={{ fontFamily: font, direction: "rtl" }}
           >
             اوپر دیے گئے بٹن پر کلک کر کے سوال و جواب دیکھیں
           </div>
@@ -1027,27 +557,9 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
           <div className="text-center mt-6">
             <button
               type="button"
-              onClick={() =>
-                fetchQuestions({
-                  customSkip: skip,
-                })
-              }
-              className="
-                px-7
-                py-2
-                bg-[#75C178]
-                text-white
-                border
-                border-[#75C178]
-                hover:bg-[#63B56A]
-                hover:shadow-[0_0_18px_rgba(117,193,120,0.22)]
-                transition-all
-                duration-300
-              "
-              style={{
-                fontFamily:
-                  "'Jameel Noori Nastaleeq', serif",
-              }}
+              onClick={() => fetchQuestions({ customSkip: skip })}
+              className="px-7 py-2 bg-[#75C178] text-white border border-[#75C178] hover:bg-[#63B56A] hover:shadow-[0_0_18px_rgba(117,193,120,0.22)] transition-all duration-300"
+              style={{ fontFamily: font }}
             >
               مزید سوالات دیکھیں
             </button>
@@ -1055,101 +567,43 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
         )}
       </section>
 
-
-
-
       {/* =================================================
           NEXT PRAYER
       ================================================= */}
 
       <div className="w-full px-3 mt-4 relative z-10">
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            duration: 0.5,
-          }}
-          className="
-            relative
-            overflow-hidden
-            border
-            border-[#C6E2C8]
-            bg-white
-            backdrop-blur-xl
-            shadow-[0_8px_30px_rgba(0,0,0,0.08)]
-            px-4
-            py-3
-          "
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="relative overflow-hidden border border-[#C6E2C8] bg-white shadow-[0_8px_30px_rgba(0,0,0,0.08)] px-4 py-3"
         >
-          <div
-            className="
-              absolute
-              inset-0
-              bg-gradient-to-r
-              from-[#75C178]/5
-              via-transparent
-              to-[#75C178]/5
-            "
-          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#75C178]/5 via-transparent to-[#75C178]/5" />
 
           <div className="flex items-center justify-between relative z-10">
             <div className="text-right">
               <p
                 className="text-[#333333]"
-                style={{
-                  fontFamily:
-                    "'Jameel Noori Nastaleeq', serif",
-                  fontSize: "20px",
-                  lineHeight: "30px",
-                }}
+                style={{ fontFamily: font, fontSize: "20px", lineHeight: "30px" }}
               >
                 🕌 اگلی نماز
               </p>
-
               <h2
                 className="text-[#333333]"
-                style={{
-                  fontFamily:
-                    "'Jameel Noori Nastaleeq', serif",
-                  fontSize: "30px",
-                  lineHeight: "40px",
-                }}
+                style={{ fontFamily: font, fontSize: "30px", lineHeight: "40px" }}
               >
                 {nextPrayer}
               </h2>
             </div>
 
             <motion.div
-              animate={{
-                opacity: [1, 0.7, 1],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-              }}
-              className="
-                bg-[#EAF5EA]
-                border
-                border-[#C6E2C8]
-                px-4
-                py-2
-              "
+              animate={{ opacity: [1, 0.7, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="bg-[#EAF5EA] border border-[#C6E2C8] px-4 py-2"
             >
               <span
-                className="
-                  text-[#333333]
-                  font-bold
-                "
-                style={{
-                  fontSize: "24px",
-                  letterSpacing: "2px",
-                }}
+                className="text-[#333333] font-bold"
+                style={{ fontSize: "24px", letterSpacing: "2px" }}
               >
                 {countdown}
               </span>
@@ -1158,95 +612,26 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
         </motion.div>
       </div>
 
+      {/* =================================================
+          PEOPLE'S QUESTIONS BUTTON
+      ================================================= */}
 
-      
-<AskedQuestionsButton />
+      <AskedQuestionsButton />
 
       {/* =================================================
           ISLAMIC QUICK LINKS
       ================================================= */}
 
-      <div
-        className="
-          grid
-          grid-cols-2
-          gap-3
-          px-3
-          mt-5
-          relative
-          z-10
-        "
-      >
-        {[
-          {
-            href: "/masnoon-duayee",
-            title: "مسنون دعائیں",
-          },
-          {
-            href: "/islami-naam",
-            title: "اسلامی نام",
-          },
-          {
-            href: "/books",
-            title: "اسلامی کتب",
-          },
-          {
-            href: "/majameen",
-            title: "مضامین",
-          },
-          {
-            href: "/ozan-shariah-calculator",
-            title: "اوزان شریعہ کیلکولیٹر",
-          },
-          {
-            href: "/40-hadith-free",
-            title: "40 احادیث",
-          },
-        ].map((item) => (
+      <div className="grid grid-cols-2 gap-3 px-3 mt-5 relative z-10">
+        {QUICK_LINKS.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className="
-              group
-              relative
-              overflow-hidden
-              bg-white
-              border
-              border-[#C6E2C8]
-              p-4
-              text-center
-              shadow-[0_4px_16px_rgba(0,0,0,0.07)]
-              hover:bg-[#F5FAF5]
-              hover:border-[#75C178]
-              text-[#333333]
-              transition-all
-              duration-300
-              hover:-translate-y-1
-            "
-            style={{
-              fontFamily:
-                "'Jameel Noori Nastaleeq', serif",
-              direction: "rtl",
-              fontSize: "20px",
-            }}
+            className="group relative overflow-hidden bg-white border border-[#C6E2C8] p-4 text-center shadow-[0_4px_16px_rgba(0,0,0,0.07)] hover:bg-[#F5FAF5] hover:border-[#75C178] text-[#333333] transition-all duration-300 hover:-translate-y-1"
+            style={{ fontFamily: font, direction: "rtl", fontSize: "20px" }}
           >
-            <span
-              className="
-                absolute
-                top-0
-                right-0
-                w-0
-                h-[2px]
-                bg-[#75C178]
-                group-hover:w-full
-                transition-all
-                duration-300
-              "
-            />
-
-            <span className="relative z-10">
-              {item.title}
-            </span>
+            <span className="absolute top-0 right-0 w-0 h-[2px] bg-[#75C178] group-hover:w-full transition-all duration-300" />
+            <span className="relative z-10">{item.title}</span>
           </Link>
         ))}
       </div>
@@ -1257,261 +642,86 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
 
       <div className="mt-10 px-3 relative z-10">
         <div className="flex overflow-hidden border border-[#C6E2C8] shadow-lg">
-          <button
-            type="button"
-            onClick={() => setActiveTab("questions")}
-            className={`
-              w-1/3
-              py-3
-              transition-all
-              duration-300
-              border-l
-              border-[#C6E2C8]
-
-              ${
-                activeTab === "questions"
+          {TABS.map((tab, i) => (
+            <button
+              key={tab.key}
+              type="button"
+              onClick={() => setActiveTab(tab.key)}
+              className={`w-1/3 py-3 transition-all duration-300 ${
+                i === 0 ? "border-l border-[#C6E2C8]" : ""
+              } ${i === TABS.length - 1 ? "border-r border-[#C6E2C8]" : ""} ${
+                activeTab === tab.key
                   ? "bg-[#75C178] text-white"
                   : "bg-[#EAF5EA] text-[#333333] hover:bg-[#F5FAF5]"
-              }
-            `}
-          >
-            <span
-              style={{
-                fontFamily:
-                  "'Jameel Noori Nastaleeq', serif",
-                direction: "rtl",
-                fontSize: "18px",
-                lineHeight: "34px",
-                fontWeight: "normal",
-                display: "block",
-              }}
+              }`}
             >
-              نئے سوالات
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("majameen")}
-            className={`
-              w-1/3
-              py-3
-              transition-all
-              duration-300
-
-              ${
-                activeTab === "majameen"
-                  ? "bg-[#75C178] text-white"
-                  : "bg-[#EAF5EA] text-[#333333] hover:bg-[#F5FAF5]"
-              }
-            `}
-          >
-            <span
-              style={{
-                fontFamily:
-                  "'Jameel Noori Nastaleeq', serif",
-                direction: "rtl",
-                fontSize: "18px",
-                lineHeight: "34px",
-                fontWeight: "normal",
-                display: "block",
-              }}
-            >
-              منتخب مضامین
-            </span>
-          </button>
-
-                    <button
-            type="button"
-            onClick={() => setActiveTab("popular")}
-            className={`
-              w-1/3
-              py-3
-              transition-all
-              duration-300
-              border-r
-              border-[#C6E2C8]
-
-              ${
-                activeTab === "popular"
-                  ? "bg-[#75C178] text-white"
-                  : "bg-[#EAF5EA] text-[#333333] hover:bg-[#F5FAF5]"
-              }
-            `}
-          >
-            <span
-              style={{
-                fontFamily:
-                  "'Jameel Noori Nastaleeq', serif",
-                direction: "rtl",
-                fontSize: "18px",
-                lineHeight: "34px",
-                fontWeight: "normal",
-                display: "block",
-              }}
-            >
-              زیادہ پڑھے گئے
-            </span>
-          </button>
+              <span
+                style={{
+                  fontFamily: font,
+                  direction: "rtl",
+                  fontSize: "18px",
+                  lineHeight: "34px",
+                  fontWeight: "normal",
+                  display: "block",
+                }}
+              >
+                {tab.label}
+              </span>
+            </button>
+          ))}
         </div>
 
-        {/* =================================================
-            TAB CONTENT
-        ================================================= */}
-
+        {/* TAB CONTENT */}
         <div
-          className="
-            bg-white
-            p-4
-            border
-            border-[#C6E2C8]
-            shadow-lg
-          "
-          style={{
-            fontFamily:
-              "'Jameel Noori Nastaleeq', serif",
-            direction: "rtl",
-          }}
+          className="bg-white p-4 border border-[#C6E2C8] shadow-lg"
+          style={{ fontFamily: font, direction: "rtl" }}
         >
-          {/* NEW QUESTIONS */}
-
-          {activeTab === "questions" && (
-            <div className="space-y-3">
-              {latestQuestions.length > 0 ? (
-                latestQuestions
-                  .slice(0, 8)
-                  .map((item) => (
-                    <Link
-                      key={item._id}
-                      href={`/questions/${item.slug}`}
-                      className="
-                        group
-                        flex
-                        items-start
-                        gap-2
-                        text-[#333333]
-                        hover:text-[#75C178]
-                        transition-colors
-                      "
-                      style={{
-                        fontSize: "18px",
-                        lineHeight: "30px",
-                      }}
-                    >
-                      <span className="text-[#75C178] shrink-0">
-                        ➜
-                      </span>
-
-                      <span className="group-hover:underline">
-                        {item.question}
-                      </span>
-                    </Link>
-                  ))
-              ) : (
-                <p className="text-gray-500 text-center">
-                  کوئی نیا سوال موجود نہیں۔
-                </p>
+          <div className="space-y-3">
+            {activeTab === "questions" &&
+              renderList(
+                latestQuestions.slice(0, 8),
+                (item) => `/questions/${item.slug}`,
+                (item) => item.question,
+                "کوئی نیا سوال موجود نہیں۔"
               )}
-            </div>
-          )}
 
-          {/* MAJAMEEN */}
-
-          {activeTab === "majameen" && (
-            <div className="space-y-3">
-              {majameen.length > 0 ? (
-                majameen.map((item) => (
-                  <Link
-                    key={item._id}
-                    href={`/majameen/${item._id}`}
-                    className="
-                      group
-                      flex
-                      items-start
-                      gap-2
-                      text-[#333333]
-                      hover:text-[#75C178]
-                      transition-colors
-                    "
-                    style={{
-                      fontSize: "20px",
-                      lineHeight: "32px",
-                    }}
-                  >
-                    <span className="text-[#75C178] shrink-0">
-                      ➜
-                    </span>
-
-                    <span className="group-hover:underline">
-                      {item.title}
-                    </span>
-                  </Link>
-                ))
-              ) : (
-                <p className="text-gray-500 text-center">
-                  کوئی مضمون موجود نہیں۔
-                </p>
+            {activeTab === "majameen" &&
+              renderList(
+                majameen,
+                (item) => `/majameen/${item._id}`,
+                (item) => item.title,
+                "کوئی مضمون موجود نہیں۔",
+                "20px"
               )}
-            </div>
-          )}
-                    {/* POPULAR */}
 
-          {activeTab === "popular" && (
-            <div className="space-y-3">
-              {popularQuestions.length > 0 ? (
-                popularQuestions.map((item) => (
-                  <Link
-                    key={item._id}
-                    href={`/questions/${item.slug}`}
-                    className="
-                      group
-                      flex
-                      items-start
-                      gap-2
-                      text-[#333333]
-                      hover:text-[#75C178]
-                      transition-colors
-                    "
-                    style={{
-                      fontSize: "18px",
-                      lineHeight: "30px",
-                    }}
-                  >
-                    <span className="text-[#75C178] shrink-0">
-                      ➜
-                    </span>
-
-                    <span className="group-hover:underline">
-                      {item.question}
-                    </span>
-                  </Link>
-                ))
-              ) : (
-                <p className="text-gray-500 text-center">
-                  ابھی کوئی سوال موجود نہیں۔
-                </p>
+            {activeTab === "popular" &&
+              renderList(
+                popularQuestions,
+                (item) => `/questions/${item.slug}`,
+                (item) => item.question,
+                "ابھی کوئی سوال موجود نہیں۔"
               )}
-            </div>
-          )}
+          </div>
         </div>
 
-        {/* =================================================
-            BOOKS
-        ================================================= */}
-
+        {/* BOOKS */}
         <div className="mt-8">
           <LatestBooksSlider />
         </div>
 
-                {/* =================================================
-            ISLAMIC TOOLS
-        ================================================= */}
-
-                <div id="islamic-tools" className="mt-8" style={{ scrollMarginTop: "80px" }}>
+        {/* ISLAMIC TOOLS */}
+        <div
+          id="islamic-tools"
+          className="mt-8"
+          style={{ scrollMarginTop: "80px" }}
+        >
           <IslamicTools />
         </div>
       </div>
- <AppBanner />
+
+      {/* APP BANNER */}
+      <AppBanner />
+
       {/* =================================================
           ASK QUESTION POPUP
       ================================================= */}
