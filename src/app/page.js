@@ -14,7 +14,7 @@ import IslamicSlider from "./components/IslamicSlider";
 import AskQuestionForm from "./components/AskQuestionForm";
 import AskButton from "./components/AskButton";
 import AskedQuestionsButton from "./components/AskedQuestionsButton";
-// import AppBanner from "./components/AppBanner";
+import AppBanner from "./components/AppBanner";
 
 
 const PLACEHOLDER_PHRASES = [
@@ -499,13 +499,9 @@ const animatedPlaceholder = useTypewriterPlaceholder(
   
  
 return (
-  <div
+ <div
   className="fixed top-0 left-0 right-0 flex items-center gap-3 px-3 py-2.5 bg-[#0f172a] text-white border-b border-slate-700"
-  style={{
-    zIndex: 99999,
-    marginTop: 0,
-    fontFamily: "Arial, Helvetica, sans-serif",
-  }}
+  style={{ zIndex: 99999, marginTop: 0, fontFamily: "Arial, Helvetica, sans-serif" }}
 >
    
       <Head>
@@ -1516,7 +1512,7 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
           <IslamicTools />
         </div>
       </div>
- {/* <AppBanner /> */}
+ <AppBanner />
       {/* =================================================
           ASK QUESTION POPUP
       ================================================= */}
