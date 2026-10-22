@@ -14,7 +14,7 @@ import AskButton from "./components/AskButton";
 import AskedQuestionsButton from "./components/AskedQuestionsButton";
 import PrayerTicker from "./components/PrayerTicker";
 import AppBanner from "./components/AppBanner";
-import PrayerClock from "./components/PrayerClock";
+// import PrayerClock from "./components/PrayerClock";
 
 const font = "'Jameel Noori Nastaleeq', serif";
 const backend = "https://f-backend-vdi1.onrender.com/api";
@@ -436,7 +436,7 @@ export default function HomePage() {
       ================================================= */}
 
       <PrayerTicker prayerTimes={prayerTimes} nextPrayer={nextPrayer} />
-      <PrayerClock name="Panbari Satra, Hatimuria" lat={26.1445} lng={91.7362} asr={2} />
+      {/* <PrayerClock name="Panbari Satra, Hatimuria" lat={26.1445} lng={91.7362} asr={2} /> */}
 
       {/* =================================================
           ISLAMIC SLIDER
