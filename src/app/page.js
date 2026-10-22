@@ -14,7 +14,7 @@ import IslamicSlider from "./components/IslamicSlider";
 import AskQuestionForm from "./components/AskQuestionForm";
 import AskButton from "./components/AskButton";
 import AskedQuestionsButton from "./components/AskedQuestionsButton";
-import AppBanner from "./components/AppBanner";
+// import AppBanner from "./components/AppBanner";
 
 
 const PLACEHOLDER_PHRASES = [
@@ -1512,7 +1512,7 @@ placeholder={isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00
           <IslamicTools />
         </div>
       </div>
- <AppBanner />
+ {/* <AppBanner /> */}
       {/* =================================================
           ASK QUESTION POPUP
       ================================================= */}
