@@ -69,8 +69,19 @@ export default function AppBanner() {
 
   if (!isVisible || isDismissed) return null;
 
+
+
+
   return (
-<div className="fixed bottom-0 left-0 right-0 w-full bg-[#0f1426] text-white px-3 py-2 flex items-center justify-between text-xs z-[99998] border-t border-gray-800 shadow-md">      <div className="flex items-center gap-2.5 min-w-0">
+    <div
+      className="fixed bottom-0 left-0 right-0 flex items-center justify-between gap-3 px-3 py-2.5 bg-[#0f172a] text-white border-t border-slate-700 shadow-md"
+      style={{
+        zIndex: 99999,
+        marginBottom: 0,
+        fontFamily: "Arial, Helvetica, sans-serif",
+      }}
+    >
+      <div className="flex items-center gap-2.5 min-w-0">
         <button
           type="button"
           onClick={handleDismiss}
@@ -79,6 +90,7 @@ export default function AppBanner() {
         >
           <X size={15} />
         </button>
+
         <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center p-1 shrink-0">
           <img
             src="/icon.png"
@@ -111,4 +123,3 @@ export default function AppBanner() {
       </button>
     </div>
   );
-}
