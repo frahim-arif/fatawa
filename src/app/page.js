@@ -491,7 +491,10 @@ export default function HomePage() {
           CATEGORIES
       ================================================= */}
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 px-2 mt-6 w-full relative z-10">
+      <div
+  className="grid grid-cols-2 md:grid-cols-4 gap-3 px-2 w-full relative z-10"
+  style={{ marginTop: "16px" }}
+>
         {categories.map((cat) => (
           <motion.div
             key={cat._id}
