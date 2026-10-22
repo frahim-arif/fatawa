@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import FooterEn from "./FooterEn";
+import FooterBn from "./FooterBn";
 import {
   BookOpen,
   FileText,
@@ -128,6 +129,7 @@ function SectionTitle({ children }) {
 export default function Footer() {
   const pathname = usePathname();
   if (pathname?.startsWith("/en")) return <FooterEn />;
+  if (pathname?.startsWith("/bn")) return <FooterBn />;
 
  
   const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
