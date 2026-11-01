@@ -6,7 +6,7 @@ import "./globals.css";
 import HeaderWrapper from "./components/HeaderWrapper";
 import Footer from "./components/Footer";
 import MobileBottomNav from "./components/MobileBottomNav";
-
+import VisitorTracker from "./components/VisitorTracker";
 
 
 const geistSans = Geist({
@@ -151,7 +151,7 @@ export default function RootLayout({ children }) {
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1540204802615671"
           crossOrigin="anonymous"
         />
-        
+        <VisitorTracker />
 
         <HeaderWrapper />
 
