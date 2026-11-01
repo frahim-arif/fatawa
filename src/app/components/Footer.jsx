@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import FooterEn from "./FooterEn";
-import VisitorCounter from "./VisitorCount";
+import VisitorCounter from "./VisitorCounter";
 import FooterBn from "./FooterBn";
 import {
   BookOpen,
