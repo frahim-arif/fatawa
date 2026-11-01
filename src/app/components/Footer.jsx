@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import FooterEn from "./FooterEn";
+import VisitorCounter from "./VisitorCount";
 import FooterBn from "./FooterBn";
 import {
   BookOpen,
@@ -297,6 +298,10 @@ export default function Footer() {
           <span className="w-14 h-px bg-[#75C178]" />
           <span className="w-2 h-2 rotate-45 border border-[#D4AF37] bg-[#EAF5EA]" />
           <span className="flex-1 h-px bg-[#C6E2C8]" />
+        </div>
+
+        <div className="mb-5">
+          <VisitorCounter lang="ur" />
         </div>
 
         {/* ---------- BOTTOM ---------- */}
