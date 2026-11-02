@@ -15,7 +15,7 @@ import AskedQuestionsButton from "./components/AskedQuestionsButton";
 import PrayerTicker from "./components/PrayerTicker";
 import AppBanner from "./components/AppBanner";
 // import PrayerClock from "./components/PrayerClock";
-import VisitorTracker from "./components/VisitorTracker";
+
 
 const font = "'Jameel Noori Nastaleeq', serif";
 const backend = "https://f-backend-vdi1.onrender.com/api";
@@ -725,7 +725,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <VisitorTracker />
+      
 
       {/* APP BANNER */}
       <AppBanner />
