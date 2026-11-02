@@ -1,42 +1,60 @@
+
 import { notFound } from "next/navigation";
 
 // Fetch single question
 async function fetchQuestion(slug) {
-  const res = await fetch(
-    `https://api.maslakedeoband.in/api/questions/${slug}`,
-    { cache: "no-store" }
-  );
+  try {
+    const res = await fetch(
+      `https://api.maslakedeoband.in/api/questions/${encodeURIComponent(slug)}`,
+      { cache: "no-store" }
+    );
 
-  if (!res.ok) return null;
-  const data = await res.json();
-  return data.success ? data.data : null;
+    if (!res.ok) return null;
+
+    const data = await res.json();
+
+    return data.success ? data.data : null;
+  } catch (error) {
+    console.error("Question API Error:", error);
+    return null;
+  }
 }
 
 // Metadata
 export async function generateMetadata({ params }) {
-  const q = await fetchQuestion(params.slug);
+  const { slug } = await params;
+
+  const q = await fetchQuestion(slug);
+
   if (!q) return {};
 
   return {
     title: q.metaTitle || q.question,
-    description: q.metaDescription || q.answer?.slice(0, 160),
+    description:
+      q.metaDescription || q.answer?.slice(0, 160),
+
     alternates: {
-      canonical: `https://www.maslakedeoband.in/questions/${params.slug}`,
-      
+      canonical: `https://www.maslakedeoband.in/questions/${slug}`,
     },
   };
 }
 
 // SSR Page
 export default async function Page({ params }) {
-  const q = await fetchQuestion(params.slug);
+  const { slug } = await params;
+
+  const q = await fetchQuestion(slug);
+
   if (!q) notFound();
 
   return (
     <article className="max-w-3xl mx-auto p-6" dir="rtl">
-      <h1 className="text-2xl font-bold mb-4">{q.question}</h1>
 
-      <section className="mb-6 leading-8">
+      <h1 className="text-2xl font-bold mb-4">
+        {q.question}
+      </h1>
+
+      <section className="mb-6 leading-8 whitespace-pre-line">
         {q.answer}
       </section>
 
@@ -58,6 +76,7 @@ export default async function Page({ params }) {
           }),
         }}
       />
+
     </article>
   );
 }
