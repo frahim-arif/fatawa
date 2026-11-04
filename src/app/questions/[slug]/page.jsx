@@ -232,7 +232,10 @@ export default async function Page({ params }) {
   return (
     <>
 
-    <ViewCounter slug={slug} />
+   <ViewCounter
+  slug={slug}
+  initialViews={question.views || 0}
+/>
       {/* JSON LD */}
       <script
   type="application/ld+json"

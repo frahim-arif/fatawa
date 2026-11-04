@@ -17,34 +17,42 @@ export default function ViewCounter({ slug, initialViews = 0 }) {
 
     const storageKey = `question_view_${slug}`;
 
-    try {
-      if (sessionStorage.getItem(storageKey)) return;
-    } catch {
-      // Storage unavailable: continue with API request
-    }
-
-    const addView = async () => {
+    const updateViews = async () => {
       try {
-        const res = await fetch(
-          `${API}/slug/${encodeURIComponent(slug)}/view`,
-          { method: "POST" }
-        );
+        let alreadyViewed = false;
+
+        try {
+          alreadyViewed = !!sessionStorage.getItem(storageKey);
+        } catch {}
+
+        const endpoint = alreadyViewed
+          ? `${API}/views/${encodeURIComponent(slug)}`
+          : `${API}/views/${encodeURIComponent(slug)}`;
+
+        const res = await fetch(endpoint, {
+          method: alreadyViewed ? "GET" : "POST",
+          cache: "no-store",
+        });
 
         if (!res.ok) return;
 
-        try {
-          sessionStorage.setItem(storageKey, "1");
-        } catch {
-          // Storage unavailable
-        }
+        const data = await res.json();
 
-        setViews((prev) => prev + 1);
+        if (data.success) {
+          setViews(Number(data.views) || 0);
+
+          if (!alreadyViewed) {
+            try {
+              sessionStorage.setItem(storageKey, "1");
+            } catch {}
+          }
+        }
       } catch (err) {
         console.error("Question view error:", err);
       }
     };
 
-    addView();
+    updateViews();
   }, [slug]);
 
   return (
@@ -54,7 +62,9 @@ export default function ViewCounter({ slug, initialViews = 0 }) {
     >
       <span>👁</span>
       <span>دیکھنے والوں کی تعداد:</span>
-      <b className="text-gray-700">{views.toLocaleString("en-IN")}</b>
+      <b className="text-gray-700">
+        {views.toLocaleString("en-IN")}
+      </b>
     </div>
   );
 }
