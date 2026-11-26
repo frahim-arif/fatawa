@@ -26,17 +26,21 @@ export default function AskButton({ onClick }) {
           color: #ffffff;
           text-align: right;
           direction: rtl;
-          background: #75C178;
-          border: 1px solid #75C178;
-          border-top: 3px solid #D4AF37;
-          box-shadow: 0 8px 24px rgba(117, 193, 120, 0.28);
-          transition: background .25s ease, transform .25s ease, box-shadow .25s ease;
+          border-radius: 16px;
+          background: linear-gradient(135deg, #287A35 0%, #3A9448 55%, #4FAE5B 100%);
+          border: 1.5px solid #D4AF37;
+          box-shadow:
+            0 10px 28px -8px rgba(40, 122, 53, 0.55),
+            inset 0 1px 0 rgba(255, 255, 255, 0.25);
+          transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
         }
 
         .ask-btn:hover {
-          background: #63B56A;
           transform: translateY(-2px);
-          box-shadow: 0 12px 30px rgba(99, 181, 106, 0.4);
+          filter: brightness(1.06);
+          box-shadow:
+            0 14px 34px -8px rgba(40, 122, 53, 0.7),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
         .ask-btn:active {
@@ -57,7 +61,7 @@ export default function AskButton({ onClick }) {
           left: -40%;
           width: 28%;
           height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
           transform: skewX(-20deg);
           pointer-events: none;
           animation: askShine 3.5s ease-in-out infinite;
@@ -72,14 +76,14 @@ export default function AskButton({ onClick }) {
         .ask-btn .ask-pulse {
           position: absolute;
           inset: 0;
-          border-radius: 9999px;
-          background: rgba(255,255,255,0.6);
+          border-radius: 12px;
+          background: rgba(212, 175, 55, 0.55);
           animation: askPulse 1.8s ease-out infinite;
         }
 
         @keyframes askPulse {
           0%   { transform: scale(1);   opacity: 0.6; }
-          100% { transform: scale(1.6); opacity: 0; }
+          100% { transform: scale(1.5); opacity: 0; }
         }
 
         .ask-btn .ask-arrow {
@@ -102,10 +106,11 @@ export default function AskButton({ onClick }) {
             zIndex: 1,
             display: "flex",
             alignItems: "center",
-            gap: "14px",
-            padding: "12px 16px",
+            gap: "12px",
+            padding: "8px 12px",
           }}
         >
+          {/* Icon */}
           <div style={{ position: "relative", flexShrink: 0 }}>
             <span className="ask-pulse" />
             <span
@@ -114,27 +119,32 @@ export default function AskButton({ onClick }) {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                width: 48,
-                height: 48,
-                borderRadius: "9999px",
-                background: "#ffffff",
-                border: "2px solid #D4AF37",
-                color: "#63B56A",
+                width: 44,
+                height: 44,
+                borderRadius: "12px",
+                background: "linear-gradient(135deg, #F5D76E, #D4AF37)",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                color: "#ffffff",
               }}
             >
-              <PenLine size={24} />
+              <PenLine size={22} />
             </span>
           </div>
 
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: "24px", lineHeight: "40px", color: "#ffffff" }}>
-              اپنا سوال بھیجیں
-            </div>
-            <div style={{ fontSize: "16px", lineHeight: "28px", color: "#EAF5EA" }}>
-             علمائے کرام سے  
-            </div>
+          {/* Text */}
+          <div
+            style={{
+              flex: 1,
+              fontSize: "24px",
+              lineHeight: "44px",
+              color: "#ffffff",
+              textShadow: "0 1px 2px rgba(0,0,0,0.2)",
+            }}
+          >
+            اپنا سوال بھیجیں
           </div>
 
+          {/* Arrow */}
           <span
             className="ask-arrow"
             style={{
@@ -142,13 +152,14 @@ export default function AskButton({ onClick }) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              width: 36,
-              height: 36,
+              width: 34,
+              height: 34,
               borderRadius: "9999px",
-              background: "rgba(255,255,255,0.22)",
+              background: "rgba(255,255,255,0.2)",
+              border: "1px solid rgba(255,255,255,0.3)",
             }}
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={18} />
           </span>
         </div>
       </button>
