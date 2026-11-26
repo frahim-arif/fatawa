@@ -110,26 +110,7 @@ export default function AskButton({ onClick }) {
             padding: "8px 12px",
           }}
         >
-          {/* Icon */}
-          <div style={{ position: "relative", flexShrink: 0 }}>
-            <span className="ask-pulse" />
-            <span
-              style={{
-                position: "relative",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 44,
-                height: 44,
-                borderRadius: "12px",
-                background: "linear-gradient(135deg, #F5D76E, #D4AF37)",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-                color: "#ffffff",
-              }}
-            >
-              <PenLine size={22} />
-            </span>
-          </div>
+        {/* Icon */}
 
           {/* Text */}
           <div
