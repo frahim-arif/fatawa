@@ -1,0 +1,1 @@
+Typeface urdu = Typeface.createFromAsset(ctx.getAssets(), "public/fonts/JameelNooriNastaleeq.ttf");

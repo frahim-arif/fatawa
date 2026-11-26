@@ -117,6 +117,11 @@ export default function HomePage() {
   const [showAsk, setShowAsk] = useState(false);
 
   const questionsRef = useRef(null);
+ 
+const [searchResults, setSearchResults] = useState([]);
+const [searchLoading, setSearchLoading] = useState(false);
+const [hasSearched, setHasSearched] = useState(false);
+const [searchError, setSearchError] = useState("");
 
   const animatedPlaceholder = useTypewriterPlaceholder(PLACEHOLDER_PHRASES, {
     active: query === "" && !isFocused,
@@ -318,41 +323,99 @@ export default function HomePage() {
 
   /* ---------- SEARCH FILTER ---------- */
 
-  const filteredQuestions =
-    query.trim() === ""
-      ? allQuestions
-      : allQuestions.filter((q) =>
-          q.question?.toLowerCase().includes(query.toLowerCase())
-        );
+  const filteredQuestions = allQuestions;
 
-  /* ---------- VOICE SEARCH ---------- */
+ 
+/* ---------- VOICE SEARCH ---------- */
 
-  const startListening = () => {
-    if (typeof window === "undefined") return;
+const startListening = () => {
+  if (typeof window === "undefined") return;
 
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
 
-    if (!SpeechRecognition) {
-      alert("🎤 Voice search not supported");
-      return;
+  if (!SpeechRecognition) {
+    alert("Voice search is not supported in this browser");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+
+  recognition.lang = "ur-PK";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  recognition.onresult = (event) => {
+    const spokenText =
+      event.results?.[0]?.[0]?.transcript || "";
+
+    setQuery(spokenText);
+
+    if (spokenText.trim()) {
+      handleSearch(spokenText);
+    }
+  };
+
+  recognition.onerror = (error) => {
+    console.error("Voice search error:", error);
+  };
+
+  recognition.start();
+};
+
+
+
+/* ---------- SEARCH QUESTIONS ---------- */
+
+const handleSearch = async (searchValue = query) => {
+  const searchText = searchValue.trim();
+
+  if (!searchText) {
+    setSearchResults([]);
+    setHasSearched(false);
+    setSearchError("");
+    return;
+  }
+
+  try {
+    setSearchLoading(true);
+    setHasSearched(true);
+    setSearchError("");
+
+    const response = await fetch(
+      `${backend}/admin/questions/search?q=${encodeURIComponent(searchText)}`,
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "تلاش میں مسئلہ پیش آیا");
     }
 
-    const recognition = new SpeechRecognition();
-    recognition.lang = "ur-PK";
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
+    setSearchResults(result.data || []);
 
-    recognition.onresult = (e) => {
-      setQuery(e.results?.[0]?.[0]?.transcript || "");
-    };
+  } catch (error) {
+    console.error("Search Error:", error);
+    setSearchResults([]);
+    setSearchError("تلاش مکمل نہیں ہو سکی۔ دوبارہ کوشش کریں۔");
+  } finally {
+    setSearchLoading(false);
+  }
+};
 
-    recognition.onerror = (error) => {
-      console.error("Voice search error:", error);
-    };
+/* ---------- CLEAR SEARCH ---------- */
 
-    recognition.start();
-  };
+const clearSearch = () => {
+  setQuery("");
+  setSearchResults([]);
+  setHasSearched(false);
+  setSearchError("");
+};
+
 
   /* ---------- LOADING SCREEN ---------- */
 
@@ -382,7 +445,38 @@ export default function HomePage() {
   /* =====================================================
      RENDER
   ===================================================== */
+const handleSearch = async () => {
+  const searchText = query.trim();
 
+  if (!searchText) {
+    setSearchResults([]);
+    setHasSearched(false);
+    return;
+  }
+
+  try {
+    setSearchLoading(true);
+    setHasSearched(true);
+
+    const response = await fetch(
+      `${backend}/admin/questions/search?q=${encodeURIComponent(searchText)}`
+    );
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Search failed");
+    }
+
+    setSearchResults(result.data || []);
+
+  } catch (error) {
+    console.error("Search Error:", error);
+    setSearchResults([]);
+  } finally {
+    setSearchLoading(false);
+  }
+};
   return (
     <div
       className="relative w-full min-h-screen overflow-hidden -mt-6 space-y-10 px-0 bg-repeat bg-contain bg-top md:bg-cover md:bg-center md:bg-fixed"
@@ -447,42 +541,201 @@ export default function HomePage() {
         <IslamicSlider />
       </div>
 
-      {/* =================================================
-          SEARCH
-      ================================================= */}
+     
 
-      <div
-        id="home-search"
-        className="relative w-11/12 md:w-full mx-auto mt-6 z-10"
+{/* =================================================
+    PREMIUM SEARCH SECTION
+================================================= */}
+
+<div
+  id="home-search"
+  className="relative w-11/12 md:w-full mx-auto mt-6 z-20"
+>
+  {/* SEARCH BAR */}
+
+  <div className="flex items-center overflow-hidden rounded-xl border border-[#C6E2C8] bg-white shadow-[0_8px_30px_rgba(0,0,0,0.10)] transition-all duration-300 focus-within:border-[#75C178] focus-within:shadow-[0_0_22px_rgba(117,193,120,0.20)]">
+
+    {/* Search Icon */}
+
+    <div className="px-3">
+      <Search className="w-5 h-5 text-[#75C178]" />
+    </div>
+
+    {/* Input */}
+
+    <input
+      type="text"
+      value={query}
+      onChange={(e) => {
+        setQuery(e.target.value);
+
+        if (!e.target.value.trim()) {
+          setSearchResults([]);
+          setHasSearched(false);
+          setSearchError("");
+        }
+      }}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleSearch();
+        }
+      }}
+      placeholder={
+        isFocused
+          ? "تلاش کریں....."
+          : animatedPlaceholder || "\u00A0"
+      }
+      className="w-full min-w-0 py-3 px-2 bg-transparent text-[#333333] placeholder-gray-400 outline-none text-lg border-0 focus:ring-0"
+      style={{
+        direction: "rtl",
+        fontFamily: font,
+      }}
+    />
+
+    {/* Clear Button */}
+
+    {query.length > 0 && (
+      <button
+        type="button"
+        onClick={clearSearch}
+        className="px-2 py-3 text-gray-400 hover:text-red-500 transition"
+        title="Clear Search"
       >
-        <div className="flex items-center overflow-hidden border border-[#C6E2C8] bg-white/95 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.10)] transition-all duration-300 hover:border-[#75C178] focus-within:border-[#75C178] focus-within:shadow-[0_0_22px_rgba(117,193,120,0.18)]">
-          <div className="px-3 py-2">
-            <Search className="w-5 h-5 text-[#75C178]" />
-          </div>
+        ✕
+      </button>
+    )}
 
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            placeholder={
-              isFocused ? "تلاش کریں....." : animatedPlaceholder || "\u00A0"
-            }
-            className="w-full py-3 pr-4 bg-white text-[#333333] placeholder-gray-400 outline-none text-lg border-0 focus:ring-0"
-            style={{ direction: "rtl", fontFamily: font }}
-          />
+    {/* Voice Search */}
 
-          <button
-            onClick={startListening}
-            type="button"
-            className="px-3 py-2 hover:bg-[#EAF5EA] transition"
-            aria-label="Voice Search"
-          >
-            <Mic className="w-6 h-6 text-[#75C178]" />
-          </button>
-        </div>
+    <button
+      type="button"
+      onClick={startListening}
+      className="shrink-0 px-3 py-3 text-[#75C178] hover:bg-[#F0F8F0] transition"
+      title="Voice Search"
+    >
+      <Mic className="w-5 h-5" />
+    </button>
+
+    {/* Search Button */}
+
+    <button
+      type="button"
+      onClick={() => handleSearch()}
+      disabled={searchLoading || !query.trim()}
+      className="shrink-0 px-5 py-3 bg-[#287A35] hover:bg-[#20652B] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold transition-all duration-300"
+      style={{ fontFamily: font }}
+    >
+      {searchLoading ? "تلاش..." : "تلاش کریں"}
+    </button>
+
+  </div>
+
+  {/* SEARCH RESULTS */}
+
+  {hasSearched && (
+    <div
+      className="mt-4 overflow-hidden rounded-xl border border-[#C6E2C8] bg-white shadow-[0_8px_30px_rgba(0,0,0,0.10)]"
+      dir="rtl"
+      style={{ fontFamily: font }}
+    >
+
+      {/* RESULTS HEADER */}
+
+      <div className="flex items-center justify-between gap-3 border-b border-[#E5F0E5] bg-[#F5FAF5] px-4 py-3">
+
+        <h3 className="text-lg font-bold text-[#287A35]">
+          نتائج تلاش
+        </h3>
+
+        {!searchLoading && (
+          <span className="text-sm text-gray-600">
+            {searchResults.length} سوالات ملے
+          </span>
+        )}
+
       </div>
+
+      {/* LOADING */}
+
+      {searchLoading && (
+        <div className="flex items-center justify-center gap-3 py-8 text-[#287A35]">
+          <span className="h-5 w-5 animate-spin rounded-full border-2 border-[#75C178] border-t-transparent" />
+          <span>سوالات تلاش کیے جا رہے ہیں...</span>
+        </div>
+      )}
+
+      {/* ERROR */}
+
+      {!searchLoading && searchError && (
+        <div className="px-4 py-6 text-center text-red-600">
+          {searchError}
+        </div>
+      )}
+
+      {/* EMPTY RESULTS */}
+
+      {!searchLoading &&
+        !searchError &&
+        searchResults.length === 0 && (
+          <div className="px-4 py-8 text-center text-gray-500">
+            معذرت! اس موضوع سے متعلق کوئی سوال نہیں ملا۔
+          </div>
+        )}
+
+      {/* RESULTS LIST */}
+
+      {!searchLoading &&
+        !searchError &&
+        searchResults.length > 0 && (
+          <div className="divide-y divide-[#E5F0E5]">
+
+            {searchResults.map((item, index) => (
+              <Link
+                key={item._id || item.slug || index}
+                href={`/questions/${item.slug}`}
+                className="group flex items-start gap-3 px-4 py-4 transition-all duration-200 hover:bg-[#F5FAF5]"
+              >
+                <span className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#EAF5EA] text-sm text-[#287A35]">
+                  {index + 1}
+                </span>
+
+                <div className="min-w-0 flex-1">
+                  <h4 className="text-lg leading-9 text-[#333333] transition-colors group-hover:text-[#287A35]">
+                    {item.question}
+                  </h4>
+
+                  {item.category && (
+                    <span className="mt-1 inline-block rounded-md bg-[#EAF5EA] px-2 py-1 text-sm text-[#287A35]">
+                      {item.category}
+                    </span>
+                  )}
+                </div>
+
+                <span className="mt-2 shrink-0 text-[#75C178]">
+                  ←
+                </span>
+              </Link>
+            ))}
+
+          </div>
+        )}
+
+      {/* RESULTS FOOTER */}
+
+      {!searchLoading && searchResults.length > 0 && (
+        <div className="border-t border-[#E5F0E5] bg-[#F9FCF9] px-4 py-3 text-center text-sm text-gray-500">
+          مزید مسائل کے لیے اوپر تلاش کریں
+        </div>
+      )}
+
+    </div>
+  )}
+</div>
+
+
 
       {/* =================================================
           ASK QUESTION BUTTON
