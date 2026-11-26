@@ -616,16 +616,25 @@ const clearSearch = () => {
 
     {/* Search Button */}
 
-    <button
-      type="button"
-      onClick={() => handleSearch()}
-      disabled={searchLoading || !query.trim()}
-      className="flex shrink-0 items-center gap-1.5 rounded-xl bg-gradient-to-br from-[#3A9448] to-[#287A35] px-5 py-3 font-semibold text-white shadow-[0_4px_14px_rgba(40,122,53,0.35)] transition-all duration-300 hover:from-[#33853F] hover:to-[#20652B] hover:shadow-[0_6px_18px_rgba(40,122,53,0.45)] active:scale-95 disabled:cursor-not-allowed disabled:from-gray-300 disabled:to-gray-400 disabled:shadow-none"
-      style={{ fontFamily: font }}
-    >
-      <Search className="h-4 w-4" />
-      {searchLoading ? "تلاش..." : "تلاش کریں"}
-    </button>
+    {/* Search Button */}
+
+{/* Search Button */}
+
+<button
+  type="button"
+  onClick={() => handleSearch()}
+  disabled={searchLoading || !query.trim()}
+  className="group/btn relative flex shrink-0 items-center gap-1 overflow-hidden rounded-lg border border-[#D4AF37] bg-gradient-to-br from-[#1E8A3C] via-[#146B2E] to-[#0B4D1F] px-3.5 py-2 text-sm font-semibold text-white shadow-[0_3px_12px_rgba(11,77,31,0.45),inset_0_1px_0_rgba(255,255,255,0.3)] transition-all duration-300 hover:border-[#F5D76E] hover:shadow-[0_4px_16px_rgba(212,175,55,0.55),inset_0_1px_0_rgba(255,255,255,0.4)] hover:brightness-110 active:scale-95 disabled:cursor-not-allowed disabled:border-gray-300 disabled:from-gray-300 disabled:via-gray-300 disabled:to-gray-400 disabled:shadow-none"
+  style={{ fontFamily: font }}
+>
+  {/* shine */}
+  <span className="pointer-events-none absolute inset-y-0 -left-full w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent transition-all duration-700 group-hover/btn:left-full" />
+
+  <Search className="relative h-3.5 w-3.5 text-[#F5D76E] group-disabled/btn:text-white" />
+  <span className="relative">
+    {searchLoading ? "تلاش..." : "تلاش کریں"}
+  </span>
+</button>
 
   </div>
 
