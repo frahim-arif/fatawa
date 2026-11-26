@@ -383,6 +383,9 @@ const handleSearch = async (searchValue = query) => {
     setSearchError("");
 
     const response = await fetch(
+      if (!response.ok) {
+  throw new Error(`Search API Error: ${response.status}`);
+}
       `${backend}/admin/questions/search?q=${encodeURIComponent(searchText)}`,
       {
         method: "GET",
@@ -442,41 +445,7 @@ const clearSearch = () => {
       <p className="text-gray-500 text-center">{emptyText}</p>
     );
 
-  /* =====================================================
-     RENDER
-  ===================================================== */
-const handleSearch = async () => {
-  const searchText = query.trim();
 
-  if (!searchText) {
-    setSearchResults([]);
-    setHasSearched(false);
-    return;
-  }
-
-  try {
-    setSearchLoading(true);
-    setHasSearched(true);
-
-    const response = await fetch(
-      `${backend}/admin/questions/search?q=${encodeURIComponent(searchText)}`
-    );
-
-    const result = await response.json();
-
-    if (!response.ok || !result.success) {
-      throw new Error(result.message || "Search failed");
-    }
-
-    setSearchResults(result.data || []);
-
-  } catch (error) {
-    console.error("Search Error:", error);
-    setSearchResults([]);
-  } finally {
-    setSearchLoading(false);
-  }
-};
   return (
     <div
       className="relative w-full min-h-screen overflow-hidden -mt-6 space-y-10 px-0 bg-repeat bg-contain bg-top md:bg-cover md:bg-center md:bg-fixed"
