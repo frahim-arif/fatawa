@@ -365,3 +365,192 @@ export default function AskQuestionForm({ open, onClose, backend }) {
                     </p>
                     <div className="h-px flex-1 bg-[#E1EEE2]" />
                   </div>
+
+                  <button
+                    type="button"
+                    onClick={submitQuestion}
+                    className={outlineBtn}
+                    style={{ fontFamily: font }}
+                  >
+                    <Send className="h-4 w-4" />
+                    میرا سوال مختلف ہے، علماء کو بھیجیں
+                  </button>
+
+                  {whatsappButton}
+
+                  <button
+                    type="button"
+                    onClick={() => setStatus("idle")}
+                    className={backBtn}
+                    style={{ fontFamily: font }}
+                  >
+                    <ArrowRight className="h-4 w-4" />
+                    سوال میں ترمیم کریں
+                  </button>
+                </div>
+              )}
+
+              {/* ================= NOT FOUND / SENDING ================= */}
+
+              {(status === "notfound" || status === "sending") && (
+                <div className="space-y-4">
+                  <div className="rounded-xl border border-[#F0E0A8] bg-[#FFFBEA] px-4 py-4 text-center">
+                    <p className="text-lg leading-9 text-[#6B5410]">
+                      معذرت! اس سوال کا جواب ابھی سائٹ پر موجود نہیں ہے۔
+                    </p>
+                    <p className="text-base leading-8 text-[#8A7220]">
+                      آپ واٹس ایپ پر یا سائٹ کے ذریعے سوال بھیج سکتے ہیں۔
+                    </p>
+                  </div>
+
+                  {whatsappButton}
+
+                  <button
+                    type="button"
+                    onClick={submitQuestion}
+                    disabled={status === "sending"}
+                    className={outlineBtn}
+                    style={{ fontFamily: font }}
+                  >
+                    {status === "sending" ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        بھیجا جا رہا ہے...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="h-4 w-4" />
+                        سائٹ کے ذریعے علماء کو بھیجیں
+                      </>
+                    )}
+                  </button>
+
+                  {errorMsg && (
+                    <p className="flex items-center justify-center gap-1 text-center text-sm text-red-600">
+                      <AlertCircle className="h-4 w-4" />
+                      {errorMsg}
+                    </p>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={() => setStatus("idle")}
+                    className={backBtn}
+                    style={{ fontFamily: font }}
+                  >
+                    <ArrowRight className="h-4 w-4" />
+                    سوال میں ترمیم کریں
+                  </button>
+                </div>
+              )}
+
+              {/* ================= FORM ================= */}
+
+              {(status === "idle" ||
+                status === "checking" ||
+                status === "error") && (
+                <form onSubmit={handleCheck} className="space-y-4">
+                  {/* Name */}
+                  <div>
+                    <label className="mb-1 block text-base text-[#287A35]">
+                      آپ کا نام <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <User className="pointer-events-none absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[#75C178]" />
+                      <input
+                        name="name"
+                        value={form.name}
+                        onChange={handleChange}
+                        placeholder="اپنا نام لکھیں"
+                        className={inputClass}
+                        style={{ fontFamily: font }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Contact */}
+                  <div>
+                    <label className="mb-1 block text-base text-[#287A35]">
+                      ای میل یا فون نمبر{" "}
+                      <span className="text-sm text-gray-400">(اختیاری)</span>
+                    </label>
+                    <div className="relative">
+                      <Phone className="pointer-events-none absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[#75C178]" />
+                      <input
+                        name="contact"
+                        value={form.contact}
+                        onChange={handleChange}
+                        placeholder="جواب بھیجنے کے لیے"
+                        className={inputClass}
+                        style={{ fontFamily: font, direction: "rtl" }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Question */}
+                  <div>
+                    <label className="mb-1 block text-base text-[#287A35]">
+                      آپ کا سوال <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <PenLine className="pointer-events-none absolute right-3 top-4 h-5 w-5 text-[#75C178]" />
+                      <textarea
+                        name="question"
+                        value={form.question}
+                        onChange={handleChange}
+                        placeholder="اپنا سوال یہاں تفصیل سے لکھیں"
+                        rows={5}
+                        maxLength={MAX_LENGTH}
+                        className={`${inputClass} resize-none`}
+                        style={{ fontFamily: font, lineHeight: "2" }}
+                      />
+                    </div>
+                    <p className="mt-1 text-left text-xs text-gray-400" dir="ltr">
+                      {form.question.length} / {MAX_LENGTH}
+                    </p>
+                  </div>
+
+                  {/* honeypot: users ko nazar nahi aata */}
+                  <input
+                    name="website"
+                    value={form.website}
+                    onChange={handleChange}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    className="hidden"
+                  />
+
+                  {status === "error" && (
+                    <p className="flex items-center gap-1 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+                      <AlertCircle className="h-4 w-4 shrink-0" />
+                      {errorMsg}
+                    </p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={status === "checking"}
+                    className={primaryBtn}
+                    style={{ fontFamily: font }}
+                  >
+                    {status === "checking" ? (
+                      <>
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                        جواب تلاش کیا جا رہا ہے...
+                      </>
+                    ) : (
+                      <>
+                        <Search className="h-5 w-5" />
+                        جواب تلاش کریں
+                      </>
+                    )}
+                  </button>
+                </form>
+              )}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
