@@ -521,160 +521,128 @@ const clearSearch = () => {
 <div
   id="home-search"
   className="relative w-11/12 md:w-full mx-auto mt-6 z-20"
-{/* =================================================
-    PREMIUM SEARCH SECTION (Styled)
-    Imports needed at top of your file:
-    import { Search, Mic, X, ArrowLeft, SearchX, AlertCircle } from "lucide-react";
-================================================= */}
-
-<div
-  id="home-search"
-  className="relative w-11/12 md:w-full mx-auto mt-6 z-20"
 >
-  {/* SEARCH BAR (soft glow ring appears on focus) */}
+  {/* SEARCH BAR */}
 
-  <div className="group relative">
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute -inset-[3px] rounded-[22px] bg-gradient-to-r from-[#75C178] via-[#A8D8AA] to-[#287A35] opacity-0 blur-[6px] transition-opacity duration-500 group-focus-within:opacity-60"
+  <div className="flex items-center overflow-hidden rounded-xl border border-[#C6E2C8] bg-white shadow-[0_8px_30px_rgba(0,0,0,0.10)] transition-all duration-300 focus-within:border-[#75C178] focus-within:shadow-[0_0_22px_rgba(117,193,120,0.20)]">
+
+    {/* Search Icon */}
+
+    <div className="px-3">
+      <Search className="w-5 h-5 text-[#75C178]" />
+    </div>
+
+    {/* Input */}
+
+    <input
+      type="text"
+      value={query}
+      onChange={(e) => {
+        setQuery(e.target.value);
+
+        if (!e.target.value.trim()) {
+          setSearchResults([]);
+          setHasSearched(false);
+          setSearchError("");
+        }
+      }}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleSearch();
+        }
+      }}
+      placeholder={
+        isFocused
+          ? "تلاش کریں....."
+          : animatedPlaceholder || "\u00A0"
+      }
+      className="w-full min-w-0 py-3 px-2 bg-transparent text-[#333333] placeholder-gray-400 outline-none text-lg border-0 focus:ring-0"
+      style={{
+        direction: "rtl",
+        fontFamily: font,
+      }}
     />
 
-    <div
-      className="relative flex items-center gap-1 rounded-[20px] border border-[#C6E2C8] bg-white p-1.5 shadow-[0_10px_35px_-10px_rgba(40,122,53,0.25)] transition-all duration-300 group-focus-within:border-[#75C178]"
-      dir="rtl"
+    {/* Clear Button */}
+
+    {query.length > 0 && (
+      <button
+        type="button"
+        onClick={clearSearch}
+        className="px-2 py-3 text-gray-400 hover:text-red-500 transition"
+        title="Clear Search"
+      >
+        ✕
+      </button>
+    )}
+
+    {/* Voice Search */}
+
+    <button
+      type="button"
+      onClick={startListening}
+      className="shrink-0 px-3 py-3 text-[#75C178] hover:bg-[#F0F8F0] transition"
+      title="Voice Search"
     >
-      {/* Search Icon */}
+      <Mic className="w-5 h-5" />
+    </button>
 
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#EAF5EA]">
-        <Search className="h-5 w-5 text-[#287A35]" />
-      </div>
+    {/* Search Button */}
 
-      {/* Input */}
+    <button
+      type="button"
+      onClick={() => handleSearch()}
+      disabled={searchLoading || !query.trim()}
+      className="shrink-0 px-5 py-3 bg-[#287A35] hover:bg-[#20652B] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold transition-all duration-300"
+      style={{ fontFamily: font }}
+    >
+      {searchLoading ? "تلاش..." : "تلاش کریں"}
+    </button>
 
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-
-          if (!e.target.value.trim()) {
-            setSearchResults([]);
-            setHasSearched(false);
-            setSearchError("");
-          }
-        }}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            handleSearch();
-          }
-        }}
-        placeholder={
-          isFocused
-            ? "تلاش کریں....."
-            : animatedPlaceholder || "\u00A0"
-        }
-        aria-label="سوالات تلاش کریں"
-        className="min-w-0 flex-1 border-0 bg-transparent px-2 py-3 text-lg text-[#1F3D25] outline-none placeholder:text-gray-400 focus:ring-0"
-        style={{
-          direction: "rtl",
-          fontFamily: font,
-        }}
-      />
-
-      {/* Clear Button */}
-
-      {query.length > 0 && (
-        <button
-          type="button"
-          onClick={clearSearch}
-          aria-label="تلاش صاف کریں"
-          title="Clear Search"
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-gray-400 transition hover:bg-red-50 hover:text-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300"
-        >
-          <X className="h-4 w-4" />
-        </button>
-      )}
-
-      {/* Voice Search */}
-
-      <button
-        type="button"
-        onClick={startListening}
-        aria-label="آواز سے تلاش"
-        title="Voice Search"
-        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[#287A35] transition hover:bg-[#EAF5EA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#75C178]"
-      >
-        <Mic className="h-5 w-5" />
-      </button>
-
-      {/* Search Button */}
-
-      <button
-        type="button"
-        onClick={() => handleSearch()}
-        disabled={searchLoading || !query.trim()}
-        className="shrink-0 rounded-2xl bg-gradient-to-br from-[#33903F] to-[#1F6A2C] px-6 py-3 font-semibold text-white shadow-[0_6px_16px_-6px_rgba(40,122,53,0.7)] transition-all duration-300 hover:-translate-y-px hover:shadow-[0_10px_20px_-6px_rgba(40,122,53,0.8)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#75C178] focus-visible:ring-offset-2 active:translate-y-0 disabled:translate-y-0 disabled:cursor-not-allowed disabled:from-gray-300 disabled:to-gray-400 disabled:shadow-none"
-        style={{ fontFamily: font }}
-      >
-        {searchLoading ? "تلاش..." : "تلاش کریں"}
-      </button>
-    </div>
   </div>
 
   {/* SEARCH RESULTS */}
 
   {hasSearched && (
     <div
-      className="mt-4 animate-[fadeIn_0.3s_ease-out] overflow-hidden rounded-3xl border border-[#C6E2C8] bg-white shadow-[0_20px_50px_-20px_rgba(40,122,53,0.30)]"
+      className="mt-4 overflow-hidden rounded-xl border border-[#C6E2C8] bg-white shadow-[0_8px_30px_rgba(0,0,0,0.10)]"
       dir="rtl"
       style={{ fontFamily: font }}
     >
+
       {/* RESULTS HEADER */}
 
-      <div className="flex items-center justify-between gap-3 border-b border-[#E5F0E5] bg-gradient-to-l from-[#F5FAF5] to-[#EAF5EA] px-5 py-4">
-        <div className="flex items-center gap-2">
-          <span className="h-6 w-1.5 rounded-full bg-[#287A35]" />
-          <h3 className="text-lg font-bold text-[#287A35]">نتائج تلاش</h3>
-        </div>
+      <div className="flex items-center justify-between gap-3 border-b border-[#E5F0E5] bg-[#F5FAF5] px-4 py-3">
+
+        <h3 className="text-lg font-bold text-[#287A35]">
+          نتائج تلاش
+        </h3>
 
         {!searchLoading && (
-          <span className="rounded-full bg-white px-3 py-1 text-sm font-medium text-[#287A35] shadow-sm ring-1 ring-[#C6E2C8]">
+          <span className="text-sm text-gray-600">
             {searchResults.length} سوالات ملے
           </span>
         )}
+
       </div>
 
-      {/* LOADING (skeleton rows) */}
+      {/* LOADING */}
 
       {searchLoading && (
-        <div
-          className="divide-y divide-[#E5F0E5]"
-          role="status"
-          aria-label="سوالات تلاش کیے جا رہے ہیں"
-        >
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="flex animate-pulse items-start gap-3 px-5 py-4">
-              <span className="h-8 w-8 shrink-0 rounded-full bg-[#EAF5EA]" />
-              <div className="flex-1 space-y-3 pt-1">
-                <div className="h-4 w-11/12 rounded bg-[#EAF5EA]" />
-                <div className="h-4 w-1/3 rounded bg-[#F2F8F2]" />
-              </div>
-            </div>
-          ))}
+        <div className="flex items-center justify-center gap-3 py-8 text-[#287A35]">
+          <span className="h-5 w-5 animate-spin rounded-full border-2 border-[#75C178] border-t-transparent" />
+          <span>سوالات تلاش کیے جا رہے ہیں...</span>
         </div>
       )}
 
       {/* ERROR */}
 
       {!searchLoading && searchError && (
-        <div className="flex flex-col items-center gap-2 px-5 py-10 text-center text-red-600">
-          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-red-50">
-            <AlertCircle className="h-6 w-6" />
-          </span>
-          <p>{searchError}</p>
+        <div className="px-4 py-6 text-center text-red-600">
+          {searchError}
         </div>
       )}
 
@@ -683,11 +651,8 @@ const clearSearch = () => {
       {!searchLoading &&
         !searchError &&
         searchResults.length === 0 && (
-          <div className="flex flex-col items-center gap-3 px-5 py-10 text-center text-gray-500">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#F2F8F2] text-[#75C178]">
-              <SearchX className="h-7 w-7" />
-            </span>
-            <p>معذرت! اس موضوع سے متعلق کوئی سوال نہیں ملا۔</p>
+          <div className="px-4 py-8 text-center text-gray-500">
+            معذرت! اس موضوع سے متعلق کوئی سوال نہیں ملا۔
           </div>
         )}
 
@@ -697,59 +662,49 @@ const clearSearch = () => {
         !searchError &&
         searchResults.length > 0 && (
           <div className="divide-y divide-[#E5F0E5]">
+
             {searchResults.map((item, index) => (
               <Link
                 key={item._id || item.slug || index}
                 href={`/questions/${item.slug}`}
-                className="group relative flex items-start gap-3 px-5 py-4 transition-colors duration-200 hover:bg-[#F5FAF5] focus-visible:bg-[#F5FAF5] focus-visible:outline-none"
+                className="group flex items-start gap-3 px-4 py-4 transition-all duration-200 hover:bg-[#F5FAF5]"
               >
-                {/* Accent bar on hover */}
-                <span className="absolute inset-y-3 right-0 w-1 origin-center scale-y-0 rounded-l-full bg-[#287A35] transition-transform duration-200 group-hover:scale-y-100 group-focus-visible:scale-y-100" />
-
-                <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#EAF5EA] text-sm font-semibold text-[#287A35] transition-colors duration-200 group-hover:bg-[#287A35] group-hover:text-white">
+                <span className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#EAF5EA] text-sm text-[#287A35]">
                   {index + 1}
                 </span>
 
                 <div className="min-w-0 flex-1">
-                  <h4 className="text-lg leading-9 text-[#2B2B2B] transition-colors group-hover:text-[#287A35]">
+                  <h4 className="text-lg leading-9 text-[#333333] transition-colors group-hover:text-[#287A35]">
                     {item.question}
                   </h4>
 
                   {item.category && (
-                    <span className="mt-1 inline-block rounded-full bg-[#EAF5EA] px-3 py-0.5 text-sm text-[#287A35] ring-1 ring-inset ring-[#C6E2C8]">
+                    <span className="mt-1 inline-block rounded-md bg-[#EAF5EA] px-2 py-1 text-sm text-[#287A35]">
                       {item.category}
                     </span>
                   )}
                 </div>
 
-                <ArrowLeft className="mt-2.5 h-5 w-5 shrink-0 text-[#75C178] transition-transform duration-200 group-hover:-translate-x-1 group-hover:text-[#287A35]" />
+                <span className="mt-2 shrink-0 text-[#75C178]">
+                  ←
+                </span>
               </Link>
             ))}
+
           </div>
         )}
 
       {/* RESULTS FOOTER */}
 
       {!searchLoading && searchResults.length > 0 && (
-        <div className="border-t border-[#E5F0E5] bg-[#F9FCF9] px-5 py-3 text-center text-sm text-gray-500">
+        <div className="border-t border-[#E5F0E5] bg-[#F9FCF9] px-4 py-3 text-center text-sm text-gray-500">
           مزید مسائل کے لیے اوپر تلاش کریں
         </div>
       )}
+
     </div>
   )}
 </div>
-
-{/* =================================================
-    Tailwind config mein ye keyframe add karein (results panel ke entrance ke liye):
-
-    // tailwind.config.js -> theme.extend
-    keyframes: {
-      fadeIn: {
-        "0%":   { opacity: "0", transform: "translateY(8px)" },
-        "100%": { opacity: "1", transform: "translateY(0)" },
-      },
-    },
-================================================= */}
 
 
 
