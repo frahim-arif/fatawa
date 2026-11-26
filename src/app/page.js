@@ -719,13 +719,20 @@ const clearSearch = () => {
           </div>
         )}
 
-      {/* RESULTS FOOTER */}
+            {/* RESULTS FOOTER */}
 
       {!searchLoading && searchResults.length > 0 && (
         <div className="border-t border-[#E5F0E5] bg-[#F9FCF9] px-4 py-3 text-center text-sm text-gray-500">
           مزید مسائل کے لیے اوپر تلاش کریں
+        </div>
+      )}
 
+    </div>
+  )}
+</div>
 
+      {/* =================================================
+          ASK QUESTION BUTTON
 
       {/* =================================================
           ASK QUESTION BUTTON
