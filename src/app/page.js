@@ -522,87 +522,91 @@ const clearSearch = () => {
   id="home-search"
   className="relative w-11/12 md:w-full mx-auto mt-6 z-20"
 >
-  {/* SEARCH BAR */}
+{/* SEARCH BAR */}
 
-  <div className="flex items-center overflow-hidden rounded-xl border border-[#C6E2C8] bg-white shadow-[0_8px_30px_rgba(0,0,0,0.10)] transition-all duration-300 focus-within:border-[#75C178] focus-within:shadow-[0_0_22px_rgba(117,193,120,0.20)]">
+<div className="group relative flex items-center gap-1 overflow-hidden rounded-2xl border border-[#D6EBD8] bg-white/95 p-1.5 shadow-[0_10px_40px_-10px_rgba(40,122,53,0.25)] backdrop-blur transition-all duration-300 hover:shadow-[0_14px_44px_-10px_rgba(40,122,53,0.35)] focus-within:border-[#75C178] focus-within:shadow-[0_0_0_4px_rgba(117,193,120,0.18),0_14px_44px_-10px_rgba(40,122,53,0.35)]">
 
-    {/* Search Icon */}
+  {/* Search Icon */}
 
-    <div className="px-3">
-      <Search className="w-5 h-5 text-[#75C178]" />
-    </div>
-
-    {/* Input */}
-
-    <input
-      type="text"
-      value={query}
-      onChange={(e) => {
-        setQuery(e.target.value);
-
-        if (!e.target.value.trim()) {
-          setSearchResults([]);
-          setHasSearched(false);
-          setSearchError("");
-        }
-      }}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          handleSearch();
-        }
-      }}
-      placeholder={
-        isFocused
-          ? "تلاش کریں....."
-          : animatedPlaceholder || "\u00A0"
-      }
-      className="w-full min-w-0 py-3 px-2 bg-transparent text-[#333333] placeholder-gray-400 outline-none text-lg border-0 focus:ring-0"
-      style={{
-        direction: "rtl",
-        fontFamily: font,
-      }}
-    />
-
-    {/* Clear Button */}
-
-    {query.length > 0 && (
-      <button
-        type="button"
-        onClick={clearSearch}
-        className="px-2 py-3 text-gray-400 hover:text-red-500 transition"
-        title="Clear Search"
-      >
-        ✕
-      </button>
-    )}
-
-    {/* Voice Search */}
-
-    <button
-      type="button"
-      onClick={startListening}
-      className="shrink-0 px-3 py-3 text-[#75C178] hover:bg-[#F0F8F0] transition"
-      title="Voice Search"
-    >
-      <Mic className="w-5 h-5" />
-    </button>
-
-    {/* Search Button */}
-
-    <button
-      type="button"
-      onClick={() => handleSearch()}
-      disabled={searchLoading || !query.trim()}
-      className="shrink-0 px-5 py-3 bg-[#287A35] hover:bg-[#20652B] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-semibold transition-all duration-300"
-      style={{ fontFamily: font }}
-    >
-      {searchLoading ? "تلاش..." : "تلاش کریں"}
-    </button>
-
+  <div className="flex shrink-0 items-center justify-center rounded-xl bg-[#EEF7EE] p-2.5 transition-colors duration-300 group-focus-within:bg-[#DFF0E0]">
+    <Search className="h-5 w-5 text-[#287A35]" />
   </div>
+
+  {/* Input */}
+
+  <input
+    type="text"
+    value={query}
+    onChange={(e) => {
+      setQuery(e.target.value);
+
+      if (!e.target.value.trim()) {
+        setSearchResults([]);
+        setHasSearched(false);
+        setSearchError("");
+      }
+    }}
+    onFocus={() => setIsFocused(true)}
+    onBlur={() => setIsFocused(false)}
+    onKeyDown={(e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleSearch();
+      }
+    }}
+    placeholder={
+      isFocused
+        ? "تلاش کریں....."
+        : animatedPlaceholder || "\u00A0"
+    }
+    className="w-full min-w-0 flex-1 border-0 bg-transparent px-3 py-3 text-lg text-[#1F2D1F] placeholder-gray-400 outline-none focus:ring-0"
+    style={{
+      direction: "rtl",
+      fontFamily: font,
+    }}
+  />
+
+  {/* Clear Button */}
+
+  {query.length > 0 && (
+    <button
+      type="button"
+      onClick={clearSearch}
+      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-sm text-gray-500 transition-all duration-200 hover:bg-red-50 hover:text-red-500 active:scale-90"
+      title="Clear Search"
+    >
+      ✕
+    </button>
+  )}
+
+  {/* Divider */}
+
+  <div className="mx-1 h-7 w-px shrink-0 bg-[#DCEBDD]" />
+
+  {/* Voice Search */}
+
+  <button
+    type="button"
+    onClick={startListening}
+    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-[#287A35] transition-all duration-200 hover:bg-[#EEF7EE] hover:text-[#20652B] active:scale-90"
+    title="Voice Search"
+  >
+    <Mic className="h-5 w-5" />
+  </button>
+
+  {/* Search Button */}
+
+  <button
+    type="button"
+    onClick={() => handleSearch()}
+    disabled={searchLoading || !query.trim()}
+    className="shrink-0 rounded-xl bg-gradient-to-br from-[#3A9448] to-[#287A35] px-6 py-3 font-semibold text-white shadow-[0_4px_14px_rgba(40,122,53,0.35)] transition-all duration-300 hover:from-[#33853F] hover:to-[#20652B] hover:shadow-[0_6px_18px_rgba(40,122,53,0.45)] active:scale-95 disabled:cursor-not-allowed disabled:from-gray-300 disabled:to-gray-400 disabled:shadow-none"
+    style={{ fontFamily: font }}
+  >
+    {searchLoading ? "تلاش..." : "تلاش کریں"}
+  </button>
+
+</div>
 
   {/* SEARCH RESULTS */}
 
