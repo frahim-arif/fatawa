@@ -788,49 +788,71 @@ const clearSearch = () => {
           CATEGORY QUESTIONS
       ================================================= */}
 
-      <section ref={questionsRef} className="space-y-4 px-2 z-10 relative">
-        {filteredQuestions.length > 0 ? (
-          filteredQuestions.map((q) => (
-            <Link key={q._id} href={`/questions/${q.slug}`} className="block">
-              <motion.div
-                whileHover={{ y: -2 }}
-                className="p-5 border bg-white border-[#C6E2C8] shadow-[0_5px_20px_rgba(0,0,0,0.08)] w-full cursor-pointer hover:bg-[#F5FAF5] hover:border-[#75C178] transition-all duration-300 relative overflow-hidden"
-                style={{
-                  direction: "rtl",
-                  fontFamily: font,
-                  lineHeight: "2.2",
-                  textAlign: "right",
-                }}
-              >
-                <div className="absolute right-0 top-0 bottom-0 w-1 bg-[#75C178]" />
-                <h3 className="font-bold text-xl text-[#333333] pr-2">
-                  {q.question}
-                </h3>
-              </motion.div>
-            </Link>
-          ))
-        ) : (
-          <div
-            className="text-center bg-white border border-[#C6E2C8] px-4 py-5 text-[#333333] shadow-[0_5px_20px_rgba(0,0,0,0.06)]"
-            style={{ fontFamily: font, direction: "rtl" }}
-          >
-            اوپر دیے گئے بٹن پر کلک کر کے سوال و جواب دیکھیں
-          </div>
-        )}
+    <section ref={questionsRef} className="space-y-3 px-2 z-10 relative">
+  {filteredQuestions.length > 0 ? (
+    filteredQuestions.map((q, index) => (
+      <Link key={q._id} href={`/questions/${q.slug}`} className="block">
+        <motion.div
+          whileHover={{ y: -3 }}
+          whileTap={{ scale: 0.99 }}
+          className="group relative w-full cursor-pointer overflow-hidden rounded-2xl border border-[#D6EBD8] bg-gradient-to-br from-white to-[#F3FAF3] py-4 pl-4 pr-5 shadow-[0_8px_24px_-10px_rgba(40,122,53,0.3)] transition-all duration-300 hover:border-[#75C178] hover:from-[#F5FAF5] hover:to-[#E8F5E9] hover:shadow-[0_14px_32px_-10px_rgba(40,122,53,0.45)]"
+          style={{
+            direction: "rtl",
+            fontFamily: font,
+            textAlign: "right",
+          }}
+        >
+          {/* side accent bar */}
+          <div className="absolute bottom-0 right-0 top-0 w-1.5 bg-gradient-to-b from-[#D4AF37] via-[#75C178] to-[#287A35]" />
 
-        {hasMore && filteredQuestions.length > 0 && (
-          <div className="text-center mt-6">
-            <button
-              type="button"
-              onClick={() => fetchQuestions({ customSkip: skip })}
-              className="px-7 py-2 bg-[#75C178] text-white border border-[#75C178] hover:bg-[#63B56A] hover:shadow-[0_0_18px_rgba(117,193,120,0.22)] transition-all duration-300"
-              style={{ fontFamily: font }}
+          <div className="flex items-start gap-3 pr-1">
+            {/* number badge */}
+            <span className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#3A9448] to-[#287A35] text-sm text-white shadow-[0_3px_8px_rgba(40,122,53,0.35)]">
+              {index + 1}
+            </span>
+
+            {/* question */}
+            <h3
+              className="min-w-0 flex-1 text-xl text-[#1F2D1F] transition-colors duration-200 group-hover:text-[#287A35]"
+              style={{ lineHeight: "2.1" }}
             >
-              مزید سوالات دیکھیں
-            </button>
+              {q.question}
+            </h3>
+
+            {/* arrow */}
+            <span className="mt-1.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#C6E2C8] bg-[#EAF5EA] text-[#287A35] transition-all duration-300 group-hover:-translate-x-1 group-hover:bg-[#287A35] group-hover:text-white">
+              ←
+            </span>
           </div>
-        )}
-      </section>
+        </motion.div>
+      </Link>
+    ))
+  ) : (
+    <div
+      className="rounded-2xl border-2 border-dashed border-[#C6E2C8] bg-white/90 px-4 py-6 text-center text-lg text-[#4B5E4B] shadow-[0_5px_20px_rgba(0,0,0,0.05)]"
+      style={{ fontFamily: font, direction: "rtl", lineHeight: "2" }}
+    >
+      <span className="mb-1 block text-2xl">👆</span>
+      اوپر دیے گئے بٹن پر کلک کر کے سوال و جواب دیکھیں
+    </div>
+  )}
+
+  {hasMore && filteredQuestions.length > 0 && (
+    <div className="mt-6 text-center">
+      <button
+        type="button"
+        onClick={() => fetchQuestions({ customSkip: skip })}
+        className="group/btn relative inline-flex items-center gap-2 overflow-hidden rounded-xl border border-[#D4AF37] bg-gradient-to-br from-[#1E8A3C] via-[#146B2E] to-[#0B4D1F] px-8 py-2.5 text-white shadow-[0_4px_14px_rgba(11,77,31,0.45),inset_0_1px_0_rgba(255,255,255,0.3)] transition-all duration-300 hover:border-[#F5D76E] hover:shadow-[0_6px_20px_rgba(212,175,55,0.5),inset_0_1px_0_rgba(255,255,255,0.4)] hover:brightness-110 active:scale-95"
+        style={{ fontFamily: font }}
+      >
+        {/* shine */}
+        <span className="pointer-events-none absolute inset-y-0 -left-full w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent transition-all duration-700 group-hover/btn:left-full" />
+        <span className="relative text-lg">مزید سوالات دیکھیں</span>
+        <span className="relative text-[#F5D76E]">↓</span>
+      </button>
+    </div>
+  )}
+</section>
 
       {/* =================================================
           NEXT PRAYER
