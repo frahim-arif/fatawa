@@ -383,9 +383,6 @@ const handleSearch = async (searchValue = query) => {
     setSearchError("");
 
     const response = await fetch(
-      if (!response.ok) {
-  throw new Error(`Search API Error: ${response.status}`);
-}
       `${backend}/admin/questions/search?q=${encodeURIComponent(searchText)}`,
       {
         method: "GET",
@@ -393,10 +390,15 @@ const handleSearch = async (searchValue = query) => {
       }
     );
 
+    // Response check fetch ke baad hoga
+    if (!response.ok) {
+      throw new Error(`Search API Error: ${response.status}`);
+    }
+
     const result = await response.json();
 
-    if (!response.ok || !result.success) {
-      throw new Error(result.message || "تلاش میں مسئلہ پیش آیا");
+    if (!result.success) {
+      throw new Error(result.message || "Search failed");
     }
 
     setSearchResults(result.data || []);
