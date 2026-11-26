@@ -76,7 +76,7 @@ export default function AskButton({ onClick }) {
         .ask-btn .ask-pulse {
           position: absolute;
           inset: 0;
-          border-radius: 12px;
+          border-radius: 9999px;
           background: rgba(212, 175, 55, 0.55);
           animation: askPulse 1.8s ease-out infinite;
         }
@@ -110,7 +110,70 @@ export default function AskButton({ onClick }) {
             padding: "8px 12px",
           }}
         >
-        {/* Icon */}
+          {/* Icon */}
+          <div style={{ position: "relative", flexShrink: 0 }}>
+            <span className="ask-pulse" />
+
+            {/* باہر کا سنہری رِنگ */}
+            <span
+              style={{
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: 48,
+                height: 48,
+                borderRadius: "9999px",
+                padding: 3,
+                background:
+                  "linear-gradient(135deg, #FFF3B0, #D4AF37 50%, #B8901F)",
+                boxShadow:
+                  "0 6px 16px rgba(0,0,0,0.3), 0 0 0 3px rgba(255,255,255,0.15)",
+              }}
+            >
+              {/* اندر کا گول ڈبہ */}
+              <span
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "9999px",
+                  background:
+                    "radial-gradient(circle at 30% 25%, #F5D76E 0%, #D4AF37 60%, #B8901F 100%)",
+                  border: "1.5px solid rgba(255,255,255,0.7)",
+                  boxShadow:
+                    "inset 0 2px 4px rgba(255,255,255,0.5), inset 0 -3px 6px rgba(0,0,0,0.15)",
+                  color: "#ffffff",
+                }}
+              >
+                {/* چمک */}
+                <span
+                  style={{
+                    position: "absolute",
+                    top: 4,
+                    left: 8,
+                    width: 14,
+                    height: 7,
+                    borderRadius: "9999px",
+                    background: "rgba(255,255,255,0.55)",
+                    filter: "blur(1px)",
+                    transform: "rotate(-25deg)",
+                  }}
+                />
+                <PenLine
+                  size={22}
+                  strokeWidth={2.2}
+                  style={{
+                    position: "relative",
+                    filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.35))",
+                  }}
+                />
+              </span>
+            </span>
+          </div>
 
           {/* Text */}
           <div
